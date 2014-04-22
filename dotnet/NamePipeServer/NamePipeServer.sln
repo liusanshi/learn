@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NamePipeServer", "NamePipeServer\NamePipeServer.csproj", "{8F7AEF25-BED0-47B7-8F2D-5087EA1FD6EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NamePipeClient", "NamePipeClient\NamePipeClient.csproj", "{1B7B6F26-9EA6-452D-9FDF-D991E0A58510}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F7AEF25-BED0-47B7-8F2D-5087EA1FD6EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7AEF25-BED0-47B7-8F2D-5087EA1FD6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F7AEF25-BED0-47B7-8F2D-5087EA1FD6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F7AEF25-BED0-47B7-8F2D-5087EA1FD6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B7B6F26-9EA6-452D-9FDF-D991E0A58510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B7B6F26-9EA6-452D-9FDF-D991E0A58510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B7B6F26-9EA6-452D-9FDF-D991E0A58510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B7B6F26-9EA6-452D-9FDF-D991E0A58510}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
