@@ -10,6 +10,13 @@ namespace Creo.Client
 {
     public class CreoClient : IIntegration
     {
+        static string BomFilePath;
+
+        static CreoClient()
+        {
+            BomFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ptc\\output.txt";
+        }
+
         public string CadType
         {
             get { return "PREO"; }
@@ -22,8 +29,8 @@ namespace Creo.Client
 
         public System.Collections.ArrayList GetBom()
         {
-            //
-            throw new NotImplementedException();
+            DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
+            return doc.ConvertToBOM();
         }
 
         public System.Collections.ArrayList GetBomByFileName(string Filename)
@@ -33,12 +40,22 @@ namespace Creo.Client
 
         public string GetCurrentFileName()
         {
-            throw new NotImplementedException();
+            DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
+            if (doc != null && doc.Count > 0)
+            {
+                return doc.First<PartProperty>()[""];
+            }
+            return "";
         }
 
         public string GetCurrentFilePath()
         {
-            throw new NotImplementedException();
+            DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
+            if (doc != null && doc.Count > 0)
+            {
+                return doc.First<PartProperty>()[""];
+            }
+            return "";
         }
 
         public string GetCurrentFileProperty()
