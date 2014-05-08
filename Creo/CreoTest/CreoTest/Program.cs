@@ -15,6 +15,13 @@ namespace CreoTest
 
         static void Main(string[] args)
         {
+            string path = @"E:\项目\creo\OUTPUT.TXT";
+            DocumentProperty docprop1 = DocumentProperty.LoadXml(path, Encoding.Default);
+            Console.WriteLine(docprop1.Count);
+            Console.Read();
+            return;
+
+
             DocumentProperty docprop = new DocumentProperty();
 
             int index = 1;

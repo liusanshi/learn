@@ -123,6 +123,17 @@ namespace Intgration.Common
         {
             File.WriteAllText(filePath, ToXml(), Encoding.UTF8);
         }
+
+        /// <summary>
+        /// 读取文件
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public static DocumentProperty LoadXml(string filePath, Encoding encoding)
+        {
+            return LoadXmlStr(File.ReadAllText(filePath, encoding));
+        }
         /// <summary>
         /// 读取文件
         /// </summary>
@@ -130,10 +141,20 @@ namespace Intgration.Common
         /// <returns></returns>
         public static DocumentProperty LoadXml(string filePath)
         {
+            return LoadXml(filePath, Encoding.UTF8);
+        }
+        /// <summary>
+        /// 将xml字符串转换为 DocumentProperty
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        public static DocumentProperty LoadXmlStr(string xml)
+        {
             var docprop = new DocumentProperty();
-            docprop.ReadXml(File.ReadAllText(filePath, Encoding.UTF8));
+            docprop.ReadXml(xml);
             return docprop;
         }
+
         /// <summary>
         /// 写二进制文件
         /// </summary>

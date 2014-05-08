@@ -3,109 +3,25 @@
  <head>
    <meta charset="utf-8">
    <title>hello-backbonejs</title>
-   <script src="js/jquery-1.11.0.min.js"></script>
-   <script src="js/underscore.js"></script>
-   <script src="js/backbone.js"></script>
+   <script src="modules/sea-debug.js"></script>
  </head>
  <body>
  </body>
  <script type="text/javascript">
-   	(function ($) {
-
-   		var World = Backbone.Model.extend({
-   			defaults : {
-   				name : 'NULL',
-   				name2 : 'UNDEFINED'
-   			}
-   		});
-
-   		var Worlds = Backbone.Collection.extend({
-   			// model : World
-   		});
-
-   		var ItemView = Backbone.View.extend({
-   			tagName : 'li'
-   			, events :{
-   				'click .swap' : 'swap',
-   				'click .delete' : 'del'
-   			}
-   			, initialize : function(){
-   				//_.bindAll(this,'render')
-
-   				this.listenTo(this.model, 'change', this.render);
-               this.listenTo(this.model, 'destroy', this.remove);
-   			}
-   			, render : function(){
-   				$(this.el).html('<span style="color:black;">'+this.model.get('name')+' '+this.model.get('name1')+'</span> &nbsp; &nbsp; <span class="swap" style="font-family:sans-serif; color:blue; cursor:pointer;">[swap]</span> <span class="delete" style="cursor:pointer; color:red; font-family:sans-serif;">[delete]</span>');
- 				// this.$el.html('<span>' + this.model.get('name') + '</span>');
- 				return this;
-   			}
-   			, swap : function(){
-   				this.model.set({
-   					name : this.model.get('name1'),
-   					name1 : this.model.get('name'),
-   				});
-   			}
-            ,del : function(){
-               this.model.destroy();
-            }
-   		});
-
-   		var ListView = Backbone.View.extend({
-   			el : $('body')
-   			,initialize : function () {
-   				 _.bindAll(this, 'render', 'appendItem');
-
-   				this.itemCount = 0;	
-   				this.collection = new Backbone.Collection();
-               this.listenTo(this.collection, 'add', this.appendItem)
-               this.listenTo(this.collection, 'all', this.showCount)
-               //this.collection.on('add', this.appendItem)
-               //this.collection.on('remove', this.appendItem)
-   				this.render();
-   			}
-   			,events : {
-   				'click #add' : 'addItem'
-   			}
-   			,render : function () {
-   				var $this = this;
-   				this.$el.append("<button id='add'>Add list item</button>")
-   				.append('<ul></ul>')
-               .append('总数：<span id="count" style="color:red;">' + this.collection.length + '<span>');
-
-   				_(this.collection.models).each(function(model){
-					$this.appendItem(model);
-   				});
-   			}
-   			, addItem : function(){
-   				this.itemCount++;
-   				var world = new World();
-   				world.set('name', 'liulei' + this.itemCount);
-   				this.collection.add(world);
-   			}
-   			, appendItem :function(model){
-   				var item = new ItemView({model: model});
-   				// item.set('model', model);
-   				this.$el.find('ul').append(item.render().el);
-   			}
-            , showCount : function(){
-            alert(1);
-               this.$el.find('#count').text(this.collection.length);
-            }
-   		});
-
-   		var lv = new ListView();
-   		lv.collection.add(new World());
-   	})(jQuery);
-
-	var a = {name : 'asdasd'};
-
-	function show(){
-		alert(this.name);
-	}
-
-	var a1 = _.bind(show, a);
-	//a1();
+   seajs.config({
+      // 别名配置
+      alias: {
+         jquery: '../modules/jquery-1.11.0.min-seajs', 
+         backbone: '../modules/backbone-min-seajs',
+         underscore: '../modules/underscore-min-seajs'
+      },
+      base : 'file://E:/github/learn/backbone.js'
+   });
+   seajs.use('static/ItemView', function (iv, ListView, World) {
+      var lv = new (seajs.require('static/ListView'));
+      var World = seajs.require('static/World');
+      lv.collection.add(new World());
+   });
 
  </script>
  </html>
