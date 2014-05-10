@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
 
@@ -15,11 +16,13 @@ namespace Intgration.Common
     {
         static Tools()
         {
+#if zuken
             CR5000ZLOCALROOT = WRegisterTool.GetRegistryValue(WRegisterRootKeyType.HKEY_LOCAL_MACHINE,
-                           @"SOFTWARE\ZUKEN\CR-5000 Runtime\11.0", "ZLOCALROOT");
+                                 @"SOFTWARE\ZUKEN\CR-5000 Runtime\11.0", "ZLOCALROOT");
             ZukenAppDataPath = Environment.GetEnvironmentVariable("ZUKEN_PLM", EnvironmentVariableTarget.Machine);
             FileNamePath = Path.Combine(ZukenAppDataPath, "zk_filename.data");
-            BOMFilePath = Path.Combine(ZukenAppDataPath, "zk_bomfile.data");
+            BOMFilePath = Path.Combine(ZukenAppDataPath, "zk_bomfile.data");      
+#endif
         }
         /// <summary>
         /// 返回 注册表值
@@ -65,6 +68,37 @@ namespace Intgration.Common
                         yield return line;
                     }
                 }
+        }
+
+        /// <summary>
+        /// 获取文本，根据文本
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="content"></param>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public static string GetFileContentByContent(string path, string content, string pattern)
+        {
+            Regex reg = new Regex(pattern);
+            int index = 0;
+            foreach (var item in GetFileContent(path))
+            {
+                index = item.IndexOf(content) ;
+                if (index > -1)
+                {
+                    index += content.Length;
+                    if (reg.IsMatch(item, index))
+                    {
+                        var matches = reg.Matches(item, index)[0].Groups;
+                        if (matches.Count > 1)
+                        {
+                            return matches[1].Value;
+                        }
+                    }
+                    return reg.Match(item, index).Value;
+                }
+            }
+            return "";
         }
 
         /// <summary>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Creo.Server", "Creo.Server\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Creo.Client", "Creo.Client\Creo.Client.csproj", "{5D9895BD-2086-4624-BC6F-2B043C704857}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModifyConfig", "ModifyConfig\ModifyConfig.csproj", "{BB0E4E14-36A0-47C4-B3C2-8DE652BA8AAA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{5D9895BD-2086-4624-BC6F-2B043C704857}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{5D9895BD-2086-4624-BC6F-2B043C704857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9895BD-2086-4624-BC6F-2B043C704857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB0E4E14-36A0-47C4-B3C2-8DE652BA8AAA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0E4E14-36A0-47C4-B3C2-8DE652BA8AAA}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{BB0E4E14-36A0-47C4-B3C2-8DE652BA8AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB0E4E14-36A0-47C4-B3C2-8DE652BA8AAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

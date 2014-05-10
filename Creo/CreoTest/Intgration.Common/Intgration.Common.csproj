@@ -10,13 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Intgration.Common</RootNamespace>
     <AssemblyName>Intgration.Common</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentProperty.cs" />
+    <Compile Include="Key.cs" />
     <Compile Include="Net\WebPageHelper.cs" />
     <Compile Include="PartProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,9 +57,14 @@
     <Compile Include="Utility\FileHashHelper.cs" />
     <Compile Include="Utility\IniHelper.cs" />
     <Compile Include="Utility\Security.cs" />
+    <Compile Include="win\NativeMethods.cs" />
+    <Compile Include="win\UACHelp.cs" />
     <Compile Include="WRegisterTool.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy Intgration.Common.dll ..\..\..\CreoTest\pubilc\Intgration.Common.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

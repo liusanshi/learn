@@ -11,7 +11,7 @@ namespace Creo.Client
     public class CreoClient : IIntegration
     {
         static string BomFilePath;
-
+        
         static CreoClient()
         {
             BomFilePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ptc\\output.txt";
@@ -19,7 +19,7 @@ namespace Creo.Client
 
         public string CadType
         {
-            get { return "PREO"; }
+            get { return "PROE"; }
         }
 
         public bool CheckApplicationIsRun()
@@ -30,6 +30,29 @@ namespace Creo.Client
         public System.Collections.ArrayList GetBom()
         {
             DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
+
+            Dictionary<string, string> guids = new Dictionary<string, string>(doc.Count);
+            string guid = "", fileid = "";
+            foreach (PartProperty item in doc)
+            {
+                fileid = item[Key.Fileid];
+                if (!guids.TryGetValue(fileid, out guid))
+                {
+                    guid = Guid.NewGuid().ToString();
+                    guids.Add(fileid, guid);
+                }
+                item[Key.VerId] = guid;
+            }
+            guid = ""; fileid = "";
+            foreach (PartProperty item in doc)
+            {
+                foreach (var child in item.ChildRelation.Concat(item.ObjectRelation))
+                {
+                    fileid = child[Key.Fileid];
+                    child[Key.VerId] = guids[fileid];
+                }
+            }
+
             return doc.ConvertToBOM();
         }
 
@@ -37,25 +60,15 @@ namespace Creo.Client
         {
             throw new NotImplementedException();
         }
-
+        
         public string GetCurrentFileName()
         {
-            DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
-            if (doc != null && doc.Count > 0)
-            {
-                return doc.First<PartProperty>()[""];
-            }
-            return "";
+            return Tools.GetFileContentByContent(BomFilePath, "<key><string>filename</string></key>", "<value><string>(.*)</string></value>");
         }
 
         public string GetCurrentFilePath()
         {
-            DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
-            if (doc != null && doc.Count > 0)
-            {
-                return doc.First<PartProperty>()[""];
-            }
-            return "";
+            return Tools.GetFileContentByContent(BomFilePath, "<key><string>filepath</string></key>", "<value><string>(.*)</string></value>").TrimEnd('\\');
         }
 
         public string GetCurrentFileProperty()
@@ -65,7 +78,7 @@ namespace Creo.Client
 
         public string GetCurrentFullPath()
         {
-            throw new NotImplementedException();
+            return GetCurrentFilePath() + "\\" + GetCurrentFileName();
         }
 
         public string GetFileDesCription(string FullPath)

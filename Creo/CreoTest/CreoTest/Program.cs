@@ -2,7 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Security.Principal;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+using System.ComponentModel;
+using System.Diagnostics;
+
 using Intgration.Common;
+using Intgration.Common.win;
 
 namespace CreoTest
 {
@@ -15,12 +22,39 @@ namespace CreoTest
 
         static void Main(string[] args)
         {
-            string path = @"E:\项目\creo\OUTPUT.TXT";
-            DocumentProperty docprop1 = DocumentProperty.LoadXml(path, Encoding.Default);
-            Console.WriteLine(docprop1.Count);
+            if (UACHelp.IsRunAsAdmin())
+            {
+                Console.WriteLine("管理员启动");
+            }
+            else
+            {
+                Console.WriteLine("非管理员启动");
+            }
+
+            //ProcessStartInfo proc = new ProcessStartInfo();
+            //proc.UseShellExecute = true;
+            //proc.WorkingDirectory = Environment.CurrentDirectory;
+            //proc.FileName = Application.ExecutablePath;
+            //proc.Verb = "runas"; //使用管理员启动
+
+            //string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ptc\\output.txt";
+            //DocumentProperty docprop1 = DocumentProperty.LoadXml(path, Encoding.Default);
+            //Console.WriteLine(docprop1.Count);
+            
+            //CreoClient cc = new CreoClient();
+            //Console.WriteLine(cc.GetCurrentFileName());
+            //Console.WriteLine(cc.GetCurrentFilePath());
+            //Console.WriteLine(cc.GetCurrentFullPath());
+
+            //var bom = cc.GetBom();
+
+            //var aa = bom.Count;
+
             Console.Read();
+
             return;
 
+#if false
 
             DocumentProperty docprop = new DocumentProperty();
 
@@ -72,6 +106,7 @@ namespace CreoTest
             docprop.Add(partprop);
 
             docprop.SaveXml(@"c:\123.txt");
+#endif
         }
 
         static PartProperty getPartData(string index, int fileid, string filetype)
