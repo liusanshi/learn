@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="CreoOperate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidateEmpty.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\NHibernate.dll" />
