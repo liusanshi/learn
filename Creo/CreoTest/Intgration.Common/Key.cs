@@ -24,6 +24,19 @@ namespace Intgration.Common
         /// </summary>
         public static string VerId = "verid";
         /// <summary>
+        /// 当前配置名称
+        /// </summary>
+        public static string CurConfigName = "_curconfigname";
+        /// <summary>
+        /// 配置名称
+        /// </summary>
+        public static string ConfigName = "_configname";
+        /// <summary>
+        /// 当前激活的配置
+        /// </summary>
+        public static string ActiveConfig = "activeconfig";
+
+        /// <summary>
         /// 文件类型
         /// </summary>
         public static string FileType = "filetype";

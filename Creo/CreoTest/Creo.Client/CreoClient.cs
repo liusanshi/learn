@@ -30,10 +30,19 @@ namespace Creo.Client
         public System.Collections.ArrayList GetBom()
         {
             DocumentProperty doc = DocumentProperty.LoadXml(BomFilePath);
+            DealDocumentProperty(doc);
+            return doc.ConvertToBOM();
+        }
 
-            Dictionary<string, string> guids = new Dictionary<string, string>(doc.Count);
+        /// <summary>
+        /// 处理文档属性
+        /// </summary>
+        /// <param name="docprop"></param>
+        private void DealDocumentProperty(DocumentProperty docprop)
+        {
+            Dictionary<string, string> guids = new Dictionary<string, string>(docprop.Count);
             string guid = "", fileid = "";
-            foreach (PartProperty item in doc)
+            foreach (PartProperty item in docprop)
             {
                 fileid = item[Key.Fileid];
                 if (!guids.TryGetValue(fileid, out guid))
@@ -42,9 +51,11 @@ namespace Creo.Client
                     guids.Add(fileid, guid);
                 }
                 item[Key.VerId] = guid;
+                item[Key.ActiveConfig] = item[Key.CurConfigName] = item[Key.ConfigName];
+                item.Remove(Key.ConfigName);
             }
             guid = ""; fileid = "";
-            foreach (PartProperty item in doc)
+            foreach (PartProperty item in docprop)
             {
                 foreach (var child in item.ChildRelation.Concat(item.ObjectRelation))
                 {
@@ -52,8 +63,6 @@ namespace Creo.Client
                     child[Key.VerId] = guids[fileid];
                 }
             }
-
-            return doc.ConvertToBOM();
         }
 
         public System.Collections.ArrayList GetBomByFileName(string Filename)
