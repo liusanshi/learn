@@ -1,0 +1,22 @@
+<html>
+<head>
+   <title>Blob 测试</title>
+   <meta charset="utf-8">
+</head>
+<body>
+<input type="file" id="input" onchange="console.log(this.files.length);" multiple />
+</body>
+<script type="text/javascript" src="BlobTest.js"></script>
+<script type="text/javascript">
+	//alert(document.querySelector('#input').outerHTML);
+	document.querySelector('#input').addEventListener('change', function (e) {
+		var blob = this.files[0];
+	})
+
+//	if('indexedDB' in window){
+//		alert('支持 indexedDB');
+//	} else {
+//		alert('不支持 indexedDB');
+//	}
+</script>
+</html>

@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>多窗体之间通信 测试</title>
+	<meta charset="utf-8">
+</head>
+<body>
+接受到的消息：<input type="text" id="txt_revcmsg">
+<br />
+发送的消息：<input type="text" id="txt_msg">
+<br />
+<input type="button" value="发送消息" onclick='sendmsg();'>
+</body>
+
+<script src="subscribe.js"></script>
+<script type="text/javascript">
+
+	
+	$subscribe.on('aaa', function (val) {
+		document.getElementById('txt_revcmsg').value = val;
+	})
+
+	function sendmsg() {
+		$subscribe.trigger('aaa', document.getElementById('txt_msg').value);
+	}
+</script>
+
+</html>
