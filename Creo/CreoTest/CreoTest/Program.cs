@@ -10,6 +10,7 @@ using System.Diagnostics;
 
 using Intgration.Common;
 using Intgration.Common.win;
+using Creo.Client;
 
 namespace CreoTest
 {
@@ -22,6 +23,10 @@ namespace CreoTest
 
         static void Main(string[] args)
         {
+
+            CreoClient creo = new CreoClient();
+            var aa = creo.GetBom();
+
             if (UACHelp.IsRunAsAdmin())
             {
                 Console.WriteLine("管理员启动");

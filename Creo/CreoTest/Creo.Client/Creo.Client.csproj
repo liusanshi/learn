@@ -56,12 +56,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="直接部署到集成软件.cmd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy Kingdee.PLM.Integration.Client.Proe.dll ..\..\..\CreoTest\pubilc\Kingdee.PLM.Integration.Client.Proe.dll</PostBuildEvent>
+    <PostBuildEvent>copy Kingdee.PLM.Integration.Client.Proe.dll ..\..\..\Creo.Setup\pubilc\Kingdee.PLM.Integration.Client.Proe.dll</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

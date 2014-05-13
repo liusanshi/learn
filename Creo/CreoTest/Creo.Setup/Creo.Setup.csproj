@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8EA44AE9-45FF-4461-8FB2-8239BDBD2F16}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Creo.Setup</RootNamespace>
+    <AssemblyName>Kingdee.PLM.Integration.Setup.Creo</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Kingdee.PLM.Integration.Setup.Abstract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Kingdee.PLM.Integration.Setup.Abstract.dll</HintPath>
+    </Reference>
+    <Reference Include="Kingdee.PLM.Integration.Setup.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Kingdee.PLM.Integration.Setup.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Kingdee.PLM.Integration.Setup.Install, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Kingdee.PLM.Integration.Setup.Install.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreoSetup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\Kingdee.PLM.Integration.Setup.Abstract.dll" />
+    <Content Include="lib\Kingdee.PLM.Integration.Setup.Common.dll" />
+    <Content Include="lib\Kingdee.PLM.Integration.Setup.Install.dll" />
+    <Content Include="pubilc\Creo.Server.dll" />
+    <Content Include="pubilc\Intgration.Common.dll" />
+    <Content Include="pubilc\Kingdee.PLM.Integration.Client.Proe.dll" />
+    <Content Include="pubilc\Kingdee.PLM.Integration.Setup.Creo.dll" />
+    <Content Include="pubilc\Message.txt" />
+    <Content Include="pubilc\ModifyConfig.exe" />
+    <Content Include="pubilc\PLM.dll" />
+    <Content Include="pubilc\PLM64.dll" />
+    <Content Include="pubilc\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="pubilc\部署.cmd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy Kingdee.PLM.Integration.Setup.Creo.dll ..\..\pubilc\Kingdee.PLM.Integration.Setup.Creo.dll</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

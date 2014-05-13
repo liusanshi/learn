@@ -90,37 +90,6 @@ namespace Creo.Server
             //server.Replace(typeof(ValidateStandardPartsDelete), empty);
         }
 
-        protected override BOMStruct MergeDcounentByProperty(BOMStruct bom)
-        {
-            bool flag = bom.IsolatedNodes.Any<DocStruct>();
-
-            TraceWriteLine("flag :" + flag);
-            foreach (DocStruct current in bom.FindRootConfigs())
-            {
-                TraceWriteLine("进入循环");
-                if (!current.IsConfigPart)
-                {
-                    break;
-                }
-                TraceWriteLine("进入循环 里面的处理");
-                current.AddValue("__isrootconfig", true);
-                current.AddValue("__hasolatedconfig", flag);
-                if (current.ConfigName == current.GetString("activeconfig"))
-                {
-                    current.IsActive = true;
-                    foreach (DocStruct current2 in current.GetDescendant())
-                    {
-                        current2.IsActive = true;
-                    }
-                }
-            }
-            foreach (DocView current3 in bom.BOMView)
-            {
-                current3.GetCurrentData().WriteValue("__defaultdoc", true);
-            }
-            return base.MergeDcounentByProperty(bom);
-        }
-
         /// <summary>
         /// 写日志
         /// </summary>
