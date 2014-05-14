@@ -24,6 +24,9 @@ namespace CreoTest
         static void Main(string[] args)
         {
 
+            var regk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC");
+            Console.WriteLine(regk == null);
+
             CreoClient creo = new CreoClient();
             var aa = creo.GetBom();
 

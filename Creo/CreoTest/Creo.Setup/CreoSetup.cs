@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.IO;
+using Microsoft.Win32;
 
 using Kingdee.PLM.Integration.Setup.Abstract;
 using Kingdee.PLM.Integration.Setup.Common;
@@ -138,7 +139,14 @@ namespace Creo.Setup
             string oSBit = CommonBase.GetOSBit();
             if (oSBit == "64")
             {
-                CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);
+                if (Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC") != null)//判断是否32位creo
+                {
+                    CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
+                }
+                else
+                {
+                    CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);
+                }
             }
             else
             {
