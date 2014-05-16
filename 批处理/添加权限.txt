@@ -1,0 +1,21 @@
+::/E            编辑 ACL 而不替换
+::/G user:perm  赋予指定用户访问权限。
+::                 Perm 可以是: R  读取
+::                              W  写入
+::                              C  更改(写入)
+::                              F  完全控制
+::
+::
+::/R user         撤销指定用户的访问权限(仅在与 /E 一起使用时合法)。
+::   /P user:perm  替换指定用户的访问权限。
+::                 Perm 可以是: N  无
+::                              R  读取
+::                              W  写入
+::                              C  更改(写入)
+::                              F  完全控制
+::/D user       拒绝指定用户的访问。
+
+echo y|cacls %public%\documents\222.txt /e /g users:f
+
+::批量给文件添加权限
+for /f %%a in (a.txt) do cacls %%a /e /t /c /g aspnet:r iis_wpg:r

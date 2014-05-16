@@ -1,0 +1,16 @@
+%SystemRoot%   ===    C:\WINDOWS    (%windir% 同样)
+       %ProgramFiles% ===    C:\Program Files
+       %USERPROFILE%  ===    C:\Documents and Settings\Administrator  (子目录有“桌面”,“开始菜单”,“收藏夹”等)
+       %APPDATA%      ===    C:\Documents and Settings\Administrator\Application Data
+       %TEMP%         ===    C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp  (%TEM% 同样)
+       %APPDATA%      ===    C:\Documents and Settings\Administrator\Application Data
+       %OS%           ===    Windows_NT (系统)
+       %Path%         ===    %SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem  (原本的设置)
+       %HOMEDRIVE%    ===    C:   (系统盘)
+       %HOMEPATH%     ===    \Documents and Settings\Administrator
+
+:: 枚举当前的环境变量
+setlocal enabledelayedexpansion
+FOR /F "usebackq delims==" %%i IN (`set`) DO @echo %%i    !%%i!
+
+pause
