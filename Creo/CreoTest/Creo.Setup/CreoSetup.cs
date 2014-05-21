@@ -67,14 +67,14 @@ namespace Creo.Setup
         {
             get
             {
-                return plm.kingdee.com.MutiLanguageConvert.LoadKDString("\u3000\u3000Croe集成插件的安装将使您从Croe软件中直接执行金蝶PLM系统操作，例如：检入、检出等。");
+                return plm.kingdee.com.MutiLanguageConvert.LoadKDString("\u3000\u3000Creo集成插件的安装将使您从Creo软件中直接执行金蝶PLM系统操作，例如：检入、检出等。");
             }
         }
         public string ModuleName
         {
             get
             {
-                return plm.kingdee.com.MutiLanguageConvert.LoadKDString("Croe集成插件");
+                return plm.kingdee.com.MutiLanguageConvert.LoadKDString("Creo集成插件");
             }
         }
         public string ID

@@ -68,6 +68,7 @@
     <Content Include="pubilc\readme.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="pubilc\win7-client.bat" />
     <None Include="pubilc\部署.cmd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
