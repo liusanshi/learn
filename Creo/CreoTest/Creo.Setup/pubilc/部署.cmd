@@ -29,9 +29,9 @@ goto copyoperate
 
 :copyoperate
 
-xcopy /r /y "Creo.Server.dll" "%PLMPath%\bin\Creo.Server.dll"
+echo f|xcopy /r /y "Creo.Server.dll" "%PLMPath%\bin\Creo.Server.dll"
 if not exist "%PLMPath%\Integration_back.config.xml" (
-	xcopy /r /y "%PLMPath%\Integration.config.xml" "%PLMPath%\Integration_back.config.xml"
+	echo f|xcopy /r /y "%PLMPath%\Integration.config.xml" "%PLMPath%\Integration_back.config.xml"
 )
 ::copy /y "ZSKIntegration.js" "%PLMPath%\Javascript\Integration\ZSKIntegration.js"
 
@@ -46,16 +46,16 @@ echo 开始插件部署
 
 set Integration=%PLMPath%\..\Integration\Integration Setup
 
-xcopy /r /y "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" "%Integration%\KDSetup\Kingdee.PLM.Integration.Setup.Proe.dll"
+echo f|xcopy /r /y "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" "%Integration%\KDSetup\Kingdee.PLM.Integration.Setup.Proe.dll"
 attrib -r "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" && del "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll"
 
-xcopy /r /y "Kingdee.PLM.Integration.Setup.Creo.dll" "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Creo.dll"
-xcopy /r /y "Intgration.Common.dll" "%Integration%\KDSetup\Dll\Intgration.Common.dll"
-xcopy /r /y "Kingdee.PLM.Integration.Client.Proe.dll" "%Integration%\Resources\Common\Dll\Kingdee.PLM.Integration.Client.Proe.dll"
-xcopy /r /y "Intgration.Common.dll" "%Integration%\Resources\Common\Dll\Intgration.Common.dll"
-xcopy /r /r /y "Message.txt" "%Integration%\Resources\Proe\Text\chinese_cn\Message.txt"
-xcopy /r /y "PLM.dll" "%Integration%\Resources\Proe\PLM.dll"
-xcopy /r /y "PLM64.dll" "%Integration%\Resources\Proe\PLM64.dll"
+echo f|xcopy /r /y "Kingdee.PLM.Integration.Setup.Creo.dll" "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Creo.dll"
+echo f|xcopy /r /y "Intgration.Common.dll" "%Integration%\KDSetup\Dll\Intgration.Common.dll"
+echo f|xcopy /r /y "Kingdee.PLM.Integration.Client.Proe.dll" "%Integration%\Resources\Common\Dll\Kingdee.PLM.Integration.Client.Proe.dll"
+echo f|xcopy /r /y "Intgration.Common.dll" "%Integration%\Resources\Common\Dll\Intgration.Common.dll"
+echo f|xcopy /r /r /y "Message.txt" "%Integration%\Resources\Proe\Text\chinese_cn\Message.txt"
+echo f|xcopy /r /y "PLM.dll" "%Integration%\Resources\Proe\PLM.dll"
+echo f|xcopy /r /y "PLM64.dll" "%Integration%\Resources\Proe\PLM64.dll"
 
 
 echo 插件部署完成
