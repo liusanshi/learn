@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Creo2PDF.cs" />
     <Compile Include="CreoSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -70,6 +71,12 @@
   <ItemGroup>
     <None Include="pubilc\win7-client.bat" />
     <None Include="pubilc\部署.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Intgration.Common\Intgration.Common.csproj">
+      <Project>{6da42bf7-e244-46c3-8825-19b96cec0bf4}</Project>
+      <Name>Intgration.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

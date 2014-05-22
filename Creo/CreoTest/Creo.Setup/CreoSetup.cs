@@ -8,6 +8,8 @@ using Microsoft.Win32;
 
 using Kingdee.PLM.Integration.Setup.Abstract;
 using Kingdee.PLM.Integration.Setup.Common;
+using System.Security.AccessControl;
+using Intgration.Common.win;
 
 namespace Creo.Setup
 {
@@ -126,6 +128,7 @@ namespace Creo.Setup
                 return false;
             }
         }
+
         private void CopyFile()
         {
             string str = string.Format("{0}\\{1}\\", this.SourceDefaultDir, this.DirName);
@@ -156,8 +159,33 @@ namespace Creo.Setup
                 CommonBase.CopyFile(str2 + "IntegrationLogin.exe", "c:\\WINDOWS\\IntegrationLogin.exe");
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe.config"))
                 CommonBase.CopyFile(str2 + "IntegrationLogin.exe.config", "c:\\WINDOWS\\IntegrationLogin.exe.config");
+
+            //给文件、文件夹设置权限
+            //system32\LoginSetting.ini
+            //system32\proegm.txt
+            //system32\Login.Html
+            //%ALLUSERSPROFILE%\PLM\LoginSetting.ini
+            //c:\windows\temp\plmpdf
+            foreach (var item in DealFiles())
+            {
+                AccessControl.FileInfoAccessControl(item);
+            }
+            
             this.CopyMenuFile();
         }
+
+        private IEnumerable<string> DealFiles()
+        {
+            string system32path = CommonBase.GetSystemPath().TrimEnd('\\', '/');
+            string system64path = CommonBase.GetSystem64Path().TrimEnd('\\', '/');
+            string allusers = CommonBase.GetAllUsersDocumentPath().TrimEnd('\\', '/');
+            yield return Path.Combine(system32path, "LoginSetting.ini");
+            yield return Path.Combine(system32path, "proegm.txt");
+            yield return Path.Combine(system32path, "Login.html");
+            yield return Path.Combine(system64path, "LoginSetting.ini");
+            yield return Path.Combine(allusers, "LoginSetting.ini");
+        }
+
         private void CopyMenuFile()
         {
             //string systemLanguageID = plm.kingdee.com.MutiLanguageConvert.GetSystemLanguageID();
@@ -243,7 +271,7 @@ namespace Creo.Setup
             string tagfile5 = this.GetProeCommonFilesLocationPathX64() + "\\text\\protk.dat";
             CommonBase.DeleteFileNoException(tagfile5);
         }
-        
+
         private void WriteDateFile()
         {
             string proeSetupPath = this.GetProeSetupPath();
@@ -439,7 +467,7 @@ namespace Creo.Setup
         {
             return true;
         }
-        public CheckEnviromentStateMessage CheckEnviroment()
+        public virtual CheckEnviromentStateMessage CheckEnviroment()
         {
             string text = this.CheckMain();
             CheckEnviromentStateMessage result;
@@ -460,7 +488,7 @@ namespace Creo.Setup
             }
             return result;
         }
-        public CheckEnviromentStateMessage CheckRemoveEnviroment()
+        public virtual CheckEnviromentStateMessage CheckRemoveEnviroment()
         {
             string text = this.CheckRemoveMain();
             CheckEnviromentStateMessage result;

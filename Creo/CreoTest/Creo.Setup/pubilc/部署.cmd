@@ -36,9 +36,8 @@ if not exist "%PLMPath%\Integration_back.config.xml" (
 ::copy /y "ZSKIntegration.js" "%PLMPath%\Javascript\Integration\ZSKIntegration.js"
 
 ModifyConfig.exe "%PLMPath%\Integration.config.xml" IntegrationConfiguration/appSettings update PROE "Creo.Server.CreoOperate, Creo.Server"
+ModifyConfig.exe "%PLMPath%\web.config" configuration/appSettings add Multi-Configuration true
 
-::ModifyConfig.exe "%PLMPath%\Document\ElectronIntegration.aspx" IntegrationConfiguration/appSettings replace "var isimport = false;" "if(!bomtips()) {return false;};var isimport = false;"
-::ModifyConfig.exe "%PLMPath%\Document\Class\Document.js" IntegrationConfiguration/appSettings append "/***DocumentDownload-SetFileWriteAttributes(LocalFileName)***/" ";function DocumentDownload(FtpFileName, LocalFileName) {if (!CheckFtp()) return false;if (FtpFileName == \"\" || LocalFileName == \"\") return false;result = fileControler.Controler.DownloadFile(FtpFileName, LocalFileName);/***DocumentDownload-SetFileWriteAttributes(LocalFileName)***/SetFileWriteAttributes(LocalFileName);}"
 
 echo 服务器部署完成
 echo.
@@ -47,8 +46,11 @@ echo 开始插件部署
 
 set Integration=%PLMPath%\..\Integration\Integration Setup
 
-::copy /y "Kingdee.PLM.Integration.Setup.Zuken.dll" "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Zuken.dll"
+xcopy /r /y "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" "%Integration%\KDSetup\Kingdee.PLM.Integration.Setup.Proe.dll"
+attrib -r "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" && del "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll"
+
 xcopy /r /y "Kingdee.PLM.Integration.Setup.Creo.dll" "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Creo.dll"
+xcopy /r /y "Intgration.Common.dll" "%Integration%\KDSetup\Dll\Intgration.Common.dll"
 xcopy /r /y "Kingdee.PLM.Integration.Client.Proe.dll" "%Integration%\Resources\Common\Dll\Kingdee.PLM.Integration.Client.Proe.dll"
 xcopy /r /y "Intgration.Common.dll" "%Integration%\Resources\Common\Dll\Intgration.Common.dll"
 xcopy /r /r /y "Message.txt" "%Integration%\Resources\Proe\Text\chinese_cn\Message.txt"

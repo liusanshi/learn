@@ -11,6 +11,9 @@ using System.Diagnostics;
 using Intgration.Common;
 using Intgration.Common.win;
 using Creo.Client;
+using System.Security.AccessControl;
+using System.IO;
+using Intgration.Common.Utility;
 
 namespace CreoTest
 {
@@ -24,11 +27,17 @@ namespace CreoTest
         static void Main(string[] args)
         {
 
-            var regk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC");
-            Console.WriteLine(regk == null);
+            Console.WriteLine(OSHelp.IsVistaAndSubsequentVersion);
+            Console.WriteLine(OSHelp.IsWin7);
 
-            CreoClient creo = new CreoClient();
-            var aa = creo.GetBom();
+            AccessControl.FileInfoAccessControl(@"c:\111.txt");
+            AccessControl.DirectoryInfoAccessControl(@"c:\111");
+
+            //var regk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC");
+            //Console.WriteLine(regk == null);
+
+            //CreoClient creo = new CreoClient();
+            //var aa = creo.GetBom();
 
             if (UACHelp.IsRunAsAdmin())
             {
@@ -48,7 +57,7 @@ namespace CreoTest
             //string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\ptc\\output.txt";
             //DocumentProperty docprop1 = DocumentProperty.LoadXml(path, Encoding.Default);
             //Console.WriteLine(docprop1.Count);
-            
+
             //CreoClient cc = new CreoClient();
             //Console.WriteLine(cc.GetCurrentFileName());
             //Console.WriteLine(cc.GetCurrentFilePath());

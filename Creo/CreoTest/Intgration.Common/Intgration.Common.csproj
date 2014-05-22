@@ -54,10 +54,13 @@
     <Compile Include="Template\TemplateEngine.cs" />
     <Compile Include="Template\TemplVirtualPathProvider.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="Utility\FileAndDirectoryManager.cs" />
     <Compile Include="Utility\FileHashHelper.cs" />
     <Compile Include="Utility\IniHelper.cs" />
     <Compile Include="Utility\Security.cs" />
     <Compile Include="win\NativeMethods.cs" />
+    <Compile Include="win\AccessControl.cs" />
+    <Compile Include="win\OSHelp.cs" />
     <Compile Include="win\UACHelp.cs" />
     <Compile Include="WRegisterTool.cs" />
   </ItemGroup>
