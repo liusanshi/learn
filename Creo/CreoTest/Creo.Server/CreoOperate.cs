@@ -22,6 +22,8 @@ namespace Creo.Server
         /// <param name="server"></param>
         protected override void ImportValidator(ValidateServer server)
         {
+            BOMHelp.Write(server.Context.PropertyStore, _.MultiConfiguration, base.SupportMultiConfiguration);
+
             server.RegisterValidator(new ValidateOption());
             server.RegisterValidator(new ValidateDocName(true));
             server.RegisterValidator(new ValidateDrawingType(base.IntegType));
@@ -53,6 +55,8 @@ namespace Creo.Server
         /// <param name="server"></param>
         protected override void CheckInValidator(ValidateServer server)
         {
+            BOMHelp.Write(server.Context.PropertyStore, _.MultiConfiguration, base.SupportMultiConfiguration);
+
             server.RegisterValidator(new ValidateRootExists(base.IndexFields));
             server.RegisterValidator(new ValidateDocName(true));
             server.RegisterValidator(new ValidateDrawingType(base.IntegType));
