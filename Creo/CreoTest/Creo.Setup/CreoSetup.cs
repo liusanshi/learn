@@ -160,6 +160,12 @@ namespace Creo.Setup
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe.config"))
                 CommonBase.CopyFile(str2 + "IntegrationLogin.exe.config", "c:\\WINDOWS\\IntegrationLogin.exe.config");
 
+            try
+            {
+                string windowsPath = CommonBase.GetWindowsPath();
+                CommonBase.DeleteFile(windowsPath + "\\PlmConfig.dop");//先将之前有的删除掉
+            }
+            catch { } //忽略错误
             //给文件、文件夹设置权限
             //system32\LoginSetting.ini
             //system32\proegm.txt

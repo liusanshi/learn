@@ -36,7 +36,7 @@ namespace Creo.Server
             //验证删除
             server.RegisterValidator(new ValidateDeleteDoc(this.dicDeleteDoc, (DocumentVersion docver, DocStruct doc) => BOMHelp.IsEquals(BOMHelp.GetFileNameNoVersion(docver.FileName), BOMHelp.GetFileNameNoVersion(doc.FileName))));
             //验证删除参数
-            server.RegisterValidator(new ValidateDocConfig(base.IndexFields));
+            server.RegisterValidator(new ValidateCreoConfig(base.IndexFields));
             //验证物料是否已经被使用
             server.RegisterValidator(new ValidateCanUseMaterial());
 
@@ -77,9 +77,9 @@ namespace Creo.Server
             //base.CheckInValidator(server);            
             Type typeFromHandle = typeof(ValidateIsNewMaterial);
             //验证删除参数
-            server.InsertBefore(typeFromHandle, new ValidateDocConfig(base.IndexFields));
+            server.InsertBefore(typeFromHandle, new ValidateCreoConfig(base.IndexFields));
             //是否有删除配置
-            server.InsertBefore(typeFromHandle, new ValidateDocConfigDelete());
+            //server.InsertBefore(typeFromHandle, new ValidateDocConfigDelete());
             //验证物料是否已经被使用
             server.RegisterValidator(new ValidateCanUseMaterial());
             //var empty = new ValidateEmpty();
@@ -87,7 +87,8 @@ namespace Creo.Server
             //server.Replace(typeof(ValidateStandardParts), empty);
             //server.Replace(typeof(ValidateStandardPartsState), empty);
             //server.Replace(typeof(ValidateStandardPartsMaterialRepeat), empty);
-            //server.Replace(typeof(ValidateStandardPartsDelete), empty);
+            // 验证删除的关系
+            server.RegisterValidator(new ValidateStandardPartsDelete(dicDeleteSTDRelation));
         }
 
         /// <summary>
