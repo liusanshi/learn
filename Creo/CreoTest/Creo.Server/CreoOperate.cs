@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Proway.PLM.Document;
 using Proway.Framework;
 using Proway.PLM.Document.Validate;
+using System.Collections;
 
 namespace Creo.Server
 {
@@ -22,7 +23,7 @@ namespace Creo.Server
         /// <param name="server"></param>
         protected override void ImportValidator(ValidateServer server)
         {
-            BOMHelp.Write(server.Context.PropertyStore, _.MultiConfiguration, base.SupportMultiConfiguration);
+            server.Context.ExtendProperty[_.MultiConfiguration] = SupportMultiConfiguration;
 
             server.RegisterValidator(new ValidateOption());
             server.RegisterValidator(new ValidateDocName(true));
@@ -55,7 +56,7 @@ namespace Creo.Server
         /// <param name="server"></param>
         protected override void CheckInValidator(ValidateServer server)
         {
-            BOMHelp.Write(server.Context.PropertyStore, _.MultiConfiguration, base.SupportMultiConfiguration);
+            server.Context.ExtendProperty[_.MultiConfiguration] = SupportMultiConfiguration;
 
             server.RegisterValidator(new ValidateRootExists(base.IndexFields));
             server.RegisterValidator(new ValidateDocName(true));
@@ -93,18 +94,6 @@ namespace Creo.Server
             //server.Replace(typeof(ValidateStandardPartsMaterialRepeat), empty);
             // 验证删除的关系
             server.RegisterValidator(new ValidateStandardPartsDelete(dicDeleteSTDRelation));
-        }
-
-        /// <summary>
-        /// 写日志
-        /// </summary>
-        /// <param name="msg"></param>
-        [Conditional("DEBUG")]
-        void TraceWriteLine(string msg)
-        {
-#if DEBUG
-      Proway.Framework.Core.Log.Info(msg);
-#endif
         }
     }
 }
