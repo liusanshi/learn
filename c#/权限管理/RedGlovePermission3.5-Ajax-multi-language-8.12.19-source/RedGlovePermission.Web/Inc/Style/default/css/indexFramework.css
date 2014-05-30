@@ -1,0 +1,168 @@
+﻿*{margin:0;padding:0; font-size:12px;}
+html,body{
+	font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	background-color: #c3daf9;
+	height:100%;
+	overflow:hidden;
+}
+
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,p,blockquote,th,td
+{
+	margin:0px;
+	padding: 0px;
+ }
+img,body,html
+{
+	margin: 0px;
+	border: 0px;
+}
+
+#topdiv
+{
+	height:60px; 
+	width:100%; 
+	margin-bottom:3px;
+	margin-bottom:5px!important;/* FireFox */ 
+}
+*html #topdiv{height:60px; width:100%; margin-bottom:2px} /* ie6 fixed */ 
+
+#leftdiv
+ {
+ 	background-color:#fff;
+ 	margin-left:5px;
+ 	margin-left:3px!important;/* FireFox */ 
+ 	border:1px solid #99bbe8;
+ 	width: 180px;
+ 	overflow:auto;
+ }
+ 
+*html #leftdiv
+ {
+ 	background-color:#fff;
+ 	margin-left:3px;/*  ie6 fixed */ 
+ 	border:1px solid #99bbe8;
+ 	width: 180px;
+ 	overflow:auto;
+ }
+
+#splitdiv
+{
+	background-color: #c3daf9; 
+	width:5px;
+	position:relative; 
+	cursor:pointer;
+}
+
+#rightdiv{background-color: #fff;border:1px solid #99bbe8;}
+
+#splitdiv p {
+  position:static;
+  +position:absolute;
+  top:50%;
+  vertical-align:middle;
+  margin:0px;
+  padding:0p;
+}
+#splitdiv img {
+  position:static;
+  +position:relative;
+  top:-50%;
+  vertical-align:middle
+}
+
+
+.header{
+	background:#1E4176 url(../ui/hd-bg.gif) repeat-x scroll 0pt;
+	border:0pt none;
+	color:#FFF;	
+	margin:0;
+	height:32px;
+}
+
+.gamemessage{margin-left:30px; line-height:23px; font-weight:bold;}
+
+.headerCss{cursor:hand;cursor:pointer;}
+
+.sitename {font-size:14px; line-height:31px; padding:0 5px; font-weight:bold; float:left;}
+
+.mainbutton {float:right; margin-right:10px; margin-top:0px;}
+.ico{ float:left; margin-left:10px;margin-top:5px;}
+.text{ float:left; font-weight:bold; padding-top:3px; padding-left:3px;margin-top:5px;}
+.toplist{ float:left; padding-left:10px; margin-right:10px; margin-top:2px;}
+.mainlink:link { color:#ffffff;text-decoration:none; }
+.mainlink:visited { color:#fff;text-decoration:none; }
+.mainlink:visited:hover { color:#fff;text-decoration:underline; }
+.mainlink:hover { color:#ff3300;text-decoration:underline; }
+.mainlink:active { color:#fff;text-decoration:underline; }
+
+.x-toolbar{border-left: 0 solid #a9bfd3;
+	border-right: 0 solid #a9bfd3;
+	border-top: 0 solid #a9bfd3;
+	border-bottom: 1px solid #a9bfd3;
+	display:block;	padding:2px;background:#d0def0 url('../ui/bg.gif') repeat-x left top;
+	position:relative;	
+	zoom:1; 	
+	height:24px;
+}
+
+.welcome
+{
+	float:left;
+	color:#ff0000;
+	line-height:24px;
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.Splitterheader
+{
+	 overflow:hidden;
+	 zoom:1;
+	 color:#15428b;
+	 font:bold 11px tahoma,arial,verdana,sans-serif;
+	 padding-top:5px;
+	 padding-right:3px;
+	 padding-bottom:4px;
+	 padding-left:5px;
+	 border-bottom:1px solid #99bbe8;
+	 line-height:15px;
+	 background:transparent url(../ui/white-top-bottom.gif) repeat-x 0 -1px;
+}
+
+.SplitterPane
+{	 
+	 background:#fff;
+}
+
+.Childbg{background-color: #c3daf9;  padding:5px; margin-bottom:5px;}
+.spbg
+{
+	background-color: #c3daf9;  
+	margin: 0px;
+}
+	
+.DetailsPane
+{
+  border: 1px solid #99bbe8;
+  background:#fff;
+}
+
+.ActiveSplitterBar
+{
+  background-color: #99bbe8;  
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=40); 
+  opacity: 0.4;
+}
+
+.HorizontalSplitterBar
+{
+  background: url(../ui/splitter_horBg.gif); 
+}
+
+.CollapsedHorizontalSplitterBar
+{
+  background: url(../ui/splitter_horBg.gif); 
+  border: 1px solid #99bbe8;
+  border-right-width: 0px;
+}

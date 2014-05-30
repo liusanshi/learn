@@ -1,0 +1,87 @@
+﻿/*GridView的CSS样式*/
+.Grid 
+{ 
+  /*border: 1px solid ##D0D0D0; */
+  border: 1px solid #fff;
+  background-color: #FFFFFF; 
+  cursor: pointer;
+}
+/*页眉*/
+.HeadingCell 
+{
+  font-family: verdana; 
+  font-size: 11px; 
+  height:13px;
+}
+.HeadingCell th
+{   
+  border-right: 1px solid #fff; 
+  border-bottom: 1px solid #fff; 
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  background-color:#1C3F80;
+  padding:5px;
+  color: #ffffff;
+  font-weight:normal; 
+}
+.HeadingCell .t1
+{   
+  border-right: 1px solid #fff; 
+  border-bottom: 1px solid #fff; 
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  background:url('../ui/gr_bg1.jpg') repeat;
+  padding:5px;
+  
+}
+
+/*奇數行*/
+.Row 
+{
+  background-color: #E8F3FF; 
+  cursor: default;
+  font-family: verdana; 
+  font-size: 10px; 
+  cursor: default;
+}
+.Row td
+{
+  border-right: 1px solid #fff; 
+  border-bottom: 1px solid #fff; 
+  padding :5px; 
+}
+
+/*偶數行*/
+.AlternatingRow
+{
+  padding:5px;
+  cursor: default;
+  background-color: #EFEFEF;  
+  font-family: verdana; 
+  font-size: 10px; 
+  cursor: default;
+}
+
+.AlternatingRow td
+{
+  border-right: 1px solid #fff; 
+  border-bottom: 1px solid #fff; 
+  padding :5px; 
+}
+
+/*DataGrid最后一行:文中并未涉及*/
+.GridFooter
+{
+  cursor: default; 
+  padding: 5px;
+  color:#ff3300;
+  font-weight:normal; 
+  font-size: 12px;
+  height:24px;
+  line-height:24px;
+  text-align:center;
+}
+.GridFooter td
+{
+	border: 0px solid #fff; 
+}

@@ -1,0 +1,20 @@
+﻿body,td,th {
+	font-size: 12px;
+}
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.inpubbox
+{
+	border: 1px solid #88bad3;
+	height: 22px;
+}
+.regTitle
+{
+	font-size:24px;
+	padding-left:30px;
+	font-weight:bold;	
+}

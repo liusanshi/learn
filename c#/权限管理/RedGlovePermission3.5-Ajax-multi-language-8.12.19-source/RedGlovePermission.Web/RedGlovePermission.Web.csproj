@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B442D7AD-0788-4979-8D05-571E9F39B3B6}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RedGlovePermission.Web</RootNamespace>
+    <AssemblyName>RedGlovePermission.Web</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControls, Version=1.0.3216.19859, Culture=neutral, PublicKeyToken=b85c9621ef7c3305, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\AjaxControls.dll</HintPath>
+    </Reference>
+    <Reference Include="AspNetPager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f1a59997c8ac34b5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\AspNetPager.dll</HintPath>
+    </Reference>
+    <Reference Include="RedGlove.Core.Languages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93c257ce37523c5e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\RedGlove.Core.Languages.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Admin\ChangePassword.aspx" />
+    <Content Include="Admin\Frameset\Default.aspx" />
+    <Content Include="Admin\Frameset\Welcome.aspx" />
+    <Content Include="Admin\Login.aspx" />
+    <Content Include="Admin\Logout.aspx" />
+    <Content Include="Admin\Modubles\Demo\GeneralControl.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\AuthorityPage.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\ConfigPage.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\RoleAuthorizedPage.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\GroupsPage.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\ModulesPage.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\ModuleTypePage.aspx" />
+    <Content Include="Admin\Modubles\SysConfig\RolesPage.aspx" />
+    <Content Include="Admin\Modubles\Users\ListUsers.aspx" />
+    <Content Include="Admin\Modubles\Users\ViewUserPage.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Error.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Inc\Script\killMouse.js" />
+    <Content Include="Inc\Script\pub.js" />
+    <Content Include="Inc\Style\default\css\GridView.css" />
+    <Content Include="Inc\Style\default\css\indexControl.css" />
+    <Content Include="Inc\Style\default\css\indexFramework.css" />
+    <Content Include="Inc\Style\default\ico\accept.png" />
+    <Content Include="Inc\Style\default\ico\add.png" />
+    <Content Include="Inc\Style\default\ico\arrow_join.png" />
+    <Content Include="Inc\Style\default\ico\arrow_redo.png" />
+    <Content Include="Inc\Style\default\ico\award_star_add.png" />
+    <Content Include="Inc\Style\default\ico\delete.png" />
+    <Content Include="Inc\Style\default\ico\edit.png" />
+    <Content Include="Inc\Style\default\ico\group_add.png" />
+    <Content Include="Inc\Style\default\ico\home.gif" />
+    <Content Include="Inc\Style\default\ico\key.png" />
+    <Content Include="Inc\Style\default\ico\shield_go.png" />
+    <Content Include="Inc\Style\default\ico\star.png" />
+    <Content Include="Inc\Style\default\ico\user.png" />
+    <Content Include="Inc\Style\default\ico\user_add.png" />
+    <Content Include="Inc\Style\default\ui\btn_login.gif" />
+    <Content Include="Inc\Style\default\ui\login_bg.gif" />
+    <Content Include="Inc\Style\default\ui\logo.gif" />
+    <Content Include="Inc\Style\default\ui\asc.gif" />
+    <Content Include="Inc\Style\default\ui\bg.gif" />
+    <Content Include="Inc\Style\default\ui\bg1.gif" />
+    <Content Include="Inc\Style\default\ui\close1.gif" />
+    <Content Include="Inc\Style\default\ui\close1.jpg" />
+    <Content Include="Inc\Style\default\ui\desc.gif" />
+    <Content Include="Inc\Style\default\ui\gr_bg.jpg" />
+    <Content Include="Inc\Style\default\ui\gr_bg1.jpg" />
+    <Content Include="Inc\Style\default\ui\hd-bg.gif" />
+    <Content Include="Inc\Style\default\ui\Searchbtnbg.jpg" />
+    <Content Include="Inc\Style\default\ui\Searchico.jpg" />
+    <Content Include="Inc\Style\default\ui\selector.gif" />
+    <Content Include="Inc\Style\default\ui\splitter_horBg.gif" />
+    <Content Include="Inc\Style\default\ui\splitter_horCol.gif" />
+    <Content Include="Inc\Style\default\ui\splitter_horColHover.gif" />
+    <Content Include="Inc\Style\default\ui\splitter_horExp.gif" />
+    <Content Include="Inc\Style\default\ui\splitter_horExpHover.gif" />
+    <Content Include="Inc\Style\default\ui\white-top-bottom.gif" />
+    <Content Include="Inc\Style\Stylesheet1.css" />
+    <Content Include="Inc\Style\white\css\GridView.css" />
+    <Content Include="Inc\Style\white\css\indexControl.css" />
+    <Content Include="Inc\Style\white\css\indexFramework.css" />
+    <Content Include="Inc\Style\white\ico\accept.png" />
+    <Content Include="Inc\Style\white\ico\add.png" />
+    <Content Include="Inc\Style\white\ico\arrow_join.png" />
+    <Content Include="Inc\Style\white\ico\arrow_redo.png" />
+    <Content Include="Inc\Style\white\ico\award_star_add.png" />
+    <Content Include="Inc\Style\white\ico\delete.png" />
+    <Content Include="Inc\Style\white\ico\edit.png" />
+    <Content Include="Inc\Style\white\ico\group_add.png" />
+    <Content Include="Inc\Style\white\ico\home.gif" />
+    <Content Include="Inc\Style\white\ico\key.png" />
+    <Content Include="Inc\Style\white\ico\shield_go.png" />
+    <Content Include="Inc\Style\white\ico\star.png" />
+    <Content Include="Inc\Style\white\ico\user.png" />
+    <Content Include="Inc\Style\white\ico\user_add.png" />
+    <Content Include="Inc\Style\white\ui\asc.gif" />
+    <Content Include="Inc\Style\white\ui\bg.gif" />
+    <Content Include="Inc\Style\white\ui\bg1.gif" />
+    <Content Include="Inc\Style\white\ui\btn_login.gif" />
+    <Content Include="Inc\Style\white\ui\close1.gif" />
+    <Content Include="Inc\Style\white\ui\close1.jpg" />
+    <Content Include="Inc\Style\white\ui\desc.gif" />
+    <Content Include="Inc\Style\white\ui\gr_bg.jpg" />
+    <Content Include="Inc\Style\white\ui\gr_bg1.jpg" />
+    <Content Include="Inc\Style\white\ui\hd-bg.gif" />
+    <Content Include="Inc\Style\white\ui\login_bg.gif" />
+    <Content Include="Inc\Style\white\ui\logo.gif" />
+    <Content Include="Inc\Style\white\ui\Searchbtnbg.jpg" />
+    <Content Include="Inc\Style\white\ui\Searchico.jpg" />
+    <Content Include="Inc\Style\white\ui\selector.gif" />
+    <Content Include="Inc\Style\white\ui\splitter_horBg.gif" />
+    <Content Include="Inc\Style\white\ui\splitter_horCol.gif" />
+    <Content Include="Inc\Style\white\ui\splitter_horColHover.gif" />
+    <Content Include="Inc\Style\white\ui\splitter_horExp.gif" />
+    <Content Include="Inc\Style\white\ui\splitter_horExpHover.gif" />
+    <Content Include="Inc\Style\white\ui\white-top-bottom.gif" />
+    <Content Include="Languages\en-us\Resources.xml" />
+    <Content Include="Languages\zh-cn\Resources.xml" />
+    <Content Include="Languages\zh-tw\Resources.xml" />
+    <Content Include="Register.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Frameset\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Frameset\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Frameset\Welcome.aspx.cs">
+      <DependentUpon>Welcome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Frameset\Welcome.aspx.designer.cs">
+      <DependentUpon>Welcome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\Demo\GeneralControl.aspx.cs">
+      <DependentUpon>GeneralControl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\Demo\GeneralControl.aspx.designer.cs">
+      <DependentUpon>GeneralControl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\AuthorityPage.aspx.cs">
+      <DependentUpon>AuthorityPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\AuthorityPage.aspx.designer.cs">
+      <DependentUpon>AuthorityPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\ConfigPage.aspx.cs">
+      <DependentUpon>ConfigPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\ConfigPage.aspx.designer.cs">
+      <DependentUpon>ConfigPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\RoleAuthorizedPage.aspx.cs">
+      <DependentUpon>RoleAuthorizedPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\RoleAuthorizedPage.aspx.designer.cs">
+      <DependentUpon>RoleAuthorizedPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\GroupsPage.aspx.cs">
+      <DependentUpon>GroupsPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\GroupsPage.aspx.designer.cs">
+      <DependentUpon>GroupsPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\ModulesPage.aspx.cs">
+      <DependentUpon>ModulesPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\ModulesPage.aspx.designer.cs">
+      <DependentUpon>ModulesPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\ModuleTypePage.aspx.cs">
+      <DependentUpon>ModuleTypePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\ModuleTypePage.aspx.designer.cs">
+      <DependentUpon>ModuleTypePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\RolesPage.aspx.cs">
+      <DependentUpon>RolesPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\SysConfig\RolesPage.aspx.designer.cs">
+      <DependentUpon>RolesPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\Users\ListUsers.aspx.cs">
+      <DependentUpon>ListUsers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\Users\ListUsers.aspx.designer.cs">
+      <DependentUpon>ListUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Modubles\Users\ViewUserPage.aspx.cs">
+      <DependentUpon>ViewUserPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Modubles\Users\ViewUserPage.aspx.designer.cs">
+      <DependentUpon>ViewUserPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="code\ExceptionSession.cs" />
+    <Compile Include="code\RGP_Tag.cs" />
+    <Compile Include="code\CommonPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="code\SessionBox.cs" />
+    <Compile Include="code\UserSession.cs" />
+    <Compile Include="code\UserHandle.cs" />
+    <Compile Include="Register.aspx.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Register.aspx.designer.cs">
+      <DependentUpon>Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="code\RGP_Value.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RedGlovePermission.BLL\RedGlovePermission.BLL.csproj">
+      <Project>{A883B149-D132-4A0E-BA23-1BCF8AAE61D8}</Project>
+      <Name>RedGlovePermission.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedGlovePermission.Lib\RedGlovePermission.Lib.csproj">
+      <Project>{E4471A1F-E6D5-4C2D-8F94-F4C14B7643B6}</Project>
+      <Name>RedGlovePermission.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RedGlovePermission.Model\RedGlovePermission.Model.csproj">
+      <Project>{E274FF69-C3F4-4C2A-9CF5-C2938C3D4B41}</Project>
+      <Name>RedGlovePermission.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>5280</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

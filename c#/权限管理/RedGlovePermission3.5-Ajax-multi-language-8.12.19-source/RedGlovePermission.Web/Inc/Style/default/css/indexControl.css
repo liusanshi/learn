@@ -1,0 +1,619 @@
+﻿*{margin:0;padding:0; font-size:12px;font-family:Verdana, Geneva, Arial, Helvetica, sans-serif,宋体;}
+/* Main page content
+===================================================================== */
+body
+{
+    margin: 0;
+    background-color: #ffffff;
+    color: #555555;
+    background-repeat: repeat-x;
+    font-family: Tahoma,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    font-family: 宋体;
+    height: 20px;
+}
+#bodyhead {
+	background-image: url(../ui/login_bg.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+	background-color:#000000;
+}
+/*
+div { text-align:left !important; }
+*/
+
+a:link
+{
+    color: #1e4176;
+    text-decoration: none;
+}
+a:visited
+{
+    color: #1e4176;
+    text-decoration: none;
+}
+a:visited:hover
+{
+    color: #1e4176;
+    text-decoration: underline;
+}
+a:hover
+{
+    color: #ff3300;
+    text-decoration: underline;
+}
+a:active
+{
+    color: #1e4176;
+    text-decoration: underline;
+}
+
+/* 顶栏 */
+.topBar
+{
+    height: 24px;
+    background: transparent url(../ui/white-top-bottom.gif) repeat-x 0 -1px;
+    color: #15428b;
+    border-bottom: 1px solid ##D0D0D0;
+    text-align: left;
+}
+
+/* 工具栏 */
+div.toolBar
+{
+    padding-top: 4px;
+    padding-left: 2px;
+    float: left;
+}
+
+/* 工具按钮 */
+.toolBarBtn
+{
+    margin-left: 0px;
+    padding: 0px;
+    border: 0px;
+    cursor: hand;
+    line-height: 25px;
+    background: #d0def0 url( '../ui/bg.gif' ) repeat-x left -5px; /*background:transparent url(../ui/white-top-bottom.gif) repeat-x 0 -5px;*/
+}
+
+.toolBarBtnActive
+{
+    margin-left: 0px;
+    padding: 0px;
+    border: 0px;
+    cursor: hand;
+    font-family: Tahoma,Verdana;
+    font-size: 8pt;
+    cursor: hand;
+    behavior: url(../../inc/Scripts/toolBarBtn.htc); /*filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr=#f7f9fd, EndColorStr=#aab7cc);*/
+}
+.toolBarBtnOver
+{
+    behavior: url(../../inc/Scripts/toolBarBtn.htc);
+    margin-left: 0px;
+    padding: 0px;
+    border: 0px;
+    cursor: hand;
+    font-family: Tahoma,Verdana;
+    font-size: 8pt;
+    cursor: hand;
+}
+.rowdiv{float:left;}
+.rowhight{ line-height:24px;}
+.childtoolbar
+{
+    border-left: 0 solid #a9bfd3;
+    border-right: 0 solid #a9bfd3;
+    border-top: 0 solid #a9bfd3;
+    border-bottom: 1px solid #a9bfd3;
+    display: block;
+    padding-left: 5px;
+    background: #d0def0 url( '../ui/bg.gif' ) repeat-x left top;
+    position: relative;
+    zoom: 1;
+    height: 28px;
+    line-height: 24px;
+    padding-top: 3px;
+}
+.childbtndiv
+{
+    float: left;
+}
+.childtxt
+{
+    float: left;
+    line-height: 25px;
+    font-weight: bold;
+}
+/* 模块名称 */
+div.moduleName
+{
+    float: left;
+    font-size: 12px;
+    color: #15428b;
+    text-align: right;
+    vertical-align: text-bottom;
+    padding-left: 5px;
+    padding-top: 4px;
+}
+
+/* 导航区域 */
+div.navArea
+{
+    width: 180px;
+    overflow: auto;
+    background-color: #fff;
+    border-right: ##D0D0D0 1px solid;
+    float: left;
+}
+
+/* 右侧主区域 */
+div.mainArea
+{
+    padding: 15px;
+    float: right;
+}
+
+/* 横跨主区域 */
+div.crossMainArea
+{
+    width: auto;
+    overflow: auto;
+    float: left;
+}
+
+/* 表格导航栏 */
+div.gridNavbar
+{
+    border-top: #555555 1px solid;
+    padding: 4px;
+    padding-bottom: 5px;
+    text-align: right;
+    float: left;
+    width: 100%;
+    background-color: #eeeeee;
+}
+
+/* 状态栏 */
+div.statusBar
+{
+    border: 0px solid;
+}
+
+/* 输入框 */
+.textBox
+{
+    border: #aaaaaa 1px solid;
+}
+
+/* 滚动区域 */
+div.scrollArea
+{
+    padding: 1px;
+    overflow-y: auto;
+    border: #aaaaaa 1px solid;
+    background-color: #ffffff;
+}
+
+/* 红色粗体 */
+span.redSpanCheck
+{
+    font-weight: bold;
+    color: #990000;
+    width: 14px;
+    text-align: center;
+}
+.redCheck
+{
+    font-weight: bold;
+    color: #990000;
+    border: #aaaaaa 1px solid;
+}
+
+
+.inputbox{ border:1px solid #676767; height:20px; line-height:20px;}
+
+/* 按钮 */
+input.button
+{
+    border: 1px solid #9ebae1;
+    color: #15428b;
+    background: transparent url(../ui/white-top-bottom.gif) repeat-x 0 -1px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 20px;
+}
+*html input.button
+{
+    padding: 1px 0;
+}
+* + html input.button
+{
+    padding: 0;
+}
+
+/* 平面按钮 */
+.planebutton
+{
+    border: 1px solid #D0D0D0;
+    color: #333333;
+    background-color:#C9DBF2;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 20px;
+}
+*html planebutton
+{
+    padding: 1px 0;
+}
+* + html planebutton
+{
+    padding: 0;
+}
+
+
+
+/* 警告消息 */
+div.alert
+{
+    color: #990000;
+    margin: 0px;
+    padding: 5px;
+    padding-bottom: 3px;
+    background-color: #e2e2e2;
+    height: 14px;
+    text-align: left;
+    color: #990000;
+    border: #fdd787 1px solid;
+    background-color: #fcfcd7;
+}
+
+/*单行输入框*/
+.FormBase, .FormFocus, .FormCode, .formnoborder
+{
+    background-color: #fff;
+    padding: 0.4em 0;
+    border: 1px double #ccc;
+}
+.formnoborder
+{
+    background: transparent;
+    border: 1px solid #FFF;
+}
+*html .FormBase, *html .FormFocus, *html .FormCode, *html .formnoborder
+{
+    height: 22px;
+    padding: 0;
+    line-height: 22px;
+}
+* + html .FormBase, * + html .FormFocus, * + html .FormCode, * + html .formnoborder
+{
+    height: 22px;
+    padding: 0;
+    line-height: 22px;
+}
+.FormFocus
+{
+    border: 1px double #9ebae1;
+    background-color: #ffffcd;
+}
+
+/*多行输入框*/
+.multi-FormBase, .multi-FormFocus, .multi-FormCode, .multi-formnoborder
+{
+    background-color: #fff;
+    padding: 0.4em 0;
+    border: 1px double #ccc;
+}
+.multi-formnoborder
+{
+    background: transparent;
+    border: 1px solid #FFF;
+}
+*html .multi-FormBase, *html .multi-FormFocus, *html .multi-FormCode, *html .multi-formnoborder
+{
+    padding: 0;
+    line-height: 22px;
+}
+* + html .multi-FormBase, * + html .multi-FormFocus, * + html .multi-FormCode, * + html .multi-formnoborder
+{
+    padding: 0;
+    line-height: 22px;
+}
+.multi-FormFocus
+{
+    border: 1px double #9ebae1;
+    background-color: #ffffcd;
+}
+
+/*添加对话框*/
+.gv
+{
+    margin: 10px;
+}
+.addbox
+{
+    border: 1px solid #ccc;
+}
+.addbox-title
+{
+    background: #1E4176;
+    font-weight: bold;
+    font-size: 12px;
+    color: #fff;
+    padding: 3px;
+    height: 24;
+}
+.addbox-content
+{
+    padding: 10px;
+    background: #d7e4fd;
+}
+
+/*Modal Popup*/
+.modalBackground
+{
+    background-color: #fff;
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+
+.modalPopup
+{
+    background-color: #ffffdd;
+    border-width: 3px;
+    border-style: solid;
+    border-color: Gray;
+    padding: 3px;
+    width: 250px;
+}
+/*添加列表*/
+.style1
+{
+    width: 140px;
+    background-color: #ffffcd;
+    padding-left: 10px;
+    border-right: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
+}
+.style2
+{
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #E6E6E6;
+}
+.style3
+{
+    /*border-top: 2px solid #E6E6E6;*/
+}
+.msg
+{
+    color: red;
+    font-size: 12px;
+    float: left;
+    margin-left: 10px;
+    margin-top:10px;
+}
+/*用户级别导航*/
+.PopupBox
+{
+    background-color: #fff;
+}
+.PopupBoxClose
+{
+    height: 20px;
+    width: 20px;
+    margin-top: 5px;
+    float: right;
+    background: url(../ui/close1.gif) no-repeat top left;
+}
+.PopupBoxClose01
+{
+    margin-top: 5px;
+    height: 20px;
+    width: 20px;
+    float: right;
+    background: url(../ui/close1.jpg) no-repeat top left;
+}
+
+.SearchBoxtop
+{
+    color: #0c275c;
+    background-color: #abcfe0;
+    height: 22px;
+    padding:3px;
+}
+.toptxt
+{
+    font-weight: bold;
+    line-height: 18px;
+    float: left;
+}
+.SearchInputbox
+{
+    float: left;
+    border: 1px solid #88bad3;
+    background-color: #ffffff;
+    height: 20px;
+}
+.SearchInput
+{
+    height: 18px;
+    padding-left: 23px;
+    line-height: 17px;
+    border: 0px solid #88bad3;
+    background: url(../ui/Searchico.jpg) no-repeat top left;
+}
+.SearchButton
+{
+    border-top: 1px solid #88bad3;
+    border-bottom: 1px solid #88bad3;
+    border-right: 1px solid #88bad3;
+    border-left: 0px solid #88bad3;
+    background: url(../ui/Searchbtnbg.jpg) no-repeat top left;
+    text-align: center;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
+    float: left;
+    width: 54px;
+    color: #226399;
+}
+.SearchBox
+{
+    border: 0px solid #fff;
+}
+.SearchBoxtitle
+{
+    color: #226399;
+    background-color: #daecf6;
+    height: 20px;
+    padding-left: 10px;
+    padding-bottom: 2px;
+    padding-right: 10px;
+    padding-top: 2px;
+    line-height: 18px;
+}
+.SearchContent
+{
+    padding: 5px;
+}
+.SearchContentTitlebox
+{
+    height: 20px;
+    width: 40px;
+    color: #226399;
+    border: 1px solid #abcfe0;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.SearchContentBox
+{
+    margin-top: 10px;
+}
+
+.divlist
+{
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 24px;
+    line-height: 22px;
+    width:80px;
+    overflow:hidden;
+}
+/*搜索框样式*/
+.SInput
+{
+    height: 18px;
+    padding-left: 23px;
+    line-height: 17px;
+    border: 1px solid #88bad3;
+    background: url(../ui/Searchico.jpg) no-repeat top left;
+    background-color: #fff;
+}
+.SButton
+{
+    border-top: 1px solid #88bad3;
+    border-bottom: 1px solid #88bad3;
+    border-right: 1px solid #88bad3;
+    border-left: 1px solid #88bad3;
+    background: url(../ui/Searchbtnbg.jpg) no-repeat top left;
+    text-align: center;
+    font-weight: bold;
+    height: 22px;
+    line-height: 20px;
+    width: 58px;
+    color: #226399;
+}
+
+.tip
+{
+    border: 1px solid #fbe169;
+    background-color: #fffae5;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+/*报表样式*/
+
+.td1
+{
+    background-image: url('../ui/bg1.gif' );
+    text-align: center;
+    width: 90px;
+}
+.td2
+{
+    background-image: url('../ui/bg.gif' );
+}
+.Red
+{
+    color: #FF0000;
+}
+.Green
+{
+    color: #006600;
+}
+.dTable
+{
+    height: 85px; background-color:#CEDDEF; 
+}
+
+.loading
+{
+	position: absolute; 
+	left: 0%; 
+	top: 0%;
+	width: 100%; 
+	height: 100%;
+	background-color:#fff;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+}
+ .Columntitle
+{
+	color: #15428b;
+}
+tr.tr_type1
+{
+	background-color: #FFFFFF;
+	font-size:14px;
+}
+.TitleBG
+{
+	background-color: #d0def0;  /* title row */
+	height:22px;
+	line-height:22px;
+}
+
+.fs{border: 1px dashed #FF9900; margin-left: 10px; margin-right: 10px; padding: 5px;}
+.fsTitle{border: 0px; background-color: #FFFFFF; padding: 5px; }
+
+.addinpubbox{border: 1px dashed #FF9900;margin:5px; width:230px;}
+
+
+.popubbox{border: 1px solid #000;}
+
+/*Modal Popup*/
+.modalBackground
+{
+    background-color: #ccc;
+    filter: alpha(opacity=70);
+    opacity: 0.7;
+}
+
+.RoleTitle
+{
+	padding:3px;
+	background-color:#666600;
+	color:#fff;
+}

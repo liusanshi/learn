@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<root>
+  <!-- 网站配置 -->
+  <resource name=""></resource>
+  <!--
+      前缀说明
+      标题:Title   例 Default_Title_name
+      标签:Lab     例 Default_lab_name
+      消息:Msg     例 Default_lab_submitFailed
+      按钮:Btn     例 Default_Btn_login    
+      
+      &nbsp:1
+      <br/>:2
+      \n:3
+  -->
+
+  <resource name="sitename">RedGlove permission management system</resource>
+  <resource name="ver">Ver 8.12.20</resource>
+
+  <!--公共消息部分-->
+  <resource name="Pub_Msg_add_true">Add succeed.</resource>
+  <resource name="Pub_Msg_add_false">Add operation failure.</resource>
+  <resource name="Pub_Msg_edit_true">Update succeed.</resource>
+  <resource name="Pub_Msg_edit_false">Update operation failure.</resource>
+  <resource name="Pub_Msg_delete_true">Delete succeed.</resource>
+  <resource name="Pub_Msg_delete_false">Delete operation failure.</resource>
+  <resource name="Pub_Msg_confirm">Are you sure you want to delete the record?</resource>
+  <resource name="Pub_Msg_norecord">No record</resource>
+  <resource name="Pub_Msg_Iscaption">Caption has been in existence,change caption and try again.</resource>
+
+  <!--系统错误提示-->
+  <resource name="Pub_Msg_error00">System prompt</resource>
+  <resource name="Pub_Msg_error01">提交数据存在安全隐患，已被系统拦截！</resource>
+  <resource name="Pub_Msg_error02">该帐户在别处登陆，被迫下线！</resource>
+  <resource name="Pub_Msg_error03">您无权限进行此操作！</resource>
+  <resource name="Pub_Msg_error04">登录已被限制，请与管理员联系！</resource>
+  <resource name="Pub_Msg_error05">请不要输入不合格的字符串!</resource>
+
+  <!--公共权限验证消息部分-->
+  <resource name="Pub_Msg_V_1">Input name please.</resource>
+  <resource name="Pub_Msg_V_2">Input caption please.</resource>
+  <resource name="Pub_Msg_V_3">Input order number please.</resource>
+  <resource name="Pub_Msg_V_4">order number must be signless integral.</resource>
+  
+  <!--公共按钮部分-->
+  <resource name="Pub_Btn_add"> Add </resource>
+  <resource name="Pub_Btn_edit"> Edit </resource>
+  <resource name="Pub_Btn_update"> Update </resource>
+  <resource name="Pub_Btn_cancel"> Cancel </resource>
+  <resource name="Pub_Btn_save"> Save </resource>
+  <resource name="Pub_Btn_delete"> Delete </resource>
+  <resource name="Pub_Btn_return"> Return </resource>
+
+  <!--公共链接按钮部分-->
+  <resource name="Pub_Lbtn_add">Add</resource>
+  <resource name="Pub_Lbtn_edit">Edit</resource>
+  <resource name="Pub_Lbtn_update">Update</resource>
+  <resource name="Pub_Lbtn_cancel">Cancel</resource>
+  <resource name="Pub_Lbtn_delete">Delete</resource>
+  <resource name="Pub_Lbtn_view">View</resource>
+
+  <!--公共状态-->
+  <resource name="Pub_State_open">Open</resource>
+  <resource name="Pub_State_close">Closed</resource>
+  <resource name="Pub_State_visible">Visible</resource>
+  <resource name="Pub_State_invisible">InVisible</resource>
+  <resource name="Pub_State_enabled">Enabled</resource>
+  <resource name="Pub_State_disable">Disable</resource>
+
+  <!--分页-->
+  <resource name="Pub_Lab_gy"> </resource>
+  <resource name="Pub_Lab_tjl"> Records</resource>
+  <resource name="Pub_Lab_selecttype">Select Type</resource>
+  <resource name="Pub_Lab_showall">-List All-</resource>
+
+  <!--登录页-->
+  <resource name="Login_Title_name">User Login</resource>
+  <resource name="Login_Lab_item1">Username</resource>
+  <resource name="Login_Lab_item2">Password</resource>
+  <resource name="Login_Lab_item3">Languages</resource>
+  <resource name="Login_Btn_login">   Sign In   </resource>
+  <resource name="Login_Msg_V_1">Input your login name please.</resource>
+  <resource name="Login_Msg_V_2">Input your login password please.</resource>
+  <resource name="Login_Msg_V_3">Input full login message please.</resource>
+  <resource name="Login_Msg_1">login succeed!</resource>
+  <resource name="Login_Msg_2">The username or password error.</resource>
+  <resource name="Login_Msg_3">The user unactivated state!</resource>
+  <resource name="Login_Msg_4">Login time out.</resource>
+
+  <!--框架页-->
+  <resource name="Default_Link_1">Home</resource>
+  <resource name="Default_Link_2">Change Password</resource>
+  <resource name="Default_Link_3">Sign Out</resource>
+  <resource name="Default_Lab_1">Navigation</resource>
+  <resource name="Default_Lab_2">Welcome!</resource>
+
+  <!--密码修改页-->
+  <resource name="ChangePassword_Title_name">Change Password</resource>
+  <resource name="ChangePassword_Lab_1">Old password</resource>
+  <resource name="ChangePassword_Lab_2">New Passowrd</resource>
+  <resource name="ChangePassword_Lab_3">Confirmation password</resource>
+  <resource name="ChangePassword_Btn_1">Update Password</resource>
+  <resource name="ChangePassword_Msg_V_1">Input old password please.</resource>
+  <resource name="ChangePassword_Msg_V_2">Input new password please.</resource>
+  <resource name="ChangePassword_Msg_V_3">Input confirmation new password please.</resource>
+  <resource name="ChangePassword_Msg_V_4">The password and confirmation password are different.3 Please double-check these fields and try again.</resource>
+  <resource name="ChangePassword_Msg_1">The old password is wrong."</resource>
+
+  <!--用户管理页-->
+  <resource name="ListUsers_Title_Name">User management</resource>
+  <resource name="ListUsers_Lab_0">Number</resource>
+  <resource name="ListUsers_Lab_1">UserName</resource>
+  <resource name="ListUsers_Lab_2">Role</resource>
+  <resource name="ListUsers_Lab_3">Group</resource>
+  <resource name="ListUsers_Lab_4">State</resource>
+  <resource name="ListUsers_Lab_5">Create Time</resource>
+  <resource name="ListUsers_Lab_6">Last Login Time</resource>
+  <resource name="ListUsers_Lab_7">Select Type</resource>
+
+  <resource name="ViewUser_Title_Name">User Information</resource>
+  <resource name="ViewUser_Lab_1">Base information</resource>
+
+  <!--样例演示    一般组件控制-->
+  <resource name="GeneralControl_Title_Name">Demo</resource>
+  <resource name="GeneralControl_Lab_1">Authorization</resource>
+  <resource name="GeneralControl_Lab_2">State</resource>
+  
+  <!--系统配置页-->
+  <resource name="ConfigPage_Title_Name">System Configuration </resource>
+  <resource name="ConfigPage_Lab_0">Number</resource>
+  <resource name="ConfigPage_Lab_1">Config item</resource>
+  <resource name="ConfigPage_Lab_2">Config value</resource>
+  <resource name="ConfigPage_Lab_3">Description</resource>
+
+  <!--权限管理页-->
+  <resource name="AuthorityPage_Title_name">Authorization List</resource>
+  <resource name="AuthorityPage_Lab_0">Number</resource>
+  <resource name="AuthorityPage_Lab_1">Name</resource>
+  <resource name="AuthorityPage_Lab_2">Caption</resource>
+  <resource name="AuthorityPage_Lab_3">Description</resource>
+  <resource name="AuthorityPage_Lab_4">Order</resource>
+  
+  <!--分组管理页-->  
+  <resource name="GroupsPage_Title_name">User List</resource>
+  <resource name="GroupsPage_Lab_0">Number</resource>
+  <resource name="GroupsPage_Lab_1">Name</resource>
+  <resource name="GroupsPage_Lab_3">Description</resource>
+  <resource name="GroupsPage_Lab_4">Order</resource>
+
+  <!--模块分类管理页-->
+  <resource name="ModuleTypePage_Title_name">Module Type</resource>
+  <resource name="ModuleTypePage_Lab_0">Number</resource>
+  <resource name="ModuleTypePage_Lab_1">Name</resource>
+  <resource name="ModuleTypePage_Lab_3">Description</resource>
+  <resource name="ModuleTypePage_Lab_4">Order</resource>
+
+  <!--模块管理页-->
+  <resource name="ModulesPage_Title_name">Modules</resource>
+  <resource name="Modules_Lab_0">Number</resource>
+  <resource name="Modules_Lab_1">Name</resource>
+  <resource name="Modules_Lab_2">Caption</resource>
+  <resource name="Modules_Lab_3">Description</resource>
+  <resource name="Modules_Lab_4">Order</resource>
+  <resource name="Modules_Lab_5">ShowMenu</resource>
+  <resource name="Modules_Lab_6">State</resource>
+  <resource name="Modules_Lab_7">Authorization List</resource>
+  <resource name="Modules_Lab_8">URL</resource>
+
+  <!--角色管理页-->
+  <resource name="RolesPage_Title_name">Roles</resource>
+  <resource name="RolesPage_Lab_0">Number</resource>
+  <resource name="RolesPage_Lab_1">Name</resource>
+  <resource name="RolesPage_Lab_3">Description</resource>
+  <resource name="RolesPage_Lab_4">Order</resource>
+  <resource name="RolesPage_Lab_5">Groups</resource>
+
+  <!--角色授权管理页-->
+  <resource name="RoleAuthorizedPage_Title_name">RoleAuthorized</resource>
+  <resource name="RoleAuthorizedPage_Lab_0">Number</resource>
+  <resource name="RoleAuthorizedPage_Lab_1">Module Name</resource>
+  <resource name="RoleAuthorizedPage_Lab_2">Authorization List</resource>
+  <resource name="RoleAuthorizedPage_Btn_saveall">Save All</resource>
+
+  <!--权限-->
+  <resource name="AItem1">Browse</resource>
+  <resource name="AItem2">Add</resource>
+  <resource name="AItem3">Edit</resource>
+  <resource name="AItem4">Delete</resource>
+  <resource name="AItem5">Search</resource>
+  <resource name="AItem6">Verify</resource>
+  <resource name="AItem7">Move</resource>
+  <resource name="AItem8">Print</resource>
+  <resource name="AItem9">DownLoad</resource>
+  <resource name="AItem10">Back</resource>
+  
+  <!--分组-->
+  <resource name="group1">System</resource>
+  <resource name="group2">Management</resource>
+  <resource name="group3">User</resource>
+
+  <!--角色-->
+  <resource name="role1">Administrator</resource>
+  <resource name="role2">Account</resource>
+  <resource name="role3">Member</resource>
+  <resource name="role4">Company user</resource>
+  <resource name="role8">System</resource>
+
+  <!--一级菜单 同步于 模块分类-->
+  <resource name="menu01">Authorization</resource>
+  <resource name="menu02">System Setup</resource>
+  <resource name="menu03">User Management</resource>
+  <resource name="menu04">Example</resource>
+
+  <!--二级菜单 同步于 模块列表-->
+  <resource name="menu0101">Permission List</resource>
+  <resource name="menu0102">User Groups</resource>
+  <resource name="menu0103">Module Type</resource>
+  <resource name="menu0104">Module</resource>
+  <resource name="menu0105">Role Management</resource>
+  <resource name="menu0106">Role Authorization</resource>
+  <resource name="menu0107">Authorization List</resource>
+
+  <resource name="menu0201">Init Setup</resource>
+
+  <resource name="menu0301">Users</resource>
+
+  <resource name="menu0401">Demo</resource>
+</root>

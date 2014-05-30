@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<root>
+  <!-- 网站配置 -->
+  <resource name=""></resource>
+  <!--
+      前缀说明
+      标题:Title   例 Default_Title_name
+      标签:Lab     例 Default_lab_name
+      消息:Msg     例 Default_lab_submitFailed
+      按钮:Btn     例 Default_Btn_login    
+  -->
+
+  <resource name="sitename">RedGlovePermission权限管理系统</resource>
+  <resource name="ver">Ver 8.12.20</resource>
+
+  <!--公共消息部分-->  
+  <resource name="Pub_Msg_add_true">添加成功!</resource>
+  <resource name="Pub_Msg_add_false">添加操作失败!</resource>
+  <resource name="Pub_Msg_update_true">更新成功!</resource>
+  <resource name="Pub_Msg_update_false">更新操作失败!</resource>
+  <resource name="Pub_Msg_del_true">删除成功!</resource>
+  <resource name="Pub_Msg_del_false">删除操作失败!</resource>
+  <resource name="Pub_Msg_confirm">您确认要删除该记录吗?</resource>
+  <resource name="Pub_Msg_norecord">无相关记录</resource>
+  <resource name="Pub_Msg_Iscaption">标识已经存在，请更换后重试!</resource>
+  <resource name="Pub_Msg_Isgroup">分组已经存在，请更换后重试!</resource>
+  <resource name="Pub_Msg_Istype">分类已经存在，请更换后重试!</resource>
+  <resource name="Pub_Msg_IsGroupUser">分组下还有用户存在，不能进行删除操作!</resource>
+  <resource name="Pub_Msg_IsGroupRole">分组下还有角色存在，不能进行删除操作!</resource>
+  <resource name="Pub_Msg_IsMtModule">分类下还存在模块，不能进行删除操作!</resource>
+  <resource name="Pub_Msg_IsRoseUser">角色中还有用户存在，不能进行删除操作!</resource>
+
+  <!--系统错误提示-->
+  <resource name="Pub_Msg_error00">系统提示</resource>
+  <resource name="Pub_Msg_error01">提交数据存在安全隐患，已被系统拦截!</resource>
+  <resource name="Pub_Msg_error02">该帐户在别处登陆，被迫下线!</resource>
+  <resource name="Pub_Msg_error03">您无权限进行此操作!</resource>
+  <resource name="Pub_Msg_error04">登录已被限制，请与管理员联系!</resource>
+  <resource name="Pub_Msg_error05">请不要输入不合格的字符串!</resource>
+
+  <!--公共权限验证消息部分-->
+  <resource name="Pub_Msg_V_1">请输入名称!</resource>
+  <resource name="Pub_Msg_V_2">请输入标识!</resource>
+  <resource name="Pub_Msg_V_3">请输入排序编号!</resource>
+  <resource name="Pub_Msg_V_4">排序编号必须为正整数!</resource>
+
+  <!--公共按钮部分-->
+  <resource name="Pub_Btn_add"> 新增 </resource>
+  <resource name="Pub_Btn_edit"> 编辑 </resource>
+  <resource name="Pub_Btn_update"> 更新 </resource>
+  <resource name="Pub_Btn_del"> 删除 </resource>
+  <resource name="Pub_Btn_save"> 保存 </resource>
+  <resource name="Pub_Btn_cancel"> 取消 </resource>
+  <resource name="Pub_Btn_return"> 返回 </resource>
+  
+  <!--公共链接按钮部分-->
+  <resource name="Pub_Lbtn_add">新增</resource>
+  <resource name="Pub_Lbtn_edit">编辑</resource>
+  <resource name="Pub_Lbtn_update">更新</resource>
+  <resource name="Pub_Lbtn_cancel">取消</resource>
+  <resource name="Pub_Lbtn_delete">删除</resource>
+  <resource name="Pub_Lbtn_view">查看</resource>
+  
+  <!--公共状态-->
+  <resource name="Pub_State_open">开启</resource>
+  <resource name="Pub_State_close">关闭</resource>  
+  <resource name="Pub_State_visible">显示</resource>
+  <resource name="Pub_State_invisible">不显示</resource>
+  <resource name="Pub_State_enabled">允许</resource>
+  <resource name="Pub_State_disable">拒绝</resource>
+  
+  <!--分页-->
+  <resource name="Pub_Lab_gy">共有</resource>
+  <resource name="Pub_Lab_tjl">条记录</resource>
+  <resource name="Pub_Lab_selecttype">选择分类</resource>
+  <resource name="Pub_Lab_showall">-显示全部-</resource>
+
+  <!--登录页-->
+  <resource name="Login_Title_name">用户登录</resource>
+  <resource name="Login_Lab_item1">用户名</resource>
+  <resource name="Login_Lab_item2">密111码</resource>
+  <resource name="Login_Lab_item3">语111言</resource>
+  <resource name="Login_Btn_login">   登   录   </resource>
+  <resource name="Login_Msg_V_1">请输入登录名!</resource>
+  <resource name="Login_Msg_V_2">请输入登录密码!</resource>
+  <resource name="Login_Msg_V_3">请输入完整的登录信息!</resource>
+  <resource name="Login_Msg_1">登录成功!</resource>
+  <resource name="Login_Msg_2">用户或密码错误!</resource>
+  <resource name="Login_Msg_3">用户还未激活,请与管理员联系!</resource>
+  <resource name="Login_Msg_4">操作超时!</resource>
+  
+  <!--框架页-->
+  <resource name="Default_Link_1">主页</resource>
+  <resource name="Default_Link_2">更改密码</resource>
+  <resource name="Default_Link_3">退出系统</resource>
+  <resource name="Default_Lab_1">功能导航</resource>
+  <resource name="Default_Lab_2">欢迎您！</resource>
+ 
+  <!--密码修改页-->
+  <resource name="ChangePassword_Title_name">密码修改</resource>
+  <resource name="ChangePassword_Lab_1">原1111密1111码</resource>
+  <resource name="ChangePassword_Lab_2">新1111密1111码</resource>
+  <resource name="ChangePassword_Lab_3">确认新密码</resource>
+  <resource name="ChangePassword_Btn_1">确定修改</resource>
+  <resource name="ChangePassword_Msg_V_1">请输入原密码!</resource>
+  <resource name="ChangePassword_Msg_V_2">请输入新密码!</resource>
+  <resource name="ChangePassword_Msg_V_3">请输入确认密码!</resource>
+  <resource name="ChangePassword_Msg_V_4">新密码与确认密码不一样!</resource>
+  <resource name="ChangePassword_Msg_1">原密码错误!"</resource>
+  
+  <!--用户管理页-->
+  <resource name="ListUsers_Title_Name">用户管理</resource>  
+  <resource name="ListUsers_Lab_0">编号</resource>
+  <resource name="ListUsers_Lab_1">用户名</resource>
+  <resource name="ListUsers_Lab_2">用户角色</resource>
+  <resource name="ListUsers_Lab_3">用户组</resource>
+  <resource name="ListUsers_Lab_4">状态</resource>
+  <resource name="ListUsers_Lab_5">创建时间</resource>
+  <resource name="ListUsers_Lab_6">最后一次登录时间</resource>
+  <resource name="ListUsers_Lab_7">选择分组</resource>
+
+  <resource name="ViewUser_Title_Name">用户信息</resource>
+  <resource name="ViewUser_Lab_1">基本信息</resource>
+
+  <!--样例演示    一般组件控制-->
+  <resource name="GeneralControl_Title_Name">一般组件控制</resource>
+  <resource name="GeneralControl_Lab_1">权限</resource>
+  <resource name="GeneralControl_Lab_2">是否拥有</resource>
+  
+  <!--系统配置页-->
+  <resource name="ConfigPage_Title_Name">系统配置</resource>
+  <resource name="ConfigPage_Lab_0">编号</resource>
+  <resource name="ConfigPage_Lab_1">配置项</resource>
+  <resource name="ConfigPage_Lab_2">配置值</resource>
+  <resource name="ConfigPage_Lab_3">说明</resource>  
+
+  <!--权限管理页-->
+  <resource name="AuthorityPage_Title_name">权限列表管理</resource>
+  <resource name="AuthorityPage_Lab_0">编号</resource>
+  <resource name="AuthorityPage_Lab_1">名称</resource>
+  <resource name="AuthorityPage_Lab_2">标识</resource>
+  <resource name="AuthorityPage_Lab_3">说明</resource>
+  <resource name="AuthorityPage_Lab_4">排序</resource>
+
+  <!--分组管理页-->
+  <resource name="GroupsPage_Title_name">分组管理</resource>
+  <resource name="GroupsPage_Lab_0">编号</resource>
+  <resource name="GroupsPage_Lab_1">名称</resource>
+  <resource name="GroupsPage_Lab_3">说明</resource>
+  <resource name="GroupsPage_Lab_4">排序</resource>
+  
+  <!--模块分类管理页-->
+  <resource name="ModuleTypePage_Title_name">模块分类管理</resource>
+  <resource name="ModuleTypePage_Lab_0">编号</resource>
+  <resource name="ModuleTypePage_Lab_1">名称</resource>
+  <resource name="ModuleTypePage_Lab_3">说明</resource>
+  <resource name="ModuleTypePage_Lab_4">排序</resource>
+  
+  <!--模块管理页-->
+  <resource name="ModulesPage_Title_name">模块管理</resource>
+  <resource name="Modules_Lab_0">编号</resource>
+  <resource name="Modules_Lab_1">名称</resource>
+  <resource name="Modules_Lab_2">标识</resource>
+  <resource name="Modules_Lab_3">说明</resource>
+  <resource name="Modules_Lab_4">排序</resource>
+  <resource name="Modules_Lab_5">显示到菜单</resource>
+  <resource name="Modules_Lab_6">状态</resource>
+  <resource name="Modules_Lab_7">权限</resource>
+  <resource name="Modules_Lab_8">址址</resource>
+  
+  <!--角色管理页-->
+  <resource name="RolesPage_Title_name">角色管理</resource>
+  <resource name="RolesPage_Lab_0">编号</resource>
+  <resource name="RolesPage_Lab_1">名称</resource>
+  <resource name="RolesPage_Lab_3">说明</resource>
+  <resource name="RolesPage_Lab_4">排序</resource>
+  <resource name="RolesPage_Lab_5">分组</resource>
+
+  <!--角色授权管理页-->
+  <resource name="RoleAuthorizedPage_Title_name">角色授权管理</resource>
+  <resource name="RoleAuthorizedPage_Lab_0">编号</resource>
+  <resource name="RoleAuthorizedPage_Lab_1">模块名称</resource>
+  <resource name="RoleAuthorizedPage_Lab_2">权限列表</resource>
+  <resource name="RoleAuthorizedPage_Btn_saveall">保存全部</resource>
+
+  <!--权限-->
+  <resource name="AItem1">浏览</resource>
+  <resource name="AItem2">新增</resource>
+  <resource name="AItem3">编辑</resource>
+  <resource name="AItem4">删除</resource>
+  <resource name="AItem5">搜索</resource>
+  <resource name="AItem6">审核</resource>
+  <resource name="AItem7">移动</resource>
+  <resource name="AItem8">打印</resource>
+  <resource name="AItem9">下载</resource>
+  <resource name="AItem10">备份</resource>
+  
+  <!--分组-->
+  <resource name="group1">系统管理组</resource>
+  <resource name="group2">管理组</resource>
+  <resource name="group3">用户组</resource>
+
+  <!--角色-->
+  <resource name="role1">超级管理员</resource>
+  <resource name="role2">帐户管理员</resource>
+  <resource name="role3">会员</resource>
+  <resource name="role4">公司员工</resource> 
+  <resource name="role8">系统管理员</resource>
+  
+  <!--一级菜单 同步于 模块分类-->
+  <resource name="menu01">权限配置</resource>   
+  <resource name="menu02">系统配置</resource>  
+  <resource name="menu03">用户管理</resource>  
+  <resource name="menu04">样例演示</resource>
+
+  <!--二级菜单 同步于 模块列表-->
+  <resource name="menu0101">权限列表</resource>
+  <resource name="menu0102">用户组管理</resource>
+  <resource name="menu0103">模块分类</resource>
+  <resource name="menu0104">模块管理</resource>
+  <resource name="menu0105">角色管理</resource>
+  <resource name="menu0106">角色授权</resource>
+  <resource name="menu0107">权限列表</resource>  
+  
+  <resource name="menu0201">系统设定</resource>
+  
+  <resource name="menu0301">会员管理</resource>
+  
+  <resource name="menu0401">一般组件控制</resource>
+
+</root>
