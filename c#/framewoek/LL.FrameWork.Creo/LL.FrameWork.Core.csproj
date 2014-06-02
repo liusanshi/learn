@@ -46,6 +46,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ConstructorReflectionCache.cs" />
+    <Compile Include="Reflection\DelegateConstructorInvoker.cs" />
+    <Compile Include="Reflection\DelegateFieldAccessor.cs" />
+    <Compile Include="Reflection\DelegateMethodInvoker.cs" />
+    <Compile Include="Reflection\DelegatePropertyAccessor.cs" />
     <Compile Include="Reflection\FastReflectionCache.cs" />
     <Compile Include="Reflection\FastReflectionExtensions.cs" />
     <Compile Include="Reflection\FastReflectionFactory.cs" />

@@ -92,13 +92,18 @@ namespace LL.FrameWork.Core.Reflection
 
         static FastReflectionFactory()
         {
-            IProxyBuilder builder = new DefaultProxyBuilder(new ModuleScope(true));
-            generator = new ProxyGenerator(builder);
+            //IProxyBuilder builder = new DefaultProxyBuilder(new ModuleScope(true));
+            //generator = new ProxyGenerator(builder);
 
-            _ConstructorReflectionFactory = new ConstructorReflectionFactory(generator);
-            _MethodReflectionFactory = new MethodReflectionFactory(generator);
-            _FieldReflectionFactory = new FieldReflectionFactory(generator);
-            _ProertyReflectionFactory = new ProertyReflectionFactory(generator);
+            //_ConstructorReflectionFactory = new ConstructorReflectionFactory(generator);
+            //_MethodReflectionFactory = new MethodReflectionFactory(generator);
+            //_FieldReflectionFactory = new FieldReflectionFactory(generator);
+            //_ProertyReflectionFactory = new ProertyReflectionFactory(generator);
+
+            _ConstructorReflectionFactory = new DelegateConstructorReflectionFactory();
+            _MethodReflectionFactory = new DelegateMethodReflectionFactory();
+            _FieldReflectionFactory = new DelegateFieldReflectionFactory();
+            _ProertyReflectionFactory = new DelegateProertyReflectionFactory();
         }
 
         public static void SaveCache()
