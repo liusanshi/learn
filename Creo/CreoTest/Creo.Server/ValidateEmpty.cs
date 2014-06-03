@@ -61,15 +61,8 @@ namespace Creo.Server
                         }
                         if (docConfig == null) //未找到的配置
                         {
-                            if (list2.Count < list.Count)
-                            {
-                                doc.SetDocStateL(false, "red", "{0}：文档配置不允许新增", text);
-                            }
-                            else
-                            {
-                                doc.SetDocStateL(false, "red", "{0}：文档配置名称被修改", text);
-                            }
-                            return false;
+                            doc.CFG_OperateType = EntityOperateType.CreateNewVer;
+                            ValidatorHelp.SetSelfRelationType(doc, RelationOperateType.AddRelation);
                         }
                         else
                         {
