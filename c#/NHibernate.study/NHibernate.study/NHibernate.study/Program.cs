@@ -37,7 +37,7 @@ namespace NHibernate.Study
             var export = new SchemaExport(cfg);
             var sb = new StringBuilder();
             TextWriter output = new StringWriter(sb);
-            var sqlconn =  new SQLiteConnection(connectionString);
+            var sqlconn = new SQLiteConnection(connectionString);
             sqlconn.Open();
             export.Execute(true, true, false, sqlconn, output);
             sqlconn.Close();
@@ -51,16 +51,53 @@ namespace NHibernate.Study
 
                 var cls = new Class();
                 cls.Name = "中一班";
-                cls.Students.Add(new Student() { Name = "张三1", Age = 15 });
-                cls.Students.Add(new Student() { Name = "张三2", Age = 15 });
-                cls.Students.Add(new Student() { Name = "张三3", Age = 15 });
-                cls.Students.Add(new Student() { Name = "张三4", Age = 15 });
-                cls.Students.Add(new Student() { Name = "张三5", Age = 15 });
+
+                cls.AddStudent(new Student() { Name = "张三1", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三2", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三3", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三4", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三5", Age = 15 });
 
                 session.Persist(cls);
 
                 t.Commit();
             }
+
+            Console.WriteLine("读取数据");
+            using (var session = sessionFac.OpenSession())
+            {
+                //var cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                //Console.WriteLine(cls.Name);
+                //foreach (var item in cls.Students)
+                //{
+                //    Console.WriteLine(item.Name);
+                //}
+
+                var stu = session.QueryOver<Student>().Future().FirstOrDefault();
+                Console.WriteLine(stu.Class.Id);
+                Console.WriteLine(stu.Class.Name);
+            }
+
+            Console.WriteLine("修改数据");
+            using (var session = sessionFac.OpenSession())
+            {
+                var t = session.BeginTransaction();
+
+                //Class cls = new Class() { Id = 1, Name = "中三班" };
+                //session.Update(cls);
+
+                var cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                cls.Name = "中三班";
+                cls.Students.RemoveAt(0); //删除没有作用\Cascade.DeleteOrphans 添加这个级联操作之后有效
+                session.Persist(cls);
+
+                t.Commit();
+
+                cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                Console.WriteLine(cls.Name);
+            }
+
+            
             Console.Read();
         }
 
@@ -172,30 +209,51 @@ namespace NHibernate.Study
             ModelMapper mapper = new ModelMapper();
             mapper.Class<Class>(m =>
             {
-                m.Id<UInt32>(c => c.Id, im => { im.Generator(Generators.Native); im.Column("Id"); });
+                m.Id<UInt32>(c => c.Id, im =>
+                {
+                    im.Generator(Generators.Native);
+                    im.Column("Id");
+                });
                 m.Property<string>(c => c.Name, im => im.Column("Name"));
-                //m.Table("t_Class");
+                m.Table("t_Class");
 
                 m.Bag<Student>(c => c.Students, bm =>
                 {
                     bm.BatchSize(45);
+                    bm.Lazy(CollectionLazy.Lazy);
                     //bm.Fetch(CollectionFetchMode.Select);
                     bm.Inverse(true);
-                    bm.Key(km => { km.Column("ClassId"); km.PropertyRef<UInt32>(pg => pg.Id); });
-                    bm.Cascade(Cascade.Persist | Cascade.Remove);
+                    bm.Key(km =>
+                    {
+                        km.Column("ClassId");
+                        //km.PropertyRef<UInt32>(pg => pg.Id);
+                    });
+                    bm.Cascade(Cascade.Persist | Cascade.Remove | Cascade.DeleteOrphans);
                 }, er => er.OneToMany());
             });
 
             mapper.Class<Student>(m =>
             {
-                //m.Table("t_Student");
+                m.Table("t_Student");
                 m.Id<UInt32>(c => c.Id, im => { im.Generator(Generators.Native); im.Column("Id"); });
                 m.Property<string>(c => c.Name);
                 m.Property<Int32>(c => c.Age);
-                m.ManyToOne<Class>(p => p.Class, m2m => { m2m.Column("ClassId"); m2m.PropertyRef("Id"); });
+                //m.Property<Int32>(c => c.ClassId);
+                m.ManyToOne<Class>(p => p.Class, m2m =>
+                {
+                    m2m.Column("ClassId");
+                    m2m.Lazy(LazyRelation.Proxy);
+                    m2m.Class(typeof(Class));
+                    //m2m.Cascade(Cascade.None);
+                    //m2m.PropertyRef("Id");
+                });
             });
 
-            config.AddMapping(mapper.CompileMappingForAllExplicitlyAddedEntities());
+            var hbmmap = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            Console.WriteLine(hbmmap.AsString());
+
+            config.AddMapping(hbmmap);
         }
     }
 }

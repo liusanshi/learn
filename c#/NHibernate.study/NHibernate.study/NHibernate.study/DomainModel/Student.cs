@@ -7,9 +7,10 @@ namespace NHibernate.Study.DomainModel
 {
     public class Student
     {
-        public virtual UInt32 Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual int Age { get; set; }
+        public UInt32 Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        //public int ClassId { get; set; }
         public virtual Class Class { get; set; }
     }
 }

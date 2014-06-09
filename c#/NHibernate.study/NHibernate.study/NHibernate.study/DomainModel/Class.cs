@@ -14,17 +14,17 @@ namespace NHibernate.Study.DomainModel
         public virtual UInt32 Id { get; set; }
         public virtual string Name { get; set; }
 
-        public virtual IList<Student> Students
+        public virtual IList<Student> Students { get;  set; }
+
+        public void AddStudent(Student stu)
         {
-            get
+            if (Students == null)
             {
-                if (mStudents == null) mStudents = new List<Student>();
-                return mStudents;
+                Students = new List<Student>();
             }
-            set 
-            {
-                mStudents = value;
-            }
+            Students.Add(stu);
+            stu.Class = this;
         }
+
     }
 }
