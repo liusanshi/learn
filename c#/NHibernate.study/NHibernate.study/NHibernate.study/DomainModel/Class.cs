@@ -9,10 +9,10 @@ namespace NHibernate.Study.DomainModel
     {
         public Class() { }
 
-        private IList<Student> mStudents;
-
         public virtual UInt32 Id { get; set; }
         public virtual string Name { get; set; }
+
+        public string Slogan { get; set; }
 
         public virtual IList<Student> Students { get;  set; }
 

@@ -51,6 +51,7 @@ namespace NHibernate.Study
 
                 var cls = new Class();
                 cls.Name = "中一班";
+                cls.Slogan = "聚沙成塔，水滴石穿";
 
                 cls.AddStudent(new Student() { Name = "张三1", Age = 15 });
                 cls.AddStudent(new Student() { Name = "张三2", Age = 15 });
@@ -97,6 +98,29 @@ namespace NHibernate.Study
                 Console.WriteLine(cls.Name);
             }
 
+            //查看状态
+            Class cls1;
+            using (var session = sessionFac.OpenSession())
+            {
+                cls1 = session.QueryOver<Class>().Future().FirstOrDefault();
+            }
+            cls1.Name = "中三班111";
+
+            using (var session = sessionFac.OpenSession())
+            {
+                //将托管状态的对象变为 持久状态
+                //session.Merge(cls1);  //存在标识相同的时候 与 SaveOrUpdate 有区别
+                session.SaveOrUpdate(cls1);
+
+                var cls2 = new Class() { Id = 2, Name = "as", Slogan = "aaa" };
+                session.Merge(cls2);
+
+                Console.WriteLine(session.Contains(cls2));
+
+                //session.Lock(cls1, LockMode.None); //将当前的状态记住，后面的修改将刷新到数据库
+                //cls1.Name = "中三班111";
+                session.Flush();
+            }
             
             Console.Read();
         }
@@ -215,6 +239,7 @@ namespace NHibernate.Study
                     im.Column("Id");
                 });
                 m.Property<string>(c => c.Name, im => im.Column("Name"));
+                m.Property<string>(c => c.Slogan);
                 m.Table("t_Class");
 
                 m.Bag<Student>(c => c.Students, bm =>
@@ -228,7 +253,8 @@ namespace NHibernate.Study
                         km.Column("ClassId");
                         //km.PropertyRef<UInt32>(pg => pg.Id);
                     });
-                    bm.Cascade(Cascade.Persist | Cascade.Remove | Cascade.DeleteOrphans);
+                    //bm.Cascade(Cascade.Persist | Cascade.Remove | Cascade.DeleteOrphans);
+                    bm.Cascade(Cascade.Persist | Cascade.Remove);
                 }, er => er.OneToMany());
             });
 
