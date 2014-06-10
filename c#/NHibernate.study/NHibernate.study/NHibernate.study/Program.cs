@@ -26,7 +26,6 @@ namespace NHibernate.Study
 {
     class Program
     {
-
         static string connectionString = "Data Source=myTest.db";
 
         static void Main(string[] args)
@@ -42,62 +41,55 @@ namespace NHibernate.Study
             export.Execute(true, true, false, sqlconn, output);
             sqlconn.Close();
 
-            //Console.WriteLine(sb.ToString());
-
             var sessionFac = cfg.BuildSessionFactory();
+
+            InitData(sessionFac);
+
+            ReadData(sessionFac);
+
+            ModifyData(sessionFac);
+
+            StateTest(sessionFac);
+
+            OtherTest(sessionFac);
+
+            Console.Read();
+        }
+
+        /// <summary>
+        /// 其他测试
+        /// </summary>
+        /// <param name="sessionFac"></param>
+        private static void OtherTest(ISessionFactory sessionFac)
+        {
+            Class cls1;
             using (var session = sessionFac.OpenSession())
             {
-                var t = session.BeginTransaction();
+                //cls1 = session.QueryOver<Class>().Take(1).Future().FirstOrDefault();
+                //NHibernateUtil.Initialize(cls1.Students);
 
-                var cls = new Class();
-                cls.Name = "中一班";
-                cls.Slogan = "聚沙成塔，水滴石穿";
+                cls1 = session.Load<Class>(1u);
+                //NHibernateUtil.Initialize(cls1.Students);
 
-                cls.AddStudent(new Student() { Name = "张三1", Age = 15 });
-                cls.AddStudent(new Student() { Name = "张三2", Age = 15 });
-                cls.AddStudent(new Student() { Name = "张三3", Age = 15 });
-                cls.AddStudent(new Student() { Name = "张三4", Age = 15 });
-                cls.AddStudent(new Student() { Name = "张三5", Age = 15 });
-
-                session.Persist(cls);
-
-                t.Commit();
+                //Console.WriteLine(cls1.Name);
+                //Console.WriteLine(cls1.Students.Count());
             }
 
-            Console.WriteLine("读取数据");
-            using (var session = sessionFac.OpenSession())
+            if (NHibernateUtil.IsPropertyInitialized(cls1, "Students"))
             {
-                //var cls = session.QueryOver<Class>().Future().FirstOrDefault();
-                //Console.WriteLine(cls.Name);
-                //foreach (var item in cls.Students)
-                //{
-                //    Console.WriteLine(item.Name);
-                //}
-
-                var stu = session.QueryOver<Student>().Future().FirstOrDefault();
-                Console.WriteLine(stu.Class.Id);
-                Console.WriteLine(stu.Class.Name);
+                foreach (var item in cls1.Students)
+                {
+                    Console.WriteLine(item.Name);
+                }
             }
+        }
 
-            Console.WriteLine("修改数据");
-            using (var session = sessionFac.OpenSession())
-            {
-                var t = session.BeginTransaction();
-
-                //Class cls = new Class() { Id = 1, Name = "中三班" };
-                //session.Update(cls);
-
-                var cls = session.QueryOver<Class>().Future().FirstOrDefault();
-                cls.Name = "中三班";
-                cls.Students.RemoveAt(0); //删除没有作用\Cascade.DeleteOrphans 添加这个级联操作之后有效
-                session.Persist(cls);
-
-                t.Commit();
-
-                cls = session.QueryOver<Class>().Future().FirstOrDefault();
-                Console.WriteLine(cls.Name);
-            }
-
+        /// <summary>
+        /// 状态测试
+        /// </summary>
+        /// <param name="sessionFac"></param>
+        private static void StateTest(ISessionFactory sessionFac)
+        {
             //查看状态
             Class cls1;
             using (var session = sessionFac.OpenSession())
@@ -121,8 +113,80 @@ namespace NHibernate.Study
                 //cls1.Name = "中三班111";
                 session.Flush();
             }
-            
-            Console.Read();
+        }
+
+        /// <summary>
+        /// 修改数据
+        /// </summary>
+        /// <param name="sessionFac"></param>
+        private static void ModifyData(ISessionFactory sessionFac)
+        {
+            Console.WriteLine("修改数据");
+            using (var session = sessionFac.OpenSession())
+            {
+                var t = session.BeginTransaction();
+
+                //Class cls = new Class() { Id = 1, Name = "中三班" };
+                //session.Update(cls);
+
+                var cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                cls.Name = "中三班";
+                cls.Students.RemoveAt(0); //删除没有作用\Cascade.DeleteOrphans 添加这个级联操作之后有效
+                session.Persist(cls);
+
+                t.Commit();
+
+                cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                Console.WriteLine(cls.Name);
+            }
+        }
+
+        /// <summary>
+        /// 读取数据
+        /// </summary>
+        /// <param name="sessionFac"></param>
+        private static void ReadData(ISessionFactory sessionFac)
+        {
+            Console.WriteLine("读取数据");
+            using (var session = sessionFac.OpenSession())
+            {
+                //var cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                //Console.WriteLine(cls.Name);
+                //foreach (var item in cls.Students)
+                //{
+                //    Console.WriteLine(item.Name);
+                //}
+
+                var stu = session.QueryOver<Student>().Future().FirstOrDefault();
+                Console.WriteLine(stu.Class.Id);
+                Console.WriteLine(stu.Class.Name);
+            }
+        }
+
+        /// <summary>
+        /// 初始化数据
+        /// </summary>
+        /// <param name="sessionFac"></param>
+        private static void InitData(ISessionFactory sessionFac)
+        {
+            using (var session = sessionFac.OpenSession())
+            {
+                var t = session.BeginTransaction();
+
+                var cls = new Class();
+                cls.Name = "中一班";
+                cls.Slogan = "聚沙成塔，水滴石穿";
+
+                cls.AddStudent(new Student() { Name = "张三1", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三2", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三3", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三4", Age = 15 });
+                cls.AddStudent(new Student() { Name = "张三5", Age = 15 });
+
+                session.Persist(cls);
+
+                t.Commit();
+            }
         }
 
         /// <summary>
@@ -176,6 +240,8 @@ namespace NHibernate.Study
             config.CollectionTypeFactory<DefaultCollectionTypeFactory>();
 
             config.HqlQueryTranslator<ASTQueryTranslatorFactory>();
+
+            config.SetProperty(Cfg.Environment.GenerateStatistics, "true");
 
             //config.SessionFactory().Named("SomeName")
             //    .Caching
