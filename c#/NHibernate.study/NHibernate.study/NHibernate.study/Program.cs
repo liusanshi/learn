@@ -19,8 +19,9 @@ using NHibernate.Tool.hbm2ddl;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Study.DomainModel;
 using NHibernate.Util;
-using System.Data.SQLite;
-using System.IO;
+using NHibernate.Mapping.ByCode.Impl;
+//using System.Data.SQLite;
+//using System.IO;
 
 namespace NHibernate.Study
 {
@@ -33,13 +34,14 @@ namespace NHibernate.Study
             Configuration cfg = Config();
             Mapping(cfg);
 
-            var export = new SchemaExport(cfg);
-            var sb = new StringBuilder();
-            TextWriter output = new StringWriter(sb);
-            var sqlconn = new SQLiteConnection(connectionString);
-            sqlconn.Open();
-            export.Execute(true, true, false, sqlconn, output);
-            sqlconn.Close();
+            //var export = new SchemaExport(cfg);
+            //var sb = new StringBuilder();
+            //TextWriter output = new StringWriter(sb);
+            //var sqlconn = new SQLiteConnection(connectionString);
+            //sqlconn.Open();
+            //export.Execute(false, true, false, sqlconn, output);
+            //sqlconn.Close();
+            //new SchemaExport(cfg).Execute(false, true, false);
 
             var sessionFac = cfg.BuildSessionFactory();
 
@@ -62,6 +64,7 @@ namespace NHibernate.Study
         /// <param name="sessionFac"></param>
         private static void OtherTest(ISessionFactory sessionFac)
         {
+            Console.WriteLine("OtherTest");
             Class cls1;
             using (var session = sessionFac.OpenSession())
             {
@@ -90,13 +93,24 @@ namespace NHibernate.Study
         /// <param name="sessionFac"></param>
         private static void StateTest(ISessionFactory sessionFac)
         {
+            Console.WriteLine("+++++++++++++++++++++++查看状态+++++++++++++++++++++++");
             //查看状态
             Class cls1;
             using (var session = sessionFac.OpenSession())
             {
-                cls1 = session.QueryOver<Class>().Future().FirstOrDefault();
+                //cls1 = session.QueryOver<Class>().Future().FirstOrDefault();
+                cls1 = session.Get<Class>(1u);
+                cls1.Name = "中三班----------22";
+                session.Flush();
             }
             cls1.Name = "中三班111";
+
+            using (var session = sessionFac.OpenSession())
+            {
+                //cls1 = session.QueryOver<Class>().Future().FirstOrDefault();
+                Console.WriteLine("第二次查询》》》》》》》》》》》》》");
+                Console.WriteLine(session.Get<Class>(1u).Name);
+            }
 
             using (var session = sessionFac.OpenSession())
             {
@@ -104,14 +118,15 @@ namespace NHibernate.Study
                 //session.Merge(cls1);  //存在标识相同的时候 与 SaveOrUpdate 有区别
                 session.SaveOrUpdate(cls1);
 
-                var cls2 = new Class() { Id = 2, Name = "as", Slogan = "aaa" };
-                session.Merge(cls2);
+                var cls2 = new Class() { Id = 2u, Name = "as", Slogan = "aaa" };
+                session.Merge(cls2); // Merge 会触发 一次load
 
                 Console.WriteLine(session.Contains(cls2));
 
                 //session.Lock(cls1, LockMode.None); //将当前的状态记住，后面的修改将刷新到数据库
                 //cls1.Name = "中三班111";
                 session.Flush();
+                
             }
         }
 
@@ -129,14 +144,14 @@ namespace NHibernate.Study
                 //Class cls = new Class() { Id = 1, Name = "中三班" };
                 //session.Update(cls);
 
-                var cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                var cls = session.Load<Class>(1u);
                 cls.Name = "中三班";
                 cls.Students.RemoveAt(0); //删除没有作用\Cascade.DeleteOrphans 添加这个级联操作之后有效
                 session.Persist(cls);
 
                 t.Commit();
 
-                cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                cls = session.Get<Class>(1u);
                 Console.WriteLine(cls.Name);
             }
         }
@@ -151,13 +166,17 @@ namespace NHibernate.Study
             using (var session = sessionFac.OpenSession())
             {
                 //var cls = session.QueryOver<Class>().Future().FirstOrDefault();
+                var cls1 = session.Load<Class>(1u);
+                Console.WriteLine(cls1.Name);
+
                 //Console.WriteLine(cls.Name);
                 //foreach (var item in cls.Students)
                 //{
                 //    Console.WriteLine(item.Name);
                 //}
 
-                var stu = session.QueryOver<Student>().Future().FirstOrDefault();
+                //var stu = session.QueryOver<Student>().Future().FirstOrDefault();
+                var stu = session.Load<Student>(1u);
                 Console.WriteLine(stu.Class.Id);
                 Console.WriteLine(stu.Class.Name);
             }
@@ -215,7 +234,7 @@ namespace NHibernate.Study
                 db.AutoCommentSql = true;
                 db.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
                 db.MaximumDepthOfOuterJoinFetching = 11;
-                db.SchemaAction = SchemaAutoAction.Validate;
+                db.SchemaAction = SchemaAutoAction.Update;
             });
             config.Cache(c =>
             {
@@ -299,6 +318,7 @@ namespace NHibernate.Study
             ModelMapper mapper = new ModelMapper();
             mapper.Class<Class>(m =>
             {
+                m.Cache(ch => ch.Usage(CacheUsage.ReadWrite));
                 m.Id<UInt32>(c => c.Id, im =>
                 {
                     im.Generator(Generators.Native);
@@ -307,6 +327,8 @@ namespace NHibernate.Study
                 m.Property<string>(c => c.Name, im => im.Column("Name"));
                 m.Property<string>(c => c.Slogan);
                 m.Table("t_Class");
+
+                m.SchemaAction(SchemaAction.Export | SchemaAction.Update);
 
                 m.Bag<Student>(c => c.Students, bm =>
                 {
@@ -326,11 +348,13 @@ namespace NHibernate.Study
 
             mapper.Class<Student>(m =>
             {
+                m.Cache(ch => ch.Usage(CacheUsage.ReadWrite));
                 m.Table("t_Student");
                 m.Id<UInt32>(c => c.Id, im => { im.Generator(Generators.Native); im.Column("Id"); });
                 m.Property<string>(c => c.Name);
                 m.Property<Int32>(c => c.Age);
                 //m.Property<Int32>(c => c.ClassId);
+                m.SchemaAction(SchemaAction.Export | SchemaAction.Update);
                 m.ManyToOne<Class>(p => p.Class, m2m =>
                 {
                     m2m.Column("ClassId");
@@ -346,6 +370,14 @@ namespace NHibernate.Study
             Console.WriteLine(hbmmap.AsString());
 
             config.AddMapping(hbmmap);
+
+            //使用二次缓存
+            //config.EntityCache<Class>(ch =>
+            //{
+            //    ch.Strategy = EntityCacheUsage.ReadWrite;
+            //    ch.RegionName = "asd";
+            //    ch.Collection(c => c.Students, chc => { chc.Strategy = EntityCacheUsage.ReadWrite; chc.RegionName = "asdCollection"; });
+            //});
         }
     }
 }

@@ -139,22 +139,38 @@ namespace Creo.Setup
             {
                 Directory.CreateDirectory(text);
             }
-            string oSBit = CommonBase.GetOSBit();
-            if (oSBit == "64")
+
+            var parametricPath = Path.Combine(GetProeSetupPath(), "bin\\parametric.exe");
+            var pf = OSHelp.GetExcutePlatform(parametricPath);
+            if (pf == Platform.X64)
             {
-                if (Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC") != null)//判断是否32位creo
-                {
-                    CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
-                }
-                else
-                {
-                    CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);
-                }
+                CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);
             }
-            else
+            else if(pf == Platform.X86)
             {
                 CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
             }
+            else
+            {
+                throw new Exception("未发现当前creo所处平台");
+            }
+
+            //string oSBit = CommonBase.GetOSBit();
+            //if (oSBit == "64")
+            //{
+            //    if (Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC") != null)//判断是否32位creo
+            //    {
+            //        CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
+            //    }
+            //    else
+            //    {
+            //        CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);
+            //    }
+            //}
+            //else
+            //{
+            //    CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
+            //}
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe"))
                 CommonBase.CopyFile(str2 + "IntegrationLogin.exe", "c:\\WINDOWS\\IntegrationLogin.exe");
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe.config"))
