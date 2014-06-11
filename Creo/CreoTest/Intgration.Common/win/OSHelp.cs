@@ -45,33 +45,35 @@ namespace Intgration.Common.win
             if (!File.Exists(filePath))
                 throw new ArgumentException(string.Format("file: {0} not found", filePath));
 
-            FileStream stream = File.OpenRead(filePath);
-            //移动到e_lfanew的位置处
-            stream.Seek(0x40 - 4, SeekOrigin.Begin);
-            byte[] buf = new byte[4];
-            stream.Read(buf, 0, buf.Length);
-            //根据e_lfanew的值计算出Machine的位置
-            int pos = BitConverter.ToInt32(buf, 0) + 4;
-            stream.Seek(pos, SeekOrigin.Begin);
-            buf = new byte[2];
-            stream.Read(buf, 0, buf.Length);
+            using (FileStream stream = File.OpenRead(filePath))
+            {
+                //移动到e_lfanew的位置处
+                stream.Seek(0x40 - 4, SeekOrigin.Begin);
+                byte[] buf = new byte[4];
+                stream.Read(buf, 0, buf.Length);
+                //根据e_lfanew的值计算出Machine的位置
+                int pos = BitConverter.ToInt32(buf, 0) + 4;
+                stream.Seek(pos, SeekOrigin.Begin);
+                buf = new byte[2];
+                stream.Read(buf, 0, buf.Length);
 
-            byte[] bufInt32 = new byte[4];
-            buf.CopyTo(bufInt32, 0);
+                byte[] bufInt32 = new byte[4];
+                buf.CopyTo(bufInt32, 0);
 
-            //得到Machine的值，0x14C为32位，0x8664为64位            
-            Int32 machine = BitConverter.ToInt32(bufInt32, 0);
-            if (machine == 0x14C)
-            {
-                return Platform.X86;
-            }
-            else if (machine == 0x8664)
-            {
-                return Platform.X64;
-            }
-            else
-            {
-                return Platform.Unknown;
+                //得到Machine的值，0x14C为32位，0x8664为64位            
+                Int32 machine = BitConverter.ToInt32(bufInt32, 0);
+                if (machine == 0x14C)
+                {
+                    return Platform.X86;
+                }
+                else if (machine == 0x8664)
+                {
+                    return Platform.X64;
+                }
+                else
+                {
+                    return Platform.Unknown;
+                }
             }
         }
     }

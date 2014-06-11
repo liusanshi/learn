@@ -14,6 +14,7 @@ using Creo.Client;
 using System.Security.AccessControl;
 using System.IO;
 using Intgration.Common.Utility;
+using Creo.Setup;
 
 namespace CreoTest
 {
@@ -73,6 +74,12 @@ namespace CreoTest
             //CreoClient creo = new CreoClient();
             //var aa = creo.GetBom();
 
+            //测试版本
+            //Console.WriteLine(OSHelp.GetExcutePlatform(@"D:\github\learn\Creo\CreoTest\Creo.Setup\pubilc\PLM64.dll").ToString());
+            //Console.WriteLine(OSHelp.GetExcutePlatform(@"D:\github\learn\Creo\CreoTest\Creo.Setup\pubilc\PLM.dll").ToString());
+
+            Console.WriteLine(OSHelp.GetExcutePlatform(@"C:\Program Files\Kingdee\K3PLM\Integration\Proe\PLM.dll").ToString());
+
             if (UACHelp.IsRunAsAdmin())
             {
                 Console.WriteLine("管理员启动");
@@ -81,6 +88,12 @@ namespace CreoTest
             {
                 Console.WriteLine("非管理员启动");
             }
+
+            //CreoSetup setup = new CreoSetup();
+            //setup.SourceDefaultDir = @"D:\Program Files\kingdee\K3PLM\Integration\Integration Setup\Resources";
+            //setup.UserDefaultDir = @"C:\Program Files\Kingdee\K3PLM\Integration";
+
+            //setup.CopyMenuFile();
 
             //ProcessStartInfo proc = new ProcessStartInfo();
             //proc.UseShellExecute = true;

@@ -42,9 +42,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Kingdee.PLM.Integration.Client.Common.Abstract">
-      <HintPath>..\Creo.Client\lib\Kingdee.PLM.Integration.Client.Common.Abstract.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +57,10 @@
     <ProjectReference Include="..\Creo.Client\Creo.Client.csproj">
       <Project>{5d9895bd-2086-4624-bc6f-2b043c704857}</Project>
       <Name>Creo.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Creo.Setup\Creo.Setup.csproj">
+      <Project>{8ea44ae9-45ff-4461-8fb2-8239bdbd2f16}</Project>
+      <Name>Creo.Setup</Name>
     </ProjectReference>
     <ProjectReference Include="..\Intgration.Common\Intgration.Common.csproj">
       <Project>{6da42bf7-e244-46c3-8825-19b96cec0bf4}</Project>

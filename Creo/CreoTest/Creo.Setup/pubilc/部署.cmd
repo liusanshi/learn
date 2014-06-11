@@ -46,14 +46,16 @@ echo 开始插件部署
 
 set Integration=%PLMPath%\..\Integration\Integration Setup
 
+if exist "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" (
 echo f|xcopy /r /y "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" "%Integration%\KDSetup\Kingdee.PLM.Integration.Setup.Proe.dll"
 attrib -r "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll" && del "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Proe.dll"
+)
 
 echo f|xcopy /r /y "Kingdee.PLM.Integration.Setup.Creo.dll" "%Integration%\KDSetup\Dll\Kingdee.PLM.Integration.Setup.Creo.dll"
 echo f|xcopy /r /y "Intgration.Common.dll" "%Integration%\KDSetup\Dll\Intgration.Common.dll"
 echo f|xcopy /r /y "Kingdee.PLM.Integration.Client.Proe.dll" "%Integration%\Resources\Common\Dll\Kingdee.PLM.Integration.Client.Proe.dll"
 echo f|xcopy /r /y "Intgration.Common.dll" "%Integration%\Resources\Common\Dll\Intgration.Common.dll"
-echo f|xcopy /r /r /y "Message.txt" "%Integration%\Resources\Proe\Text\chinese_cn\Message.txt"
+echo f|xcopy /r /y "Message.txt" "%Integration%\Resources\Proe\Text\chinese_cn\Message.txt"
 echo f|xcopy /r /y "PLM.dll" "%Integration%\Resources\Proe\PLM.dll"
 echo f|xcopy /r /y "PLM64.dll" "%Integration%\Resources\Proe\PLM64.dll"
 
