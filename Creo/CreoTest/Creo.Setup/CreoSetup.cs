@@ -10,6 +10,7 @@ using Kingdee.PLM.Integration.Setup.Abstract;
 using Kingdee.PLM.Integration.Setup.Common;
 using System.Security.AccessControl;
 using Intgration.Common.win;
+using Intgration.Common.Utility;
 
 namespace Creo.Setup
 {
@@ -140,8 +141,17 @@ namespace Creo.Setup
                 Directory.CreateDirectory(text);
             }
 
-            var parametricPath = Path.Combine(GetProeSetupPath(), "bin\\parametric.exe");
-            var pf = OSHelp.GetExcutePlatform(parametricPath);
+            var CreoCommonPath = GetProeCommonFilesLocationPath(); //找到 "..\Creo 2.0\\Common Files\\M020" 目录
+            if (string.IsNullOrEmpty(CreoCommonPath))
+            {
+                CreoCommonPath = GetProeCommonFilesLocationPathX64();
+            }
+            var xtopPath = FileAndDirectoryManager.SearchFile(CreoCommonPath, new string[] { "i486_nt\\obj", "x86e_win64\\obj" }, "xtop.exe").FirstOrDefault();
+            if (string.IsNullOrEmpty(xtopPath))
+            {
+                throw new Exception("未找到 xtop.exe 路径。不支持绿色版，请确认正确安装！");
+            }
+            var pf = OSHelp.GetExcutePlatform(xtopPath);
             if (pf == Platform.X64)
             {
                 CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);

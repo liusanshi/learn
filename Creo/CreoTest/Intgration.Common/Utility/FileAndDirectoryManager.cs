@@ -22,5 +22,37 @@ namespace Intgration.Common.Utility
                 Directory.CreateDirectory(path);
             }
         }
+
+        /// <summary>
+        /// 文档查询 会查找递归查找
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> SearchFile(string path, string pattern)
+        {
+            if (!Directory.Exists(path)) return Enumerable.Empty<string>();
+
+            return Directory.GetFiles(path, pattern, SearchOption.AllDirectories);
+        }
+
+        /// <summary>
+        /// 文档查询 会查找递归查找 会优先查找指定的文件夹
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="folders"></param>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> SearchFile(string path, IEnumerable<string> folders, string pattern)
+        {
+            IEnumerable<string> result;
+            foreach (var item in folders.Select(p => Path.Combine(path, p.TrimStart('\\'))))
+            {
+                result = SearchFile(item, pattern);
+                if (result.Any()) return result;
+            }
+
+            return SearchFile(path, pattern);
+        }
     }
 }

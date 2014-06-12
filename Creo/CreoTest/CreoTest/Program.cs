@@ -78,7 +78,13 @@ namespace CreoTest
             //Console.WriteLine(OSHelp.GetExcutePlatform(@"D:\github\learn\Creo\CreoTest\Creo.Setup\pubilc\PLM64.dll").ToString());
             //Console.WriteLine(OSHelp.GetExcutePlatform(@"D:\github\learn\Creo\CreoTest\Creo.Setup\pubilc\PLM.dll").ToString());
 
-            Console.WriteLine(OSHelp.GetExcutePlatform(@"C:\Program Files\Kingdee\K3PLM\Integration\Proe\PLM.dll").ToString());
+            //Console.WriteLine(OSHelp.GetExcutePlatform(@"C:\Program Files\Kingdee\K3PLM\Integration\Proe\PLM.dll").ToString());
+
+            foreach (var item in FileAndDirectoryManager.SearchFile(@"D:\MyWork\PTC\Creo 2.0\Common Files\M060\",
+                new string[] { "i486_nt\\obj", "x86e_win64\\obj" }, "xtop.exe")) 
+            {
+                Console.WriteLine(item);
+            }
 
             if (UACHelp.IsRunAsAdmin())
             {
