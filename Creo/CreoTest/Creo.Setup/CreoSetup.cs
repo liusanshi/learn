@@ -165,22 +165,6 @@ namespace Creo.Setup
                 throw new Exception("未发现当前creo所处平台");
             }
 
-            //string oSBit = CommonBase.GetOSBit();
-            //if (oSBit == "64")
-            //{
-            //    if (Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\PTC") != null)//判断是否32位creo
-            //    {
-            //        CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
-            //    }
-            //    else
-            //    {
-            //        CommonBase.CopyFile(str + CREOPACKAGE64, text + CREOPACKAGE);
-            //    }
-            //}
-            //else
-            //{
-            //    CommonBase.CopyFile(str + CREOPACKAGE, text + CREOPACKAGE);
-            //}
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe"))
                 CommonBase.CopyFile(str2 + "IntegrationLogin.exe", "c:\\WINDOWS\\IntegrationLogin.exe");
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe.config"))
@@ -206,6 +190,10 @@ namespace Creo.Setup
             this.CopyMenuFile();
         }
 
+        /// <summary>
+        /// 需要处理权限的文件
+        /// </summary>
+        /// <returns></returns>
         private IEnumerable<string> DealFiles()
         {
             string system32path = CommonBase.GetSystemPath().TrimEnd('\\', '/');
@@ -216,6 +204,8 @@ namespace Creo.Setup
             yield return Path.Combine(system32path, "Login.html");
             yield return Path.Combine(system64path, "LoginSetting.ini");
             yield return Path.Combine(allusers, "LoginSetting.ini");
+            yield return Path.Combine(system32path, "proeCheckFile.txt");
+            yield return Path.Combine(system64path, "proeCheckFile.txt");
         }
 
         private void CopyMenuFile()
