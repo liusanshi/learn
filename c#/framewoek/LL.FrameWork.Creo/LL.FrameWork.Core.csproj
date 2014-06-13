@@ -36,6 +36,15 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net35\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,10 +67,20 @@
     <Compile Include="Reflection\MethodReflectionCache.cs" />
     <Compile Include="Reflection\ProertyReflectionCache.cs" />
     <Compile Include="Reflection\ReflectionHelp.cs" />
+    <Compile Include="UOW\GenericTransaction.cs" />
+    <Compile Include="UOW\IGenericTransaction.cs" />
+    <Compile Include="UOW\ILocalData.cs" />
+    <Compile Include="UOW\IUnitOfWork.cs" />
+    <Compile Include="UOW\IUnitOfWorkFactory.cs" />
+    <Compile Include="UOW\StatelessUnitOfWorkImplementor.cs" />
+    <Compile Include="UOW\UnitOfWork.cs" />
+    <Compile Include="UOW\UnitOfWorkFactory.cs" />
+    <Compile Include="UOW\UnitOfWorkImplementor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
