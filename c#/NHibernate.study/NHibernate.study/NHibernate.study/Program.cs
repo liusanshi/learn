@@ -4,35 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Data;
 
-using NHibernate.Bytecode;
-using NHibernate.Cfg;
-using NHibernate.Cfg.MappingSchema;
-using NHibernate.Cache;
-using NHibernate.Type;
-using NHibernate.Hql.Ast.ANTLR;
-using NHibernate.Dialect;
-using NHibernate.AdoNet;
-using NHibernate.Driver;
-using NHibernate.Exceptions;
-using NHibernate.Connection;
-using NHibernate.Tool.hbm2ddl;
 using NHibernate.Mapping.ByCode;
+using NHibernate;
 using NHibernate.Study.DomainModel;
-using NHibernate.Util;
-using NHibernate.Mapping.ByCode.Impl;
-//using System.Data.SQLite;
-//using System.IO;
+using NHibernate.Study.UnitOfWork;
 
 namespace NHibernate.Study
 {
     class Program
     {
-        static string connectionString = "Data Source=myTest.db";
-
         static void Main(string[] args)
         {
-            Configuration cfg = Config();
-            Mapping(cfg);
+            //log4net.Config.DOMConfigurator.Configure();
+
+            log4net.Config.XmlConfigurator.Configure();
+
+            Mapping();
 
             //var export = new SchemaExport(cfg);
             //var sb = new StringBuilder();
@@ -43,17 +30,17 @@ namespace NHibernate.Study
             //sqlconn.Close();
             //new SchemaExport(cfg).Execute(false, true, false);
 
-            var sessionFac = cfg.BuildSessionFactory();
+            InitData();
 
-            InitData(sessionFac);
+            ReadData();
 
-            ReadData(sessionFac);
+            ModifyData();
 
-            ModifyData(sessionFac);
+            StateTest();
 
-            StateTest(sessionFac);
+            OtherTest();
 
-            OtherTest(sessionFac);
+            LoggerProvider.LoggerFor(typeof(Program)).Info("nihao");
 
             Console.Read();
         }
@@ -62,16 +49,16 @@ namespace NHibernate.Study
         /// 其他测试
         /// </summary>
         /// <param name="sessionFac"></param>
-        private static void OtherTest(ISessionFactory sessionFac)
+        private static void OtherTest()
         {
             Console.WriteLine("OtherTest");
             Class cls1;
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
                 //cls1 = session.QueryOver<Class>().Take(1).Future().FirstOrDefault();
                 //NHibernateUtil.Initialize(cls1.Students);
 
-                cls1 = session.Load<Class>(1u);
+                cls1 = UnitOfWork.UnitOfWork.CurrentSession.Load<Class>(1u);
                 //NHibernateUtil.Initialize(cls1.Students);
 
                 //Console.WriteLine(cls1.Name);
@@ -91,41 +78,41 @@ namespace NHibernate.Study
         /// 状态测试
         /// </summary>
         /// <param name="sessionFac"></param>
-        private static void StateTest(ISessionFactory sessionFac)
+        private static void StateTest()
         {
             Console.WriteLine("+++++++++++++++++++++++查看状态+++++++++++++++++++++++");
             //查看状态
             Class cls1;
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
                 //cls1 = session.QueryOver<Class>().Future().FirstOrDefault();
-                cls1 = session.Get<Class>(1u);
+                cls1 = UnitOfWork.UnitOfWork.CurrentSession.Get<Class>(1u);
                 cls1.Name = "中三班----------22";
-                session.Flush();
+                UnitOfWork.UnitOfWork.CurrentSession.Flush();
             }
             cls1.Name = "中三班111";
 
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
                 //cls1 = session.QueryOver<Class>().Future().FirstOrDefault();
                 Console.WriteLine("第二次查询》》》》》》》》》》》》》");
-                Console.WriteLine(session.Get<Class>(1u).Name);
+                Console.WriteLine(UnitOfWork.UnitOfWork.CurrentSession.Get<Class>(1u).Name);
             }
 
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
                 //将托管状态的对象变为 持久状态
                 //session.Merge(cls1);  //存在标识相同的时候 与 SaveOrUpdate 有区别
-                session.SaveOrUpdate(cls1);
+                UnitOfWork.UnitOfWork.CurrentSession.SaveOrUpdate(cls1);
 
                 var cls2 = new Class() { Id = 2u, Name = "as", Slogan = "aaa" };
-                session.Merge(cls2); // Merge 会触发 一次load
+                UnitOfWork.UnitOfWork.CurrentSession.Merge(cls2); // Merge 会触发 一次load
 
-                Console.WriteLine(session.Contains(cls2));
+                Console.WriteLine(UnitOfWork.UnitOfWork.CurrentSession.Contains(cls2));
 
                 //session.Lock(cls1, LockMode.None); //将当前的状态记住，后面的修改将刷新到数据库
                 //cls1.Name = "中三班111";
-                session.Flush();
+                UnitOfWork.UnitOfWork.CurrentSession.Flush();
                 
             }
         }
@@ -134,24 +121,24 @@ namespace NHibernate.Study
         /// 修改数据
         /// </summary>
         /// <param name="sessionFac"></param>
-        private static void ModifyData(ISessionFactory sessionFac)
+        private static void ModifyData()
         {
             Console.WriteLine("修改数据");
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
-                var t = session.BeginTransaction();
+                var t = UnitOfWork.UnitOfWork.Current.BeginTransaction();
 
                 //Class cls = new Class() { Id = 1, Name = "中三班" };
                 //session.Update(cls);
 
-                var cls = session.Load<Class>(1u);
+                var cls = UnitOfWork.UnitOfWork.CurrentSession.Load<Class>(1u);
                 cls.Name = "中三班";
                 cls.Students.RemoveAt(0); //删除没有作用\Cascade.DeleteOrphans 添加这个级联操作之后有效
-                session.Persist(cls);
+                UnitOfWork.UnitOfWork.CurrentSession.Persist(cls);
 
                 t.Commit();
 
-                cls = session.Get<Class>(1u);
+                cls = UnitOfWork.UnitOfWork.CurrentSession.Get<Class>(1u);
                 Console.WriteLine(cls.Name);
             }
         }
@@ -160,13 +147,13 @@ namespace NHibernate.Study
         /// 读取数据
         /// </summary>
         /// <param name="sessionFac"></param>
-        private static void ReadData(ISessionFactory sessionFac)
+        private static void ReadData()
         {
             Console.WriteLine("读取数据");
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
                 //var cls = session.QueryOver<Class>().Future().FirstOrDefault();
-                var cls1 = session.Load<Class>(1u);
+                var cls1 = UnitOfWork.UnitOfWork.CurrentSession.Load<Class>(1u);
                 Console.WriteLine(cls1.Name);
 
                 //Console.WriteLine(cls.Name);
@@ -176,7 +163,7 @@ namespace NHibernate.Study
                 //}
 
                 //var stu = session.QueryOver<Student>().Future().FirstOrDefault();
-                var stu = session.Load<Student>(1u);
+                var stu = UnitOfWork.UnitOfWork.CurrentSession.Load<Student>(1u);
                 Console.WriteLine(stu.Class.Id);
                 Console.WriteLine(stu.Class.Name);
             }
@@ -185,12 +172,13 @@ namespace NHibernate.Study
         /// <summary>
         /// 初始化数据
         /// </summary>
-        /// <param name="sessionFac"></param>
-        private static void InitData(ISessionFactory sessionFac)
+        private static void InitData()
         {
-            using (var session = sessionFac.OpenSession())
+            using (UnitOfWork.UnitOfWork.Start())
             {
-                var t = session.BeginTransaction();
+                //var t = UnitOfWork.UnitOfWork.Current.BeginTransaction();
+                UnitOfWork.UnitOfWork.Current.BeginTransaction();
+                //UnitOfWork.UnitOfWork.Current.BeginTransaction();
 
                 var cls = new Class();
                 cls.Name = "中一班";
@@ -202,118 +190,19 @@ namespace NHibernate.Study
                 cls.AddStudent(new Student() { Name = "张三4", Age = 15 });
                 cls.AddStudent(new Student() { Name = "张三5", Age = 15 });
 
-                session.Persist(cls);
+                UnitOfWork.UnitOfWork.CurrentSession.Persist(cls);
 
-                t.Commit();
+                //UnitOfWork.UnitOfWork.Current.TransactionalFlush();
+                UnitOfWork.UnitOfWork.Current.TransactionalFlush();
+
+                //t.Commit();
             }
-        }
-
-        /// <summary>
-        /// 配置Nhibernate
-        /// </summary>
-        static Configuration Config()
-        {
-            Configuration config = new Configuration();
-
-            config.DataBaseIntegration(db =>
-            {
-                db.Dialect<SQLiteDialect>();
-                db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-                db.LogSqlInConsole = true;
-                db.LogFormattedSql = true;
-                db.ConnectionProvider<DriverConnectionProvider>();
-                db.Driver<SQLite20Driver>();
-                db.IsolationLevel = IsolationLevel.ReadCommitted;
-                db.ConnectionReleaseMode = ConnectionReleaseMode.AfterTransaction;
-                db.ConnectionString = connectionString;
-                db.Batcher<NonBatchingBatcherFactory>();
-                db.BatchSize = 15;
-                db.PrepareCommands = true;
-                db.Timeout = 10;
-                db.ExceptionConverter<SQLStateConverter>();
-                db.AutoCommentSql = true;
-                db.HqlToSqlSubstitutions = "true 1, false 0, yes 'Y', no 'N'";
-                db.MaximumDepthOfOuterJoinFetching = 11;
-                db.SchemaAction = SchemaAutoAction.Update;
-            });
-            config.Cache(c =>
-            {
-                c.RegionsPrefix = "xyz";
-                c.UseMinimalPuts = true;
-                c.UseQueryCache = true;
-                c.DefaultExpiration = 15;
-                c.Provider<HashtableCacheProvider>();
-                //c.QueryCache<StandardQueryCache>();
-                //config.SetProperty(NHibernate.Cfg.Environment.QueryCacheFactory, typeof(StandardQueryCacheFactory).AssemblyQualifiedName);
-            });
-            config.Proxy(p =>
-            {
-                p.Validation = false;
-                p.ProxyFactoryFactory<DefaultProxyFactoryFactory>();
-            });
-            config.Mappings(m =>
-            {
-                m.DefaultCatalog = "";
-                m.DefaultSchema = "";
-            });
-            config.CollectionTypeFactory<DefaultCollectionTypeFactory>();
-
-            config.HqlQueryTranslator<ASTQueryTranslatorFactory>();
-
-            config.SetProperty(Cfg.Environment.GenerateStatistics, "true");
-
-            //config.SessionFactory().Named("SomeName")
-            //    .Caching
-            //        .Through<HashtableCacheProvider>()
-            //        .PrefixingRegionsWith("xyz")
-            //        .Queries
-            //            .Through<StandardQueryCache>()
-            //        .UsingMinimalPuts()
-            //        .WithDefaultExpiration(15)
-            //    .GeneratingCollections
-            //        .Through<DefaultCollectionTypeFactory>()
-            //    .Proxy
-            //        .DisableValidation()
-            //        .Through<DefaultProxyFactoryFactory>()
-            //    .ParsingHqlThrough<ASTQueryTranslatorFactory>()
-            //    .Mapping
-            //        .UsingDefaultCatalog("MyCatalog")
-            //        .UsingDefaultSchema("MySche")
-            //    .Integrate
-            //        .Using<SQLiteDialect>()//sqlite
-            //        .AutoQuoteKeywords()
-            //        .EnableLogFormattedSql()
-            //        .BatchingQueries
-            //            .Through<NonBatchingBatcherFactory>()
-            //            .Each(15)
-            //        .Connected
-            //            .Through<DriverConnectionProvider>()
-            //            .By<SQLite20Driver>()//SqlClientDriver
-            //            .Releasing(ConnectionReleaseMode.AfterTransaction)
-            //            .With(IsolationLevel.ReadCommitted)
-            //            .Using(connectionString)
-            //        .CreateCommands
-            //            .AutoCommentingSql()
-            //            .ConvertingExceptionsThrough<SQLStateConverter>()
-            //            .Preparing()
-            //            .WithTimeout(10)
-            //            .WithMaximumDepthOfOuterJoinFetching(11)
-            //            .WithHqlToSqlSubstitutions("true 1, false 0, yes 'Y', no 'N'")
-            //        .Schema
-            //            .Validating();
-
-            //var export = new SchemaExport(config);
-            //export.Create(str => Console.WriteLine(str), false);
-            //export.Execute(true, true, false);
-
-            return config;
         }
 
         /// <summary>
         /// 类型配置
         /// </summary>
-        /// <param name="config"></param>
-        static void Mapping(Configuration config)
+        static void Mapping()
         {
             ModelMapper mapper = new ModelMapper();
             mapper.Class<Class>(m =>
@@ -369,7 +258,7 @@ namespace NHibernate.Study
 
             Console.WriteLine(hbmmap.AsString());
 
-            config.AddMapping(hbmmap);
+            UnitOfWork.UnitOfWork.Configuration.AddMapping(hbmmap);
 
             //使用二次缓存
             //config.EntityCache<Class>(ch =>
