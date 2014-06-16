@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Diagnostics.SymbolStore;
+using System.Linq.Expressions;
 
 namespace LL.FrameWork.Core.Reflection
 {
@@ -52,7 +53,7 @@ namespace LL.FrameWork.Core.Reflection
         /// </summary>
         /// <param name="mi"></param>
         /// <returns></returns>
-        internal static string GetMemberSignName(MemberInfo mi)
+        public static string GetMemberSignName(MemberInfo mi)
         {
             Stringbuff.Length = 0;
             Stringbuff.Append(mi.DeclaringType.FullName).Append("@");
@@ -91,20 +92,20 @@ namespace LL.FrameWork.Core.Reflection
         /// <summary>
         /// 空类型
         /// </summary>
-        internal readonly static Type VoidType = typeof(void);
+        public readonly static Type VoidType = typeof(void);
         /// <summary>
         /// object类型
         /// </summary>
-        internal readonly static Type ObjectType = typeof(object);
+        public readonly static Type ObjectType = typeof(object);
         /// <summary>
         /// object[]类型
         /// </summary>
-        internal readonly static Type ObjArrayType = typeof(object[]);
+        public readonly static Type ObjArrayType = typeof(object[]);
 
         /// <summary>
         /// 默认的方法标记
         /// </summary>
-        internal readonly static MethodAttributes DefaultMethodAttributes
+        public readonly static MethodAttributes DefaultMethodAttributes
             = MethodAttributes.HideBySig | MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.Final | MethodAttributes.NewSlot;
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace LL.FrameWork.Core.Reflection
         /// </summary>
         /// <param name="il"></param>
         /// <param name="index"></param>
-        internal static void ILLdarg(ILGenerator il, byte index)
+        public static void ILLdarg(ILGenerator il, byte index)
         {
             switch (index)
             {
@@ -138,7 +139,7 @@ namespace LL.FrameWork.Core.Reflection
         /// </summary>
         /// <param name="il"></param>
         /// <param name="i"></param>
-        internal static void ILLdcInt(ILGenerator il, int i)
+        public static void ILLdcInt(ILGenerator il, int i)
         {
             switch (i)
             {
@@ -184,12 +185,31 @@ namespace LL.FrameWork.Core.Reflection
         /// <param name="il"></param>
         /// <param name="index"></param>
         /// <param name="arrType"></param>
-        internal static void ILLdelem(ILGenerator il, byte index, Type arrType)
+        public static void ILLdelem(ILGenerator il, byte index, Type arrType)
         {
             ILLdcInt(il, index);
             il.Emit(GetLdelemOpCode(Type.GetTypeCode(arrType)));
         }
 
+        /// <summary>
+        /// 抛出异常
+        /// </summary>
+        /// <param name="il"></param>
+        /// <param name="exp"></param>
+        public static void ILThrow<Exp>(ILGenerator il, string expmsg) where Exp : Exception
+        {
+            var expType = typeof(Exp);
+            if (!string.IsNullOrEmpty(expmsg))
+            {
+                il.Emit(OpCodes.Ldstr, expmsg);
+                il.Emit(OpCodes.Newobj, expType.GetConstructor(new Type[] { typeof(string) }));
+            }
+            else
+            {
+                il.Emit(OpCodes.Newobj, expType.GetConstructor(Type.EmptyTypes));
+            }
+            il.Emit(OpCodes.Throw);
+        }
 
         /// <summary>
         /// 转换类型
@@ -197,7 +217,7 @@ namespace LL.FrameWork.Core.Reflection
         /// <param name="il"></param>
         /// <param name="fromType"></param>
         /// <param name="returnType"></param>
-        internal static void ILCastclass(ILGenerator il, Type fromType, Type returnType)
+        public static void ILCastclass(ILGenerator il, Type fromType, Type returnType)
         {
             if (fromType != returnType)
             {
@@ -243,6 +263,58 @@ namespace LL.FrameWork.Core.Reflection
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 将参数信息转换为参数类型数组
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static Type[] ConvertToType(ParameterInfo[] args)
+        {
+            if (args == null) return null;
+            if (args.Length == 0) return Type.EmptyTypes;
+            var result = new Type[args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                result[i] = args[i].ParameterType;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 将参数根据类型捋顺
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        public static object[] GetArgumentByType(object[] args, Type[] types)
+        {
+            if (types == null || types.Length == 0) return null;
+            object[] result = new object[types.Length];
+            args = args == null ? new object[0] : args;
+            int i1 = 0;
+            for (int i = 0; i < types.Length; i++)
+            {
+                do
+                {
+                    if (args.Length <= i1 || args[i1] == null)
+                    {
+                        result[i] = null;
+                        i1++;
+                        break;
+                    }
+                    if (args[i1].GetType() == types[i])
+                    {
+                        result[i] = args[i1];
+                        i1++;
+                        break;
+                    }
+                    i1++;
+
+                } while (true);
+            }
+            return result;
         }
 
         #region OpCode
@@ -460,10 +532,10 @@ namespace LL.FrameWork.Core.Reflection
         /// emit信息
         /// </summary>
         /// <returns></returns>
-        internal static ModuleBuilder EmitDebug()
+        public static ModuleBuilder EmitDebug()
         {
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("DynamicMethod.debugger"), AssemblyBuilderAccess.RunAndSave);
-            
+
             //定义调试信息
             CustomAttributeBuilder debugAttributeBuilder = new CustomAttributeBuilder(
                 typeof(DebuggableAttribute).GetConstructor(new Type[] { typeof(DebuggableAttribute.DebuggingModes) }),

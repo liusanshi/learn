@@ -20,6 +20,12 @@ namespace LL.FrameWork.Core.Reflection
             {
                 throw new ArgumentException("Argument: field is null");
             }
+            if (!field.IsPublic)
+            {
+                FieldGet = obj => field.GetValue(obj);
+                FieldSet = (target, val) => field.SetValue(target, val);
+                return;
+            }
             var name = ReflectionHelp.GetMemberSignName(field);
             var type = field.DeclaringType;
 

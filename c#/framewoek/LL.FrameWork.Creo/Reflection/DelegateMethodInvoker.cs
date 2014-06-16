@@ -18,6 +18,12 @@ namespace LL.FrameWork.Core.Reflection
             {
                 throw new ArgumentException("Argument: method is null");
             }
+            if (!method.IsPublic)
+            {
+                var types = ReflectionHelp.ConvertToType(method.GetParameters());
+                MethodInvoker = (target, arguments) => method.Invoke(target, ReflectionHelp.GetArgumentByType(arguments, types));
+                return;
+            }
 
             var type = method.DeclaringType;
             DynamicMethod Dmethod = new DynamicMethod(ReflectionHelp.GetMemberSignName(method), ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjArrayType });

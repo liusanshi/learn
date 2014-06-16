@@ -24,37 +24,66 @@ namespace LL.FrameWork.Core.Reflection
             {
                 throw new ArgumentException("Argument: property is null");
             }
-
+            var getmethod = property.GetGetMethod();
+            var setmethod = property.GetSetMethod();
+            
             //PropertyGet = new DelegateMethodInvoker(property.GetGetMethod());
             //PropertySet = new DelegateMethodInvoker(property.GetSetMethod());
 
             var name = ReflectionHelp.GetMemberSignName(property);
             var type = property.DeclaringType;
 
-            DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType });
-            var il = method.GetILGenerator();
-            ReflectionHelp.ILLdarg(il, 0);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
-            il.Emit(OpCodes.Callvirt, property.GetGetMethod());
-            ReflectionHelp.ILCastclass(il, property.PropertyType, ReflectionHelp.ObjectType);
-            il.Emit(OpCodes.Ret);
-            PropertyGet = (Func<object, object>)method.CreateDelegate(typeof(Func<object, object>));
+            if (getmethod != null && !getmethod.IsPublic)
+            {
+                PropertyGet = obj => property.GetValue(obj, null);
+            }
+            else
+            {
+                DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType });
+                var il = method.GetILGenerator();
+                if (getmethod != null)
+                {
+                    ReflectionHelp.ILLdarg(il, 0);
+                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
+                    il.Emit(OpCodes.Callvirt, getmethod);
+                    ReflectionHelp.ILCastclass(il, property.PropertyType, ReflectionHelp.ObjectType);
+                    il.Emit(OpCodes.Ret);
+                }
+                else
+                {
+                    ReflectionHelp.ILThrow<MethodAccessException>(il, "get method not found");
+                }
+                PropertyGet = (Func<object, object>)method.CreateDelegate(typeof(Func<object, object>));
+            }
+            if (setmethod != null && !setmethod.IsPublic)
+            {
+                PropertySet = (obj, val) => property.SetValue(obj, val, null);
+            }
+            else
+            {
+                DynamicMethod method = new DynamicMethod(name + "_set", ReflectionHelp.VoidType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjectType });
+                var il = method.GetILGenerator();
+                if (setmethod != null)
+                {
+                    ReflectionHelp.ILLdarg(il, 0);
+                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
+                    ReflectionHelp.ILLdarg(il, 1);
+                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, property.PropertyType);
+                    il.Emit(OpCodes.Callvirt, setmethod);
+                    il.Emit(OpCodes.Ret);
+                }
+                else
+                {
+                    ReflectionHelp.ILThrow<MethodAccessException>(il, "set method not found");
+                }
 
-            method = new DynamicMethod(name + "_set", ReflectionHelp.VoidType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjectType });
-            il = method.GetILGenerator();
-            ReflectionHelp.ILLdarg(il, 0);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
-            ReflectionHelp.ILLdarg(il, 1);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, property.PropertyType);
-            il.Emit(OpCodes.Callvirt, property.GetSetMethod());
-            il.Emit(OpCodes.Ret);
-
-            PropertySet = (Action<object, object>)method.CreateDelegate(typeof(Action<object, object>));
+                PropertySet = (Action<object, object>)method.CreateDelegate(typeof(Action<object, object>));
+            }
         }
 
         public object Get(object Target)
         {
-            return PropertyGet.Invoke(Target);
+            return PropertyGet(Target);
         }
 
         public void Set(object Target, object Value)

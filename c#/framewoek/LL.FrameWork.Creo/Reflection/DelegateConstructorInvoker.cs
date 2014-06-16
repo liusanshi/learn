@@ -35,6 +35,12 @@ namespace LL.FrameWork.Core.Reflection
             {
                 throw new ArgumentException("Argument: constructor is null");
             }
+            if (!constructor.IsPublic)
+            {
+                var types = ReflectionHelp.ConvertToType(constructor.GetParameters());
+                Constructor = arguments => constructor.Invoke(ReflectionHelp.GetArgumentByType(arguments, types));
+                return;
+            }
 
             DynamicMethod method = new DynamicMethod(ReflectionHelp.GetMemberSignName(constructor), ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjArrayType });
 

@@ -82,11 +82,12 @@ namespace LL.FrameWork.Core.Test
 
         //PropertyIntGet
         [TestMethod]
-        //[ExpectedException(typeof(NotSupportedException))]
+        [ExpectedException(typeof(MethodAccessException))]
         public void TestPropertyIntGet()
         {
             PropertyInfo property = type.GetProperty("PropertyIntGet");
             Assert.AreEqual(0, property.FastGetValue(t));
+
 
             property.FastSetValue(t, 12);
         }
@@ -100,7 +101,7 @@ namespace LL.FrameWork.Core.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(MethodAccessException))]
+        //[ExpectedException(typeof(MethodAccessException))]
         public void TestMethodObj()
         {
             MethodInfo method = type.GetMethod("TestMethod");
@@ -108,7 +109,23 @@ namespace LL.FrameWork.Core.Test
             Assert.AreEqual("2323", method.FastInvoke(t, ""));
 
             method = type.GetMethod("TestMethodPrivate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod);
-            method.FastInvoke(t, "");
+            method.FastInvoke(t, "", "");
+        }
+
+        [TestMethod]
+        public void test_GetArgumentByType()
+        {
+            object obj = new object();
+            var objs = new object[]{1,2,3L,4,"as","sd",null,obj};
+            var types = new Type[]{typeof(Int32),typeof(Int64),typeof(string),typeof(string), typeof(object), typeof(object)};
+            var resulr = new object[] { 1, 3L, "as", "sd", null, obj };
+
+            int i = 0;
+            foreach (var item in ReflectionHelp.GetArgumentByType(objs, types))
+            {
+                Assert.AreEqual(item, resulr[i]);                
+                i++;
+            }
         }
 
         [TestMethod]
@@ -126,10 +143,10 @@ namespace LL.FrameWork.Core.Test
             Assert.IsNotNull(method.FastCreate(1));
             Assert.AreEqual(1, ((Test)method.FastCreate(1)).PropertyInt);
 
-            //method = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(object) }, null);
-            //var o = new object();
-            //Assert.IsNotNull(method.FastCreate(o));
-            //Assert.ReferenceEquals(o, ((Test)method.FastCreate(o)).PropertyObj);
+            method = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(object) }, null);
+            var o = new object();
+            Assert.IsNotNull(method.FastCreate(o));
+            Assert.ReferenceEquals(o, ((Test)method.FastCreate(o)).PropertyObj);
         }
 
         [TestMethod]
