@@ -63,6 +63,25 @@ namespace LL.FrameWork.Core.Reflection
         }
     }
 
+    public class PrimitiveConstructorInvoker : IConstructorInvoker
+    {
+        ConstructorInfo Constructor = null;
+        public PrimitiveConstructorInvoker(ConstructorInfo cons)
+        {
+            Constructor = cons;
+        }
+
+        public object Invoke(params object[] args)
+        {
+            var types = ReflectionHelp.ConvertToType(Constructor.GetParameters());
+            return Constructor.Invoke(ReflectionHelp.GetArgumentByType(args, types));
+        }
+        object IConstructorInvoker.Invoke(params object[] args)
+        {
+            return this.Invoke(args);
+        }
+    }
+
     /// <summary>
     /// 构造函数访问工厂
     /// </summary>
@@ -70,7 +89,15 @@ namespace LL.FrameWork.Core.Reflection
     {
         public IConstructorInvoker Create(ConstructorInfo key)
         {
-            return new DelegateConstructorInvoker(key);
+            var type = key.DeclaringType;
+            if (!type.IsPublic || !key.IsPublic)
+            {
+                return new PrimitiveConstructorInvoker(key);
+            }
+            else
+            {
+                return new DelegateConstructorInvoker(key);
+            }
         }
         IConstructorInvoker IFastReflectionFactory<ConstructorInfo, IConstructorInvoker>.Create(ConstructorInfo key)
         {

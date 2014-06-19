@@ -18,12 +18,6 @@ namespace LL.FrameWork.Core.Reflection
             {
                 throw new ArgumentException("Argument: method is null");
             }
-            if (!method.IsPublic)
-            {
-                var types = ReflectionHelp.ConvertToType(method.GetParameters());
-                MethodInvoker = (target, arguments) => method.Invoke(target, ReflectionHelp.GetArgumentByType(arguments, types));
-                return;
-            }
 
             var type = method.DeclaringType;
             DynamicMethod Dmethod = new DynamicMethod(ReflectionHelp.GetMemberSignName(method), ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjArrayType });
@@ -42,7 +36,7 @@ namespace LL.FrameWork.Core.Reflection
                 }
             }
             il.Emit(OpCodes.Callvirt, method);
-            if(method.ReturnType != ReflectionHelp.VoidType)
+            if (method.ReturnType != ReflectionHelp.VoidType)
             {
                 ReflectionHelp.ILCastclass(il, method.ReturnType, ReflectionHelp.ObjectType);
             }
@@ -60,6 +54,24 @@ namespace LL.FrameWork.Core.Reflection
         }
     }
 
+    public class PrimitiveMethodInvoker : IMethodInvoker
+    {
+        MethodInfo Method = null;
+        public PrimitiveMethodInvoker(MethodInfo method)
+        {
+            Method = method;
+        }
+        public object Invoke(object Target, params object[] args)
+        {
+            var types = ReflectionHelp.ConvertToType(Method.GetParameters());
+            return Method.Invoke(Target, ReflectionHelp.GetArgumentByType(args, types));
+        }
+        object IMethodInvoker.Invoke(object Target, params object[] args)
+        {
+            return this.Invoke(Target, args);
+        }
+    }
+
     /// <summary>
     /// 函数访问工厂 MethodReflectionCache
     /// </summary>
@@ -67,7 +79,15 @@ namespace LL.FrameWork.Core.Reflection
     {
         public IMethodInvoker Create(MethodInfo key)
         {
-            return new DelegateMethodInvoker(key);
+            var type = key.DeclaringType;
+            if (!type.IsPublic || !key.IsPublic)
+            {
+                return new PrimitiveMethodInvoker(key);
+            }
+            else
+            {
+                return new DelegateMethodInvoker(key);
+            }
         }
         IMethodInvoker IFastReflectionFactory<MethodInfo, IMethodInvoker>.Create(MethodInfo key)
         {

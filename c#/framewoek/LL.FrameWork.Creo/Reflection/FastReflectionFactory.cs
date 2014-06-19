@@ -88,7 +88,7 @@ namespace LL.FrameWork.Core.Reflection
         static IFastReflectionFactory<MethodInfo, IMethodInvoker> _MethodReflectionFactory;
         static IFastReflectionFactory<FieldInfo, IFieldAccessor> _FieldReflectionFactory;
         static IFastReflectionFactory<PropertyInfo, IPropertyAccessor> _ProertyReflectionFactory;
-        static ProxyGenerator generator;
+        static ProxyGenerator generator = null;
 
         static FastReflectionFactory()
         {

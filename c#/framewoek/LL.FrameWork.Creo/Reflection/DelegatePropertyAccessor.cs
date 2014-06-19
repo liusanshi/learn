@@ -101,12 +101,52 @@ namespace LL.FrameWork.Core.Reflection
         }
     }
 
+    /// <summary>
+    /// 原始的属性访问
+    /// </summary>
+    public class PrimitivePropertyAccessor : IPropertyAccessor
+    {
+        PropertyInfo Property = null;
+
+        public PrimitivePropertyAccessor(PropertyInfo property)
+        {
+            Property = property;
+        }
+
+        public object Get(object Target)
+        {
+            return Property.GetValue(Target, null);
+        }
+
+        public void Set(object Target, object Value)
+        {
+            Property.SetValue(Target, Value, null);
+        }
+        object IPropertyAccessor.Get(object Target)
+        {
+            return this.Get(Target);
+        }
+
+        void IPropertyAccessor.Set(object Target, object Value)
+        {
+            this.Set(Target, Value);
+        }
+    }
+
     public class DelegateProertyReflectionFactory : IFastReflectionFactory<PropertyInfo, IPropertyAccessor>
     {
 
         public IPropertyAccessor Create(PropertyInfo key)
         {
-            return new DelegatePropertyAccessor(key);
+            var type = key.DeclaringType;
+            if (!type.IsPublic)
+            {
+                return new PrimitivePropertyAccessor(key);
+            }
+            else
+            {
+                return new DelegatePropertyAccessor(key);
+            }
         }
         IPropertyAccessor IFastReflectionFactory<PropertyInfo, IPropertyAccessor>.Create(PropertyInfo key)
         {

@@ -20,12 +20,7 @@ namespace LL.FrameWork.Core.Reflection
             {
                 throw new ArgumentException("Argument: field is null");
             }
-            if (!field.IsPublic)
-            {
-                FieldGet = obj => field.GetValue(obj);
-                FieldSet = (target, val) => field.SetValue(target, val);
-                return;
-            }
+            
             var name = ReflectionHelp.GetMemberSignName(field);
             var type = field.DeclaringType;
 
@@ -89,6 +84,34 @@ namespace LL.FrameWork.Core.Reflection
         }
     }
 
+    public class PrimitiveFieldAccessor : IFieldAccessor
+    {
+        FieldInfo Field = null;
+        public PrimitiveFieldAccessor(FieldInfo field)
+        {
+            Field = field;
+        }
+
+        public object Get(object Target)
+        {
+            return Field.GetValue(Target);
+        }
+
+        public void Set(object Target, object Value)
+        {
+            Field.SetValue(Target, Value);
+        }
+        object IFieldAccessor.Get(object Target)
+        {
+            return this.Get(Target);
+        }
+
+        void IFieldAccessor.Set(object Target, object Value)
+        {
+            this.Set(Target, Value);
+        }
+    }
+
     /// <summary>
     /// 字段访问工厂 FieldReflectionCache
     /// </summary>
@@ -96,7 +119,15 @@ namespace LL.FrameWork.Core.Reflection
     {
         public IFieldAccessor Create(FieldInfo key)
         {
-            return new DelegateFieldAccessor(key);
+            var type = key.DeclaringType;
+            if (!type.IsPublic || !key.IsPublic)
+            {
+                return new PrimitiveFieldAccessor(key);
+            }
+            else
+            {
+                return new DelegateFieldAccessor(key);
+            }
         }
         IFieldAccessor IFastReflectionFactory<FieldInfo, IFieldAccessor>.Create(FieldInfo key)
         {
