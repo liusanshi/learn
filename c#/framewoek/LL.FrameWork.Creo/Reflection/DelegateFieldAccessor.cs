@@ -21,7 +21,7 @@ namespace LL.FrameWork.Core.Reflection
                 throw new ArgumentException("Argument: field is null");
             }
             
-            var name = ReflectionHelp.GetMemberSignName(field);
+            var name = ReflectionHelper.GetMemberSignName(field);
             var type = field.DeclaringType;
 
 #if DEBUG1
@@ -30,14 +30,14 @@ namespace LL.FrameWork.Core.Reflection
 
             DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType }, moduleBuilder);
 #else
-            DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType });
+            DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjectType });
 #endif
 
             var il = method.GetILGenerator();
-            ReflectionHelp.ILLdarg(il, 0);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
+            ReflectionHelper.ILLdarg(il, 0);
+            ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, type);
             il.Emit(OpCodes.Ldfld, field);
-            ReflectionHelp.ILCastclass(il, field.FieldType, ReflectionHelp.ObjectType);
+            ReflectionHelper.ILCastclass(il, field.FieldType, ReflectionHelper.ObjectType);
 
 #if DEBUG1
             il.MarkSequencePoint(doc, 1, 0, 1, 100);//DynamicMethod不支持
@@ -46,12 +46,12 @@ namespace LL.FrameWork.Core.Reflection
             il.Emit(OpCodes.Ret);
             FieldGet = (Func<object, object>)method.CreateDelegate(typeof(Func<object, object>));
 
-            method = new DynamicMethod(name + "_set", ReflectionHelp.VoidType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjectType });
+            method = new DynamicMethod(name + "_set", ReflectionHelper.VoidType, new Type[] { ReflectionHelper.ObjectType, ReflectionHelper.ObjectType });
             il = method.GetILGenerator();
-            ReflectionHelp.ILLdarg(il, 0);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
-            ReflectionHelp.ILLdarg(il, 1);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, field.FieldType);
+            ReflectionHelper.ILLdarg(il, 0);
+            ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, type);
+            ReflectionHelper.ILLdarg(il, 1);
+            ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, field.FieldType);
             il.Emit(OpCodes.Stfld, field);
             il.Emit(OpCodes.Ret);
             FieldSet = (Action<object, object>)method.CreateDelegate(typeof(Action<object, object>));

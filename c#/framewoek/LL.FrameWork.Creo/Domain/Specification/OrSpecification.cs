@@ -15,20 +15,20 @@ namespace LL.FrameWork.Core.Domain.Specification
 {
     using System;
     using System.Linq.Expressions;
+    using Expression_ = System.Linq.Expressions.Expression;
+
     using LL.FrameWork.Core.Domain;
 
     /// <summary>
     /// A Logic OR Specification
     /// </summary>
     /// <typeparam name="T">Type of entity that check this specification</typeparam>
-    public sealed class OrSpecification<T>
-         : CompositeSpecification<T>
-         where T : class
+    public sealed class OrSpecification<T> : CompositeSpecification<T> where T : class
     {
         #region Members
 
-        private ISpecification<T> _RightSideSpecification = null;
-        private ISpecification<T> _LeftSideSpecification = null;
+        private Specification<T> _RightSideSpecification = null;
+        private Specification<T> _LeftSideSpecification = null;
 
         #endregion
 
@@ -37,18 +37,10 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// <summary>
         /// Default constructor for AndSpecification
         /// </summary>
-        /// <param name="leftSide">Left side specification</param>
-        /// <param name="rightSide">Right side specification</param>
-        public OrSpecification(ISpecification<T> leftSide, ISpecification<T> rightSide)
+        public OrSpecification(Specification<T> leftSide, Specification<T> rightSide)
         {
-            if (leftSide == (ISpecification<T>)null)
-                throw new ArgumentNullException("leftSide");
-
-            if (rightSide == (ISpecification<T>)null)
-                throw new ArgumentNullException("rightSide");
-
-            this._LeftSideSpecification = leftSide;
-            this._RightSideSpecification = rightSide;
+            this._LeftSideSpecification = leftSide ?? Specification<T>.False;
+            this._RightSideSpecification = rightSide ?? Specification<T>.False;
         }
 
         #endregion
@@ -58,7 +50,7 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// <summary>
         /// Left side specification
         /// </summary>
-        public override ISpecification<T> LeftSideSpecification
+        public override Specification<T> LeftSideSpecification
         {
             get { return _LeftSideSpecification; }
         }
@@ -66,21 +58,14 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// <summary>
         /// Righ side specification
         /// </summary>
-        public override ISpecification<T> RightSideSpecification
+        public override Specification<T> RightSideSpecification
         {
             get { return _RightSideSpecification; }
         }
-        /// <summary>
-        /// <see cref="LL.FrameWork.Core.Domain.Specification.ISpecification{T}"/>
-        /// </summary>
-        /// <returns><see cref="LL.FrameWork.Core.Domain.Specification.ISpecification{T}"/></returns>
-        public override Expression<Func<T, bool>> SatisfiedBy()
-        {
-            Expression<Func<T, bool>> left = _LeftSideSpecification.SatisfiedBy();
-            Expression<Func<T, bool>> right = _RightSideSpecification.SatisfiedBy();
 
-            return (left.Or(right));
-            
+        protected override BinaryExpression CreateBody(Expression left, Expression right)
+        {
+            return Expression_.OrElse(left, right);
         }
 
         #endregion

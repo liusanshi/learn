@@ -22,9 +22,7 @@ namespace LL.FrameWork.Core.Domain.Specification
     /// in  constructor
     /// </summary>
     /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
-    public sealed class DirectSpecification<TEntity>
-        : Specification<TEntity>
-        where TEntity : class
+    public sealed class DirectSpecification<TEntity> : Specification<TEntity> where TEntity : class
     {
         #region Members
 
@@ -50,11 +48,7 @@ namespace LL.FrameWork.Core.Domain.Specification
 
         #region Override
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public override Expression<Func<TEntity, bool>> SatisfiedBy()
+        protected override Expression<Func<TEntity, bool>> CreateExpression()
         {
             return _MatchingCriteria;
         }

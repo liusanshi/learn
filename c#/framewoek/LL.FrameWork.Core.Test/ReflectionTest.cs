@@ -121,7 +121,7 @@ namespace LL.FrameWork.Core.Test
             var resulr = new object[] { 1, 3L, "as", "sd", null, obj };
 
             int i = 0;
-            foreach (var item in ReflectionHelp.GetArgumentByType(objs, types))
+            foreach (var item in ReflectionHelper.GetArgumentByType(objs, types))
             {
                 Assert.AreEqual(item, resulr[i]);                
                 i++;

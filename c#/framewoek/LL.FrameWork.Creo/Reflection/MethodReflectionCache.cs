@@ -34,13 +34,13 @@ namespace LL.FrameWork.Core.Reflection
             var MethodType = Generator.ProxyBuilder.ModuleScope.GetFromCache(key);
             if (MethodType == null)
             {
-                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelp.GetMemberSignName(method), null, new Type[] { typeof(IMethodInvoker) });
+                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelper.GetMemberSignName(method), null, new Type[] { typeof(IMethodInvoker) });
 
-                var invokeemit = classemit.CreateMethod("Invoke", ReflectionHelp.DefaultMethodAttributes, ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjArrayType });
+                var invokeemit = classemit.CreateMethod("Invoke", ReflectionHelper.DefaultMethodAttributes, ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjectType, ReflectionHelper.ObjArrayType });
                 if (method.IsPublic)
                 {
                     invokeemit.CodeBuilder.AddStatement(new ExpressionStatement(
-                        new ConvertExpression(type, ReflectionHelp.ObjectType, invokeemit.Arguments[0].ToExpression())));
+                        new ConvertExpression(type, ReflectionHelper.ObjectType, invokeemit.Arguments[0].ToExpression())));
 
                     var para = method.GetParameters();//组织参数
                     Expression[] Expressions = null;
@@ -51,20 +51,20 @@ namespace LL.FrameWork.Core.Reflection
                         int i = 0;
                         foreach (var item in para)
                         {
-                            Expressions[i] = new ConvertExpression(item.ParameterType, new LoadArrayElementExpression(i, ArgReference, ReflectionHelp.ObjectType));
+                            Expressions[i] = new ConvertExpression(item.ParameterType, new LoadArrayElementExpression(i, ArgReference, ReflectionHelper.ObjectType));
                             i++;
                         }
                     }
                     if (Expressions == null)
                     {
                         invokeemit.CodeBuilder.AddStatement(new ReturnStatement(
-                            new ConvertExpression(ReflectionHelp.ObjectType, method.ReturnType,
+                            new ConvertExpression(ReflectionHelper.ObjectType, method.ReturnType,
                                 new MethodInvocationExpression(null, method))));
                     }
                     else
                     {
                         invokeemit.CodeBuilder.AddStatement(new ReturnStatement(
-                            new ConvertExpression(ReflectionHelp.ObjectType, method.ReturnType,
+                            new ConvertExpression(ReflectionHelper.ObjectType, method.ReturnType,
                                 new MethodInvocationExpression(null, method, Expressions))));
                     }
                 }

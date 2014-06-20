@@ -37,12 +37,12 @@ namespace LL.FrameWork.Core.Reflection
             }
             if (!constructor.IsPublic)
             {
-                var types = ReflectionHelp.ConvertToType(constructor.GetParameters());
-                Constructor = arguments => constructor.Invoke(ReflectionHelp.GetArgumentByType(arguments, types));
+                var types = ReflectionHelper.ConvertToType(constructor.GetParameters());
+                Constructor = arguments => constructor.Invoke(ReflectionHelper.GetArgumentByType(arguments, types));
                 return;
             }
 
-            DynamicMethod method = new DynamicMethod(ReflectionHelp.GetMemberSignName(constructor), ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjArrayType });
+            DynamicMethod method = new DynamicMethod(ReflectionHelper.GetMemberSignName(constructor), ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjArrayType });
 
             var il = method.GetILGenerator();
             var args = constructor.GetParameters();
@@ -50,13 +50,13 @@ namespace LL.FrameWork.Core.Reflection
             {
                 for (byte i = 0; i < args.Length; i++)
                 {
-                    ReflectionHelp.ILLdarg(il, 0);
-                    ReflectionHelp.ILLdelem(il, i, ReflectionHelp.ObjectType);
-                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, args[i].ParameterType);
+                    ReflectionHelper.ILLdarg(il, 0);
+                    ReflectionHelper.ILLdelem(il, i, ReflectionHelper.ObjectType);
+                    ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, args[i].ParameterType);
                 }
             }
             il.Emit(OpCodes.Newobj, constructor);
-            ReflectionHelp.ILCastclass(il, constructor.DeclaringType, ReflectionHelp.ObjectType);
+            ReflectionHelper.ILCastclass(il, constructor.DeclaringType, ReflectionHelper.ObjectType);
             il.Emit(OpCodes.Ret);
 
             Constructor = (Func<object[], object>)method.CreateDelegate(typeof(Func<object[], object>));
@@ -73,8 +73,8 @@ namespace LL.FrameWork.Core.Reflection
 
         public object Invoke(params object[] args)
         {
-            var types = ReflectionHelp.ConvertToType(Constructor.GetParameters());
-            return Constructor.Invoke(ReflectionHelp.GetArgumentByType(args, types));
+            var types = ReflectionHelper.ConvertToType(Constructor.GetParameters());
+            return Constructor.Invoke(ReflectionHelper.GetArgumentByType(args, types));
         }
         object IConstructorInvoker.Invoke(params object[] args)
         {

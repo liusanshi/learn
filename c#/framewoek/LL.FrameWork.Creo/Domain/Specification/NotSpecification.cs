@@ -16,6 +16,7 @@ namespace LL.FrameWork.Core.Domain.Specification
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using Expression_ = System.Linq.Expressions.Expression;
     using LL.FrameWork.Core.Domain;
 
     /// <summary>
@@ -39,13 +40,13 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// Constructor for NotSpecificaiton
         /// </summary>
         /// <param name="originalSpecification">Original specification</param>
-        public NotSpecification(ISpecification<TEntity> originalSpecification)
+        public NotSpecification(Specification<TEntity> originalSpecification)
         {
 
             if (originalSpecification == (ISpecification<TEntity>)null)
                 throw new ArgumentNullException("originalSpecification");
 
-            _OriginalCriteria = originalSpecification.SatisfiedBy();
+            _OriginalCriteria = originalSpecification.Expression;
         }
 
         /// <summary>
@@ -65,16 +66,14 @@ namespace LL.FrameWork.Core.Domain.Specification
         #region Override Specification methods
 
         /// <summary>
-        /// <see cref="LL.FrameWork.Core.Domain.Specification.ISpecification{TEntity}"/>
+        /// 
         /// </summary>
-        /// <returns><see cref="LL.FrameWork.Core.Domain.Specification.ISpecification{TEntity}"/></returns>
-        public override Expression<Func<TEntity, bool>> SatisfiedBy()
+        /// <returns></returns>
+        protected override Expression<Func<TEntity, bool>> CreateExpression()
         {
-            
-            return Expression.Lambda<Func<TEntity,bool>>(Expression.Not(_OriginalCriteria.Body),
+            return Expression_.Lambda<Func<TEntity, bool>>(Expression_.Not(_OriginalCriteria.Body),
                                                          _OriginalCriteria.Parameters.Single());
         }
-
         #endregion
     }
 }

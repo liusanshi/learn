@@ -1,17 +1,4 @@
-﻿//===================================================================================
-// Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
-// http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-
-
-namespace LL.FrameWork.Core.Domain.Specification
+﻿namespace LL.FrameWork.Core.Domain.Specification
 {
     using System;
     using System.Linq.Expressions;
@@ -24,14 +11,14 @@ namespace LL.FrameWork.Core.Domain.Specification
     /// lambda expression into this pattern.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity</typeparam>
-    public interface ISpecification<TEntity>
-        where TEntity : class
+    public interface ISpecification<TEntity> where TEntity : class
     {
         /// <summary>
         /// Check if this specification is satisfied by a 
         /// specific expression lambda
         /// </summary>
+        /// <param name="entity"></param>
         /// <returns></returns>
-        Expression<Func<TEntity, bool>> SatisfiedBy();
+        bool IsSatisfiedBy(TEntity entity);
     }
 }

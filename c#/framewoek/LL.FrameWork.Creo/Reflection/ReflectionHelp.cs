@@ -12,7 +12,7 @@ namespace LL.FrameWork.Core.Reflection
     /// <summary>
     /// 反射帮助类
     /// </summary>
-    public static class ReflectionHelp
+    public static class ReflectionHelper
     {
         #region decimal转换函数
         /// <summary>
@@ -24,7 +24,7 @@ namespace LL.FrameWork.Core.Reflection
         /// </summary>
         public readonly static Dictionary<TypeCode, MethodInfo> DecimalExplicitMethods = new Dictionary<TypeCode, MethodInfo>(13);
 
-        static ReflectionHelp()
+        static ReflectionHelper()
         {
             //op_Implicit\op_Explicit
             var methods = typeof(decimal).GetMethods(BindingFlags.Static | BindingFlags.Public);
@@ -47,6 +47,36 @@ namespace LL.FrameWork.Core.Reflection
         /// 字符串处理缓存
         /// </summary>
         private static readonly StringBuilder Stringbuff = new StringBuilder();
+        
+        /// <summary>
+        /// 从表达式目录树中提取的属性元数据。
+        /// 该 Lambda 表达式返回收到为一个表达式树的属性的值。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="propertyReturnsExpression"></param>
+        /// <returns></returns>
+        public static PropertyInfo ExtractPropertyInfo<T, TResult>(Expression<Func<T, TResult>> propertyReturnsExpression)
+        {
+            if (propertyReturnsExpression == null)
+            {
+                throw new ArgumentNullException("propertyReturnsExpression");
+            }
+
+            var body = propertyReturnsExpression.Body as MemberExpression;
+            if (body == null)
+            {
+                throw new ArgumentException("propertyReturnsExpression Lambda表达式返回的值不是属性。");
+            }
+
+            var targetProperty = body.Member as PropertyInfo;
+            if (targetProperty == null)
+            {
+                throw new ArgumentException("propertyReturnsExpression Lambda表达式返回的值不是属性。");
+            }
+
+            return targetProperty;
+        }
 
         /// <summary>
         /// 获取成员的标识

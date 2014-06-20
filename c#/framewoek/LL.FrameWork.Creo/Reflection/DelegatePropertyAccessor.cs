@@ -30,7 +30,7 @@ namespace LL.FrameWork.Core.Reflection
             //PropertyGet = new DelegateMethodInvoker(property.GetGetMethod());
             //PropertySet = new DelegateMethodInvoker(property.GetSetMethod());
 
-            var name = ReflectionHelp.GetMemberSignName(property);
+            var name = ReflectionHelper.GetMemberSignName(property);
             var type = property.DeclaringType;
 
             if (getmethod != null && !getmethod.IsPublic)
@@ -39,19 +39,19 @@ namespace LL.FrameWork.Core.Reflection
             }
             else
             {
-                DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType });
+                DynamicMethod method = new DynamicMethod(name + "_get", ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjectType });
                 var il = method.GetILGenerator();
                 if (getmethod != null)
                 {
-                    ReflectionHelp.ILLdarg(il, 0);
-                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
+                    ReflectionHelper.ILLdarg(il, 0);
+                    ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, type);
                     il.Emit(OpCodes.Callvirt, getmethod);
-                    ReflectionHelp.ILCastclass(il, property.PropertyType, ReflectionHelp.ObjectType);
+                    ReflectionHelper.ILCastclass(il, property.PropertyType, ReflectionHelper.ObjectType);
                     il.Emit(OpCodes.Ret);
                 }
                 else
                 {
-                    ReflectionHelp.ILThrow<MethodAccessException>(il, "get method not found");
+                    ReflectionHelper.ILThrow<MethodAccessException>(il, "get method not found");
                 }
                 PropertyGet = (Func<object, object>)method.CreateDelegate(typeof(Func<object, object>));
             }
@@ -61,20 +61,20 @@ namespace LL.FrameWork.Core.Reflection
             }
             else
             {
-                DynamicMethod method = new DynamicMethod(name + "_set", ReflectionHelp.VoidType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjectType });
+                DynamicMethod method = new DynamicMethod(name + "_set", ReflectionHelper.VoidType, new Type[] { ReflectionHelper.ObjectType, ReflectionHelper.ObjectType });
                 var il = method.GetILGenerator();
                 if (setmethod != null)
                 {
-                    ReflectionHelp.ILLdarg(il, 0);
-                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
-                    ReflectionHelp.ILLdarg(il, 1);
-                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, property.PropertyType);
+                    ReflectionHelper.ILLdarg(il, 0);
+                    ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, type);
+                    ReflectionHelper.ILLdarg(il, 1);
+                    ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, property.PropertyType);
                     il.Emit(OpCodes.Callvirt, setmethod);
                     il.Emit(OpCodes.Ret);
                 }
                 else
                 {
-                    ReflectionHelp.ILThrow<MethodAccessException>(il, "set method not found");
+                    ReflectionHelper.ILThrow<MethodAccessException>(il, "set method not found");
                 }
 
                 PropertySet = (Action<object, object>)method.CreateDelegate(typeof(Action<object, object>));

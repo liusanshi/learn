@@ -44,20 +44,20 @@ namespace LL.FrameWork.Core.Reflection
             var TPropAccessor = Generator.ProxyBuilder.ModuleScope.GetFromCache(key);
             if (TPropAccessor == null)
             {
-                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelp.GetMemberSignName(field), null, new Type[] { typeof(IFieldAccessor) });
+                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelper.GetMemberSignName(field), null, new Type[] { typeof(IFieldAccessor) });
 
-                var getemit = classemit.CreateMethod("Get", ReflectionHelp.DefaultMethodAttributes, ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType });
+                var getemit = classemit.CreateMethod("Get", ReflectionHelper.DefaultMethodAttributes, ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjectType });
                 getemit.CodeBuilder.AddStatement(new ExpressionStatement(
-                    new ConvertExpression(type, ReflectionHelp.ObjectType, getemit.Arguments[0].ToExpression())));
+                    new ConvertExpression(type, ReflectionHelper.ObjectType, getemit.Arguments[0].ToExpression())));
                 getemit.CodeBuilder.AddStatement(new ReturnStatement(
-                    new ConvertExpression(ReflectionHelp.ObjectType, field.FieldType, (new FieldReference(field) { OwnerReference = null }).ToExpression())));
+                    new ConvertExpression(ReflectionHelper.ObjectType, field.FieldType, (new FieldReference(field) { OwnerReference = null }).ToExpression())));
 
-                var setemit = classemit.CreateMethod("Set", ReflectionHelp.DefaultMethodAttributes, ReflectionHelp.VoidType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjectType });
+                var setemit = classemit.CreateMethod("Set", ReflectionHelper.DefaultMethodAttributes, ReflectionHelper.VoidType, new Type[] { ReflectionHelper.ObjectType, ReflectionHelper.ObjectType });
                 setemit.CodeBuilder.AddStatement(new ExpressionStatement(
-                    new ConvertExpression(type, ReflectionHelp.ObjectType, setemit.Arguments[0].ToExpression())));
+                    new ConvertExpression(type, ReflectionHelper.ObjectType, setemit.Arguments[0].ToExpression())));
                 setemit.CodeBuilder.AddStatement(new AssignStatement(
                     new FieldReference(field) { OwnerReference = null },
-                    new ConvertExpression(field.FieldType, ReflectionHelp.ObjectType, setemit.Arguments[1].ToExpression())));
+                    new ConvertExpression(field.FieldType, ReflectionHelper.ObjectType, setemit.Arguments[1].ToExpression())));
                 setemit.CodeBuilder.AddStatement(new ReturnStatement());
 
                 TPropAccessor = classemit.BuildType();

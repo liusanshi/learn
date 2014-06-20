@@ -15,6 +15,8 @@ namespace LL.FrameWork.Core.Domain.Specification
 {
     using System;
     using System.Linq.Expressions;
+    using Expression_ = System.Linq.Expressions.Expression;
+
     using LL.FrameWork.Core.Domain;
 
     /// <summary>
@@ -27,8 +29,8 @@ namespace LL.FrameWork.Core.Domain.Specification
     {
         #region Members
 
-        private ISpecification<T> _RightSideSpecification = null;
-        private ISpecification<T> _LeftSideSpecification = null;
+        private Specification<T> _RightSideSpecification = null;
+        private Specification<T> _LeftSideSpecification = null;
 
         #endregion
 
@@ -37,18 +39,10 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// <summary>
         /// Default constructor for AndSpecification
         /// </summary>
-        /// <param name="leftSide">Left side specification</param>
-        /// <param name="rightSide">Right side specification</param>
-        public AndSpecification(ISpecification<T> leftSide, ISpecification<T> rightSide)
+        public AndSpecification(Specification<T> leftSide, Specification<T> rightSide)
         {
-            if (leftSide == (ISpecification<T>)null)
-                throw new ArgumentNullException("leftSide");
-
-            if (rightSide == (ISpecification<T>)null)
-                throw new ArgumentNullException("rightSide");
-
-            this._LeftSideSpecification = leftSide;
-            this._RightSideSpecification = rightSide;
+            this._LeftSideSpecification = leftSide ?? Specification<T>.True;
+            this._RightSideSpecification = rightSide ?? Specification<T>.True;
         }
 
         #endregion
@@ -58,7 +52,7 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// <summary>
         /// Left side specification
         /// </summary>
-        public override ISpecification<T> LeftSideSpecification
+        public override Specification<T> LeftSideSpecification
         {
             get { return _LeftSideSpecification; }
         }
@@ -66,24 +60,15 @@ namespace LL.FrameWork.Core.Domain.Specification
         /// <summary>
         /// Right side specification
         /// </summary>
-        public override ISpecification<T> RightSideSpecification
+        public override Specification<T> RightSideSpecification
         {
             get { return _RightSideSpecification; }
         }
 
-        /// <summary>
-        /// <see cref="LL.FrameWork.Core.Domain.Specification.ISpecification{T}"/>
-        /// </summary>
-        /// <returns><see cref="LL.FrameWork.Core.Domain.Specification.ISpecification{T}"/></returns>
-        public override Expression<Func<T, bool>> SatisfiedBy()
+        protected override BinaryExpression CreateBody(Expression left, Expression right)
         {
-            Expression<Func<T, bool>> left = _LeftSideSpecification.SatisfiedBy();
-            Expression<Func<T, bool>> right = _RightSideSpecification.SatisfiedBy();
-
-            return (left.And(right));
-           
+            return Expression_.AndAlso(left, right);
         }
-
         #endregion
     }
 }

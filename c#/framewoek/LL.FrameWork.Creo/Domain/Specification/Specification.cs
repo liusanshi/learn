@@ -1,21 +1,10 @@
-﻿//===================================================================================
-// Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
-// http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-
-namespace LL.FrameWork.Core.Domain.Specification
+﻿namespace LL.FrameWork.Core.Domain.Specification
 {
     using System;
     using System.Linq.Expressions;
 
     using LL.FrameWork.Core.Domain;
+    using LL.FrameWork.Core.Domain.Expanders;
 
 
     /// <summary>
@@ -29,17 +18,99 @@ namespace LL.FrameWork.Core.Domain.Specification
     /// </remarks>
     /// </summary>
     /// <typeparam name="TValueObject">Type of item in the criteria</typeparam>
-    public abstract class Specification<TEntity>
-         : ISpecification<TEntity>
-         where TEntity : class
+    public abstract class Specification<TEntity> : ISpecification<TEntity> where TEntity : class
     {
-        #region ISpecification<TEntity> Members
+        /// <summary>
+        /// 常量 TrueSpecification
+        /// </summary>
+        public static readonly Specification<TEntity> True = new TrueSpecification<TEntity>();
 
         /// <summary>
-        /// IsSatisFied Specification pattern method,
+        /// 常量 FalseSpecification
         /// </summary>
-        /// <returns>Expression that satisfy this specification</returns>
-        public abstract Expression<Func<TEntity, bool>> SatisfiedBy();
+        public static readonly Specification<TEntity> False = new FalseSpecification<TEntity>();
+
+        #region 组装表达式树
+
+        /// <summary>
+        /// 描述 Specification 的表达式树
+        /// </summary>
+        private Expression<Func<TEntity, bool>> _expression;
+
+        /// <summary>
+        /// 表达数树生成的委托
+        /// </summary>
+        private Func<TEntity, bool> _delegate;
+
+
+        /// <summary>
+        /// 获取描述 Specification 的表达式树
+        /// </summary>
+        public Expression<Func<TEntity, bool>> Expression
+        {
+            get
+            {
+                if (_expression == null)
+                {
+                    _expression = CreateExpandedExpression();
+                }
+                return _expression;
+            }
+        }
+
+        /// <summary>
+        /// 获取表达数树生成的委托
+        /// </summary>
+        public Func<TEntity, bool> Delegate
+        {
+            get
+            {
+                if (_delegate == null)
+                {
+                    _delegate = Expression.Compile();
+                }
+                return _delegate;
+            }
+        }
+
+
+        /// <summary>
+        /// 判断指定的对象是否符合 Specification
+        /// </summary>
+        /// <param name="target">实体对象</param>
+        /// <returns>判断指定的对象是否符合 Specification，满足返回 true、否则false。</returns>
+        public bool IsSatisfiedBy(TEntity target)
+        {
+            return Delegate(target);
+        }
+
+
+        /// <summary>
+        /// 生成表达式树
+        /// </summary>
+        /// <returns>表达式树</returns>
+        protected abstract Expression<Func<TEntity, bool>> CreateExpression();
+
+        /// <summary>
+        /// 获取扩展点
+        /// 默认返回null
+        /// </summary>
+        /// <returns>返回扩展点</returns>
+        protected virtual Expander<TEntity> GetExpander()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 创建扩展表达式树
+        /// </summary>
+        /// <returns>返回表达式树</returns>
+        private Expression<Func<TEntity, bool>> CreateExpandedExpression()
+        {
+            var source = CreateExpression();
+            var expander = GetExpander();
+            return (expander != null) ? expander.Expand(source) : source;
+        }
 
         #endregion
 

@@ -35,9 +35,9 @@ namespace LL.FrameWork.Core.Reflection
             var ConstructorType = Generator.ProxyBuilder.ModuleScope.GetFromCache(key);
             if (ConstructorType == null)
             {
-                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelp.GetMemberSignName(constructor), null, new Type[] { typeof(IConstructorInvoker) });
+                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelper.GetMemberSignName(constructor), null, new Type[] { typeof(IConstructorInvoker) });
 
-                var invokeemit = classemit.CreateMethod("Invoke", ReflectionHelp.DefaultMethodAttributes, ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjArrayType });
+                var invokeemit = classemit.CreateMethod("Invoke", ReflectionHelper.DefaultMethodAttributes, ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjArrayType });
 
                 if (constructor.IsPublic)
                 {
@@ -50,7 +50,7 @@ namespace LL.FrameWork.Core.Reflection
                         int i = 0;
                         foreach (var item in para)
                         {
-                            Expressions[i] = new ConvertExpression(item.ParameterType, new LoadArrayElementExpression(i, ArgReference, ReflectionHelp.ObjectType));
+                            Expressions[i] = new ConvertExpression(item.ParameterType, new LoadArrayElementExpression(i, ArgReference, ReflectionHelper.ObjectType));
                             i++;
                         }
                     }

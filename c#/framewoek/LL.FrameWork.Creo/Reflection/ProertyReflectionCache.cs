@@ -44,16 +44,16 @@ namespace LL.FrameWork.Core.Reflection
             var TPropAccessor = Generator.ProxyBuilder.ModuleScope.GetFromCache(key);
             if (TPropAccessor == null)
             {
-                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelp.GetMemberSignName(Property), null, new Type[] { typeof(IPropertyAccessor) });
+                ClassEmitter classemit = new ClassEmitter(Generator.ProxyBuilder.ModuleScope, ReflectionHelper.GetMemberSignName(Property), null, new Type[] { typeof(IPropertyAccessor) });
 
-                var getemit = classemit.CreateMethod("Get", ReflectionHelp.DefaultMethodAttributes, ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType });
+                var getemit = classemit.CreateMethod("Get", ReflectionHelper.DefaultMethodAttributes, ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjectType });
                 MethodInfo method = Property.GetGetMethod();
                 if (Property.CanRead && method != null)
                 {
                     getemit.CodeBuilder.AddStatement(new ExpressionStatement(
-                        new ConvertExpression(type, ReflectionHelp.ObjectType, getemit.Arguments[0].ToExpression())));
+                        new ConvertExpression(type, ReflectionHelper.ObjectType, getemit.Arguments[0].ToExpression())));
                     getemit.CodeBuilder.AddStatement(new ReturnStatement(
-                        new ConvertExpression(ReflectionHelp.ObjectType, Property.PropertyType,
+                        new ConvertExpression(ReflectionHelper.ObjectType, Property.PropertyType,
                             new MethodInvocationExpression(null, method))));
                 }
                 else
@@ -69,11 +69,11 @@ namespace LL.FrameWork.Core.Reflection
                 }
 
                 method = Property.GetSetMethod();
-                var setemit = classemit.CreateMethod("Set", ReflectionHelp.DefaultMethodAttributes, ReflectionHelp.VoidType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjectType });
+                var setemit = classemit.CreateMethod("Set", ReflectionHelper.DefaultMethodAttributes, ReflectionHelper.VoidType, new Type[] { ReflectionHelper.ObjectType, ReflectionHelper.ObjectType });
                 if (Property.CanWrite && method != null)
                 {
                     MethodInvocationExpression setMethod = new MethodInvocationExpression(setemit.Arguments[0], method,
-                        new ConvertExpression(Property.PropertyType, ReflectionHelp.ObjectType, setemit.Arguments[1].ToExpression()));
+                        new ConvertExpression(Property.PropertyType, ReflectionHelper.ObjectType, setemit.Arguments[1].ToExpression()));
                     setemit.CodeBuilder.AddStatement(new ReturnStatement(setMethod));
                 }
                 else

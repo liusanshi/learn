@@ -20,25 +20,25 @@ namespace LL.FrameWork.Core.Reflection
             }
 
             var type = method.DeclaringType;
-            DynamicMethod Dmethod = new DynamicMethod(ReflectionHelp.GetMemberSignName(method), ReflectionHelp.ObjectType, new Type[] { ReflectionHelp.ObjectType, ReflectionHelp.ObjArrayType });
+            DynamicMethod Dmethod = new DynamicMethod(ReflectionHelper.GetMemberSignName(method), ReflectionHelper.ObjectType, new Type[] { ReflectionHelper.ObjectType, ReflectionHelper.ObjArrayType });
 
             var il = Dmethod.GetILGenerator();
-            ReflectionHelp.ILLdarg(il, 0);
-            ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, type);
+            ReflectionHelper.ILLdarg(il, 0);
+            ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, type);
             var args = method.GetParameters();
             if (args != null)
             {
                 for (byte i = 0; i < args.Length; i++)
                 {
-                    ReflectionHelp.ILLdarg(il, 1);
-                    ReflectionHelp.ILLdelem(il, i, ReflectionHelp.ObjectType);
-                    ReflectionHelp.ILCastclass(il, ReflectionHelp.ObjectType, args[i].ParameterType);
+                    ReflectionHelper.ILLdarg(il, 1);
+                    ReflectionHelper.ILLdelem(il, i, ReflectionHelper.ObjectType);
+                    ReflectionHelper.ILCastclass(il, ReflectionHelper.ObjectType, args[i].ParameterType);
                 }
             }
             il.Emit(OpCodes.Callvirt, method);
-            if (method.ReturnType != ReflectionHelp.VoidType)
+            if (method.ReturnType != ReflectionHelper.VoidType)
             {
-                ReflectionHelp.ILCastclass(il, method.ReturnType, ReflectionHelp.ObjectType);
+                ReflectionHelper.ILCastclass(il, method.ReturnType, ReflectionHelper.ObjectType);
             }
             il.Emit(OpCodes.Ret);
             MethodInvoker = (Func<object, object[], object>)Dmethod.CreateDelegate(typeof(Func<object, object[], object>));
@@ -63,8 +63,8 @@ namespace LL.FrameWork.Core.Reflection
         }
         public object Invoke(object Target, params object[] args)
         {
-            var types = ReflectionHelp.ConvertToType(Method.GetParameters());
-            return Method.Invoke(Target, ReflectionHelp.GetArgumentByType(args, types));
+            var types = ReflectionHelper.ConvertToType(Method.GetParameters());
+            return Method.Invoke(Target, ReflectionHelper.GetArgumentByType(args, types));
         }
         object IMethodInvoker.Invoke(object Target, params object[] args)
         {
