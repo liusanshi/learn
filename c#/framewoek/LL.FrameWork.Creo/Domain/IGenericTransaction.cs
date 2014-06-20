@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LL.FrameWork.Core.UOW
+namespace LL.FrameWork.Core.Domain
 {
     public interface IGenericTransaction : IDisposable
     {

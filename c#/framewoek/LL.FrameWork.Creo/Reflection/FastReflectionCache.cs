@@ -2,7 +2,9 @@
 using System.Reflection;
 using System.Collections.Generic;
 
+#if Castle  
 using Castle.DynamicProxy;
+#endif
 
 namespace LL.FrameWork.Core.Reflection
 {
@@ -21,14 +23,16 @@ namespace LL.FrameWork.Core.Reflection
     /// <typeparam name="TValue"></typeparam>
     public abstract class FastReflectionCache<TKey, TValue> : IFastReflectionCache<TKey, TValue>
     {
+        #if Castle  
         protected ProxyGenerator Generator;
-        private Dictionary<TKey, TValue> dic_cache = new Dictionary<TKey, TValue>();
-
-        public FastReflectionCache() { }
         public FastReflectionCache(ProxyGenerator generator)
         {
             Generator = generator;
         }
+        #endif
+        private Dictionary<TKey, TValue> dic_cache = new Dictionary<TKey, TValue>();
+
+        public FastReflectionCache() { }
 
         /// <summary>
         /// 获取缓存对象
@@ -86,6 +90,9 @@ namespace LL.FrameWork.Core.Reflection
 
         static FastReflectionCaches()
         {
+#if Castle
+            
+#endif
             _ConstructorReflectionCache = new ConstructorReflectionCache();
             _MethodReflectionCache = new MethodReflectionCache();
             _FieldReflectionCache = new FieldReflectionCache();

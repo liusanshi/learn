@@ -11,17 +11,22 @@
 //===================================================================================
 
 
-namespace Domain.Seedwork.Tests.Classes
+namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Validator
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LL.FrameWork.Core.Domain;
 
-    public class SampleEntity
-        : EntityBase<Guid>
+    /// <summary>
+    /// Base contract for entity validator abstract factory
+    /// </summary>
+    public interface IEntityValidatorFactory
     {
-        public string SampleProperty { get; set; }
+        /// <summary>
+        /// Create a new IEntityValidator
+        /// </summary>
+        /// <returns>IEntityValidator</returns>
+        IEntityValidator Create();
     }
 }

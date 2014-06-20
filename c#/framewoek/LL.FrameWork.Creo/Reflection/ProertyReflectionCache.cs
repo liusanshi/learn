@@ -1,13 +1,27 @@
-﻿using System;
-using System.Reflection;
+﻿
+namespace LL.FrameWork.Core.Reflection
+{
+    using System;
+    using System.Reflection;
 
+    /// <summary>
+    /// 属性访问器
+    /// </summary>
+    public class PropertyReflectionCache : FastReflectionCache<PropertyInfo, IPropertyAccessor>
+    {
+        protected override IPropertyAccessor Create(PropertyInfo key)
+        {
+            return FastReflectionFactory.ProertyReflectionFactory.Create(key);
+        }
+    }
+
+#if Castle  
+    
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
-namespace LL.FrameWork.Core.Reflection
-{
     public class PropertyAccessor : IPropertyAccessor
     {
         private IPropertyAccessor propertyaccessor;
@@ -92,15 +106,5 @@ namespace LL.FrameWork.Core.Reflection
             return TPropAccessor;
         }
     }
-
-    /// <summary>
-    /// 属性访问器
-    /// </summary>
-    public class PropertyReflectionCache : FastReflectionCache<PropertyInfo, IPropertyAccessor>
-    {
-        protected override IPropertyAccessor Create(PropertyInfo key)
-        {
-            return FastReflectionFactory.ProertyReflectionFactory.Create(key);
-        }
-    }
+#endif
 }

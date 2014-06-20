@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using Castle.DynamicProxy;
+//using Castle.DynamicProxy;
 
 namespace LL.FrameWork.Core.Reflection
 {
@@ -16,71 +16,71 @@ namespace LL.FrameWork.Core.Reflection
     /// <summary>
     /// 属性访问工厂 ProertyReflectionCache
     /// </summary>
-    public class ProertyReflectionFactory : IFastReflectionFactory<PropertyInfo, IPropertyAccessor>
-    {
-        ProxyGenerator Generator;
-        public ProertyReflectionFactory() { }
-        public ProertyReflectionFactory(ProxyGenerator generator) { Generator = generator; }
-        public IPropertyAccessor Create(PropertyInfo key)
-        {
-            return new PropertyAccessor(Generator, key);
-        }
-        IPropertyAccessor IFastReflectionFactory<PropertyInfo, IPropertyAccessor>.Create(PropertyInfo key)
-        {
-            return this.Create(key);
-        }
-    }
-    /// <summary>
-    /// 字段访问工厂 FieldReflectionCache
-    /// </summary>
-    public class FieldReflectionFactory : IFastReflectionFactory<FieldInfo, IFieldAccessor>
-    {
-        ProxyGenerator Generator;
-        public FieldReflectionFactory() { }
-        public FieldReflectionFactory(ProxyGenerator generator) { Generator = generator; }
-        public IFieldAccessor Create(FieldInfo key)
-        {
-            return new FieldAccessor(Generator, key);
-        }
-        IFieldAccessor IFastReflectionFactory<FieldInfo, IFieldAccessor>.Create(FieldInfo key)
-        {
-            return this.Create(key);
-        }
-    }
-    /// <summary>
-    /// 函数访问工厂 MethodReflectionCache
-    /// </summary>
-    public class MethodReflectionFactory : IFastReflectionFactory<MethodInfo, IMethodInvoker>
-    {
-        ProxyGenerator Generator;
-        public MethodReflectionFactory() { }
-        public MethodReflectionFactory(ProxyGenerator generator) { Generator = generator; }
-        public IMethodInvoker Create(MethodInfo key)
-        {
-            return new MethodInvoker(Generator, key);
-        }
-        IMethodInvoker IFastReflectionFactory<MethodInfo, IMethodInvoker>.Create(MethodInfo key)
-        {
-            return this.Create(key);
-        }
-    }
-    /// <summary>
-    /// 构造函数访问工厂
-    /// </summary>
-    public class ConstructorReflectionFactory : IFastReflectionFactory<ConstructorInfo, IConstructorInvoker>
-    {
-        ProxyGenerator Generator;
-        public ConstructorReflectionFactory() { }
-        public ConstructorReflectionFactory(ProxyGenerator generator) { Generator = generator; }
-        public IConstructorInvoker Create(ConstructorInfo key)
-        {
-            return new ConstructorInvoker(Generator, key);
-        }
-        IConstructorInvoker IFastReflectionFactory<ConstructorInfo, IConstructorInvoker>.Create(ConstructorInfo key)
-        {
-            return this.Create(key);
-        }
-    }
+    //public class ProertyReflectionFactory : IFastReflectionFactory<PropertyInfo, IPropertyAccessor>
+    //{
+    //    ProxyGenerator Generator;
+    //    public ProertyReflectionFactory() { }
+    //    public ProertyReflectionFactory(ProxyGenerator generator) { Generator = generator; }
+    //    public IPropertyAccessor Create(PropertyInfo key)
+    //    {
+    //        return new PropertyAccessor(Generator, key);
+    //    }
+    //    IPropertyAccessor IFastReflectionFactory<PropertyInfo, IPropertyAccessor>.Create(PropertyInfo key)
+    //    {
+    //        return this.Create(key);
+    //    }
+    //}
+    ///// <summary>
+    ///// 字段访问工厂 FieldReflectionCache
+    ///// </summary>
+    //public class FieldReflectionFactory : IFastReflectionFactory<FieldInfo, IFieldAccessor>
+    //{
+    //    ProxyGenerator Generator;
+    //    public FieldReflectionFactory() { }
+    //    public FieldReflectionFactory(ProxyGenerator generator) { Generator = generator; }
+    //    public IFieldAccessor Create(FieldInfo key)
+    //    {
+    //        return new FieldAccessor(Generator, key);
+    //    }
+    //    IFieldAccessor IFastReflectionFactory<FieldInfo, IFieldAccessor>.Create(FieldInfo key)
+    //    {
+    //        return this.Create(key);
+    //    }
+    //}
+    ///// <summary>
+    ///// 函数访问工厂 MethodReflectionCache
+    ///// </summary>
+    //public class MethodReflectionFactory : IFastReflectionFactory<MethodInfo, IMethodInvoker>
+    //{
+    //    ProxyGenerator Generator;
+    //    public MethodReflectionFactory() { }
+    //    public MethodReflectionFactory(ProxyGenerator generator) { Generator = generator; }
+    //    public IMethodInvoker Create(MethodInfo key)
+    //    {
+    //        return new MethodInvoker(Generator, key);
+    //    }
+    //    IMethodInvoker IFastReflectionFactory<MethodInfo, IMethodInvoker>.Create(MethodInfo key)
+    //    {
+    //        return this.Create(key);
+    //    }
+    //}
+    ///// <summary>
+    ///// 构造函数访问工厂
+    ///// </summary>
+    //public class ConstructorReflectionFactory : IFastReflectionFactory<ConstructorInfo, IConstructorInvoker>
+    //{
+    //    ProxyGenerator Generator;
+    //    public ConstructorReflectionFactory() { }
+    //    public ConstructorReflectionFactory(ProxyGenerator generator) { Generator = generator; }
+    //    public IConstructorInvoker Create(ConstructorInfo key)
+    //    {
+    //        return new ConstructorInvoker(Generator, key);
+    //    }
+    //    IConstructorInvoker IFastReflectionFactory<ConstructorInfo, IConstructorInvoker>.Create(ConstructorInfo key)
+    //    {
+    //        return this.Create(key);
+    //    }
+    //}
 
     public static class FastReflectionFactory
     {
@@ -88,7 +88,7 @@ namespace LL.FrameWork.Core.Reflection
         static IFastReflectionFactory<MethodInfo, IMethodInvoker> _MethodReflectionFactory;
         static IFastReflectionFactory<FieldInfo, IFieldAccessor> _FieldReflectionFactory;
         static IFastReflectionFactory<PropertyInfo, IPropertyAccessor> _ProertyReflectionFactory;
-        static ProxyGenerator generator = null;
+        //static ProxyGenerator generator = null;
 
         static FastReflectionFactory()
         {
@@ -106,16 +106,16 @@ namespace LL.FrameWork.Core.Reflection
             _ProertyReflectionFactory = new DelegateProertyReflectionFactory();
         }
 
-        public static void SaveCache()
-        {
-            try
-            {
-                generator.ProxyBuilder.ModuleScope.SaveAssembly(false);
-                generator.ProxyBuilder.ModuleScope.SaveAssembly(true);                
-            }
-            catch
-            { }
-        }
+        //public static void SaveCache()
+        //{
+        //    try
+        //    {
+        //        generator.ProxyBuilder.ModuleScope.SaveAssembly(false);
+        //        generator.ProxyBuilder.ModuleScope.SaveAssembly(true);                
+        //    }
+        //    catch
+        //    { }
+        //}
         /// <summary>
         /// 属性访问对象
         /// </summary>

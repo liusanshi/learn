@@ -3,7 +3,7 @@
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace LL.FrameWork.Core.UOW
+namespace LL.FrameWork.Implementation.UOW
 {
     public interface IUnitOfWorkFactory
     {
@@ -26,17 +26,17 @@ namespace LL.FrameWork.Core.UOW
         /// 创建有状态的工作单元 
         /// </summary>
         /// <returns></returns>
-        IUnitOfWork Create();
+        INhibernateUnitOfWork Create();
         /// <summary>
         /// 创建是否有状态的工作单元
         /// </summary>
         /// <param name="hasState"></param>
         /// <returns></returns>
-        IUnitOfWork Create(bool hasState);
+        INhibernateUnitOfWork Create(bool hasState);
         /// <summary>
         /// 释放工作单元
         /// </summary>
         /// <param name="adapter"></param>
-        void DisposeUnitOfWork(IUnitOfWorkImplementor adapter);
+        void DisposeUnitOfWork(INhibernateUnitOfWork adapter);
     }
 }

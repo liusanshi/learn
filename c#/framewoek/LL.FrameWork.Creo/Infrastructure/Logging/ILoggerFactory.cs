@@ -11,17 +11,22 @@
 //===================================================================================
 
 
-namespace Domain.Seedwork.Tests.Classes
+namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Logging
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LL.FrameWork.Core.Domain;
 
-    public class SampleEntity
-        : EntityBase<Guid>
+    /// <summary>
+    /// Base contract for Log abstract factory
+    /// </summary>
+    public interface ILoggerFactory
     {
-        public string SampleProperty { get; set; }
+        /// <summary>
+        /// Create a new ILog
+        /// </summary>
+        /// <returns>The ILog created</returns>
+        ILogger Create();
     }
 }

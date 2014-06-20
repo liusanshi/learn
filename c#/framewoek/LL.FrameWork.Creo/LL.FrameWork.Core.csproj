@@ -31,21 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.3.1.0\lib\net35\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor">
-      <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net35\Castle.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="Iesi.Collections">
-      <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,14 +39,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Entity.cs" />
+    <Compile Include="Application\ApplicationValidationErrorsException.cs" />
+    <Compile Include="Application\ProjectionsExtensionMethods.cs" />
+    <Compile Include="Domain\EntityBase.cs" />
     <Compile Include="Domain\Expanders\Expander`1.cs" />
     <Compile Include="Domain\Expanders\IExpandable`1.cs" />
     <Compile Include="Domain\ExpressionVisitors\MemberVisitor.cs" />
     <Compile Include="Domain\ExpressionVisitors\ParameterVisitor.cs" />
     <Compile Include="Domain\IdentityGenerator.cs" />
+    <Compile Include="Domain\IGenericTransaction.cs" />
     <Compile Include="Domain\IRepository.cs" />
     <Compile Include="Domain\IUnitOfWork.cs" />
+    <Compile Include="Domain\RepositoryBase`1.cs" />
     <Compile Include="Domain\Specification\AndSpecification.cs" />
     <Compile Include="Domain\Specification\CompositeSpecification.cs" />
     <Compile Include="Domain\Specification\DirectSpecification.cs" />
@@ -79,6 +68,15 @@
     <Compile Include="Domain\Viewpoints\Order.cs" />
     <Compile Include="Domain\Viewpoints\SimpleOrder.cs" />
     <Compile Include="Domain\Viewpoints\Viewpoint`2.cs" />
+    <Compile Include="Infrastructure\Adapter\ITypeAdapter.cs" />
+    <Compile Include="Infrastructure\Adapter\ITypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Adapter\TypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Logging\ILogger.cs" />
+    <Compile Include="Infrastructure\Logging\ILoggerFactory.cs" />
+    <Compile Include="Infrastructure\Logging\LoggerFactory.cs" />
+    <Compile Include="Infrastructure\Validator\EntityValidatorFactory.cs" />
+    <Compile Include="Infrastructure\Validator\IEntityValidator.cs" />
+    <Compile Include="Infrastructure\Validator\IEntityValidatorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ConstructorReflectionCache.cs" />
     <Compile Include="Reflection\DelegateConstructorInvoker.cs" />
@@ -93,15 +91,6 @@
     <Compile Include="Reflection\MethodReflectionCache.cs" />
     <Compile Include="Reflection\ProertyReflectionCache.cs" />
     <Compile Include="Reflection\ReflectionHelp.cs" />
-    <Compile Include="UOW\GenericTransaction.cs" />
-    <Compile Include="UOW\IGenericTransaction.cs" />
-    <Compile Include="UOW\ILocalData.cs" />
-    <Compile Include="UOW\IUnitOfWork.cs" />
-    <Compile Include="UOW\IUnitOfWorkFactory.cs" />
-    <Compile Include="UOW\StatelessUnitOfWorkImplementor.cs" />
-    <Compile Include="UOW\UnitOfWork.cs" />
-    <Compile Include="UOW\UnitOfWorkFactory.cs" />
-    <Compile Include="UOW\UnitOfWorkImplementor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

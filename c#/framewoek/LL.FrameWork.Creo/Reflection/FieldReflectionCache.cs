@@ -1,13 +1,22 @@
-﻿using System;
-using System.Reflection;
+﻿namespace LL.FrameWork.Core.Reflection
+{
+    using System;
+    using System.Reflection;
+
+    public class FieldReflectionCache : FastReflectionCache<FieldInfo, IFieldAccessor>
+    {
+        protected override IFieldAccessor Create(FieldInfo key)
+        {
+            return FastReflectionFactory.FieldReflectionFactory.Create(key);
+        }
+    }
+
+#if Castle
 
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
-namespace LL.FrameWork.Core.Reflection
-{
     public class FieldAccessor : IFieldAccessor
     {
         private IFieldAccessor fieldaccessor;
@@ -65,12 +74,5 @@ namespace LL.FrameWork.Core.Reflection
             return TPropAccessor;
         }
     }
-
-    public class FieldReflectionCache : FastReflectionCache<FieldInfo, IFieldAccessor>
-    {
-        protected override IFieldAccessor Create(FieldInfo key)
-        {
-            return FastReflectionFactory.FieldReflectionFactory.Create(key);
-        }
-    }
+#endif
 }

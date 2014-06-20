@@ -1,13 +1,22 @@
-﻿using System;
-using System.Reflection;
-
-using Castle.DynamicProxy;
-using Castle.DynamicProxy.Generators;
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
-namespace LL.FrameWork.Core.Reflection
+﻿namespace LL.FrameWork.Core.Reflection
 {
+    using System;
+    using System.Reflection;
+
+    public class ConstructorReflectionCache : FastReflectionCache<ConstructorInfo, IConstructorInvoker>
+    {
+        protected override IConstructorInvoker Create(ConstructorInfo key)
+        {
+            return FastReflectionFactory.ConstructorReflectionFactory.Create(key);
+        }
+    }
+
+#if Castle
+    using Castle.DynamicProxy;
+    using Castle.DynamicProxy.Generators;
+    using Castle.DynamicProxy.Generators.Emitters;
+    using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+
     public class ConstructorInvoker : IConstructorInvoker
     {
         private IConstructorInvoker Constructor;
@@ -71,12 +80,7 @@ namespace LL.FrameWork.Core.Reflection
             }
             return ConstructorType;
         }
-    }
-    public class ConstructorReflectionCache : FastReflectionCache<ConstructorInfo, IConstructorInvoker>
-    {
-        protected override IConstructorInvoker Create(ConstructorInfo key)
-        {
-            return FastReflectionFactory.ConstructorReflectionFactory.Create(key);
-        }
-    }
+    }    
+#endif
+
 }

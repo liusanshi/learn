@@ -19,6 +19,7 @@ namespace LL.FrameWork.Core.Domain
 
     using LL.FrameWork.Core.Domain;
     using LL.FrameWork.Core.Domain.Specification;
+    using LL.FrameWork.Core.Domain.Viewpoints;
 
     /// <summary>
     /// Base interface for implement a "Repository Pattern", for
@@ -31,8 +32,8 @@ namespace LL.FrameWork.Core.Domain
     /// within our domain model
     /// </remarks>
     /// <typeparam name="TEntity">Type of entity for this repository </typeparam>
-    public interface IRepository<TEntity> : IDisposable
-        where TEntity : Entity
+    public interface IRepository<TEntity, TID> : IDisposable
+        where TEntity : EntityBase<TID>
     {
         /// <summary>
         /// Get the unit of work in this repository
@@ -72,43 +73,53 @@ namespace LL.FrameWork.Core.Domain
         /// <param name="persisted">The persisted item</param>
         /// <param name="current">The current item</param>
         void Merge(TEntity persisted, TEntity current);
+        
+        /// <summary>
+        /// 判断是否存在满足条件的数据
+        /// </summary>
+        /// <param name="specification">条件说明</param>
+        /// <returns>判断是否存在满足条件的数据 存在返回 true、否则 false。</returns>
+        bool Exists(Specification<TEntity> specification);
 
         /// <summary>
-        /// Get element by entity key
+        /// 获取满足条件数据的数量
         /// </summary>
-        /// <param name="id">Entity key value</param>
-        /// <returns></returns>
-        TEntity Get(Guid id);
+        /// <param name="specification">条件说明</param>
+        /// <returns>返回满足条件数据的数量</returns>
+        int GetCount(Specification<TEntity> specification);
 
         /// <summary>
-        /// Get all elements of type TEntity in repository
+        /// 根据ID获取数据
         /// </summary>
-        /// <returns>List of selected elements</returns>
-        IEnumerable<TEntity> GetAll();
+        /// <param name="id">对象的唯一标识</param>
+        /// <returns>返回指定的实体对象</returns>
+        TEntity FindById(TID id);
 
         /// <summary>
-        /// Get all elements of type TEntity that matching a
-        /// Specification <paramref name="specification"/>
+        /// 查询满足条件的对象
         /// </summary>
-        /// <param name="specification">Specification that result meet</param>
-        /// <returns></returns>
-        IEnumerable<TEntity> AllMatching(ISpecification<TEntity> specification);
+        /// <param name="specification">条件说明</param>
+        /// <returns>返回满足条件的对象</returns>
+        /// <exception cref="System.ArgumentNullException">specification 为 null </exception>
+        TEntity Find(Specification<TEntity> specification);
 
         /// <summary>
-        /// Get all elements of type TEntity in repository
+        /// 查询满足条件的对象列表
         /// </summary>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageCount">Number of elements in each page</param>
-        /// <param name="orderByExpression">Order by expression for this query</param>
-        /// <param name="ascending">Specify if order is ascending</param>
-        /// <returns>List of selected elements</returns>
-        IEnumerable<TEntity> GetPaged<KProperty>(int pageIndex, int pageCount, Expression<Func<TEntity, KProperty>> orderByExpression, bool ascending);
+        /// <param name="specification">条件说明</param>
+        /// <param name="order">排序对象 默认为null</param>
+        /// <param name="skipCount">要跳过的条数</param>
+        /// <param name="takeCount">返回数据的数量</param>
+        /// <returns>返回满足条件的对象列表</returns>
+        IEnumerable<TEntity> FindList(Specification<TEntity> specification, Order<TEntity> order = null, int? skipCount = null, int? takeCount = null);
 
         /// <summary>
-        /// Get  elements of type TEntity in repository
+        /// 获取所有数据
         /// </summary>
-        /// <param name="filter">Filter that each element do match</param>
-        /// <returns>List of selected elements</returns>
-        IEnumerable<TEntity> GetFiltered(Expression<Func<TEntity, bool>> filter);
+        /// <param name="order">排序对象 默认为null</param>
+        /// <param name="skipCount">要跳过的条数</param>
+        /// <param name="takeCount">返回数据的数量</param>
+        /// <returns>返回所有对象的列表</returns>
+        IEnumerable<TEntity> FindAll(Order<TEntity> order = null, int? skipCount = null, int? takeCount = null);
     }
 }

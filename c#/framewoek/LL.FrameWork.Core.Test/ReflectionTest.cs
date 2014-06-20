@@ -162,7 +162,7 @@ namespace LL.FrameWork.Core.Test
         [ClassCleanup]
         public static void End()
         {
-            FastReflectionFactory.SaveCache();
+            //FastReflectionFactory.SaveCache();
         }
     }
 

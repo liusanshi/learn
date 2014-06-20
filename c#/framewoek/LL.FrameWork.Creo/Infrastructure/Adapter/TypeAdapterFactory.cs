@@ -9,19 +9,41 @@
 // This code is released under the terms of the MS-LPL license, 
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
+			
 
-
-namespace Domain.Seedwork.Tests.Classes
+namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Adapter
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LL.FrameWork.Core.Domain;
 
-    public class SampleEntity
-        : EntityBase<Guid>
+    public static class TypeAdapterFactory
     {
-        public string SampleProperty { get; set; }
+        #region Members
+
+        static ITypeAdapterFactory _currentTypeAdapterFactory = null;
+
+        #endregion
+
+        #region Public Static Methods
+
+        /// <summary>
+        /// Set the current type adapter factory
+        /// </summary>
+        /// <param name="adapterFactory">The adapter factory to set</param>
+        public static void SetCurrent(ITypeAdapterFactory adapterFactory)
+        {
+            _currentTypeAdapterFactory = adapterFactory;
+        }
+        /// <summary>
+        /// Create a new type adapter from currect factory
+        /// </summary>
+        /// <returns>Created type adapter</returns>
+        public static ITypeAdapter CreateAdapter()
+        {
+            return _currentTypeAdapterFactory.Create();
+        }
+        #endregion
     }
 }

@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Core", "LL.Fra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Core.Test", "LL.FrameWork.Core.Test\LL.FrameWork.Core.Test.csproj", "{648E1048-8310-4E05-95C9-EC26A7FB4DBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Implementation", "LL.FrameWork.Implementation\LL.FrameWork.Implementation.csproj", "{104531D1-7F5B-4748-A70D-A00699BC4130}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Implementation.Test", "LL.FrameWork.Implementation.Test\LL.FrameWork.Implementation.Test.csproj", "{B8088A37-2F1D-4A63-B224-029C02148C20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{648E1048-8310-4E05-95C9-EC26A7FB4DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{648E1048-8310-4E05-95C9-EC26A7FB4DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{648E1048-8310-4E05-95C9-EC26A7FB4DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{104531D1-7F5B-4748-A70D-A00699BC4130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{104531D1-7F5B-4748-A70D-A00699BC4130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{104531D1-7F5B-4748-A70D-A00699BC4130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{104531D1-7F5B-4748-A70D-A00699BC4130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8088A37-2F1D-4A63-B224-029C02148C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8088A37-2F1D-4A63-B224-029C02148C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8088A37-2F1D-4A63-B224-029C02148C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8088A37-2F1D-4A63-B224-029C02148C20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

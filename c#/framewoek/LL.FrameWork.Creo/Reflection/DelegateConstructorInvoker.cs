@@ -2,10 +2,6 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-using Castle.DynamicProxy.Generators.Emitters;
-using Castle.DynamicProxy.Generators.Emitters.CodeBuilders;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 namespace LL.FrameWork.Core.Reflection
 {
     public class DelegateConstructorInvoker : IConstructorInvoker

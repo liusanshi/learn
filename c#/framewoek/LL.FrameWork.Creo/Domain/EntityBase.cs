@@ -18,12 +18,12 @@ namespace LL.FrameWork.Core.Domain
     /// <summary>
     /// Base class for entities
     /// </summary>
-    public abstract class Entity
+    public abstract class EntityBase<TID>
     {
         #region Members
 
         int? _requestedHashCode;
-        Guid _Id;
+        TID _Id;
 
         #endregion
 
@@ -32,48 +32,16 @@ namespace LL.FrameWork.Core.Domain
         /// <summary>
         /// Get the persisten object identifier
         /// </summary>
-        public virtual  Guid Id 
+        public virtual TID Id
         {
             get
             {
                 return _Id;
             }
-            protected set
+            set
             {
                 _Id = value;
             }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        /// <summary>
-        /// Check if this entity is transient, ie, without identity at this moment
-        /// </summary>
-        /// <returns>True if entity is transient, else false</returns>
-        public bool IsTransient()
-        {
-            return this.Id == Guid.Empty;
-        }
-
-        /// <summary>
-        /// Generate identity for this entity
-        /// </summary>
-        public void GenerateNewIdentity()
-        {
-            if ( IsTransient())
-                this.Id = IdentityGenerator.NewSequentialGuid();
-        }
-
-        /// <summary>
-        /// Change current identity for a new non transient identity
-        /// </summary>
-        /// <param name="identity">the new identity</param>
-        public void ChangeCurrentIdentity(Guid identity)
-        {
-            if ( identity != Guid.Empty)
-                this.Id = identity;
         }
 
         #endregion
@@ -87,18 +55,15 @@ namespace LL.FrameWork.Core.Domain
         /// <returns><see cref="M:System.Object.Equals"/></returns>
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is Entity))
+            if (obj == null || !(obj is EntityBase<TID>))
                 return false;
 
             if (Object.ReferenceEquals(this, obj))
                 return true;
 
-            Entity item = (Entity)obj;
+            EntityBase<TID> item = (EntityBase<TID>)obj;
 
-            if (item.IsTransient() || this.IsTransient())
-                return false;
-            else
-                return item.Id == this.Id;
+            return item.Id.Equals(this.Id);
         }
 
         /// <summary>
@@ -107,19 +72,13 @@ namespace LL.FrameWork.Core.Domain
         /// <returns><see cref="M:System.Object.GetHashCode"/></returns>
         public override int GetHashCode()
         {
-            if (!IsTransient())
-            {
-                if (!_requestedHashCode.HasValue)
-                    _requestedHashCode = this.Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
+            if (!_requestedHashCode.HasValue)
+                _requestedHashCode = this.Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
 
-                return _requestedHashCode.Value;
-            }
-            else
-                return base.GetHashCode();
-
+            return _requestedHashCode.Value;
         }
 
-        public static bool operator ==(Entity left, Entity right)
+        public static bool operator ==(EntityBase<TID> left, EntityBase<TID> right)
         {
             if (Object.Equals(left, null))
                 return (Object.Equals(right, null)) ? true : false;
@@ -127,7 +86,7 @@ namespace LL.FrameWork.Core.Domain
                 return left.Equals(right);
         }
 
-        public static bool operator !=(Entity left, Entity right)
+        public static bool operator !=(EntityBase<TID> left, EntityBase<TID> right)
         {
             return !(left == right);
         }

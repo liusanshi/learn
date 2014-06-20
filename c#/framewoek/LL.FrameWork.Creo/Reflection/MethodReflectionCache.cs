@@ -1,13 +1,22 @@
-﻿using System;
-using System.Reflection;
+﻿namespace LL.FrameWork.Core.Reflection
+{
+    using System;
+    using System.Reflection;
+
+    public class MethodReflectionCache : FastReflectionCache<MethodInfo, IMethodInvoker>
+    {
+        protected override IMethodInvoker Create(MethodInfo key)
+        {
+            return FastReflectionFactory.MethodReflectionFactory.Create(key);
+        }
+    }
+
+#if Castle
 
 using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
-namespace LL.FrameWork.Core.Reflection
-{
     public class MethodInvoker : IMethodInvoker
     {
         private IMethodInvoker methodinvoker;
@@ -78,12 +87,5 @@ namespace LL.FrameWork.Core.Reflection
             return MethodType;
         }
     }
-
-    public class MethodReflectionCache : FastReflectionCache<MethodInfo, IMethodInvoker>
-    {
-        protected override IMethodInvoker Create(MethodInfo key)
-        {
-            return FastReflectionFactory.MethodReflectionFactory.Create(key);
-        }
-    }
+#endif
 }

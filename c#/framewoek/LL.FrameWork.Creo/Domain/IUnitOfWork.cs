@@ -1,18 +1,4 @@
-﻿//===================================================================================
-// Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
-// http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-
-
-
-namespace LL.FrameWork.Core.Domain
+﻿namespace LL.FrameWork.Core.Domain
 {
     using System;
 
@@ -25,9 +11,20 @@ namespace LL.FrameWork.Core.Domain
     /// comply the PI (Persistence Ignorant) principle in our Domain, we implement this interface/contract. 
     /// This interface/contract should be complied by any UoW implementation to be used with this Domain.
     /// </summary>
-    public interface IUnitOfWork
-        :IDisposable
+    public interface IUnitOfWork : IDisposable
     {
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        /// <returns></returns>
+        IGenericTransaction BeginTransaction();
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        /// <param name="isolationLevel"></param>
+        /// <returns></returns>
+        IGenericTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel);
+
         /// <summary>
         /// Commit all changes made in a container.
         /// </summary>
@@ -38,19 +35,14 @@ namespace LL.FrameWork.Core.Domain
         void Commit();
 
         /// <summary>
-        /// Commit all changes made in  a container.
+        /// Commit all changes made in a container.
         /// </summary>
-        ///<remarks>
-        /// If the entity have fixed properties and any optimistic concurrency problem exists,
-        /// then 'client changes' are refreshed - Client wins
-        ///</remarks>
-        void CommitAndRefreshChanges();
-
+        /// <param name="isolationLevel"></param>
+        void Commit(System.Data.IsolationLevel isolationLevel);
 
         /// <summary>
         /// Rollback tracked changes. See references of UnitOfWork pattern
         /// </summary>
-        void RollbackChanges();
-
+        void Rollback();
     }
 }

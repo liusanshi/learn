@@ -15,7 +15,7 @@ using NHibernate.Bytecode;
 using NHibernate.Type;
 using NHibernate.Hql.Ast.ANTLR;
 
-namespace LL.FrameWork.Core.UOW
+namespace LL.FrameWork.Implementation.UOW
 {
     public class UnitOfWorkFactory : IUnitOfWorkFactory
     {
@@ -207,7 +207,7 @@ namespace LL.FrameWork.Core.UOW
             }
         }
 
-        public IUnitOfWork Create(bool hasState)
+        public INhibernateUnitOfWork Create(bool hasState)
         {
             if (hasState)
             {
@@ -224,12 +224,12 @@ namespace LL.FrameWork.Core.UOW
             }
         }
 
-        public IUnitOfWork Create()
+        public INhibernateUnitOfWork Create()
         {
             return Create(true);
         }
 
-        public void DisposeUnitOfWork(IUnitOfWorkImplementor adapter)
+        public void DisposeUnitOfWork(INhibernateUnitOfWork adapter)
         {
             CurrentSession = null;
             UnitOfWork.DisposeUnitOfWork(adapter);
@@ -275,12 +275,12 @@ namespace LL.FrameWork.Core.UOW
             }
         }
 
-        IUnitOfWork IUnitOfWorkFactory.Create()
+        INhibernateUnitOfWork IUnitOfWorkFactory.Create()
         {
             return this.Create();
         }
 
-        void IUnitOfWorkFactory.DisposeUnitOfWork(IUnitOfWorkImplementor adapter)
+        void IUnitOfWorkFactory.DisposeUnitOfWork(INhibernateUnitOfWork adapter)
         {
             this.DisposeUnitOfWork(adapter);
         }

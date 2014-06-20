@@ -1,15 +1,16 @@
 ﻿using System;
 
 using NHibernate;
+using LL.FrameWork.Core.Domain;
 
-namespace LL.FrameWork.Core.UOW
+namespace LL.FrameWork.Implementation.UOW
 {
-    public class StatelessUnitOfWorkImplementor : IUnitOfWorkImplementor
-   {
+    public class UnitOfWorkImplementor : INhibernateUnitOfWork
+    {
         private readonly IUnitOfWorkFactory _factory;
-        private readonly IStatelessSession _session;
+        private readonly ISession _session;
 
-        public StatelessUnitOfWorkImplementor(IUnitOfWorkFactory factory, IStatelessSession session)
+        public UnitOfWorkImplementor(IUnitOfWorkFactory factory, ISession session)
         {
             _factory = factory;
             _session = session;
@@ -34,9 +35,14 @@ namespace LL.FrameWork.Core.UOW
             get { return _factory; }
         }
 
-        public IStatelessSession Session
+        public ISession Session
         {
             get { return _session; }
+        }
+
+        public void Flush()
+        {
+            _session.Flush();
         }
 
         public IGenericTransaction BeginTransaction()
@@ -49,12 +55,12 @@ namespace LL.FrameWork.Core.UOW
             return new GenericTransaction(_session.BeginTransaction(isolationLevel));
         }
 
-        public void TransactionalFlush()
+        public void Commit()
         {
-            TransactionalFlush(System.Data.IsolationLevel.ReadCommitted);
+            Commit(System.Data.IsolationLevel.ReadCommitted);
         }
 
-        public void TransactionalFlush(System.Data.IsolationLevel isolationLevel)
+        public void Commit(System.Data.IsolationLevel isolationLevel)
         {
             IGenericTransaction tx = BeginTransaction(isolationLevel);
             try
@@ -71,6 +77,17 @@ namespace LL.FrameWork.Core.UOW
             {
                 tx.Dispose();
             }
+        }
+
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
+        public void Rollback()
+        {
+            using (var tx = _session.BeginTransaction())
+            {
+                tx.Rollback();
+            }            
         }
     }
 }

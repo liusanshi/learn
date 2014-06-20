@@ -1,8 +1,9 @@
 ﻿using System;
 
 using NHibernate;
+using LL.FrameWork.Core.Domain;
 
-namespace LL.FrameWork.Core.UOW
+namespace LL.FrameWork.Implementation.UOW
 {
     public class GenericTransaction : IGenericTransaction
     {

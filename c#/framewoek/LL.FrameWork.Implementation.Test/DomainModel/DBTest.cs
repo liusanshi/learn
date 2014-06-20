@@ -17,8 +17,9 @@ using NHibernate.Type;
 using NHibernate.Hql.Ast.ANTLR;
 using NHibernate.Mapping.ByCode;
 
-using LL.FrameWork.Core.UOW;
-using LL.FrameWork.Core.Test.DomainModel;
+using LL.FrameWork.Implementation.UOW;
+using LL.FrameWork.Core.Domain;
+using LL.FrameWork.Implementation.Test.DomainModel;
 
 namespace LL.Core.Test.DomainModel
 {
@@ -170,7 +171,7 @@ namespace LL.Core.Test.DomainModel
                 cls.AddStudent(new Student() { Name = "张三5", Age = 15 });
 
                 UnitOfWork.CurrentSession.Persist(cls);
-                UnitOfWork.Current.TransactionalFlush();
+                UnitOfWork.Current.Commit();
             }
         }
 

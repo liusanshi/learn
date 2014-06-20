@@ -2,8 +2,6 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-using Castle.DynamicProxy;
-
 namespace LL.FrameWork.Core.Reflection
 {
     public class DelegatePropertyAccessor : IPropertyAccessor

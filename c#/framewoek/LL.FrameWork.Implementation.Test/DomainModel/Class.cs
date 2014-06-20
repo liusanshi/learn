@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Core.Test.DomainModel
+namespace LL.FrameWork.Implementation.Test.DomainModel
 {
     public class Class
     {

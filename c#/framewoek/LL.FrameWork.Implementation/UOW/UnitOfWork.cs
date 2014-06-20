@@ -3,7 +3,7 @@
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace LL.FrameWork.Core.UOW
+namespace LL.FrameWork.Implementation.UOW
 {
     public static class UnitOfWork
     {
@@ -20,16 +20,16 @@ namespace LL.FrameWork.Core.UOW
 
         private const string CurrentUnitOfWorkKey = "CurrentUnitOfWork.Key";
 
-        private static IUnitOfWork CurrentUnitOfWork
+        private static INhibernateUnitOfWork CurrentUnitOfWork
         {
-            get { return Local.Data[CurrentUnitOfWorkKey] as IUnitOfWork; }
+            get { return Local.Data[CurrentUnitOfWorkKey] as INhibernateUnitOfWork; }
             set { Local.Data[CurrentUnitOfWorkKey] = value; }
         }
         /// <summary>
         /// 启动一个有状态的工作单元
         /// </summary>
         /// <returns></returns>
-        public static IUnitOfWork Start()
+        public static INhibernateUnitOfWork Start()
         {
             if (CurrentUnitOfWork != null)
                 throw new InvalidOperationException("You cannot start more than one unit of work at the same time.");
@@ -42,7 +42,7 @@ namespace LL.FrameWork.Core.UOW
         /// 启动一个无状态的工作单元
         /// </summary>
         /// <returns></returns>
-        public static IUnitOfWork StartStateless()
+        public static INhibernateUnitOfWork StartStateless()
         {
             if (CurrentUnitOfWork != null)
                 throw new InvalidOperationException("You cannot start more than one unit of work at the same time.");
@@ -55,7 +55,7 @@ namespace LL.FrameWork.Core.UOW
         /// <summary>
         /// 当前的工作单元
         /// </summary>
-        public static IUnitOfWork Current
+        public static INhibernateUnitOfWork Current
         {
             get
             {
@@ -94,7 +94,7 @@ namespace LL.FrameWork.Core.UOW
         /// 释放工作单元
         /// </summary>
         /// <param name="adapter"></param>
-        public static void DisposeUnitOfWork(IUnitOfWork adapter)
+        public static void DisposeUnitOfWork(INhibernateUnitOfWork adapter)
         {
             CurrentUnitOfWork = null;
         }
