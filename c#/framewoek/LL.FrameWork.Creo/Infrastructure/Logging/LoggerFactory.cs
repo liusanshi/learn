@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Logging
+namespace LL.FrameWork.Core.Infrastructure.Logging
 {
     /// <summary>
     /// Log Factory
@@ -36,7 +36,7 @@ namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Logging
         }
 
         /// <summary>
-        /// Createt a new <paramref name="LL.FrameWork.Core.Infrastructure.Crosscutting.Logging.ILog"/>
+        /// Createt a new <paramref name="LL.FrameWork.Core.Infrastructure.Logging.ILog"/>
         /// </summary>
         /// <returns>Created ILog</returns>
         public static ILogger CreateLog()

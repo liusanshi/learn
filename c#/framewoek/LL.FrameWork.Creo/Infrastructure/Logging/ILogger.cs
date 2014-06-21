@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Logging
+namespace LL.FrameWork.Core.Infrastructure.Logging
 {
     using System;
 

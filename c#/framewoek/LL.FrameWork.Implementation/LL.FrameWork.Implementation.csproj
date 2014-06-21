@@ -35,6 +35,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="EmitMapper">
+      <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -53,6 +62,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\Adapter\EmitMapHelper.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapperTypeAdapter.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapperTypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Adapter\IMappingSetting.cs" />
+    <Compile Include="Infrastructure\Adapter\FlatteringConfig.cs" />
     <Compile Include="Persistence\NHRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UOW\GenericTransaction.cs" />
@@ -72,6 +86,10 @@
       <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
       <Name>LL.FrameWork.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\Logging\" />
+    <Folder Include="Infrastructure\Validator\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

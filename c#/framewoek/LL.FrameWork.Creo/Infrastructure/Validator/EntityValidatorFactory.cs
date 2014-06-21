@@ -12,7 +12,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Validator
+namespace LL.FrameWork.Core.Infrastructure.Validator
 {
     using System;
     using System.Collections.Generic;

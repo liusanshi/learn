@@ -71,6 +71,10 @@
     <Compile Include="Infrastructure\Adapter\ITypeAdapter.cs" />
     <Compile Include="Infrastructure\Adapter\ITypeAdapterFactory.cs" />
     <Compile Include="Infrastructure\Adapter\TypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Adapter\TypeMapIdentity.cs" />
+    <Compile Include="Infrastructure\IOC\ContainerFactory.cs" />
+    <Compile Include="Infrastructure\IOC\IContainer.cs" />
+    <Compile Include="Infrastructure\IOC\IContainerFactory.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\ILoggerFactory.cs" />
     <Compile Include="Infrastructure\Logging\LoggerFactory.cs" />
@@ -98,6 +102,7 @@
   <ItemGroup>
     <Content Include="Domain\Specification\SpecificationsDesignNotes.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

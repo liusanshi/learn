@@ -11,7 +11,7 @@
 //===================================================================================
 			
 
-namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Adapter
+namespace LL.FrameWork.Core.Infrastructure.Adapter
 {
     using System;
     using System.Collections.Generic;

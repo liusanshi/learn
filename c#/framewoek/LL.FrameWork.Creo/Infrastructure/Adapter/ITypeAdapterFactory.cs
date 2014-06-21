@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Core.Infrastructure.Crosscutting.Adapter
+namespace LL.FrameWork.Core.Infrastructure.Adapter
 {
     /// <summary>
     /// Base contract for adapter factory

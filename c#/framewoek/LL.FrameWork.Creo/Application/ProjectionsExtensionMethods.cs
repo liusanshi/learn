@@ -15,7 +15,7 @@ namespace LL.FrameWork.Core.Application
 {
     using System.Collections.Generic;
     using LL.FrameWork.Core.Domain;
-    using LL.FrameWork.Core.Infrastructure.Crosscutting.Adapter;
+    using LL.FrameWork.Core.Infrastructure.Adapter;
 
     public static class ProjectionsExtensionMethods
     {

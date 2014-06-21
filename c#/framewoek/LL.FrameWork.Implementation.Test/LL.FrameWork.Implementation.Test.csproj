@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.1001\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -66,6 +70,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AdapterTest\MappingTest.cs" />
+    <Compile Include="AdapterTest\MyEntity.cs" />
     <Compile Include="DomainModel\Class.cs" />
     <Compile Include="DomainModel\Course.cs" />
     <Compile Include="DomainModel\DBTest.cs" />

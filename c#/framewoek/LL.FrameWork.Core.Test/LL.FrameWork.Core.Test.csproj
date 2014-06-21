@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain Test\SpecificationTests.cs" />
     <Compile Include="Domain Test\ValueObjectTests.cs" />
+    <Compile Include="TypeMapIdentityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LL.FrameWork.Creo\LL.FrameWork.Core.csproj">
