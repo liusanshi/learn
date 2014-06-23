@@ -1,23 +1,24 @@
-﻿namespace LL.FrameWork.Implementation.Infrastructure.Adapter
+﻿namespace LL.FrameWork.Impl.Infrastructure.Adapter.AutoMapperImpl
 {
     using System;
-    
+
+    using AutoMapper;
     using LL.FrameWork.Core.Infrastructure.Adapter;
 
-    public class EmitMapperTypeAdapter : ITypeAdapter
+    public class AutoMapperTypeAdapter : ITypeAdapter
     {
         public TTarget Adapt<TSource, TTarget>(TSource source)
             where TSource : class
             where TTarget : class, new()
         {
             if (source == null) return (TTarget)null;
-            return EmitMapHelper.GetObjectsMapper<TSource, TTarget>().Map(source);
+            return Mapper.Map<TSource, TTarget>(source);
         }
 
         public TTarget Adapt<TTarget>(object source) where TTarget : class, new()
         {
             if (source == null) return (TTarget)null;
-            return (TTarget)(EmitMapHelper.GetObjectsMapperImpl<TTarget>(source.GetType()).Map(source));
+            return Mapper.Map<TTarget>(source);
         }
     }
 }

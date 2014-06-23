@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Core", "LL.Fra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Core.Test", "LL.FrameWork.Core.Test\LL.FrameWork.Core.Test.csproj", "{648E1048-8310-4E05-95C9-EC26A7FB4DBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Implementation", "LL.FrameWork.Implementation\LL.FrameWork.Implementation.csproj", "{104531D1-7F5B-4748-A70D-A00699BC4130}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Impl", "LL.FrameWork.Implementation\LL.FrameWork.Impl.csproj", "{104531D1-7F5B-4748-A70D-A00699BC4130}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Implementation.Test", "LL.FrameWork.Implementation.Test\LL.FrameWork.Implementation.Test.csproj", "{B8088A37-2F1D-4A63-B224-029C02148C20}"
 EndProject

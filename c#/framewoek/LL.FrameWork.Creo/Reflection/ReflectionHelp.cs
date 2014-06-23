@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Diagnostics.SymbolStore;
 using System.Linq.Expressions;
+using System.Configuration;
 
 namespace LL.FrameWork.Core.Reflection
 {
@@ -76,6 +77,59 @@ namespace LL.FrameWork.Core.Reflection
             }
 
             return targetProperty;
+        }
+
+        /// <summary>
+        /// 根据表达式获取元数据
+        /// </summary>
+        /// <param name="lambdaExpression"></param>
+        /// <returns></returns>
+        public static MemberInfo FindMember(LambdaExpression lambdaExpression)
+        {
+            Expression expressionToCheck = lambdaExpression;
+
+            bool done = false;
+
+            while (!done)
+            {
+                switch (expressionToCheck.NodeType)
+                {
+                    case ExpressionType.Convert:
+                        expressionToCheck = ((UnaryExpression)expressionToCheck).Operand;
+                        break;
+                    case ExpressionType.Lambda:
+                        expressionToCheck = ((LambdaExpression)expressionToCheck).Body;
+                        break;
+                    case ExpressionType.MemberAccess:
+                        var memberExpression = ((MemberExpression)expressionToCheck);
+
+                        if (memberExpression.Expression.NodeType != ExpressionType.Parameter &&
+                            memberExpression.Expression.NodeType != ExpressionType.Convert)
+                        {
+                            throw new ArgumentException(string.Format("Expression '{0}' must resolve to top-level member and not any child object's properties. Use a custom resolver on the child type or the AfterMap option instead.", lambdaExpression), "lambdaExpression");
+                        }
+
+                        MemberInfo member = memberExpression.Member;
+
+                        return member;
+                    default:
+                        done = true;
+                        break;
+                }
+            }
+
+            throw new ArgumentException("Custom configuration for members is only supported for top-level individual members on a type.");
+        }
+
+        public static Type GetMemberType(this MemberInfo memberInfo)
+        {
+            if (memberInfo is MethodInfo)
+                return ((MethodInfo)memberInfo).ReturnType;
+            if (memberInfo is PropertyInfo)
+                return ((PropertyInfo)memberInfo).PropertyType;
+            if (memberInfo is FieldInfo)
+                return ((FieldInfo)memberInfo).FieldType;
+            return null;
         }
 
         /// <summary>

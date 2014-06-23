@@ -7,7 +7,7 @@ using EmitMapper.Mappers;
 using EmitMapper.MappingConfiguration;
 using LL.FrameWork.Core.Infrastructure.Adapter;
 
-namespace LL.FrameWork.Implementation.Infrastructure.Adapter
+namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     /// <summary>
     /// EmitMapper 辅助类

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Implementation.Test.DomainModel
+namespace LL.FrameWork.Impl.Test.DomainModel
 {
     public class Teacher
     {

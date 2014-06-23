@@ -17,9 +17,9 @@ using NHibernate.Type;
 using NHibernate.Hql.Ast.ANTLR;
 using NHibernate.Mapping.ByCode;
 
-using LL.FrameWork.Implementation.UOW;
+using LL.FrameWork.Impl.UOW;
 using LL.FrameWork.Core.Domain;
-using LL.FrameWork.Implementation.Test.DomainModel;
+using LL.FrameWork.Impl.Test.DomainModel;
 
 namespace LL.Core.Test.DomainModel
 {
@@ -176,6 +176,7 @@ namespace LL.Core.Test.DomainModel
         }
 
         [TestMethod]
+        [TestCategory("DBTest")]
         public void query_ont_to_manay()
         {
             using (UnitOfWork.Start())
@@ -188,6 +189,7 @@ namespace LL.Core.Test.DomainModel
         }
 
         [TestMethod]
+        [TestCategory("DBTest")]
         public void out_of_session()
         {
             Class cls1;
@@ -201,6 +203,7 @@ namespace LL.Core.Test.DomainModel
         }
 
         [TestMethod]
+        [TestCategory("DBTest")]
         public void auto_modify()
         {
             string clsName = "中三班----------22";
@@ -218,6 +221,7 @@ namespace LL.Core.Test.DomainModel
         }
 
         [TestMethod]
+        [TestCategory("DBTest")]
         public void statetest()
         {
             //查看状态
@@ -256,6 +260,7 @@ namespace LL.Core.Test.DomainModel
         }
 
         [TestMethod]
+        [TestCategory("DBTest")]
         public void Cascade_delete_collection()
         {
             using (UnitOfWork.Start())

@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
@@ -49,6 +55,7 @@
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -77,8 +84,12 @@
     <Compile Include="DomainModel\DBTest.cs" />
     <Compile Include="DomainModel\Student.cs" />
     <Compile Include="DomainModel\Teacher.cs" />
+    <Compile Include="LogTest\LoggingTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidatorsTests\EntityWithValidatableObject.cs" />
+    <Compile Include="ValidatorsTests\EntityWithValidationAttribute.cs" />
+    <Compile Include="ValidatorsTests\ValidatorsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DomainModel\Class.hbm.xml" />
@@ -94,9 +105,9 @@
       <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
       <Name>LL.FrameWork.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.FrameWork.Implementation.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.FrameWork.Impl.csproj">
       <Project>{104531d1-7f5b-4748-a70d-a00699bc4130}</Project>
-      <Name>LL.FrameWork.Implementation</Name>
+      <Name>LL.FrameWork.Impl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +133,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

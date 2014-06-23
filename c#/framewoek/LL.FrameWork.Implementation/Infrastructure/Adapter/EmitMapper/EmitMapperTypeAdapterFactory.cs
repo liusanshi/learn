@@ -1,4 +1,4 @@
-﻿namespace LL.FrameWork.Implementation.Infrastructure.Adapter
+﻿namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     using System;
     using System.Collections.Generic;

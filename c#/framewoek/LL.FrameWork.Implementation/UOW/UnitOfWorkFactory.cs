@@ -15,7 +15,7 @@ using NHibernate.Bytecode;
 using NHibernate.Type;
 using NHibernate.Hql.Ast.ANTLR;
 
-namespace LL.FrameWork.Implementation.UOW
+namespace LL.FrameWork.Impl.UOW
 {
     public class UnitOfWorkFactory : IUnitOfWorkFactory
     {

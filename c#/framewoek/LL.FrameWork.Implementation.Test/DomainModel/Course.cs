@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LL.FrameWork.Implementation.Test.DomainModel
+namespace LL.FrameWork.Impl.Test.DomainModel
 {
     public class Course
     {

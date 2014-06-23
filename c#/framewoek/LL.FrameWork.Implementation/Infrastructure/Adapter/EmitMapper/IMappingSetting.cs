@@ -3,7 +3,7 @@
 using LL.FrameWork.Core.Infrastructure.Adapter;
 using EmitMapper;
 
-namespace LL.FrameWork.Implementation.Infrastructure.Adapter
+namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     public interface IMappingSetting
     {

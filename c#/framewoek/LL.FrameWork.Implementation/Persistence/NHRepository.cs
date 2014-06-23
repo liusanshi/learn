@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 
 using LL.FrameWork.Core.Domain;
-using LL.FrameWork.Implementation.UOW;
+using LL.FrameWork.Impl.UOW;
 using NHibernate;
 using NHibernate.Linq;
 
-namespace LL.FrameWork.Implementation.Persistence
+namespace LL.FrameWork.Impl.Persistence
 {
     public class NHRepository<TEntity, TID> : RepositoryBase<TEntity, TID>
         where TEntity : EntityBase<TID>

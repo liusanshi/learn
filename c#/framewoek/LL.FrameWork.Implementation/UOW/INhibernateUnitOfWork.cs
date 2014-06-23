@@ -3,7 +3,7 @@
 using NHibernate;
 using LL.FrameWork.Core.Domain;
 
-namespace LL.FrameWork.Implementation.UOW
+namespace LL.FrameWork.Impl.UOW
 {
     public interface INhibernateUnitOfWork : IUnitOfWork
     {

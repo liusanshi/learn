@@ -7,8 +7,8 @@
     <ProjectGuid>{104531D1-7F5B-4748-A70D-A00699BC4130}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LL.FrameWork.Implementation</RootNamespace>
-    <AssemblyName>LL.FrameWork.Implementation</AssemblyName>
+    <RootNamespace>LL.FrameWork.Impl</RootNamespace>
+    <AssemblyName>LL.FrameWork.Impl</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,6 +35,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.3.0\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
@@ -54,6 +60,7 @@
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -62,11 +69,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\Adapter\EmitMapHelper.cs" />
-    <Compile Include="Infrastructure\Adapter\EmitMapperTypeAdapter.cs" />
-    <Compile Include="Infrastructure\Adapter\EmitMapperTypeAdapterFactory.cs" />
-    <Compile Include="Infrastructure\Adapter\IMappingSetting.cs" />
-    <Compile Include="Infrastructure\Adapter\FlatteringConfig.cs" />
+    <Compile Include="Infrastructure\Adapter\AutoMapperImpl\AutoMapperTypeAdapter.cs" />
+    <Compile Include="Infrastructure\Adapter\AutoMapperImpl\AutoMapperTypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapHelper.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapperTypeAdapter.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapperTypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapper\IMappingSetting.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapper\FlatteringConfig.cs" />
+    <Compile Include="Infrastructure\Logging\Log4NetImpl\Log4NetLog.cs" />
+    <Compile Include="Infrastructure\Logging\Log4NetImpl\Log4NetLogFactory.cs" />
+    <Compile Include="Infrastructure\Logging\TraceSourceImpl\TraceSourceLog.cs" />
+    <Compile Include="Infrastructure\Logging\TraceSourceImpl\TraceSourceLogFactory.cs" />
+    <Compile Include="Infrastructure\Validator\DataAnnotationsEntityValidator.cs" />
+    <Compile Include="Infrastructure\Validator\DataAnnotationsEntityValidatorFactory.cs" />
     <Compile Include="Persistence\NHRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UOW\GenericTransaction.cs" />
@@ -87,11 +102,9 @@
       <Name>LL.FrameWork.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Infrastructure\Logging\" />
-    <Folder Include="Infrastructure\Validator\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
