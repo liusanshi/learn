@@ -78,71 +78,7 @@
 
             return this;
         }
-        /// <summary>
-        /// 使用指定的方式来填充源
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="sourceMember"></param>
-        /// <param name="destinationMember"></param>
-        /// <returns></returns>
-        public FlatteringConfig ResolveSourceUsing<TFrom, TTo>(Expression<Func<TFrom, object>> sourceMember, Func<TTo, object> destinationMember)
-        {
-            AppendMappingOperations.Add(new DestWriteOperation()
-            {
-                Destination = new MemberDescriptor(ReflectionHelper.FindMember(sourceMember)),
-                Getter = ((ValueGetter<object>)((to, state) =>
-                {
-                    return ValueToWrite<object>.ReturnValue(destinationMember((TTo)to));
-                }))
-            });
-
-            return this;
-        }
-
-        /// <summary>
-        /// 使用成员路径类配置对应关系
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="destinationMember"></param>
-        /// <param name="sourceMember"></param>
-        /// <returns></returns>
-        public FlatteringConfig ForMember<TFrom, TTo>(Expression<Func<TTo, object>>[] destinationMember, Expression<Func<TFrom, object>>[] sourceMember)
-        {
-            AppendMappingOperations.Add(new ReadWriteSimple()
-            {
-                Source = new MemberDescriptor(ConvertToMemberInfo(sourceMember)),
-                Destination = new MemberDescriptor(ConvertToMemberInfo(destinationMember))
-            });
-
-            return this;
-        }
-        /// <summary>
-        /// 使用成员路径类配置对应关系
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="destinationMember"></param>
-        /// <param name="sourceMember"></param>
-        /// <returns></returns>
-        public FlatteringConfig ForMember<TFrom, TTo>(Expression<Func<TTo, object>> destinationMember, Expression<Func<TFrom, object>>[] sourceMember)
-        {
-            return ForMember<TFrom, TTo>(new Expression<Func<TTo, object>>[] { destinationMember }, sourceMember);
-        }
-        /// <summary>
-        /// 使用成员路径类配置对应关系
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="destinationMember"></param>
-        /// <param name="sourceMember"></param>
-        /// <returns></returns>
-        public FlatteringConfig ForMember<TFrom, TTo>(Expression<Func<TTo, object>>[] destinationMember, Expression<Func<TFrom, object>> sourceMember)
-        {
-            return ForMember<TFrom, TTo>(destinationMember, new Expression<Func<TFrom, object>>[] { sourceMember });
-        }
-
+        
         /// <summary>
         /// 根据名称来匹配
         /// </summary>
@@ -153,29 +89,14 @@
         {
             AppendMappingOperations.Add(new ReadWriteSimple()
             {
-                Destination = new MemberDescriptor(ReflectionHelper.FindMember(destinationMember)),
-                Source = new MemberDescriptor(ReflectionHelper.FindMember(sourceMember))
+                Destination = new MemberDescriptor(ReflectionHelper.FindMembers(destinationMember)),
+                Source = new MemberDescriptor(ReflectionHelper.FindMembers(sourceMember))
             });
 
             return this;
         }
 
         #region 私有方法
-        /// <summary>
-        /// 将类型LambdaExpression[]转换为  MemberInfo[]
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        private static MemberInfo[] ConvertToMemberInfo(LambdaExpression[] expression)
-        {
-            if (expression == null) throw new ArgumentNullException("expression");
-            MemberInfo[] result = new MemberInfo[expression.Length];
-            for (int i = 0; i < expression.Length; i++)
-            {
-                result[i] = ReflectionHelper.FindMember(expression[i]);
-            }
-            return result;
-        }
 
         /// <summary>
         /// 获取 Flattering 配置类型
@@ -317,78 +238,6 @@
                 throw new NotSupportedException("当前对象不支持 ResolveUsing 方法");
             }
             return flattering.ResolveUsing<TFrom, TTo>(destinationMember, sourceMember);
-        }
-        /// <summary>
-        /// 使用指定的方式类填充目标对象
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="mapconfig"></param>
-        /// <param name="sourceMember"></param>
-        /// <param name="destinationMember"></param>
-        /// <returns></returns>
-        public static FlatteringConfig ResolveSourceUsing<TFrom, TTo>(this DefaultMapConfig mapconfig, Expression<Func<TFrom, object>> sourceMember, Func<TTo, object> destinationMember)
-        {
-            FlatteringConfig flattering = mapconfig as FlatteringConfig;
-            if (flattering == null)
-            {
-                throw new NotSupportedException("当前对象不支持 ResolveUsing 方法");
-            }
-            return flattering.ResolveSourceUsing<TFrom, TTo>(sourceMember, destinationMember);
-        }
-        /// <summary>
-        /// 根据成员路径来填充对象
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="mapconfig"></param>
-        /// <param name="destinationMember"></param>
-        /// <param name="sourceMember"></param>
-        /// <returns></returns>
-        public static FlatteringConfig ForMember<TFrom, TTo>(this DefaultMapConfig mapconfig, Expression<Func<TTo, object>>[] destinationMember, Expression<Func<TFrom, object>>[] sourceMember)
-        {
-            FlatteringConfig flattering = mapconfig as FlatteringConfig;
-            if (flattering == null)
-            {
-                throw new NotSupportedException("当前对象不支持 ForMember 方法");
-            }
-            return flattering.ForMember<TFrom, TTo>(destinationMember, sourceMember);
-        }
-        /// <summary>
-        /// 根据成员路径来填充对象
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="mapconfig"></param>
-        /// <param name="destinationMember"></param>
-        /// <param name="sourceMember"></param>
-        /// <returns></returns>
-        public static FlatteringConfig ForMember<TFrom, TTo>(this DefaultMapConfig mapconfig, Expression<Func<TTo, object>> destinationMember, Expression<Func<TFrom, object>>[] sourceMember)
-        {
-            FlatteringConfig flattering = mapconfig as FlatteringConfig;
-            if (flattering == null)
-            {
-                throw new NotSupportedException("当前对象不支持 ForMember 方法");
-            }
-            return flattering.ForMember<TFrom, TTo>(destinationMember, sourceMember);
-        }
-        /// <summary>
-        /// 根据成员路径来填充对象
-        /// </summary>
-        /// <typeparam name="TFrom"></typeparam>
-        /// <typeparam name="TTo"></typeparam>
-        /// <param name="mapconfig"></param>
-        /// <param name="destinationMember"></param>
-        /// <param name="sourceMember"></param>
-        /// <returns></returns>
-        public static FlatteringConfig ForMember<TFrom, TTo>(this DefaultMapConfig mapconfig, Expression<Func<TTo, object>>[] destinationMember, Expression<Func<TFrom, object>> sourceMember)
-        {
-            FlatteringConfig flattering = mapconfig as FlatteringConfig;
-            if (flattering == null)
-            {
-                throw new NotSupportedException("当前对象不支持 ForMember 方法");
-            }
-            return flattering.ForMember<TFrom, TTo>(destinationMember, sourceMember);
         }
         /// <summary>
         /// 一对一的指定对应关系

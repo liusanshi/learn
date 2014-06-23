@@ -76,6 +76,7 @@
     <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapperTypeAdapterFactory.cs" />
     <Compile Include="Infrastructure\Adapter\EmitMapper\IMappingSetting.cs" />
     <Compile Include="Infrastructure\Adapter\EmitMapper\FlatteringConfig.cs" />
+    <Compile Include="Infrastructure\IOC\Container.cs" />
     <Compile Include="Infrastructure\Logging\Log4NetImpl\Log4NetLog.cs" />
     <Compile Include="Infrastructure\Logging\Log4NetImpl\Log4NetLogFactory.cs" />
     <Compile Include="Infrastructure\Logging\TraceSourceImpl\TraceSourceLog.cs" />

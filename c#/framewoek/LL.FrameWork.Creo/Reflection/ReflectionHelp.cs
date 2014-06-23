@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -112,6 +113,59 @@ namespace LL.FrameWork.Core.Reflection
                         MemberInfo member = memberExpression.Member;
 
                         return member;
+                    default:
+                        done = true;
+                        break;
+                }
+            }
+
+            throw new ArgumentException("Custom configuration for members is only supported for top-level individual members on a type.");
+        }
+        /// <summary>
+        /// 根据lambda表达式 获取成员路径
+        /// </summary>
+        /// <param name="lambdaExpression"></param>
+        /// <returns></returns>
+        public static MemberInfo[] FindMembers(LambdaExpression lambdaExpression)
+        {
+            return FindMembersDesc(lambdaExpression).Reverse().ToArray();
+        }
+
+        /// <summary>
+        /// 根据lambda表达式获取成员路径 是进栈的顺序 需要逆序
+        /// </summary>
+        /// <param name="lambdaExpression"></param>
+        /// <returns></returns>
+        private static IEnumerable<MemberInfo> FindMembersDesc(LambdaExpression lambdaExpression)
+        {
+            Expression expressionToCheck = lambdaExpression;
+
+            bool done = false;
+
+            while (!done)
+            {
+                switch (expressionToCheck.NodeType)
+                {
+                    case ExpressionType.Convert:
+                        expressionToCheck = ((UnaryExpression)expressionToCheck).Operand;
+                        break;
+                    case ExpressionType.Lambda:
+                        expressionToCheck = ((LambdaExpression)expressionToCheck).Body;
+                        break;
+                    case ExpressionType.MemberAccess:
+                        var memberExpression = ((MemberExpression)expressionToCheck);
+                        MemberInfo member = memberExpression.Member;
+                        yield return member;
+
+                        if (memberExpression.Expression.NodeType == ExpressionType.MemberAccess)
+                        {
+                            expressionToCheck = memberExpression.Expression;
+                        }
+                        else
+                        {
+                            yield break;
+                        }
+                        break;
                     default:
                         done = true;
                         break;

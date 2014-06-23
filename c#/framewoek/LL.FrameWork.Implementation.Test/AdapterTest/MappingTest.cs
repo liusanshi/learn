@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LL.FrameWork.Core.Infrastructure.Adapter;
 using LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl;
 using LL.FrameWork.Impl.Infrastructure.Adapter.AutoMapperImpl;
+using LL.FrameWork.Impl.Infrastructure.IOC;
 
 namespace LL.FrameWork.Impl.Test.AdapterTest
 {
@@ -12,7 +13,8 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
         [TestInitialize]
         public void start()
         {
-            TypeAdapterFactory.SetCurrent(new AutoMapperTypeAdapterFactory());
+            //var container = Container.Current;
+            //ITypeAdapterFactory adapt = Container.Current.Resolve<ITypeAdapterFactory>();
         }
 
         [TestMethod]
@@ -27,7 +29,7 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
                 D = D,
                 E = "efg"
             };
-            var dest = TypeAdapterFactory.CreateAdapter().Adapt<Sourse, Dest>(source);
+            var dest = Container.Current.Resolve<ITypeAdapterFactory>("EmitMapper").Create().Adapt<Sourse, Dest>(source);
 
             var source2 = TypeAdapterFactory.CreateAdapter().Adapt<Dest, Sourse>(dest);
 

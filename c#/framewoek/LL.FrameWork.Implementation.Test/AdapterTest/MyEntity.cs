@@ -7,6 +7,7 @@ using LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace LL.FrameWork.Impl.Test.AdapterTest
@@ -59,10 +60,9 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
             Mapper.CreateMap<Sourse, Dest>()
                 .ForMember(dest => dest.F, ce => ce.MapFrom(source => source.E));
 
-
-
             Mapper.CreateMap<Dest, Sourse>()
-                 .ForMember(dest => dest.E, ce => ce.MapFrom(source => source.F));
+                 .ForMember(dest => dest.E, ce => ce.MapFrom(source => source.F))
+                 .ForMember(dest => dest.D, ce => ce.MapFrom<Inner>(source => new Inner() { D1 = source.DD1, D2 = source.DD2 }));
         }
     }
 
@@ -76,7 +76,8 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
         IMappingConfigurator IMappingSetting.GetObjectsMapper()
         {
             return new FlatteringConfig()
-                //.ResolveSourceUsing<Sourse, Dest>(source => source.D, dest => new Inner() { D1 = dest.DD1, D2 = dest.DD2 })
+                //.ForMember<Dest, Sourse>(new System.Linq.Expressions.LambdaExpression[] { (Expression<Func<Sourse, object>>)((Sourse source) => source.D), (Expression<Func<Inner, object>>)((Inner source) => source.D1), },
+                //new System.Linq.Expressions.Expression<Func<Dest, object>>[] { dest => dest.DD1 })
                 //.ForMember<Sourse, Dest>(, d => d.D)
                 //.ForMember<Sourse, Dest>(s => s.D, d => d.D)
                 //.ConvertUsing<Sourse, Dest>(inner => new Dest()
@@ -89,7 +90,8 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
                 //.ConvertUsing<Inner, Inner2>(inner => new Inner2() { D12 = inner.D1, D22 = inner.D2 })
                 .ConstructBy<Inner>(() => new Inner())
                 .IgnoreMembers<Sourse, Dest>(new string[] { "E", "F" })
-                .ResolveUsing<Sourse, Dest>(dest => dest.F, source => source.E);
+                .ResolveUsing<Sourse, Dest>(dest => dest.F, source => source.E)
+                .ForMember<Sourse, Dest>(dest => dest.DD1, source => source.D.D1);
             //return new CustomMapConfig()
             //{
             //    ConfigurationName = "11",
@@ -104,4 +106,6 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
             //};
         }
     }
+
+
 }

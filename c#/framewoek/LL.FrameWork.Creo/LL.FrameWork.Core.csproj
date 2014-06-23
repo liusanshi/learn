@@ -72,9 +72,6 @@
     <Compile Include="Infrastructure\Adapter\ITypeAdapterFactory.cs" />
     <Compile Include="Infrastructure\Adapter\TypeAdapterFactory.cs" />
     <Compile Include="Infrastructure\Adapter\TypeMapIdentity.cs" />
-    <Compile Include="Infrastructure\IOC\ContainerFactory.cs" />
-    <Compile Include="Infrastructure\IOC\IContainer.cs" />
-    <Compile Include="Infrastructure\IOC\IContainerFactory.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\ILoggerFactory.cs" />
     <Compile Include="Infrastructure\Logging\LoggerFactory.cs" />
