@@ -33,7 +33,8 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
             };
             var dest = Container.Current.Resolve<ITypeAdapterFactory>("EmitMapper").Create().Adapt<Sourse, Dest>(source);
 
-            var source2 = TypeAdapterFactory.CreateAdapter().Adapt<Dest, Sourse>(dest);
+            //var source2 = TypeAdapterFactory.CreateAdapter().Adapt<Dest, Sourse>(dest);
+            //var source2 = Container.Current.Resolve<ITypeAdapterFactory>("EmitMapper").Create().Adapt<Dest, Sourse>(dest);
 
             Assert.AreEqual(source.A, dest.A);
             Assert.AreEqual(source.B, dest.B);

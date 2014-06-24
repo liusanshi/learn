@@ -19,8 +19,7 @@ namespace Domain.Seedwork.Tests.Classes
     using System.Text;
     using LL.FrameWork.Core.Domain;
 
-    public class SampleEntity
-        : EntityBase<Guid>
+    public class SampleEntity : EntityBase<Guid>
     {
         public string SampleProperty { get; set; }
     }

@@ -22,11 +22,12 @@ namespace LL.FrameWork.Core.Application
         /// <summary>
         /// Project a type using a DTO
         /// </summary>
-        /// <typeparam name="TProjection">The dto projection</typeparam>
-        /// <param name="entity">The source entity to project</param>
-        /// <returns>The projected type</returns>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <typeparam name="TID"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static TProjection ProjectedAs<TProjection, TID>(this EntityBase<TID> item)
-            where TProjection : class,new()
+            where TProjection : class, new()
         {
             var adapter = TypeAdapterFactory.CreateAdapter();
             return adapter.Adapt<TProjection>(item);
@@ -35,11 +36,12 @@ namespace LL.FrameWork.Core.Application
         /// <summary>
         /// projected a enumerable collection of items
         /// </summary>
-        /// <typeparam name="TProjection">The dtop projection type</typeparam>
-        /// <param name="items">the collection of entity items</param>
-        /// <returns>Projected collection</returns>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <typeparam name="TID"></typeparam>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public static List<TProjection> ProjectedAsCollection<TProjection, TID>(this IEnumerable<EntityBase<TID>> items)
-            where TProjection : class,new()
+            where TProjection : class, new()
         {
             var adapter = TypeAdapterFactory.CreateAdapter();
             return adapter.Adapt<List<TProjection>>(items);

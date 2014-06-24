@@ -34,7 +34,7 @@ namespace Domain.Seedwork.Tests
 
             entityLeft.Id = id;
             entityRight.Id = id;
-            
+
             //Act
             bool resultOnEquals = entityLeft.Equals(entityRight);
             bool resultOnOperator = entityLeft == entityRight;
@@ -48,13 +48,13 @@ namespace Domain.Seedwork.Tests
         public void DiferentIdProduceEqualsFalseTest()
         {
             //Arrange
-            
+
             var entityLeft = new SampleEntity();
             var entityRight = new SampleEntity();
 
             entityLeft.Id = Guid.NewGuid();
             entityRight.Id = Guid.NewGuid();
-           
+
 
             //Act
             bool resultOnEquals = entityLeft.Equals(entityRight);
@@ -91,7 +91,7 @@ namespace Domain.Seedwork.Tests
             if (entityLeft != entityRight)//this perform !=(left,right)
                 Assert.Fail();
 
-          
+
         }
         [TestMethod()]
         public void CompareTheSameReferenceReturnTrueTest()
@@ -102,7 +102,7 @@ namespace Domain.Seedwork.Tests
 
 
             //Act
-            if (! entityLeft.Equals(entityRight))
+            if (!entityLeft.Equals(entityRight))
                 Assert.Fail();
 
             if (!(entityLeft == entityRight))
