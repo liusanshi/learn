@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using LL.FrameWork.Core.Reflection;
+using System.Linq.Expressions;
 
 namespace LL.FrameWork.Core.Test
 {
@@ -116,14 +117,14 @@ namespace LL.FrameWork.Core.Test
         public void test_GetArgumentByType()
         {
             object obj = new object();
-            var objs = new object[]{1,2,3L,4,"as","sd",null,obj};
-            var types = new Type[]{typeof(Int32),typeof(Int64),typeof(string),typeof(string), typeof(object), typeof(object)};
+            var objs = new object[] { 1, 2, 3L, 4, "as", "sd", null, obj };
+            var types = new Type[] { typeof(Int32), typeof(Int64), typeof(string), typeof(string), typeof(object), typeof(object) };
             var resulr = new object[] { 1, 3L, "as", "sd", null, obj };
 
             int i = 0;
             foreach (var item in ReflectionHelper.GetArgumentByType(objs, types))
             {
-                Assert.AreEqual(item, resulr[i]);                
+                Assert.AreEqual(item, resulr[i]);
                 i++;
             }
         }
@@ -164,6 +165,37 @@ namespace LL.FrameWork.Core.Test
         {
             //FastReflectionFactory.SaveCache();
         }
+
+        [TestMethod]
+        public void test_find_member_by_expression()
+        {
+            Expression<Func<Test, object>> func = (Test test) => test.A.B.C.D;
+
+            var members = LL.FrameWork.Core.Reflection.ReflectionHelper.FindMembers(func);
+
+            Assert.IsNotNull(members);
+            Assert.AreEqual(4, members.Length);
+            Assert.AreEqual("A", members[0].Name);
+            Assert.AreEqual("B", members[1].Name);
+            Assert.AreEqual("C", members[2].Name);
+            Assert.AreEqual("D", members[3].Name);
+        }
+
+        [TestMethod]
+        public void test_find_loop_member_by_expression()
+        {
+            Expression<Func<Test, object>> func = (Test test) => test.A.B.C.D.A;
+
+            var members = LL.FrameWork.Core.Reflection.ReflectionHelper.FindMembers(func);
+
+            Assert.IsNotNull(members);
+            Assert.AreEqual(5, members.Length);
+            Assert.AreEqual("A", members[0].Name);
+            Assert.AreEqual("B", members[1].Name);
+            Assert.AreEqual("C", members[2].Name);
+            Assert.AreEqual("D", members[3].Name);
+            Assert.AreEqual("A", members[4].Name);
+        }
     }
 
     public class Test
@@ -203,5 +235,13 @@ namespace LL.FrameWork.Core.Test
         {
             return "private";
         }
+
+        public A A { get; set; }
     }
+
+    public class A { public B B { get; set; } }
+    public class B { public C C { get; set; } }
+    public class C { public D D { get; set; } }
+
+    public class D { public A A { get; set; } }
 }

@@ -40,16 +40,6 @@ namespace LL.FrameWork.Impl.Test.AdapterTest
             Assert.AreNotEqual(source.C, dest.C);
             Assert.AreEqual(source.D.D1, dest.DD1);
             Assert.AreEqual(source.E, dest.F);
-
-            //ReadWriteSimple
-            var members = LL.FrameWork.Core.Reflection.ReflectionHelper.FindMembers(((Expression<Func<ReadWriteSimple, object>>)(rw => rw.Destination.MemberInfo.Name.Length)));
-
-            Assert.IsNotNull(members);
-            Assert.AreEqual(4, members.Length);
-            Assert.AreEqual("Destination", members[0].Name);
-            Assert.AreEqual("MemberInfo", members[1].Name);
-            Assert.AreEqual("Name", members[2].Name);
-            Assert.AreEqual("Length", members[3].Name);
         }
     }
 }
