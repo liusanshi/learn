@@ -26,8 +26,9 @@ namespace LL.Core.Test.DomainModel
     [TestClass]
     public class DBTest
     {
-        [TestInitialize]
-        public void DBInit()
+        //[TestInitialize]
+        [AssemblyInitialize]
+        public static void DBInit(TestContext context)
         {
             var _configuration = new Configuration();
             UnitOfWork.Configuration = _configuration;
@@ -156,6 +157,14 @@ namespace LL.Core.Test.DomainModel
 
         static void initData()
         {
+            using (UnitOfWork.StartStateless())
+            {
+                UnitOfWork.CurrentStatelessSession.CreateQuery("delete from LL.FrameWork.Impl.Test.DomainModel.Student").ExecuteUpdate();
+                UnitOfWork.CurrentStatelessSession.CreateQuery("delete from LL.FrameWork.Impl.Test.DomainModel.Class").ExecuteUpdate();
+                //UnitOfWork.CurrentStatelessSession.CreateSQLQuery("delete from t_Student").ExecuteUpdate();
+                //UnitOfWork.CurrentStatelessSession.CreateSQLQuery("delete from t_Class").ExecuteUpdate();                
+            }
+
             using (UnitOfWork.Start())
             {
                 UnitOfWork.Current.BeginTransaction();
@@ -181,7 +190,7 @@ namespace LL.Core.Test.DomainModel
         {
             using (UnitOfWork.Start())
             {
-                var cls = UnitOfWork.CurrentSession.Get<Class>(1u);
+                var cls = UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>();
 
                 Assert.IsNotNull(cls);
                 Assert.AreEqual(5, cls.Students.Count);
@@ -209,14 +218,14 @@ namespace LL.Core.Test.DomainModel
             string clsName = "中三班----------22";
             using (UnitOfWork.Start())
             {
-                Class cls1 = UnitOfWork.CurrentSession.Get<Class>(1u);
+                Class cls1 = UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>();
                 cls1.Name = clsName;
                 UnitOfWork.CurrentSession.Flush();
             }
 
             using (UnitOfWork.Start())
             {
-                Assert.AreEqual(clsName, UnitOfWork.CurrentSession.Get<Class>(1u).Name);
+                Assert.AreEqual(clsName, UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>().Name);
             }
         }
 
@@ -228,12 +237,12 @@ namespace LL.Core.Test.DomainModel
             Class cls1;
             using (UnitOfWork.Start())
             {
-                cls1 = UnitOfWork.CurrentSession.Get<Class>(1u);
+                cls1 = UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>();
             }
             using (UnitOfWork.Start())
             {
                 Console.WriteLine("第二次查询》》》》》》》》》》》》》");
-                Console.WriteLine(UnitOfWork.CurrentSession.Get<Class>(1u).Name);
+                Console.WriteLine(UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>().Name);
             }
             cls1.Name = "中三班111";
 
@@ -255,7 +264,7 @@ namespace LL.Core.Test.DomainModel
             }
             using (UnitOfWork.Start())
             {
-                Assert.AreEqual("中三班111", UnitOfWork.CurrentSession.Get<Class>(1u).Name);
+                Assert.AreEqual("中三班111", UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>().Name);
             }
         }
 
@@ -267,13 +276,13 @@ namespace LL.Core.Test.DomainModel
             {
                 var t = UnitOfWork.Current.BeginTransaction();
 
-                var cls = UnitOfWork.CurrentSession.Load<Class>(1u);
+                var cls = UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>();
                 cls.Students.RemoveAt(0); //删除没有作用\Cascade.DeleteOrphans 添加这个级联操作之后有效
                 UnitOfWork.CurrentSession.Persist(cls);
 
                 t.Commit();
 
-                cls = UnitOfWork.CurrentSession.Get<Class>(1u);
+                cls = UnitOfWork.CurrentSession.CreateCriteria<Class>().SetMaxResults(1).UniqueResult<Class>();
 
                 Assert.AreEqual(4, cls.Students.Count);
             }

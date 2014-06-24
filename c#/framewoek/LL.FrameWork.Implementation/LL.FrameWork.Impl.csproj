@@ -89,6 +89,7 @@
     <Compile Include="UOW\ILocalData.cs" />
     <Compile Include="UOW\INhibernateUnitOfWork.cs" />
     <Compile Include="UOW\IUnitOfWorkFactory.cs" />
+    <Compile Include="UOW\AutoSessionAttribute.cs" />
     <Compile Include="UOW\StatelessUnitOfWorkImplementor.cs" />
     <Compile Include="UOW\UnitOfWork.cs" />
     <Compile Include="UOW\UnitOfWorkFactory.cs" />
