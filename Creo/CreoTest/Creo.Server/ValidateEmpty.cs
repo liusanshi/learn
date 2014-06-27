@@ -49,7 +49,7 @@ namespace Creo.Server
                         list2 = this.docconfigManager.GetStandardPartsConfigByDVerId(documentVersion.VerId);
                         BOMHelp.Write(context.ExtendProperty, documentVersion.VerId, list2);
                     }
-                    if (doc.IsBorrow || BOMHelp.Contains(doc.OperateType, EntityOperateType.NotCheckOut))
+                    if (BOMHelp.Contains(doc.OperateType, EntityOperateType.NotCheckOut))
                     {
                         DocConfig docConfig = list2.FirstOrDefault((DocConfig p) => p.ConfigName == doc.ConfigName);
                         if (docConfig == null) //查找索引相同的配置
