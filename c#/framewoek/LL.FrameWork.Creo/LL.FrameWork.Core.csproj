@@ -99,7 +99,7 @@
     <Compile Include="Reflection\MethodReflectionCache.cs" />
     <Compile Include="Reflection\ProertyReflectionCache.cs" />
     <Compile Include="Reflection\ReflectionExtensions.cs" />
-    <Compile Include="Reflection\ReflectionHelp.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
