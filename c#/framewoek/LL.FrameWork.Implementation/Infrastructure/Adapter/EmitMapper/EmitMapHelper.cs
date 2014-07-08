@@ -84,5 +84,10 @@ namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
         {
             return GetObjectsMapperImpl(TFrom, typeof(TTo));
         }
+
+        public static ObjectsMapperBaseImpl GetObjectsMapperImpl(Type from, Type to, IMappingConfigurator mappingConfigurator)
+        {
+            return ObjectMapperManager.DefaultInstance.GetMapperImpl(from, to, mappingConfigurator);
+        }
     }
 }

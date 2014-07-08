@@ -22,6 +22,7 @@ namespace LL.FrameWork.Core.Infrastructure.Logging
 
         static ILoggerFactory _currentLogFactory = null;
 
+        static readonly NOLogger nologger = new NOLogger();
         #endregion
 
         #region Public Methods
@@ -41,9 +42,61 @@ namespace LL.FrameWork.Core.Infrastructure.Logging
         /// <returns>Created ILog</returns>
         public static ILogger CreateLog()
         {
-            return (_currentLogFactory != null) ? _currentLogFactory.Create() : null;
+            return (_currentLogFactory != null) ? _currentLogFactory.Create() : LoggerFactory.nologger;
         }
 
         #endregion
+
+        /// <summary>
+        /// 不记录的记录者
+        /// </summary>
+        class NOLogger : ILogger
+        {
+
+            public void Debug(string message, params object[] args)
+            {
+
+            }
+
+            public void Debug(string message, System.Exception exception, params object[] args)
+            {
+
+            }
+
+            public void Debug(object item)
+            {
+
+            }
+
+            public void Fatal(string message, params object[] args)
+            {
+
+            }
+
+            public void Fatal(string message, System.Exception exception, params object[] args)
+            {
+
+            }
+
+            public void LogInfo(string message, params object[] args)
+            {
+
+            }
+
+            public void LogWarning(string message, params object[] args)
+            {
+
+            }
+
+            public void LogError(string message, params object[] args)
+            {
+
+            }
+
+            public void LogError(string message, System.Exception exception, params object[] args)
+            {
+
+            }
+        }
     }
 }
