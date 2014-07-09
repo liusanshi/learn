@@ -21,6 +21,11 @@ namespace Creo.Server
 
     public class ValidateCreoConfig : DefaultValidator
     {
+        /// <summary>
+        /// 标记是否族表的Key
+        /// </summary>
+        private const string ZUBIAOKey = "_zubiao";
+
         private List<Associatefield> IndexFields;
         private DocConfigManager docconfigManager = new DocConfigManager();
         private MaterialBaseManager matbaseManager = new MaterialBaseManager();
@@ -49,7 +54,7 @@ namespace Creo.Server
                         list2 = this.docconfigManager.GetStandardPartsConfigByDVerId(documentVersion.VerId);
                         BOMHelp.Write(context.ExtendProperty, documentVersion.VerId, list2);
                     }
-                    if (BOMHelp.Contains(doc.OperateType, EntityOperateType.NotCheckOut))
+                    if (doc.IsBorrow || BOMHelp.Contains(doc.OperateType, EntityOperateType.NotCheckOut))
                     {
                         DocConfig docConfig = list2.FirstOrDefault((DocConfig p) => p.ConfigName == doc.ConfigName);
                         if (docConfig == null) //查找索引相同的配置
@@ -61,15 +66,23 @@ namespace Creo.Server
                         }
                         if (docConfig == null) //未找到的配置
                         {
-                            if (list2.Count < list.Count)
+                            if (IsZuBiao(doc))
                             {
-                                doc.SetDocStateL(false, "red", "{0}：文档配置不允许新增", text);
+                                doc.CFG_OperateType = EntityOperateType.CreateNewVer;
+                                ValidatorHelp.SetSelfRelationType(doc, RelationOperateType.AddRelation);
                             }
                             else
                             {
-                                doc.SetDocStateL(false, "red", "{0}：文档配置名称被修改", text);
+                                if (list2.Count < list.Count)
+                                {
+                                    doc.SetDocStateL(false, "red", "{0}：文档配置不允许新增", text);
+                                }
+                                else
+                                {
+                                    doc.SetDocStateL(false, "red", "{0}：文档配置名称被修改", text);
+                                }
+                                return false;
                             }
-                            return false;
                         }
                         else
                         {
@@ -130,6 +143,16 @@ namespace Creo.Server
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// 是否族表零件
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns></returns>
+        private static bool IsZuBiao(DocStruct doc)
+        {
+            return doc.GetString(ZUBIAOKey) == "1";
         }
     }
 }
