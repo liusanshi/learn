@@ -67,7 +67,8 @@
     <Compile Include="MVC\Attribute\HttpValueIgnoreAttribute.cs" />
     <Compile Include="MVC\Attribute\PageUrlAttribute.cs" />
     <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
-    <Compile Include="MVC\Cache\ActionDescriptorCache.cs" />
+    <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />
+    <Compile Include="MVC\Pipeline\BaseMvcHandlerFactory.cs" />
     <Compile Include="MVC\Cache\ControllerDescriptorCache.cs" />
     <Compile Include="MVC\Context\ActionExecutedContext.cs" />
     <Compile Include="MVC\Context\ActionExecutingContext.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="MVC\Description\ActionMethodSelector.cs" />
     <Compile Include="MVC\Description\BaseDescriptor.cs" />
     <Compile Include="MVC\Description\ControllerActionInvoker.cs" />
-    <Compile Include="MVC\Description\ControllerActionPair.cs" />
     <Compile Include="MVC\Description\ControllerDescriptor.cs" />
     <Compile Include="MVC\Description\DataMember.cs" />
     <Compile Include="MVC\Description\DescriptorUtil.cs" />
@@ -114,6 +114,8 @@
     <Compile Include="MVC\IControllerActivator.cs" />
     <Compile Include="MVC\IControllerFactory.cs" />
     <Compile Include="MVC\IUniquelyIdentifiable.cs" />
+    <Compile Include="MVC\Pipeline\MvcHandler.cs" />
+    <Compile Include="MVC\Pipeline\UrlHelper.cs" />
     <Compile Include="MVC\ReaderWriterCache.cs" />
     <Compile Include="MVC\Reflection\MetadataHelper.cs" />
     <Compile Include="MVC\Reflection\ModelHelper.cs" />

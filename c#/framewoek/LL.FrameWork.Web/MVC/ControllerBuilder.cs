@@ -71,7 +71,7 @@ namespace LL.FrameWork.Web.MVC
 					controllerFactoryType
 				}), "controllerFactoryType");
             }
-            this._factoryThunk = delegate
+            this._factoryThunk = () =>
             {
                 IControllerFactory result;
                 try

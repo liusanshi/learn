@@ -51,6 +51,12 @@ namespace LL.FrameWork.Web.MVC
 			});
             return new AmbiguousMatchException(message);
         }
+        /// <summary>
+        /// 查找指定动作的方法
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
         public MethodInfo FindActionMethod(ControllerContext controllerContext, string actionName)
         {
             List<MethodInfo> matchingAliasedMethods = this.GetMatchingAliasedMethods(controllerContext, actionName);
@@ -74,6 +80,38 @@ namespace LL.FrameWork.Web.MVC
                 where attrs.All((ActionNameSelectorAttribute attr) => attr.IsValidName(controllerContext, actionName, methodInfo))
                 select methodInfo;
             return source.ToList<MethodInfo>();
+        }
+        /// <summary>
+        /// 查找自动Submit的方法
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
+        public MethodInfo FindSubmitAction(ControllerContext controllerContext)
+        {
+            string[] keys = controllerContext.HttpContext.Request.Form.AllKeys;
+            List<MethodInfo> matchingAliasedMethods = new List<MethodInfo>(0);
+            string actionName = string.Empty;
+            foreach (var item in keys)
+            {
+                matchingAliasedMethods = GetMatchingAliasedMethods(controllerContext, item);
+                if (matchingAliasedMethods.Any())
+                {
+                    actionName = item;
+                    break;
+                }
+            }
+            matchingAliasedMethods.AddRange(this.NonAliasedMethods[actionName]);
+            List<MethodInfo> list = ActionMethodSelector.RunSelectionFilters(controllerContext, matchingAliasedMethods);
+            switch (list.Count)
+            {
+                case 0:
+                    return null;
+                case 1:
+                    return list[0];
+                default:
+                    throw this.CreateAmbiguousMatchException(list, actionName);
+            }
         }
         private static bool IsMethodDecoratedWithAliasingAttribute(MethodInfo methodInfo)
         {

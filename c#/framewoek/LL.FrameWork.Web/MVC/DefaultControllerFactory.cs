@@ -174,10 +174,10 @@ namespace LL.FrameWork.Web.MVC
             {
                 return SessionMode.Default;
             }
-            return DefaultControllerFactory._sessionStateCache.GetOrAdd(controllerType, delegate(Type type)
+            return DefaultControllerFactory._sessionStateCache.GetOrAdd(controllerType, (Type type) =>
             {
-                bool inherit = true;
-                SessionModeAttribute sessionStateAttribute = type.GetCustomAttributes(typeof(SessionModeAttribute), inherit).OfType<SessionModeAttribute>().FirstOrDefault<SessionModeAttribute>();
+                SessionModeAttribute sessionStateAttribute = type.GetCustomAttributes(typeof(SessionModeAttribute), true)
+                    .OfType<SessionModeAttribute>().FirstOrDefault<SessionModeAttribute>();
                 if (sessionStateAttribute == null)
                 {
                     return SessionMode.Default;
@@ -191,15 +191,14 @@ namespace LL.FrameWork.Web.MVC
             {
                 throw new ArgumentException("值不能为null或者empty", "controllerName");
             }
-            object obj;
-            if (requestContext != null && requestContext.RouteData.DataTokens.TryGetValue("Namespaces", out obj))
+            if (requestContext != null)
             {
-                IEnumerable<string> enumerable = obj as IEnumerable<string>;
+                IEnumerable<string> enumerable = requestContext.Namespaces;
                 if (enumerable != null && enumerable.Any<string>())
                 {
                     HashSet<string> namespaces = new HashSet<string>(enumerable, StringComparer.OrdinalIgnoreCase);
                     Type controllerTypeWithinNamespaces = this.GetControllerTypeWithinNamespaces(requestContext.HttpRequest.Path, controllerName, namespaces);
-                    if (controllerTypeWithinNamespaces != null || false.Equals(requestContext.RouteData.DataTokens["UseNamespaceFallback"]))
+                    if (controllerTypeWithinNamespaces != null || !requestContext.UseNamespaceFallback)
                     {
                         return controllerTypeWithinNamespaces;
                     }

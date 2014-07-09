@@ -14,21 +14,10 @@ namespace LL.FrameWork.Web.MVC
         private ICollection<string> _include = new string[0];
         private readonly ParameterInfo _parameterInfo;
         private string _prefix;
-        //public override IModelBinder Binder
-        //{
-        //    get
-        //    {
-        //        return ModelBinders.GetBinderFromAttributes(this._parameterInfo, () => string.Format(CultureInfo.CurrentCulture, MvcResources.ReflectedParameterBindingInfo_MultipleConverterAttributes, new object[]
-        //        {
-        //            this._parameterInfo.Name,
-        //            this._parameterInfo.Member
-        //        }));
-        //    }
-        //}
         /// <summary>
         /// 排除字段
         /// </summary>
-        public override ICollection<string> Exclude
+        public ICollection<string> Exclude
         {
             get
             {
@@ -38,7 +27,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 包含字段
         /// </summary>
-        public override ICollection<string> Include
+        public ICollection<string> Include
         {
             get
             {
@@ -48,7 +37,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 前缀
         /// </summary>
-        public override string Prefix
+        public string Prefix
         {
             get
             {

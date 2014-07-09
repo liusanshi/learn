@@ -57,5 +57,20 @@ namespace LL.FrameWork.Web.MVC
         {
             this.Execute(httpcontext);
         }
+
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        public virtual void Dispose()
+        {
+            
+        }
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+        void IDisposable.Dispose()
+        {
+            this.Dispose();
+        }
     }
 }

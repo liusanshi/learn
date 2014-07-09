@@ -84,7 +84,7 @@ namespace LL.FrameWork.Web.MVC.Serializer
         /// <param name="model"></param>
         private static void FillModel(HttpRequest request, object model, ParameterDescriptor parameterDescriptor)
         {
-            ModelDescriptor descripton = MetadataHelper.GetModelDescripton(model.GetType());
+            ModelDescriptor descripton = MetadataHelper.GetModelDescriptor(model.GetType());
             var func = ParameterDescriptor.GetPropertyFilter(parameterDescriptor);
 
             object val = null;
