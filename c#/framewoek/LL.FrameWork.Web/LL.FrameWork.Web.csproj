@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LL.FrameWork.Web</RootNamespace>
+    <AssemblyName>LL.FrameWork.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EmitMapper">
+      <HintPath>..\packages\EmitMapper.1.0.0\lib\EmitMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Module\ConfigManager.cs" />
+    <Compile Include="Module\GzipModule.cs" />
+    <Compile Include="Module\OutputCacheAttribute.cs" />
+    <Compile Include="Module\OutputCacheConfig.cs" />
+    <Compile Include="Module\SetOutputCacheModule.cs" />
+    <Compile Include="MVC\ActionResult\ActionResult.cs" />
+    <Compile Include="MVC\ActionResult\ContentResult.cs" />
+    <Compile Include="MVC\ActionResult\EmptyResult.cs" />
+    <Compile Include="MVC\ActionResult\HttpStatusCodeResult.cs" />
+    <Compile Include="MVC\ActionResult\JavaScriptResult.cs" />
+    <Compile Include="MVC\ActionResult\JsonResult.cs" />
+    <Compile Include="MVC\ActionResult\RedirectResult.cs" />
+    <Compile Include="MVC\Attribute\ActionAttribute.cs" />
+    <Compile Include="MVC\Attribute\ActionMethodSelectorAttribute.cs" />
+    <Compile Include="MVC\Attribute\ActionNameSelectorAttribute.cs" />
+    <Compile Include="MVC\Attribute\AuthorizeAttribute.cs" />
+    <Compile Include="MVC\Attribute\BindAttribute.cs" />
+    <Compile Include="MVC\Attribute\FilterAttribute.cs" />
+    <Compile Include="MVC\Attribute\HttpValueIgnoreAttribute.cs" />
+    <Compile Include="MVC\Attribute\PageUrlAttribute.cs" />
+    <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
+    <Compile Include="MVC\Cache\ActionDescriptorCache.cs" />
+    <Compile Include="MVC\Cache\ControllerDescriptorCache.cs" />
+    <Compile Include="MVC\Context\ActionExecutedContext.cs" />
+    <Compile Include="MVC\Context\ActionExecutingContext.cs" />
+    <Compile Include="MVC\Context\ExceptionContext.cs" />
+    <Compile Include="MVC\Context\RequestContext.cs" />
+    <Compile Include="MVC\Context\ResultExecutedContext.cs" />
+    <Compile Include="MVC\Context\ResultExecutingContext.cs" />
+    <Compile Include="MVC\ControllerBase.cs" />
+    <Compile Include="MVC\Context\ControllerContext.cs" />
+    <Compile Include="MVC\ControllerBuilder.cs" />
+    <Compile Include="MVC\ControllerTypeCache.cs" />
+    <Compile Include="MVC\DefaultControllerFactory.cs" />
+    <Compile Include="MVC\Description\ActionDescriptor.cs" />
+    <Compile Include="MVC\Description\ActionMethodSelector.cs" />
+    <Compile Include="MVC\Description\BaseDescriptor.cs" />
+    <Compile Include="MVC\Description\ControllerActionInvoker.cs" />
+    <Compile Include="MVC\Description\ControllerActionPair.cs" />
+    <Compile Include="MVC\Description\ControllerDescriptor.cs" />
+    <Compile Include="MVC\Description\DataMember.cs" />
+    <Compile Include="MVC\Description\DescriptorUtil.cs" />
+    <Compile Include="MVC\Description\IActionInvoker.cs" />
+    <Compile Include="MVC\Context\AuthorizationContext.cs" />
+    <Compile Include="MVC\Description\ModelDescriptor.cs" />
+    <Compile Include="MVC\Description\ParameterBindingInfo.cs" />
+    <Compile Include="MVC\Description\ParameterDescriptor.cs" />
+    <Compile Include="MVC\Extension\HttpExtensions.cs" />
+    <Compile Include="MVC\Extension\SerializerHelper.cs" />
+    <Compile Include="MVC\Extension\StringExtensions.cs" />
+    <Compile Include="MVC\Extension\UiHelper.cs" />
+    <Compile Include="MVC\Filter\ControllerInstanceFilterProvider.cs" />
+    <Compile Include="MVC\Filter\FilterAttributeFilterProvider.cs" />
+    <Compile Include="MVC\Filter\FilterInfo.cs" />
+    <Compile Include="MVC\Filter\FilterProviderCollection.cs" />
+    <Compile Include="MVC\Filter\FilterProviders.cs" />
+    <Compile Include="MVC\Filter\GlobalFilterCollection.cs" />
+    <Compile Include="MVC\Filter\GlobalFilters.cs" />
+    <Compile Include="MVC\Filter\IActionFilter.cs" />
+    <Compile Include="MVC\Filter\IAuthorizationFilter.cs" />
+    <Compile Include="MVC\Filter\IExceptionFilter.cs" />
+    <Compile Include="MVC\Filter\IFilterProvider.cs" />
+    <Compile Include="MVC\Filter\IMvcFilter.cs" />
+    <Compile Include="MVC\Filter\IResultFilter.cs" />
+    <Compile Include="MVC\IController.cs" />
+    <Compile Include="MVC\IControllerActivator.cs" />
+    <Compile Include="MVC\IControllerFactory.cs" />
+    <Compile Include="MVC\IUniquelyIdentifiable.cs" />
+    <Compile Include="MVC\ReaderWriterCache.cs" />
+    <Compile Include="MVC\Reflection\MetadataHelper.cs" />
+    <Compile Include="MVC\Reflection\ModelHelper.cs" />
+    <Compile Include="MVC\Reflection\ReflectedAttributeCache.cs" />
+    <Compile Include="MVC\Serializer\ActionParametersProviderFactory.cs" />
+    <Compile Include="MVC\Serializer\FormDataProvider.cs" />
+    <Compile Include="MVC\Serializer\IActionParametersProvider.cs" />
+    <Compile Include="MVC\Serializer\JsonDataProvider.cs" />
+    <Compile Include="MVC\Serializer\XmlDataProvider.cs" />
+    <Compile Include="MVC\Xml\XmlHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LL.FrameWork.Creo\LL.FrameWork.Core.csproj">
+      <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
+      <Name>LL.FrameWork.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.FrameWork.Impl.csproj">
+      <Project>{104531d1-7f5b-4748-a70d-a00699bc4130}</Project>
+      <Name>LL.FrameWork.Impl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

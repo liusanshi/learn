@@ -74,8 +74,10 @@
     <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapHelper.cs" />
     <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapperTypeAdapter.cs" />
     <Compile Include="Infrastructure\Adapter\EmitMapper\EmitMapperTypeAdapterFactory.cs" />
+    <Compile Include="Infrastructure\Adapter\EmitMapper\FormCollectionMapConfig.cs" />
     <Compile Include="Infrastructure\Adapter\EmitMapper\IMappingSetting.cs" />
     <Compile Include="Infrastructure\Adapter\EmitMapper\FlatteringConfig.cs" />
+    <Compile Include="Infrastructure\IOC\CastleDependencyResolver.cs" />
     <Compile Include="Infrastructure\IOC\Container.cs" />
     <Compile Include="Infrastructure\Logging\Log4NetImpl\Log4NetLog.cs" />
     <Compile Include="Infrastructure\Logging\Log4NetImpl\Log4NetLogFactory.cs" />

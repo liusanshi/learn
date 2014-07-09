@@ -98,7 +98,12 @@ namespace LL.FrameWork.Core.Test
         {
             MethodInfo method = type.GetMethod("Add");
 
+            Assert.AreEqual(1, type.GetMethod("Plus").MakeGenericMethod(typeof(int)).FastInvoke(t, 1, 2, 3));
+
+            Assert.AreEqual(3, (int)method.FastInvoke(t, new object[] { 1, 2, 10 }));
+
             Assert.AreEqual(3, (int)method.FastInvoke(t, 1, 2));
+
         }
 
         [TestMethod]
@@ -224,6 +229,11 @@ namespace LL.FrameWork.Core.Test
         public int Add(int a, int b)
         {
             return a + b;
+        }
+
+        public T Plus<T>(T t1, T t2)
+        {
+            return t1;
         }
 
         public object TestMethod()

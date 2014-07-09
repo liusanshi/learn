@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Application\ApplicationValidationErrorsException.cs" />
     <Compile Include="Application\ProjectionsExtensionMethods.cs" />
+    <Compile Include="Async\SingleEntryGate.cs" />
     <Compile Include="Domain\EntityBase.cs" />
     <Compile Include="Domain\Expanders\Expander`1.cs" />
     <Compile Include="Domain\Expanders\IExpandable`1.cs" />
@@ -72,6 +73,12 @@
     <Compile Include="Infrastructure\Adapter\ITypeAdapterFactory.cs" />
     <Compile Include="Infrastructure\Adapter\TypeAdapterFactory.cs" />
     <Compile Include="Infrastructure\Adapter\TypeMapIdentity.cs" />
+    <Compile Include="Infrastructure\IOC\DependencyResolver.cs" />
+    <Compile Include="Infrastructure\IOC\DependencyResolverExtensions.cs" />
+    <Compile Include="Infrastructure\IOC\IDependencyResolver.cs" />
+    <Compile Include="Infrastructure\IOC\IResolver.cs" />
+    <Compile Include="Infrastructure\IOC\MultiServiceResolver.cs" />
+    <Compile Include="Infrastructure\IOC\SingleServiceResolver.cs" />
     <Compile Include="Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Infrastructure\Logging\ILoggerFactory.cs" />
     <Compile Include="Infrastructure\Logging\LoggerFactory.cs" />
@@ -91,7 +98,8 @@
     <Compile Include="Reflection\IPropertyAccessor.cs" />
     <Compile Include="Reflection\MethodReflectionCache.cs" />
     <Compile Include="Reflection\ProertyReflectionCache.cs" />
-    <Compile Include="Reflection\ReflectionHelp.cs" />
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
