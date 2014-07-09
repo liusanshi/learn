@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Module\ConfigManager.cs" />
     <Compile Include="Module\GzipModule.cs" />
     <Compile Include="Module\OutputCacheAttribute.cs" />
@@ -115,6 +114,7 @@
     <Compile Include="MVC\IControllerFactory.cs" />
     <Compile Include="MVC\IUniquelyIdentifiable.cs" />
     <Compile Include="MVC\Pipeline\MvcHandler.cs" />
+    <Compile Include="MVC\Pipeline\MvcPageHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\UrlHelper.cs" />
     <Compile Include="MVC\ReaderWriterCache.cs" />
     <Compile Include="MVC\Reflection\MetadataHelper.cs" />

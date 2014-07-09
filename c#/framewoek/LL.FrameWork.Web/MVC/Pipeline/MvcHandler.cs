@@ -20,10 +20,6 @@ namespace LL.FrameWork.Web.MVC
         /// </summary>
         public static readonly string MvcVersionHeaderName = "X-AspNetMvc2-Version";
 
-        internal MvcHandler()
-        {
- 
-        }
         /// <summary>
         /// 创建一个 MvcHandler
         /// </summary>
@@ -71,7 +67,7 @@ namespace LL.FrameWork.Web.MVC
             this.ProcessRequestInit(context, out controller);
             try
             {
-                controller.Execute(context);
+                controller.Execute(RequestContext);
             }
             finally
             {
@@ -96,7 +92,7 @@ namespace LL.FrameWork.Web.MVC
         private void ProcessRequestInit(HttpContext context, out IController controller)
         {
             AddVersionHeader(context);
-            string requiredString = this.RequestContext.Controller;
+            string requiredString = this.RequestContext.RouteData.Controller;
             controller = ControllerFactory.CreateController(this.RequestContext, requiredString);
             if (controller == null)
             {
@@ -111,10 +107,16 @@ namespace LL.FrameWork.Web.MVC
 
     internal class RequiresSessionActionHandler : MvcHandler, IRequiresSessionState
     {
+        public RequiresSessionActionHandler(RequestContext requestContext, IControllerFactory controllerFactory)
+            : base(requestContext, controllerFactory)
+        { }
     }
 
     internal class ReadOnlySessionActionHandler : MvcHandler, IRequiresSessionState, IReadOnlySessionState
     {
+        public ReadOnlySessionActionHandler(RequestContext requestContext, IControllerFactory controllerFactory)
+            : base(requestContext, controllerFactory)
+        { }
     }
 
     /// <summary>
@@ -145,7 +147,7 @@ namespace LL.FrameWork.Web.MVC
         internal MvcHandler Create(RequestContext requestContext)
         {
             var factory = ControllerBuilder.GetControllerFactory();
-            SessionMode mode = factory.GetControllerSessionBehavior(requestContext, requestContext.Controller);
+            SessionMode mode = factory.GetControllerSessionBehavior(requestContext, requestContext.RouteData.Controller);
             switch (mode)
             {
                 default:
@@ -154,9 +156,9 @@ namespace LL.FrameWork.Web.MVC
                 case SessionMode.NotSupport:
                     return new MvcHandler(requestContext, factory);
                 case SessionMode.Support:
-                    return new RequiresSessionActionHandler { RequestContext = requestContext, ControllerFactory = factory };
+                    return new RequiresSessionActionHandler(requestContext, factory);
                 case SessionMode.ReadOnly:
-                    return new ReadOnlySessionActionHandler { RequestContext = requestContext, ControllerFactory = factory };
+                    return new ReadOnlySessionActionHandler(requestContext, factory);
             }
         }
     }

@@ -193,12 +193,12 @@ namespace LL.FrameWork.Web.MVC
             }
             if (requestContext != null)
             {
-                IEnumerable<string> enumerable = requestContext.Namespaces;
+                IEnumerable<string> enumerable = requestContext.RouteData.Namespaces;
                 if (enumerable != null && enumerable.Any<string>())
                 {
                     HashSet<string> namespaces = new HashSet<string>(enumerable, StringComparer.OrdinalIgnoreCase);
                     Type controllerTypeWithinNamespaces = this.GetControllerTypeWithinNamespaces(requestContext.HttpRequest.Path, controllerName, namespaces);
-                    if (controllerTypeWithinNamespaces != null || !requestContext.UseNamespaceFallback)
+                    if (controllerTypeWithinNamespaces != null || !requestContext.RouteData.UseNamespaceFallback)
                     {
                         return controllerTypeWithinNamespaces;
                     }

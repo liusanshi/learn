@@ -17,14 +17,28 @@ namespace LL.FrameWork.Web.MVC
 
             // 根据请求路径，定位到要执行的Action
             RequestContext requestContext = CreateRequestContext(context, vPath);
+            requestContext.RouteData.Url = url;
 
             return new MvcHandlerBuilder().Create(requestContext);
         }
 
+        /// <summary>
+        /// 创建RouteData
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        protected Route CreateRouteData(string controller, string action)
+        {
+            var r = new Route();
+            r.Controller = controller;
+            r.Action = action;
+            return r;
+        }
 
         public virtual void ReleaseHandler(IHttpHandler handler)
         {
-            
+
         }
     }
 }

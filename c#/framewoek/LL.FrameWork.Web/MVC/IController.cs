@@ -5,6 +5,6 @@ namespace LL.FrameWork.Web.MVC
 {
     public interface IController : IDisposable
     {
-        void Execute(HttpContext httpcontext);
+        void Execute(RequestContext requestContext);
     }
 }

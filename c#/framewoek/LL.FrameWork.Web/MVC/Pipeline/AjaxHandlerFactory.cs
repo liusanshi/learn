@@ -22,6 +22,12 @@ namespace LL.FrameWork.Web.MVC
             /AjaxDemo.GetMd5.cspx
         */
 
+        /// <summary>
+        /// 创建上下文请求
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public override RequestContext CreateRequestContext(System.Web.HttpContext context, string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -29,16 +35,17 @@ namespace LL.FrameWork.Web.MVC
 
             Match match = s_urlRegex.Match(path);
             if (match.Success == false)
-                return null;
-            /*
-             Controller = match.Groups["name"].Value.Replace("/", "."),
-				Action = match.Groups["method"].Value
-             */
-            return new RequestContext()
             {
-                HttpRequest = context.Request,
-                Controller = match.Groups["name"].Value.Replace("/", ".")
-            };
+                return new RequestContext() { HttpContext = context };
+            }
+            else
+            {
+                return new RequestContext()
+                {
+                    HttpContext = context,
+                    RouteData = CreateRouteData(match.Groups["name"].Value.Replace("/", "."), match.Groups["method"].Value)
+                };
+            }
         }
     }
 }

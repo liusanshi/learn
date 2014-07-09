@@ -6,6 +6,8 @@ namespace LL.FrameWork.Web.MVC
     public class ControllerContext
     {
         private HttpContext _httpcontext;
+        private Route _routeData;
+        private RequestContext _requestContext;
         /// <summary>
         /// 当前请求的 Controller
         /// </summary>
@@ -32,27 +34,53 @@ namespace LL.FrameWork.Web.MVC
                 _httpcontext = value;
             }
         }
-        public ControllerContext() { }
-        public ControllerContext(ControllerBase controller)
+        /// <summary>
+        /// 路由数据
+        /// </summary>
+        public Route RouteData
         {
-            if (controller == null)
+            get
             {
-                throw new ArgumentNullException("controller");
+                if (_routeData == null)
+                {
+                    this._routeData = ((this._requestContext != null) ? this._requestContext.RouteData : new Route());
+                }
+                return _routeData;
             }
-            this.Controller = controller;
+            set
+            {
+                _routeData = value;
+            }
         }
-        public ControllerContext(HttpContext httpcontext, ControllerBase controller)
+        public RequestContext RequestContext
         {
-            if (httpcontext == null)
+            get
             {
-                throw new ArgumentNullException("httpcontext");
+                if (this._requestContext == null)
+                {
+                    this._requestContext = new RequestContext(HttpContext, RouteData);
+                }
+                return this._requestContext;
+            }
+            set
+            {
+                this._requestContext = value;
+            }
+        }
+
+        public ControllerContext() { }
+        public ControllerContext(RequestContext requestContext, ControllerBase controller)
+        {
+            if (requestContext == null)
+            {
+                throw new ArgumentNullException("requestContext");
             }
             if (controller == null)
             {
                 throw new ArgumentNullException("controller");
             }
-            this.HttpContext = httpcontext;
             this.Controller = controller;
+            this.RequestContext = requestContext;
         }
         protected ControllerContext(ControllerContext controllerContext)
         {
@@ -62,6 +90,7 @@ namespace LL.FrameWork.Web.MVC
             }
             this.Controller = controllerContext.Controller;
             this.HttpContext = controllerContext.HttpContext;
+            this.RequestContext = controllerContext.RequestContext;
         }
     }
 }

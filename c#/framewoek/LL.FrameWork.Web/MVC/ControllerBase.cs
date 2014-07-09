@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Web.Routing;
+using System.Globalization;
+//using System.Web.Routing;
 
 using LL.FrameWork.Core.Async;
 using System.Web;
@@ -11,6 +12,10 @@ namespace LL.FrameWork.Web.MVC
     {
         private readonly SingleEntryGate _executeWasCalledGate = new SingleEntryGate();
         private bool _validateRequest = true;
+        private IActionInvoker _actionInvoker;
+        /// <summary>
+        /// 控制器的上下文
+        /// </summary>
         public ControllerContext ControllerContext
         {
             get;
@@ -30,21 +35,77 @@ namespace LL.FrameWork.Web.MVC
                 this._validateRequest = value;
             }
         }
-        protected virtual void Execute(HttpContext httpcontext)
+        /// <summary>
+        /// 动作的调用者
+        /// </summary>
+        public IActionInvoker ActionInvoker
         {
-            if (httpcontext == null)
+            get
             {
-                throw new ArgumentNullException("httpcontext");
+                if (this._actionInvoker == null)
+                {
+                    this._actionInvoker = this.CreateActionInvoker();
+                }
+                return this._actionInvoker;
+            }
+            set
+            {
+                this._actionInvoker = value;
+            }
+        }
+        /// <summary>
+        /// 路由数据
+        /// </summary>
+        public Route RouteData
+        {
+            get
+            {
+                if (ControllerContext != null)
+                {
+                    return ControllerContext.RouteData;
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// 创建动作的调用者
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IActionInvoker CreateActionInvoker()
+        {
+            return new ControllerActionInvoker();
+        }
+        protected virtual void Execute(RequestContext requestContext)
+        {
+            if (requestContext == null)
+            {
+                throw new ArgumentNullException("requestContext");
             }
             this.VerifyExecuteCalledOnce();
-            this.Initialize(httpcontext);
+            this.Initialize(requestContext);
             
             this.ExecuteCore();//=====
         }
-        protected abstract void ExecuteCore();
-        protected virtual void Initialize(HttpContext httpcontext)
+
+        /// <summary>
+        /// 控制器执行的核心函数
+        /// </summary>
+        protected virtual void ExecuteCore()
         {
-            this.ControllerContext = new ControllerContext(httpcontext, this);
+            string requiredString = this.RouteData.GetRequiredString("action");
+            if (!this.ActionInvoker.InvokeAction(ControllerContext, requiredString))
+            {
+                throw new HttpException(404, string.Format(CultureInfo.CurrentCulture, "在控制器：{1}中没有找到公开的动作:{0}", new object[]
+	                {
+		                requiredString,
+		                GetType().FullName
+	                }));
+            }
+        }
+
+        protected virtual void Initialize(RequestContext requestContext)
+        {
+            this.ControllerContext = new ControllerContext(requestContext, this);
         }
         internal void VerifyExecuteCalledOnce()
         {
@@ -53,9 +114,9 @@ namespace LL.FrameWork.Web.MVC
                 throw new InvalidOperationException("当前Controller已经执行过了");
             }
         }
-        void IController.Execute(HttpContext httpcontext)
+        void IController.Execute(RequestContext requestContext)
         {
-            this.Execute(httpcontext);
+            this.Execute(requestContext);
         }
 
         /// <summary>
