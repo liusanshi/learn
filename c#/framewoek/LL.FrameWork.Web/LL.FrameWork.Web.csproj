@@ -45,10 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Module\ConfigManager.cs" />
+    <Compile Include="MVC\ActionResult\HttpNotFoundResult.cs" />
+    <Compile Include="MVC\Attribute\ActionFilterAttribute.cs" />
+    <Compile Include="MVC\Cache\ConfigManager.cs" />
     <Compile Include="Module\GzipModule.cs" />
-    <Compile Include="Module\OutputCacheAttribute.cs" />
-    <Compile Include="Module\OutputCacheConfig.cs" />
+    <Compile Include="MVC\Attribute\OutputCacheAttribute.cs" />
+    <Compile Include="MVC\Cache\OutputCacheConfig.cs" />
     <Compile Include="Module\SetOutputCacheModule.cs" />
     <Compile Include="MVC\ActionResult\ActionResult.cs" />
     <Compile Include="MVC\ActionResult\ContentResult.cs" />
@@ -56,7 +58,10 @@
     <Compile Include="MVC\ActionResult\HttpStatusCodeResult.cs" />
     <Compile Include="MVC\ActionResult\JavaScriptResult.cs" />
     <Compile Include="MVC\ActionResult\JsonResult.cs" />
+    <Compile Include="MVC\ActionResult\PageResult.cs" />
     <Compile Include="MVC\ActionResult\RedirectResult.cs" />
+    <Compile Include="MVC\ActionResult\UcResult.cs" />
+    <Compile Include="MVC\ActionResult\XmlResult.cs" />
     <Compile Include="MVC\Attribute\ActionAttribute.cs" />
     <Compile Include="MVC\Attribute\ActionMethodSelectorAttribute.cs" />
     <Compile Include="MVC\Attribute\ActionNameSelectorAttribute.cs" />
@@ -66,6 +71,14 @@
     <Compile Include="MVC\Attribute\HttpValueIgnoreAttribute.cs" />
     <Compile Include="MVC\Attribute\PageUrlAttribute.cs" />
     <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
+    <Compile Include="MVC\Cache\PageUrl2ControllerTypeCache.cs" />
+    <Compile Include="MVC\Context\CookieHelper.cs" />
+    <Compile Include="MVC\Description\ActionDescriptor.cs" />
+    <Compile Include="MVC\Context\HttpContextHelper.cs" />
+    <Compile Include="MVC\Context\TestEnvironment.cs" />
+    <Compile Include="MVC\Output\PageExecutor.cs" />
+    <Compile Include="MVC\Output\ResponseWriter.cs" />
+    <Compile Include="MVC\Output\UcExecutor.cs" />
     <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\BaseMvcHandlerFactory.cs" />
     <Compile Include="MVC\Cache\ControllerDescriptorCache.cs" />
@@ -78,9 +91,8 @@
     <Compile Include="MVC\ControllerBase.cs" />
     <Compile Include="MVC\Context\ControllerContext.cs" />
     <Compile Include="MVC\ControllerBuilder.cs" />
-    <Compile Include="MVC\ControllerTypeCache.cs" />
+    <Compile Include="MVC\Cache\ControllerTypeCache.cs" />
     <Compile Include="MVC\DefaultControllerFactory.cs" />
-    <Compile Include="MVC\Description\ActionDescriptor.cs" />
     <Compile Include="MVC\Description\ActionMethodSelector.cs" />
     <Compile Include="MVC\Description\BaseDescriptor.cs" />
     <Compile Include="MVC\Description\ControllerActionInvoker.cs" />
@@ -115,6 +127,7 @@
     <Compile Include="MVC\IUniquelyIdentifiable.cs" />
     <Compile Include="MVC\Pipeline\MvcHandler.cs" />
     <Compile Include="MVC\Pipeline\MvcPageHandlerFactory.cs" />
+    <Compile Include="MVC\Pipeline\ServiceHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\UrlHelper.cs" />
     <Compile Include="MVC\ReaderWriterCache.cs" />
     <Compile Include="MVC\Reflection\MetadataHelper.cs" />
@@ -125,6 +138,23 @@
     <Compile Include="MVC\Serializer\IActionParametersProvider.cs" />
     <Compile Include="MVC\Serializer\JsonDataProvider.cs" />
     <Compile Include="MVC\Serializer\XmlDataProvider.cs" />
+    <Compile Include="MVC\View\MyBaseMasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyBaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyPageView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\MyUserControlView.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\ViewType.cs" />
+    <Compile Include="MVC\View\ViewTypeParserFilter.cs" />
     <Compile Include="MVC\Xml\XmlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

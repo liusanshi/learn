@@ -13,6 +13,11 @@ namespace LL.FrameWork.Web.MVC
     /// </summary>
     internal sealed class ControllerTypeCache
     {
+        /// <summary>
+        /// 默认的类型缓存对象
+        /// </summary>
+        internal readonly static ControllerTypeCache DefaultControllerTypeCache = new ControllerTypeCache();
+
         private Dictionary<string, ILookup<string, Type>> _cache;
         private object _lockObj = new object();
         /// <summary>
@@ -34,6 +39,27 @@ namespace LL.FrameWork.Web.MVC
             }
         }
         /// <summary>
+        /// 所有类型
+        /// </summary>
+        internal IEnumerable<Type> AllTypes
+        {
+            get
+            {
+                foreach (ILookup<string, Type> current in this._cache.Values)
+                {
+                    foreach (IGrouping<string, Type> current2 in current)
+                    {
+                        foreach (Type item in current2)
+                        {
+                            yield return item;
+                        }
+                    }
+                }
+                yield break;
+            }
+        }
+
+        /// <summary>
         /// 确认已经初始化
         /// </summary>
         public void EnsureInitialized()
@@ -44,8 +70,11 @@ namespace LL.FrameWork.Web.MVC
                 {
                     if (this._cache == null)
                     {
-                        IEnumerable<IGrouping<string, Type>> source = FilterTypesInAssemblies(ControllerTypeCache.IsControllerType)
-                            .GroupBy((Type t) => t.Name.Substring(0, t.Name.Length - "Controller".Length), StringComparer.OrdinalIgnoreCase);
+                        var listType = FilterTypesInAssemblies(ControllerTypeCache.IsControllerType);
+
+                        IEnumerable<IGrouping<string, Type>> source = listType.GroupBy((Type t) =>
+                            t.Name.Substring(0, t.Name.Length - "Controller".Length), StringComparer.OrdinalIgnoreCase);
+
                         this._cache = source.ToDictionary((IGrouping<string, Type> g) => g.Key, 
                             (IGrouping<string, Type> g) =>
                                 g.ToLookup((Type t) => t.Namespace ?? string.Empty, StringComparer.OrdinalIgnoreCase), StringComparer.OrdinalIgnoreCase);
@@ -90,6 +119,9 @@ namespace LL.FrameWork.Web.MVC
             }
             return hashSet;
         }
+
+
+
         /// <summary>
         /// 判断是否控制器
         /// </summary>

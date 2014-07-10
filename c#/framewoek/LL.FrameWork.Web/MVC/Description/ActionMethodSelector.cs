@@ -59,12 +59,24 @@ namespace LL.FrameWork.Web.MVC
         /// <returns></returns>
         public MethodInfo FindActionMethod(ControllerContext controllerContext, string actionName)
         {
+            if (controllerContext.RouteData.UsePageUrlRoute)
+            {
+                var data = controllerContext.RouteData.PageUrlData;
+                if (data == null) return null;
+                return data.Item2;
+            }
             List<MethodInfo> matchingAliasedMethods = this.GetMatchingAliasedMethods(controllerContext, actionName);
             matchingAliasedMethods.AddRange(this.NonAliasedMethods[actionName]);
             List<MethodInfo> list = ActionMethodSelector.RunSelectionFilters(controllerContext, matchingAliasedMethods);
             switch (list.Count)
             {
                 case 0:
+                    // 如果Action的名字是submit并且是POST提交，则需要自动寻找Action
+                    // 例如：多个提交都采用一样的方式：POST /Ajax/Product/submit
+                    if (actionName.IsSame("submit") && controllerContext.HttpContext.Request.HttpMethod.IsSame("POST"))
+                    {
+                        return FindSubmitAction(controllerContext);
+                    }
                     return null;
                 case 1:
                     return list[0];
@@ -72,6 +84,12 @@ namespace LL.FrameWork.Web.MVC
                     throw this.CreateAmbiguousMatchException(list, actionName);
             }
         }
+        /// <summary>
+        /// 查找别名匹配的方法
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
         internal List<MethodInfo> GetMatchingAliasedMethods(ControllerContext controllerContext, string actionName)
         {
             IEnumerable<MethodInfo> source =
@@ -113,14 +131,30 @@ namespace LL.FrameWork.Web.MVC
                     throw this.CreateAmbiguousMatchException(list, actionName);
             }
         }
+
+        //public MethodInfo 
+
+        /// <summary>
+        /// 方法是否声明了动作别名特性
+        /// </summary>
+        /// <param name="methodInfo"></param>
+        /// <returns></returns>
         private static bool IsMethodDecoratedWithAliasingAttribute(MethodInfo methodInfo)
         {
             return methodInfo.IsDefined(typeof(ActionNameSelectorAttribute), true);
         }
+        /// <summary>
+        /// 验证方法
+        /// </summary>
+        /// <param name="methodInfo"></param>
+        /// <returns></returns>
         private static bool IsValidActionMethod(MethodInfo methodInfo)
         {
             return !methodInfo.IsSpecialName && !methodInfo.GetBaseDefinition().DeclaringType.IsAssignableFrom(typeof(ControllerBase));
         }
+        /// <summary>
+        /// 初始化元数据
+        /// </summary>
         private void PopulateLookupTables()
         {
             MethodInfo[] methods = this.ControllerType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod);
@@ -128,6 +162,12 @@ namespace LL.FrameWork.Web.MVC
             this.AliasedMethods = Array.FindAll<MethodInfo>(array, new Predicate<MethodInfo>(ActionMethodSelector.IsMethodDecoratedWithAliasingAttribute));
             this.NonAliasedMethods = array.Except(this.AliasedMethods).ToLookup((MethodInfo method) => method.Name, StringComparer.OrdinalIgnoreCase);
         }
+        /// <summary>
+        /// 筛选动作的执行者
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="methodInfos"></param>
+        /// <returns></returns>
         private static List<MethodInfo> RunSelectionFilters(ControllerContext controllerContext, List<MethodInfo> methodInfos)
         {
             List<MethodInfo> list = new List<MethodInfo>();

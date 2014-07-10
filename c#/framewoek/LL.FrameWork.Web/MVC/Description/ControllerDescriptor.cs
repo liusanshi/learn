@@ -80,14 +80,7 @@ namespace LL.FrameWork.Web.MVC
             MethodInfo methodInfo = this._selector.FindActionMethod(controllerContext, actionName);
             if (methodInfo == null)
             {
-                // 如果Action的名字是submit并且是POST提交，则需要自动寻找Action
-                // 例如：多个提交都采用一样的方式：POST /Ajax/Product/submit
-                if (actionName.IsSame("submit") && controllerContext.HttpContext.Request.HttpMethod.IsSame("POST"))
-                {
-                    methodInfo = this._selector.FindSubmitAction(controllerContext);
-                }
-                if (methodInfo == null)
-                    return null;
+                return null;
             }
             return new ActionDescriptor(methodInfo, actionName, this);
         }
@@ -101,11 +94,6 @@ namespace LL.FrameWork.Web.MVC
             return this.GetCustomAttributes(typeof(FilterAttribute), true).Cast<FilterAttribute>();
         }
 
-        //public override ICollection<ActionSelector> GetSelectors()
-        //{
-        //    ActionMethodSelectorAttribute[] array = (ActionMethodSelectorAttribute[])this.MethodInfo.GetCustomAttributes(typeof(ActionMethodSelectorAttribute), true);
-        //    return Array.ConvertAll<ActionMethodSelectorAttribute, ActionSelector>(array, (ActionMethodSelectorAttribute attr) => (ControllerContext controllerContext) => attr.IsValidForRequest(controllerContext, this.MethodInfo));
-        //}
         #region ICustomAttributeProvider member
 
         public object[] GetCustomAttributes(bool inherit)

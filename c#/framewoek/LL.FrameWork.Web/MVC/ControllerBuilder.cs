@@ -46,10 +46,18 @@ namespace LL.FrameWork.Web.MVC
             }
             this._serviceResolver = serviceResolver;
         }
+        /// <summary>
+        /// 获取控制器创建工厂
+        /// </summary>
+        /// <returns></returns>
         public IControllerFactory GetControllerFactory()
         {
             return this._serviceResolver.Current;
         }
+        /// <summary>
+        /// 设置控制器创建工厂
+        /// </summary>
+        /// <param name="controllerFactory"></param>
         public void SetControllerFactory(IControllerFactory controllerFactory)
         {
             if (controllerFactory == null)
@@ -58,6 +66,10 @@ namespace LL.FrameWork.Web.MVC
             }
             this._factoryThunk = (() => controllerFactory);
         }
+        /// <summary>
+        /// 设置控制器创建工厂的类型
+        /// </summary>
+        /// <param name="controllerFactoryType"></param>
         public void SetControllerFactory(Type controllerFactoryType)
         {
             if (controllerFactoryType == null)

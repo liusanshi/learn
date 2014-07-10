@@ -5,9 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Caching;
 
-using LL.FrameWork.Web.MVC;
-
-namespace LL.FrameWork.Web
+namespace LL.FrameWork.Web.MVC
 {
     internal static class ConfigManager
     {

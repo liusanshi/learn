@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Web;
 using System.Globalization;
+using System.Reflection;
 
 namespace LL.FrameWork.Web.MVC
 {
@@ -69,13 +70,14 @@ namespace LL.FrameWork.Web.MVC
         /// 创建RouteData
         /// </summary>
         /// <param name="url"></param>
-        public Route(string url) : this(url, null) { }
+        public Route(string url) : this() { Url = url; }
         /// <summary>
         /// 创建RouteData
         /// </summary>
         /// <param name="url"></param>
         /// <param name="routeData"></param>
         public Route(string url, Dictionary<string, object> routeData)
+            : this()
         {
             this.Url = url;
             _routeData = routeData;
@@ -165,6 +167,35 @@ namespace LL.FrameWork.Web.MVC
             set
             {
                 RouteData["Action"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 是否使用 PageUrl 路由
+        /// </summary>
+        public bool UsePageUrlRoute
+        {
+            get
+            {
+                return (bool)GetValue(RouteData, "UsePageUrlRoute", false);
+            }
+            set
+            {
+                RouteData["UsePageUrlRoute"] = value;
+            }
+        }
+        /// <summary>
+        /// PageUrl 获取的元数据
+        /// </summary>
+        public Tuple<Type, MethodInfo> PageUrlData
+        {
+            get
+            {
+                return (Tuple<Type, MethodInfo>)GetValue(RouteData, "PageUrlData", null);
+            }
+            set
+            {
+                RouteData["PageUrlData"] = value;
             }
         }
 

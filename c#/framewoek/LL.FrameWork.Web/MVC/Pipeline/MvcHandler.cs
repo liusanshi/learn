@@ -143,11 +143,23 @@ namespace LL.FrameWork.Web.MVC
                 this._controllerBuilder = value;
             }
         }
-
+        /// <summary>
+        /// 创建 MvcHandler
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <returns></returns>
         internal MvcHandler Create(RequestContext requestContext)
         {
+            string requiredString = requestContext.RouteData.Controller;
+            if (string.IsNullOrEmpty(requiredString))
+            {
+                throw new HttpException(404, string.Format(CultureInfo.CurrentCulture, "没有找到路径:{0}对应的控制器", new object[]
+				{
+					requestContext.HttpRequest.Path
+				}));
+            }
             var factory = ControllerBuilder.GetControllerFactory();
-            SessionMode mode = factory.GetControllerSessionBehavior(requestContext, requestContext.RouteData.Controller);
+            SessionMode mode = factory.GetControllerSessionBehavior(requestContext, requiredString);
             switch (mode)
             {
                 default:

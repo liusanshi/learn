@@ -12,6 +12,7 @@ namespace LL.FrameWork.Web.MVC
         private static readonly ConcurrentDictionary<MethodInfo, ReadOnlyCollection<ActionNameSelectorAttribute>> _actionNameSelectorAttributeCache = new ConcurrentDictionary<MethodInfo, ReadOnlyCollection<ActionNameSelectorAttribute>>();
         private static readonly ConcurrentDictionary<MethodInfo, ReadOnlyCollection<FilterAttribute>> _methodFilterAttributeCache = new ConcurrentDictionary<MethodInfo, ReadOnlyCollection<FilterAttribute>>();
         private static readonly ConcurrentDictionary<Type, ReadOnlyCollection<FilterAttribute>> _typeFilterAttributeCache = new ConcurrentDictionary<Type, ReadOnlyCollection<FilterAttribute>>();
+        private static readonly ConcurrentDictionary<MethodInfo, ReadOnlyCollection<PageUrlAttribute>> _methodPageUrlAttributeCache = new ConcurrentDictionary<MethodInfo, ReadOnlyCollection<PageUrlAttribute>>();
 
         /// <summary>
         /// 获取筛选特性
@@ -34,6 +35,15 @@ namespace LL.FrameWork.Web.MVC
         public static ICollection<ActionNameSelectorAttribute> GetActionNameSelectorAttributes(MethodInfo methodInfo)
         {
             return ReflectedAttributeCache.GetAttributes<MethodInfo, ActionNameSelectorAttribute>(ReflectedAttributeCache._actionNameSelectorAttributeCache, methodInfo);
+        }
+        /// <summary>
+        /// 获取PageUrlAttribute 属性
+        /// </summary>
+        /// <param name="methodInfo"></param>
+        /// <returns></returns>
+        public static ICollection<PageUrlAttribute> GetPageUrlAttributes(MethodInfo methodInfo)
+        {
+            return ReflectedAttributeCache.GetAttributes<MethodInfo, PageUrlAttribute>(ReflectedAttributeCache._methodPageUrlAttributeCache, methodInfo);
         }
 
         private static ReadOnlyCollection<TAttribute> GetAttributes<TMemberInfo, TAttribute>(ConcurrentDictionary<TMemberInfo, 

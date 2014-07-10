@@ -21,7 +21,6 @@ namespace LL.FrameWork.Web.MVC
 
         public ControllerDescriptor PageController; //为PageAction保留
         public MethodInfo MethodInfo { get; private set; }
-        //public ActionAttribute Attr { get; private set; }
         public bool HasReturn { get; private set; }
         /// <summary>
         /// 对应的控制器
@@ -47,7 +46,6 @@ namespace LL.FrameWork.Web.MVC
         public ActionDescriptor(MethodInfo m, string actionName, ControllerDescriptor controllerdesp)
         {
             this.MethodInfo = m;
-            //this.Attr = m.GetAttribute<ActionAttribute>();
             this.HasReturn = m.ReturnType != ReflectionHelper.VoidType;
 
             _uniqueId = new Lazy<string>(CreateUniqueId);

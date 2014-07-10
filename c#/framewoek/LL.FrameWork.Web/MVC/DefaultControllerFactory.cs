@@ -10,8 +10,14 @@ using System.Collections.Concurrent;
 
 namespace LL.FrameWork.Web.MVC
 {
+    /// <summary>
+    /// 默认的控制器生成工厂类
+    /// </summary>
     public class DefaultControllerFactory : IControllerFactory
     {
+        /// <summary>
+        /// 默认的控制器创建者类
+        /// </summary>
         private class DefaultControllerActivator : IControllerActivator
         {
             private Func<IDependencyResolver> _resolverThunk;
@@ -28,6 +34,12 @@ namespace LL.FrameWork.Web.MVC
                 }
                 this._resolverThunk = (() => resolver);
             }
+            /// <summary>
+            /// 创建控制实例
+            /// </summary>
+            /// <param name="requestContext"></param>
+            /// <param name="controllerType"></param>
+            /// <returns></returns>
             public IController Create(RequestContext requestContext, Type controllerType)
             {
                 IController result;
@@ -50,9 +62,10 @@ namespace LL.FrameWork.Web.MVC
         private IResolver<IControllerActivator> _activatorResolver;
         private IControllerActivator _controllerActivator;
         private ControllerBuilder _controllerBuilder;
-        private ControllerTypeCache _instanceControllerTypeCache;
         private static readonly ConcurrentDictionary<Type, SessionMode> _sessionStateCache = new ConcurrentDictionary<Type, SessionMode>();
-        private static ControllerTypeCache _staticControllerTypeCache = new ControllerTypeCache();
+        /// <summary>
+        /// 控制器创建者
+        /// </summary>
         private IControllerActivator ControllerActivator
         {
             get
@@ -65,6 +78,9 @@ namespace LL.FrameWork.Web.MVC
                 return this._controllerActivator;
             }
         }
+        /// <summary>
+        /// 控制器生成器
+        /// </summary>
         internal ControllerBuilder ControllerBuilder
         {
             get
@@ -76,25 +92,37 @@ namespace LL.FrameWork.Web.MVC
                 this._controllerBuilder = value;
             }
         }
+        /// <summary>
+        /// 类型缓存
+        /// </summary>
         internal ControllerTypeCache ControllerTypeCache
         {
             get
             {
-                return this._instanceControllerTypeCache ?? DefaultControllerFactory._staticControllerTypeCache;
-            }
-            set
-            {
-                this._instanceControllerTypeCache = value;
+                return ControllerTypeCache.DefaultControllerTypeCache;
             }
         }
+        /// <summary>
+        /// 创建 DefaultControllerFactory 实例
+        /// </summary>
         public DefaultControllerFactory()
             : this(null, null, null)
         {
         }
+        /// <summary>
+        /// 创建 DefaultControllerFactory 实例
+        /// </summary>
+        /// <param name="controllerActivator"></param>
         public DefaultControllerFactory(IControllerActivator controllerActivator)
             : this(controllerActivator, null, null)
         {
         }
+        /// <summary>
+        /// 创建 DefaultControllerFactory 实例
+        /// </summary>
+        /// <param name="controllerActivator"></param>
+        /// <param name="activatorResolver"></param>
+        /// <param name="dependencyResolver"></param>
         internal DefaultControllerFactory(IControllerActivator controllerActivator, IResolver<IControllerActivator> activatorResolver, IDependencyResolver dependencyResolver)
         {
             if (controllerActivator != null)
@@ -137,6 +165,12 @@ namespace LL.FrameWork.Web.MVC
             }
             return new InvalidOperationException(message);
         }
+        /// <summary>
+        /// 创建控制的实例
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerName"></param>
+        /// <returns></returns>
         public virtual IController CreateController(RequestContext requestContext, string controllerName)
         {
             if (requestContext == null)
@@ -150,6 +184,12 @@ namespace LL.FrameWork.Web.MVC
             Type controllerType = this.GetControllerType(requestContext, controllerName);
             return this.GetControllerInstance(requestContext, controllerType);
         }
+        /// <summary>
+        /// 创建控制的实例
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerType"></param>
+        /// <returns></returns>
         protected internal virtual IController GetControllerInstance(RequestContext requestContext, Type controllerType)
         {
             if (controllerType == null)
@@ -168,6 +208,12 @@ namespace LL.FrameWork.Web.MVC
             }
             return this.ControllerActivator.Create(requestContext, controllerType);
         }
+        /// <summary>
+        /// 获取控制的Session 模式
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerType"></param>
+        /// <returns></returns>
         protected internal virtual SessionMode GetControllerSessionBehavior(RequestContext requestContext, Type controllerType)
         {
             if (controllerType == null)
@@ -185,6 +231,12 @@ namespace LL.FrameWork.Web.MVC
                 return sessionStateAttribute.SessionMode;
             });
         }
+        /// <summary>
+        /// 根据名称获取控制器类型
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerName"></param>
+        /// <returns></returns>
         protected internal virtual Type GetControllerType(RequestContext requestContext, string controllerName)
         {
             if (string.IsNullOrEmpty(controllerName))
@@ -193,6 +245,13 @@ namespace LL.FrameWork.Web.MVC
             }
             if (requestContext != null)
             {
+                if (requestContext.RouteData.UsePageUrlRoute)//使用PageUrl的情况
+                {
+                    var pageUrlData = requestContext.RouteData.PageUrlData;
+                    if(pageUrlData == null) return null;
+                    return pageUrlData.Item1;
+                }
+
                 IEnumerable<string> enumerable = requestContext.RouteData.Namespaces;
                 if (enumerable != null && enumerable.Any<string>())
                 {
@@ -229,6 +288,10 @@ namespace LL.FrameWork.Web.MVC
                     throw DefaultControllerFactory.CreateAmbiguousControllerException(url, controllerName, controllerTypes);
             }
         }
+        /// <summary>
+        /// 重置控制器
+        /// </summary>
+        /// <param name="controller"></param>
         public virtual void ReleaseController(IController controller)
         {
             IDisposable disposable = controller as IDisposable;
@@ -237,6 +300,12 @@ namespace LL.FrameWork.Web.MVC
                 disposable.Dispose();
             }
         }
+        /// <summary>
+        /// 获取控制器的Session 模式
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerName"></param>
+        /// <returns></returns>
         SessionMode IControllerFactory.GetControllerSessionBehavior(RequestContext requestContext, string controllerName)
         {
             if (requestContext == null)

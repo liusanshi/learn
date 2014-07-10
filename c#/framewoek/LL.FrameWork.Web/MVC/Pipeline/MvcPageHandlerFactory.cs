@@ -21,11 +21,16 @@ namespace LL.FrameWork.Web.MVC
         {
             string vPath = UrlHelper.GetRealVirtualPath(context, context.Request.FilePath);
 
-            InvokeInfo vkInfo = ReflectionHelper.GetActionInvokeInfo(vPath);
-            if (vkInfo == null)
+            var data = PageUrl2ControllerTypeCache.DefaultPageUrl2ControllerTypeCache.GetDescriptor(vPath);
+            if (data == null)
                 return null;
 
-            return ActionHandler.CreateHandler(vkInfo);
+            RequestContext requestContext = new RequestContext(context, new Route(vPath)
+            {
+                UsePageUrlRoute = true,
+                PageUrlData = data
+            });
+            return new MvcHandlerBuilder().Create(requestContext);
         }
 
         private AspnetPageHandlerFactory _msPageHandlerFactory;
@@ -40,11 +45,10 @@ namespace LL.FrameWork.Web.MVC
             string requestPath = context.Request.Path;
             string vPath = UrlHelper.GetRealVirtualPath(context, requestPath);
 
-            // 尝试根据请求路径获取Action
-            InvokeInfo vkInfo = ReflectionHelper.GetActionInvokeInfo(vPath);
+            var data = PageUrl2ControllerTypeCache.DefaultPageUrl2ControllerTypeCache.GetDescriptor(vPath);
 
             // 如果没有找到合适的Action，并且请求的是一个ASPX页面，则按ASP.NET默认的方式来继续处理
-            if (vkInfo == null && requestPath.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase))
+            if (data == null && requestPath.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase))
             {
                 if (_msPageHandlerFactory == null)
                     _msPageHandlerFactory = new AspnetPageHandlerFactory();
@@ -53,7 +57,12 @@ namespace LL.FrameWork.Web.MVC
                 return _msPageHandlerFactory.GetHandler(context, requestType, requestPath, physicalPath);
             }
 
-            return ActionHandler.CreateHandler(vkInfo);
+            RequestContext requestContext = new RequestContext(context, new Route(vPath)
+            {
+                UsePageUrlRoute = true,
+                PageUrlData = data
+            });
+            return new MvcHandlerBuilder().Create(requestContext);
         }
 
         void IHttpHandlerFactory.ReleaseHandler(IHttpHandler handler)
