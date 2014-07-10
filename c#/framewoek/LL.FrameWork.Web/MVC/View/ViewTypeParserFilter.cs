@@ -164,11 +164,26 @@ namespace LL.FrameWork.Web.MVC
             }
         }
 
+        /// <summary>
+        /// 指令类型
+        /// </summary>
         private enum DirectiveType
         {
+            /// <summary>
+            /// 未知
+            /// </summary>
             Unknown,
+            /// <summary>
+            /// 页面
+            /// </summary>
             Page,
+            /// <summary>
+            /// 用户控件
+            /// </summary>
             UserControl,
+            /// <summary>
+            /// 母板页
+            /// </summary>
             Master,
         }
     }

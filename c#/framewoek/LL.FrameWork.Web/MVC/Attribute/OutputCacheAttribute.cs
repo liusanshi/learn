@@ -11,7 +11,7 @@ namespace LL.FrameWork.Web.MVC
     public class OutputCacheAttribute : ActionFilterAttribute
     {
         private OutputCacheParameters _cacheSettings
-                = new OutputCacheParameters { Duration = 600, VaryByParam = "none" };
+                = new OutputCacheParameters { Duration = 600, VaryByParam = "*" };
 
         [XmlAttribute]
         public string CacheProfile
