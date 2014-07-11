@@ -60,7 +60,8 @@ namespace LL.FrameWork.Web.MVC
             RequestContext requestContext = new RequestContext(context, new Route(vPath)
             {
                 UsePageUrlRoute = true,
-                PageUrlData = data
+                PageUrlData = data,
+                Controller = data.Item1.Name
             });
             return new MvcHandlerBuilder().Create(requestContext);
         }

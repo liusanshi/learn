@@ -58,9 +58,8 @@
     <Compile Include="MVC\ActionResult\HttpStatusCodeResult.cs" />
     <Compile Include="MVC\ActionResult\JavaScriptResult.cs" />
     <Compile Include="MVC\ActionResult\JsonResult.cs" />
-    <Compile Include="MVC\ActionResult\PageResult.cs" />
+    <Compile Include="MVC\ActionResult\TemplateViewResult.cs" />
     <Compile Include="MVC\ActionResult\RedirectResult.cs" />
-    <Compile Include="MVC\ActionResult\UcResult.cs" />
     <Compile Include="MVC\ActionResult\XmlResult.cs" />
     <Compile Include="MVC\Attribute\ActionAttribute.cs" />
     <Compile Include="MVC\Attribute\ActionMethodSelectorAttribute.cs" />
@@ -73,12 +72,16 @@
     <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
     <Compile Include="MVC\Cache\PageUrl2ControllerTypeCache.cs" />
     <Compile Include="MVC\Context\CookieHelper.cs" />
+    <Compile Include="MVC\Context\ViewContext.cs" />
+    <Compile Include="MVC\Data\ITempDataProvider.cs" />
+    <Compile Include="MVC\Data\SessionStateTempDataProvider.cs" />
+    <Compile Include="MVC\Data\TempDataDictionary.cs" />
     <Compile Include="MVC\Description\ActionDescriptor.cs" />
     <Compile Include="MVC\Context\HttpContextHelper.cs" />
     <Compile Include="MVC\Context\TestEnvironment.cs" />
-    <Compile Include="MVC\Output\PageExecutor.cs" />
+    <Compile Include="MVC\HTML\HTMLHelper.cs" />
+    <Compile Include="MVC\Output\TemplateViewExecutor.cs" />
     <Compile Include="MVC\Output\ResponseWriter.cs" />
-    <Compile Include="MVC\Output\UcExecutor.cs" />
     <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\BaseMvcHandlerFactory.cs" />
     <Compile Include="MVC\Cache\ControllerDescriptorCache.cs" />
@@ -138,13 +141,19 @@
     <Compile Include="MVC\Serializer\IActionParametersProvider.cs" />
     <Compile Include="MVC\Serializer\JsonDataProvider.cs" />
     <Compile Include="MVC\Serializer\XmlDataProvider.cs" />
+    <Compile Include="MVC\View\DefaultViewPageActivator.cs" />
+    <Compile Include="MVC\View\DynamicView.cs" />
+    <Compile Include="MVC\View\IView.cs" />
+    <Compile Include="MVC\View\IViewPageActivator.cs" />
     <Compile Include="MVC\View\MyBaseMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MVC\View\MyBasePage.cs">
+    <Compile Include="MVC\View\PageView.cs" />
+    <Compile Include="MVC\View\UserControlView.cs" />
+    <Compile Include="MVC\View\ViewPageBae.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MVC\View\MyBaseUserControl.cs">
+    <Compile Include="MVC\View\ViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MVC\View\MyPageView.cs">

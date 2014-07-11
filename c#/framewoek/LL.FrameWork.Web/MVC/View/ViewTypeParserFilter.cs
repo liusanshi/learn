@@ -28,11 +28,11 @@ namespace LL.FrameWork.Web.MVC
             {
                 case "page":
                     _directiveType = DirectiveType.Page;
-                    defaultBaseType = typeof(MyBasePage).FullName;
+                    defaultBaseType = typeof(ViewPageBae).FullName;
                     break;
                 case "control":
                     _directiveType = DirectiveType.UserControl;
-                    defaultBaseType = typeof(MyBaseUserControl).FullName;
+                    defaultBaseType = typeof(ViewUserControl).FullName;
                     break;
                 case "master":
                     _directiveType = DirectiveType.Master;

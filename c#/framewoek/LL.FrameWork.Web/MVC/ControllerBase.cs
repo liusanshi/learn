@@ -74,6 +74,10 @@ namespace LL.FrameWork.Web.MVC
         {
             return new ControllerActionInvoker();
         }
+        /// <summary>
+        /// 执行请求
+        /// </summary>
+        /// <param name="requestContext"></param>
         protected virtual void Execute(RequestContext requestContext)
         {
             if (requestContext == null)
@@ -83,7 +87,7 @@ namespace LL.FrameWork.Web.MVC
             this.VerifyExecuteCalledOnce();
             this.Initialize(requestContext);
             
-            this.ExecuteCore();//=====
+            this.ExecuteCore();
         }
 
         /// <summary>
@@ -167,32 +171,18 @@ namespace LL.FrameWork.Web.MVC
             return new RedirectResult(url, true);
         }
         /// <summary>
-        /// 显示页面
+        /// 显示模板
         /// </summary>
         /// <param name="virtualPath">文件路径</param>
         /// <param name="model"></param>
         /// <returns></returns>
-        protected internal PageResult ViewPage(string virtualPath, object model)
+        protected internal TemplateViewResult View(string virtualPath, object model)
         {
             if (string.IsNullOrEmpty(virtualPath))
             {
                 throw new ArgumentException("不能为空或者null", "virtualPath");
             }
-            return new PageResult(virtualPath, model);
-        }
-        /// <summary>
-        /// 显示自定义控件
-        /// </summary>
-        /// <param name="virtualPath">文件路径</param>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        protected internal UcResult ViewUC(string virtualPath, object model)
-        {
-            if (string.IsNullOrEmpty(virtualPath))
-            {
-                throw new ArgumentException("不能为空或者null", "virtualPath");
-            }
-            return new UcResult(virtualPath, model);
+            return new TemplateViewResult(virtualPath, model);
         }
         /// <summary>
         /// 输出xml 数据
