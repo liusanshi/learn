@@ -40,6 +40,10 @@ namespace LL.FrameWork.Core.Reflection
             {
                 ReflectionHelper.ILCastclass(il, method.ReturnType, ReflectionHelper.ObjectType);
             }
+            else
+            {
+                il.Emit(OpCodes.Ldnull);
+            }
             il.Emit(OpCodes.Ret);
             MethodInvoker = (Func<object, object[], object>)Dmethod.CreateDelegate(typeof(Func<object, object[], object>));
         }

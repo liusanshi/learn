@@ -65,19 +65,19 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 创建RouteData
         /// </summary>
-        public Route() : this(Instance) { }
+        public Route() { }
         /// <summary>
         /// 创建RouteData
         /// </summary>
         /// <param name="url"></param>
-        public Route(string url) : this() { Url = url; }
+        public Route(string url) : this(Instance) { Url = url; }
         /// <summary>
         /// 创建RouteData
         /// </summary>
         /// <param name="url"></param>
         /// <param name="routeData"></param>
         public Route(string url, Dictionary<string, object> routeData)
-            : this()
+            : this(Instance)
         {
             this.Url = url;
             _routeData = routeData;

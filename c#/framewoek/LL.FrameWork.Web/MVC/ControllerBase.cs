@@ -170,6 +170,10 @@ namespace LL.FrameWork.Web.MVC
             }
             return new RedirectResult(url, true);
         }
+        protected internal TemplateViewResult View(string virtualPath)
+        {
+            return View(virtualPath, null);
+        }
         /// <summary>
         /// 显示模板
         /// </summary>

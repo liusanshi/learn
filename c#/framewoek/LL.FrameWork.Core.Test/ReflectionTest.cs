@@ -100,6 +100,8 @@ namespace LL.FrameWork.Core.Test
 
             Assert.AreEqual(1, type.GetMethod("Plus").MakeGenericMethod(typeof(int)).FastInvoke(t, 1, 2, 3));
 
+            
+
             Assert.AreEqual(3, (int)method.FastInvoke(t, new object[] { 1, 2, 10 }));
 
             Assert.AreEqual(3, (int)method.FastInvoke(t, 1, 2));
@@ -112,7 +114,9 @@ namespace LL.FrameWork.Core.Test
         {
             MethodInfo method = type.GetMethod("TestMethod");
 
-            Assert.AreEqual("2323", method.FastInvoke(t, ""));
+            Assert.AreEqual("2323", method.FastInvoke(t, new object[0]));
+
+            type.GetMethod("TestVoid").FastInvoke(t, new object[0]);
 
             method = type.GetMethod("TestMethodPrivate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod);
             method.FastInvoke(t, "", "");
@@ -239,6 +243,17 @@ namespace LL.FrameWork.Core.Test
         public object TestMethod()
         {
             return "2323";
+        }
+
+        public void TestVoid()
+        {
+            PropertyInt = 1;
+        }
+
+        static object testvoid2(object ins, object[] args)
+        {
+            ((Test)ins).TestVoid();
+            return null;
         }
 
         private object TestMethodPrivate()

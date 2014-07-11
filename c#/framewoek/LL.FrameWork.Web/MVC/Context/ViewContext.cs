@@ -25,10 +25,10 @@ namespace LL.FrameWork.Web.MVC
             {
                 throw new ArgumentNullException("controllerContext");
             }
-            if (model == null)
-            {
-                throw new ArgumentNullException("model");
-            }
+            //if (model == null)
+            //{
+            //    throw new ArgumentNullException("model");
+            //}
             if (tempData == null)
             {
                 throw new ArgumentNullException("tempData");
@@ -45,7 +45,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 视图数据
         /// </summary>
-        public object Model { get; private set; }
+        public object Model { get; set; }
         /// <summary>
         /// 视图结果的输入入口
         /// </summary>
@@ -53,7 +53,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 视图上面的临时数据
         /// </summary>
-        public TempDataDictionary TempData { get; private set; }
+        public TempDataDictionary TempData { get; set; }
         /// <summary>
         /// 模板的类型
         /// </summary>

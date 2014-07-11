@@ -80,8 +80,10 @@
     <Compile Include="MVC\Context\HttpContextHelper.cs" />
     <Compile Include="MVC\Context\TestEnvironment.cs" />
     <Compile Include="MVC\HTML\HTMLHelper.cs" />
-    <Compile Include="MVC\Output\TemplateViewExecutor.cs" />
-    <Compile Include="MVC\Output\ResponseWriter.cs" />
+    <Compile Include="MVC\HTML\PartialExtensions.cs" />
+    <Compile Include="MVC\HTML\RenderPartialExtensions.cs" />
+    <Compile Include="MVC\HTML\ResponseWriter.cs" />
+    <Compile Include="MVC\HTML\TemplateViewExecutor.cs" />
     <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\BaseMvcHandlerFactory.cs" />
     <Compile Include="MVC\Cache\ControllerDescriptorCache.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="MVC\Serializer\IActionParametersProvider.cs" />
     <Compile Include="MVC\Serializer\JsonDataProvider.cs" />
     <Compile Include="MVC\Serializer\XmlDataProvider.cs" />
+    <Compile Include="MVC\View\CachingUserControlView.cs" />
     <Compile Include="MVC\View\DefaultViewPageActivator.cs" />
     <Compile Include="MVC\View\DynamicView.cs" />
     <Compile Include="MVC\View\IView.cs" />

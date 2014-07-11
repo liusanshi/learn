@@ -3,9 +3,6 @@ using System.Web;
 using System.Collections.Specialized;
 using System.CodeDom;
 using System.Web.UI;
-using System.Reflection;
-
-using LL.FrameWork.Core.Reflection;
 
 namespace LL.FrameWork.Web.MVC
 {
@@ -15,11 +12,6 @@ namespace LL.FrameWork.Web.MVC
     [FileLevelControlBuilder(typeof(ViewUserControlControlBuilder))]
     public class ViewUserControl : UserControl
     {
-        /// <summary>
-        /// Page页面的是有变量
-        /// </summary>
-        private static FieldInfo Page_request = typeof(Page).GetField("_request", BindingFlags.NonPublic | BindingFlags.Instance);
-
         private HTMLHelper _htmlHelper;
         /// <summary>
         /// html帮助类
@@ -71,8 +63,6 @@ namespace LL.FrameWork.Web.MVC
         {
             using (ViewUserControl.ViewUserControlContainerPage viewUserControlContainerPage = new ViewUserControl.ViewUserControlContainerPage(this))
             {
-                //设置页面的私有的成员_request
-                Page_request.FastSetValue(viewUserControlContainerPage, viewContext.HttpContext.Request);
                 string contentType = viewContext.HttpContext.Response.ContentType;
                 viewUserControlContainerPage.RenderView(viewContext);
                 viewContext.HttpContext.Response.ContentType = contentType;
@@ -82,7 +72,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 内部包裹UserControl的Page页面
         /// </summary>
-        private sealed class ViewUserControlContainerPage : ViewPageBae
+        sealed class ViewUserControlContainerPage : ViewPageBae
         {
             private readonly ViewUserControl _userControl;
             public ViewUserControlContainerPage(ViewUserControl userControl)

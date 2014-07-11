@@ -11,11 +11,11 @@ namespace LL.FrameWork.Web.MVC
     /// </summary>
     public class PageView : DynamicView
     {
-        protected PageView(ControllerContext controllerContext, string viewPath, string masterPath)
+        public PageView(ControllerContext controllerContext, string viewPath, string masterPath)
             : this(controllerContext, viewPath, masterPath, null)
         {
         }
-        protected PageView(ControllerContext controllerContext, string viewPath, string masterPath, IViewPageActivator viewPageActivator)
+        public PageView(ControllerContext controllerContext, string viewPath, string masterPath, IViewPageActivator viewPageActivator)
             : this(controllerContext, viewPath, masterPath, viewPageActivator, null)
         {
         }

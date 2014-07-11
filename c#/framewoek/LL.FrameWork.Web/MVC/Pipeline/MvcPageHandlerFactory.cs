@@ -61,7 +61,8 @@ namespace LL.FrameWork.Web.MVC
             {
                 UsePageUrlRoute = true,
                 PageUrlData = data,
-                Controller = data.Item1.Name
+                Controller = data.Item1.Name,
+                Action = data.Item2.Name
             });
             return new MvcHandlerBuilder().Create(requestContext);
         }

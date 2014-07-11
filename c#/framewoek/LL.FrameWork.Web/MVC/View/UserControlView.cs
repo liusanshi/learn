@@ -26,7 +26,10 @@ namespace LL.FrameWork.Web.MVC
             ViewUserControl viewUserControl = instance as ViewUserControl;
             if (viewUserControl != null)
             {
+                var oldWriter = viewContext.Writer;
+                viewContext.Writer = writer;
                 this.RenderViewUserControl(viewContext, viewUserControl);
+                viewContext.Writer = oldWriter;
             }
             else
             {

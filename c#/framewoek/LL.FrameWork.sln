@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Implementation
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Web", "LL.FrameWork.Web\LL.FrameWork.Web.csproj", "{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTest", "WebTest\WebTest.csproj", "{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
