@@ -1,4 +1,5 @@
-﻿<%@ Control Language="C#" ClassName="TagLinks" Inherits="MyUserControlView<List<BlogLink>>" %>
+﻿<%@ Control Language="C#" ClassName="TagLinks" Inherits="ViewUserControlBase<List<BlogLink>>" %>
+<%--<%@ OutputCache Duration="6000" VaryByParam="*" %>--%>
 
 <p><b>推荐排行榜</b></p>
 <ul>

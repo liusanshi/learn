@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -100,7 +101,7 @@ namespace LL.FrameWork.Core.Test
 
             Assert.AreEqual(1, type.GetMethod("Plus").MakeGenericMethod(typeof(int)).FastInvoke(t, 1, 2, 3));
 
-            
+
 
             Assert.AreEqual(3, (int)method.FastInvoke(t, new object[] { 1, 2, 10 }));
 
@@ -204,6 +205,46 @@ namespace LL.FrameWork.Core.Test
             Assert.AreEqual("C", members[2].Name);
             Assert.AreEqual("D", members[3].Name);
             Assert.AreEqual("A", members[4].Name);
+        }
+
+        [TestMethod]
+        public void LinqAggregateTest()
+        {
+            int[] ints = { 4, 8, 8, 3, 9, 0, 7, 8, 2 };
+            //var funcs = ints.Select<int, Func<int, int>>(p => (int i) => i * i);
+
+            Func<int> seed = delegate
+            {
+                return 0;
+            };
+            Func<int> func = ints.Aggregate(seed,
+                (Func<int> next, int filter) =>
+                    () => next());
+            func();
+
+            ints.Aggregate(() =>
+            {
+                Console.WriteLine("kaishi"); 
+                return 0;
+            },
+            (Func<int> next, int i) =>
+            {
+                return (() =>
+                {
+                    int j = next() + i;
+                    Console.WriteLine(j.ToString());
+                    return j;
+                })
+                    ;
+            })();
+
+            int numEven = ints.Aggregate(2, (total, next) =>
+            {
+                Console.WriteLine(total);
+                return next % 2 == 0 ? total + 1 : total;
+            });
+
+            Assert.AreEqual<int>(8, numEven);
         }
     }
 

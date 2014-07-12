@@ -7,11 +7,16 @@ using System.Web;
 
 namespace LL.FrameWork.Web.MVC
 {
+    /// <summary>
+    /// 控制器基类
+    /// </summary>
     public abstract class ControllerBase : IController
     {
         private readonly SingleEntryGate _executeWasCalledGate = new SingleEntryGate();
         private bool _validateRequest = true;
         private IActionInvoker _actionInvoker;
+        private TempDataDictionary _tempDataDictionary;
+        private ITempDataProvider _tempDataProvider;
         /// <summary>
         /// 控制器的上下文
         /// </summary>
@@ -67,12 +72,56 @@ namespace LL.FrameWork.Web.MVC
             }
         }
         /// <summary>
+        /// 临时数据
+        /// </summary>
+        public TempDataDictionary TempData
+        {
+            get
+            {
+                if (this._tempDataDictionary == null)
+                {
+                    this._tempDataDictionary = new TempDataDictionary();
+                }
+                return this._tempDataDictionary;
+            }
+            set
+            {
+                this._tempDataDictionary = value;
+            }
+        }
+        /// <summary>
+        /// 临时数据提供者
+        /// </summary>
+        public ITempDataProvider TempDataProvider
+        {
+            get
+            {
+                if (this._tempDataProvider == null)
+                {
+                    this._tempDataProvider = this.CreateTempDataProvider();
+                }
+                return this._tempDataProvider;
+            }
+            set
+            {
+                this._tempDataProvider = value;
+            }
+        }
+        /// <summary>
         /// 创建动作的调用者
         /// </summary>
         /// <returns></returns>
         protected virtual IActionInvoker CreateActionInvoker()
         {
             return new ControllerActionInvoker();
+        }
+        /// <summary>
+        /// 临时数据提供者
+        /// </summary>
+        /// <returns></returns>
+        protected virtual ITempDataProvider CreateTempDataProvider()
+        {
+            return new SessionStateTempDataProvider();
         }
         /// <summary>
         /// 执行请求
@@ -95,14 +144,22 @@ namespace LL.FrameWork.Web.MVC
         /// </summary>
         protected virtual void ExecuteCore()
         {
-            string requiredString = this.RouteData.Action;
-            if (!this.ActionInvoker.InvokeAction(ControllerContext, requiredString))
+            this.PossiblyLoadTempData();
+            try
             {
-                throw new HttpException(404, string.Format(CultureInfo.CurrentCulture, "在控制器：{1}中没有找到公开的动作:{0}", new object[]
+                string requiredString = this.RouteData.Action;
+                if (!this.ActionInvoker.InvokeAction(ControllerContext, requiredString))
+                {
+                    throw new HttpException(404, string.Format(CultureInfo.CurrentCulture, "在控制器：{1}中没有找到公开的动作:{0}", new object[]
 	                {
 		                requiredString,
 		                GetType().FullName
 	                }));
+                }
+            }
+            finally
+            {
+                this.PossiblySaveTempData();
             }
         }
         /// <summary>
@@ -122,6 +179,20 @@ namespace LL.FrameWork.Web.MVC
             {
                 throw new InvalidOperationException("当前Controller已经执行过了");
             }
+        }
+        /// <summary>
+        /// 尝试加载临时数据
+        /// </summary>
+        internal void PossiblyLoadTempData()
+        {
+            TempData.Load(ControllerContext, this.TempDataProvider);
+        }
+        /// <summary>
+        /// 尝试保存临时数据
+        /// </summary>
+        internal void PossiblySaveTempData()
+        {
+            TempData.Save(ControllerContext, this.TempDataProvider);
         }
         void IController.Execute(RequestContext requestContext)
         {
@@ -170,12 +241,17 @@ namespace LL.FrameWork.Web.MVC
             }
             return new RedirectResult(url, true);
         }
+        /// <summary>
+        /// 呈现模板
+        /// </summary>
+        /// <param name="virtualPath"></param>
+        /// <returns></returns>
         protected internal TemplateViewResult View(string virtualPath)
         {
             return View(virtualPath, null);
         }
         /// <summary>
-        /// 显示模板
+        /// 呈现模板
         /// </summary>
         /// <param name="virtualPath">文件路径</param>
         /// <param name="model"></param>
@@ -186,8 +262,33 @@ namespace LL.FrameWork.Web.MVC
             {
                 throw new ArgumentException("不能为空或者null", "virtualPath");
             }
-            return new TemplateViewResult(virtualPath, model);
+            return new TemplateViewResult(virtualPath, TempData, model);
         }
+
+        /// <summary>
+        /// 呈现有缓存功能的模板
+        /// </summary>
+        /// <param name="virtualPath"></param>
+        /// <returns></returns>
+        protected internal CacheTemplateViewResult CacheView(string virtualPath)
+        {
+            return CacheView(virtualPath, null);
+        }
+        /// <summary>
+        /// 呈现有缓存功能的模板
+        /// </summary>
+        /// <param name="virtualPath">文件路径</param>
+        /// <param name="getModel"></param>
+        /// <returns></returns>
+        protected internal CacheTemplateViewResult CacheView(string virtualPath, Func<object> getModel)
+        {
+            if (string.IsNullOrEmpty(virtualPath))
+            {
+                throw new ArgumentException("不能为空或者null", "virtualPath");
+            }
+            return new CacheTemplateViewResult(virtualPath, getModel);
+        }
+
         /// <summary>
         /// 输出xml 数据
         /// </summary>

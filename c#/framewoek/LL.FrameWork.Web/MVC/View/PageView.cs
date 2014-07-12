@@ -35,7 +35,7 @@ namespace LL.FrameWork.Web.MVC
         }
         protected override void RenderView(ViewContext viewContext, TextWriter writer, object instance)
         {
-            ViewPageBae viewPage = instance as ViewPageBae;
+            ViewPageBase viewPage = instance as ViewPageBase;
             if (viewPage != null)
             {
                 this.RenderViewPage(viewContext, viewPage);
@@ -49,7 +49,7 @@ namespace LL.FrameWork.Web.MVC
             }
         }
 
-        private void RenderViewPage(ViewContext context, ViewPageBae page)
+        private void RenderViewPage(ViewContext context, ViewPageBase page)
         {
             if (!string.IsNullOrEmpty(this.MasterPath))
             {

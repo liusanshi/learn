@@ -43,7 +43,7 @@ namespace LL.FrameWork.Web.MVC
             {
                 if (_routeData == null)
                 {
-                    this._routeData = ((this._requestContext != null) ? this._requestContext.RouteData : new Route());
+                    this._routeData = ((this._requestContext != null) ? this._requestContext.RouteData : new Route(""));
                 }
                 return _routeData;
             }
@@ -68,7 +68,7 @@ namespace LL.FrameWork.Web.MVC
             }
         }
 
-        public ControllerContext() { }
+        protected ControllerContext() { }
         public ControllerContext(RequestContext requestContext, ControllerBase controller)
         {
             if (requestContext == null)

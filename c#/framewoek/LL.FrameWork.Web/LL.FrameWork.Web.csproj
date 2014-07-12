@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MVC\ActionResult\CacheTemplateViewResult.cs" />
     <Compile Include="MVC\ActionResult\HttpNotFoundResult.cs" />
     <Compile Include="MVC\Attribute\ActionFilterAttribute.cs" />
     <Compile Include="MVC\Cache\ConfigManager.cs" />
@@ -71,15 +72,18 @@
     <Compile Include="MVC\Attribute\PageUrlAttribute.cs" />
     <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
     <Compile Include="MVC\Cache\PageUrl2ControllerTypeCache.cs" />
+    <Compile Include="MVC\Context\CacheViewContext.cs" />
     <Compile Include="MVC\Context\CookieHelper.cs" />
     <Compile Include="MVC\Context\ViewContext.cs" />
     <Compile Include="MVC\Data\ITempDataProvider.cs" />
+    <Compile Include="MVC\Data\Route.cs" />
     <Compile Include="MVC\Data\SessionStateTempDataProvider.cs" />
     <Compile Include="MVC\Data\TempDataDictionary.cs" />
     <Compile Include="MVC\Description\ActionDescriptor.cs" />
     <Compile Include="MVC\Context\HttpContextHelper.cs" />
     <Compile Include="MVC\Context\TestEnvironment.cs" />
     <Compile Include="MVC\HTML\HTMLHelper.cs" />
+    <Compile Include="MVC\HTML\HTMLHelper`1.cs" />
     <Compile Include="MVC\HTML\PartialExtensions.cs" />
     <Compile Include="MVC\HTML\RenderPartialExtensions.cs" />
     <Compile Include="MVC\HTML\ResponseWriter.cs" />
@@ -134,7 +138,7 @@
     <Compile Include="MVC\Pipeline\MvcPageHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\ServiceHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\UrlHelper.cs" />
-    <Compile Include="MVC\ReaderWriterCache.cs" />
+    <Compile Include="MVC\Cache\ReaderWriterCache.cs" />
     <Compile Include="MVC\Reflection\MetadataHelper.cs" />
     <Compile Include="MVC\Reflection\ModelHelper.cs" />
     <Compile Include="MVC\Reflection\ReflectedAttributeCache.cs" />
@@ -143,26 +147,30 @@
     <Compile Include="MVC\Serializer\IActionParametersProvider.cs" />
     <Compile Include="MVC\Serializer\JsonDataProvider.cs" />
     <Compile Include="MVC\Serializer\XmlDataProvider.cs" />
-    <Compile Include="MVC\View\CachingUserControlView.cs" />
+    <Compile Include="MVC\View\CacheUserControlView.cs" />
+    <Compile Include="MVC\View\ControlBuilder.cs" />
     <Compile Include="MVC\View\DefaultViewPageActivator.cs" />
     <Compile Include="MVC\View\DynamicView.cs" />
     <Compile Include="MVC\View\IView.cs" />
     <Compile Include="MVC\View\IViewPageActivator.cs" />
-    <Compile Include="MVC\View\MyBaseMasterPage.cs">
+    <Compile Include="MVC\View\ViewMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MVC\View\PageView.cs" />
     <Compile Include="MVC\View\UserControlView.cs" />
-    <Compile Include="MVC\View\ViewPageBae.cs">
+    <Compile Include="MVC\View\ViewMasterPage`1.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MVC\View\ViewUserControl.cs">
+    <Compile Include="MVC\View\ViewPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MVC\View\MyPageView.cs">
+    <Compile Include="MVC\View\ViewUserControlBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MVC\View\MyUserControlView.cs">
+    <Compile Include="MVC\View\ViewPageBase`1.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MVC\View\ViewUserControlBase`1.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MVC\View\ViewType.cs" />

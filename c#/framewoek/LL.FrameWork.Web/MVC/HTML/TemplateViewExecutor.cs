@@ -37,7 +37,7 @@ namespace LL.FrameWork.Web.MVC
         }
         /// <summary>
         /// 用指定的页面路径以及视图数据呈现结果，最后返回生成的HTML代码。
-        /// 页面应从MyPageView&lt;T&gt;继承
+        /// 页面应从ViewPageBae&lt;T&gt;继承
         /// </summary>
         /// <param name="context">HttpContext对象</param>
         /// <param name="pageVirtualPath">Page的虚拟路径</param>
@@ -49,7 +49,7 @@ namespace LL.FrameWork.Web.MVC
         }
         /// <summary>
         /// 用指定的页面路径以及视图数据呈现结果，最后返回生成的HTML代码。
-        /// 页面应从MyPageView&lt;T&gt;继承
+        /// 页面应从ViewPageBae&lt;T&gt;继承
         /// </summary>
         /// <param name="context"></param>
         internal static void PageRender(ViewContext context)
@@ -59,7 +59,7 @@ namespace LL.FrameWork.Web.MVC
 
         /// <summary>
         /// 用指定的用户控件以及视图数据呈现结果，最后返回生成的HTML代码。
-        /// 用户控件应从MyUserControlView&lt;T&gt;继承
+        /// 用户控件应从ViewUserControlBase&lt;T&gt;继承
         /// </summary>
         /// <param name="ucVirtualPath">用户控件的虚拟路径</param>
         /// <param name="model">视图数据</param>
@@ -70,7 +70,7 @@ namespace LL.FrameWork.Web.MVC
         }
         /// <summary>
         /// 用指定的用户控件以及视图数据呈现结果，最后返回生成的HTML代码。
-        /// 用户控件应从MyUserControlView&lt;T&gt;继承
+        /// 用户控件应从ViewUserControlBase&lt;T&gt;继承
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
@@ -86,25 +86,25 @@ namespace LL.FrameWork.Web.MVC
 
         /// <summary>
         /// 用指定的用户控件以及视图数据呈现结果，最后返回生成的HTML代码。使用了 OutputCache 指令的用户控件
-        /// 用户控件应从MyUserControlView&lt;T&gt;继承
+        /// 用户控件应从ViewUserControlBase&lt;T&gt;继承
         /// </summary>
         /// <param name="context"></param>
-        internal static void UCCachingRender(ViewContext context)
+        internal static void UCCacheRender(ViewContext context)
         {
-            new CachingUserControlView(context, context.TemplatePath).Render(context, context.Writer);
+            new CacheUserControlView(context, context.TemplatePath).Render(context, context.Writer);
         }
         /// <summary>
         /// 用指定的用户控件以及视图数据呈现结果，最后返回生成的HTML代码。使用了 OutputCache 指令的用户控件
-        /// 用户控件应从MyUserControlView&lt;T&gt;继承
+        /// 用户控件应从ViewUserControlBase&lt;T&gt;继承
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        internal static String UCCachingHTML(ViewContext context)
+        internal static String UCCacheHTML(ViewContext context)
         {
             StringBuilder buffer = new StringBuilder(100);
             using (StringWriter sw = new StringWriter(buffer))
             {
-                new CachingUserControlView(context, context.TemplatePath).Render(context, sw);
+                new CacheUserControlView(context, context.TemplatePath).Render(context, sw);
                 return buffer.ToString();
             }
         }

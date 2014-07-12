@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.UI;
-using System.CodeDom;
 using System.Globalization;
 using System.Web;
 
@@ -10,19 +9,19 @@ namespace LL.FrameWork.Web.MVC
     /// 一个基于“System.Web.UI.Page”的类
     /// </summary>
     [FileLevelControlBuilder(typeof(ViewPageControlBuilder))]
-    public class ViewPageBae : Page
+    public class ViewPageBase : Page
     {
         [ThreadStatic]
         private static int _nextId;
         private string _requestUrlEncodeRawUrl;
-        private HTMLHelper _htmlHelper;
+        private HTMLHelper<object> _htmlHelper;
         /// <summary>
         /// 获取序号
         /// </summary>
         /// <returns></returns>
         internal static string NextId()
         {
-            int num = ++ViewPageBae._nextId;
+            int num = ++ViewPageBase._nextId;
             return num.ToString(CultureInfo.InvariantCulture);
         }
         /// <summary>
@@ -38,19 +37,34 @@ namespace LL.FrameWork.Web.MVC
                 return _requestUrlEncodeRawUrl;
             }
         }
-
         /// <summary>
-        /// html帮助类
+        /// 试图数据
         /// </summary>
-        public HTMLHelper HTML
+        public object Model
         {
             get
             {
-                if (_htmlHelper == null)
-                {
-                    _htmlHelper = new HTMLHelper(ViewContext);
-                }
+                return this.ViewContext.Model;
+            }
+        }
+        /// <summary>
+        /// html帮助对象
+        /// </summary>
+        public HTMLHelper<object> HTML
+        {
+            get
+            {
                 return _htmlHelper;
+            }
+        }
+        /// <summary>
+        /// 可以保持的临时数据
+        /// </summary>
+        public TempDataDictionary TempData
+        {
+            get
+            {
+                return this.ViewContext.TempData;
             }
         }
         /// <summary>
@@ -66,12 +80,20 @@ namespace LL.FrameWork.Web.MVC
         /// </summary>
         public virtual ViewContext ViewContext { get; set; }
         /// <summary>
+        /// 初始化帮助对象
+        /// </summary>
+        protected virtual void InitHelpers()
+        {
+            _htmlHelper = new HTMLHelper<object>(ViewContext, Model);
+        }
+
+        /// <summary>
         /// 处理请求
         /// </summary>
         /// <param name="context"></param>
         public override void ProcessRequest(HttpContext context)
         {
-            this.ID = ViewPageBae.NextId();
+            this.ID = ViewPageBase.NextId();
             base.ProcessRequest(context);
         }
         /// <summary>
@@ -97,50 +119,27 @@ namespace LL.FrameWork.Web.MVC
         public virtual void RenderView(ViewContext viewContext)
         {
             this.ViewContext = viewContext;
+            this.InitHelpers();
             var switchWriter = viewContext.Writer;
             if (switchWriter != null)
             {
                 using (switchWriter)
                 {
-                    int nextId = ViewPageBae._nextId;
+                    int nextId = ViewPageBase._nextId;
                     try
                     {
-                        ViewPageBae._nextId = 0;
+                        ViewPageBase._nextId = 0;
                         viewContext.HttpContext.Server.Execute(this, switchWriter, true);
                     }
                     finally
                     {
-                        ViewPageBae._nextId = nextId;
+                        ViewPageBase._nextId = nextId;
                     }
                 }
             }
             else
             {
                 this.ProcessRequest(viewContext.HttpContext);
-            }
-        }
-    }
-
-
-    internal sealed class ViewPageControlBuilder : FileLevelPageControlBuilder
-    {
-        public string PageBaseType
-        {
-            get;
-            set;
-        }
-
-        public override void ProcessGeneratedCode(
-            CodeCompileUnit codeCompileUnit,
-            CodeTypeDeclaration baseType,
-            CodeTypeDeclaration derivedType,
-            CodeMemberMethod buildMethod,
-            CodeMemberMethod dataBindingMethod)
-        {
-            // 如果分析器找到一个有效的类型，就使用它。
-            if (!string.IsNullOrEmpty(PageBaseType))
-            {
-                derivedType.BaseTypes[0] = new CodeTypeReference(PageBaseType);
             }
         }
     }

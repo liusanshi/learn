@@ -30,7 +30,7 @@ namespace LL.FrameWork.Web.MVC
             using (StringWriter stringWriter = new StringWriter(CultureInfo.CurrentCulture))
             {
                 htmlHelper.ViewContext.Model = model;
-                new CachingUserControlView(htmlHelper.ViewContext, partialViewPath).Render(htmlHelper.ViewContext, stringWriter);
+                new CacheUserControlView(htmlHelper.ViewContext, partialViewPath).Render(htmlHelper.ViewContext, stringWriter);
                 return stringWriter.ToString();
             }
         }

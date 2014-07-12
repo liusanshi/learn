@@ -30,7 +30,7 @@ namespace LL.FrameWork.Web.MVC
         /// <returns></returns>
         protected Route CreateRouteData(string controller, string action)
         {
-            var r = new Route();
+            var r = new Route("");
             r.Controller = controller;
             r.Action = action;
             return r;

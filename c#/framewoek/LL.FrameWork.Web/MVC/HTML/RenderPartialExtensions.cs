@@ -26,7 +26,7 @@ namespace LL.FrameWork.Web.MVC
         {
             if (htmlHelper.ViewContext == null)
                 throw new InvalidOperationException(string.Format("页面:{0} 的ViewContext 为null"));
-            new CachingUserControlView(htmlHelper.ViewContext, partialViewPath).Render(htmlHelper.ViewContext, htmlHelper.ViewContext.Writer);
+            new CacheUserControlView(htmlHelper.ViewContext, partialViewPath).Render(htmlHelper.ViewContext, htmlHelper.ViewContext.Writer);
         }
     }
 }

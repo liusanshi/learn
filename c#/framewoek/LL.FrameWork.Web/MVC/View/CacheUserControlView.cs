@@ -12,7 +12,7 @@ namespace LL.FrameWork.Web.MVC
     /// <summary>
     /// 带OutputCache指令 的 UserControl 视图 
     /// </summary>
-    public class CachingUserControlView : IView
+    public class CacheUserControlView : IView
     {
         /// <summary>
         /// Page页面的是有变量
@@ -24,7 +24,7 @@ namespace LL.FrameWork.Web.MVC
         /// </summary>
         /// <param name="controllerContext"></param>
         /// <param name="viewPath"></param>
-        public CachingUserControlView(ControllerContext controllerContext, string viewPath)
+        public CacheUserControlView(ControllerContext controllerContext, string viewPath)
         {
             ViewPath = viewPath;
             _controllerContext = controllerContext;
@@ -49,20 +49,17 @@ namespace LL.FrameWork.Web.MVC
 
             // 将用户控件放在Page容器中。
             page.Controls.Add(ctl);
-            if (viewContext.Model != null)
+            PartialCachingControl mycachectl = ctl as PartialCachingControl;//如果有 写outputcache指令
+            Control temp = ctl;
+            if (mycachectl != null)
             {
-                PartialCachingControl mycachectl = ctl as PartialCachingControl;//如果有 写outputcache指令
-                Control temp = ctl;
-                if (mycachectl != null)
-                {
-                    Page_request.FastSetValue(page, viewContext.HttpContext.Request);//将当前的Request 写入当前页面
-                    page.DesignerInitialize();
-                    temp = mycachectl.CachedControl;
-                }
-                ViewUserControl myctl = temp as ViewUserControl;
-                if (myctl != null)
-                    myctl.ViewContext = viewContext;
+                Page_request.FastSetValue(page, viewContext.HttpContext.Request);//将当前的Request 写入当前页面
+                page.DesignerInitialize();
+                temp = mycachectl.CachedControl;
             }
+            ViewUserControlBase myctl = temp as ViewUserControlBase;
+            if (myctl != null)
+                myctl.ViewContext = viewContext;
 
             HtmlTextWriter write = new HtmlTextWriter(writer, string.Empty);
             page.RenderControl(write);

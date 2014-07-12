@@ -28,15 +28,15 @@ namespace LL.FrameWork.Web.MVC
             {
                 case "page":
                     _directiveType = DirectiveType.Page;
-                    defaultBaseType = typeof(ViewPageBae).FullName;
+                    defaultBaseType = typeof(ViewPageBase).FullName;
                     break;
                 case "control":
                     _directiveType = DirectiveType.UserControl;
-                    defaultBaseType = typeof(ViewUserControl).FullName;
+                    defaultBaseType = typeof(ViewUserControlBase).FullName;
                     break;
                 case "master":
                     _directiveType = DirectiveType.Master;
-                    defaultBaseType = typeof(MyBaseMasterPage).FullName;
+                    defaultBaseType = typeof(MasterPage).FullName;
                     break;
             }
 
@@ -75,15 +75,10 @@ namespace LL.FrameWork.Web.MVC
             base.ParseComplete(rootBuilder);
 
             // If it's our page ControlBuilder, give it the base type string
-            ViewPageControlBuilder pageBuilder = rootBuilder as ViewPageControlBuilder;
-            if (pageBuilder != null)
+            IMvcControlBuilder controlBuilder = rootBuilder as IMvcControlBuilder;
+            if (controlBuilder != null)
             {
-                pageBuilder.PageBaseType = _viewBaseType;
-            }
-            ViewUserControlControlBuilder userControlBuilder = rootBuilder as ViewUserControlControlBuilder;
-            if (userControlBuilder != null)
-            {
-                userControlBuilder.UserControlBaseType = _viewBaseType;
+                controlBuilder.Inherits = _viewBaseType;
             }
         }
 
@@ -182,7 +177,7 @@ namespace LL.FrameWork.Web.MVC
             /// </summary>
             UserControl,
             /// <summary>
-            /// 母板页
+            /// 母版页
             /// </summary>
             Master,
         }

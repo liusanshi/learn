@@ -11,7 +11,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 数据
         /// </summary>
-        public object Model { get; set; }
+        public virtual object Model { get; set; }
         /// <summary>
         /// 页面路径
         /// </summary>
@@ -20,8 +20,9 @@ namespace LL.FrameWork.Web.MVC
         /// 创建 PageResult 实例
         /// </summary>
         /// <param name="virtualPath"></param>
-        public TemplateViewResult(string virtualPath)
-            : this(virtualPath, null)
+        /// <param name="tempData"></param>
+        public TemplateViewResult(string virtualPath, TempDataDictionary tempData)
+            : this(virtualPath, tempData, null)
         {
         }
         /// <summary>
@@ -29,9 +30,10 @@ namespace LL.FrameWork.Web.MVC
         /// </summary>
         /// <param name="virtualPath"></param>
         /// <param name="model"></param>
-        public TemplateViewResult(string virtualPath, object model)
+        public TemplateViewResult(string virtualPath, TempDataDictionary tempData, object model)
         {
             this.VirtualPath = virtualPath;
+            _tempData = tempData;
             this.Model = model;
         }
 
@@ -49,23 +51,6 @@ namespace LL.FrameWork.Web.MVC
                 }
                 return _tempData;
             }
-        }
-        /// <summary>
-        /// 创建视图的上下文
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        private ViewContext CreateViewContext(ControllerContext context)
-        {
-            var vc = new ViewContext(context, Model, TempData, context.HttpContext.Response.Output)
-            {
-                TemplateViewType = GetTemplateViewType()
-            };
-            if (vc.TemplateViewType == TemplateViewType.Page && string.IsNullOrEmpty(VirtualPath))
-                vc.TemplatePath = context.HttpContext.Request.FilePath;
-            else
-                vc.TemplatePath = VirtualPath;
-            return vc;
         }
         /// <summary>
         /// 获取模板类型
@@ -89,22 +74,12 @@ namespace LL.FrameWork.Web.MVC
                 throw new ArgumentNullException("context");
             }
 
-            var viewContext = CreateViewContext(context);
+            var viewContext = ViewContext.CreateViewContext(context, Model, TempData);
+            viewContext.TemplateViewType = GetTemplateViewType();
+            viewContext.TemplatePath = VirtualPath;
+
             context.HttpContext.Response.ContentType = "text/html";
-
             TemplateViewExecutor.Render(viewContext);
-
-            //string html = PageExecutor.Render(context.HttpContext, VirtualPath, Model);
-            //context.HttpContext.Response.Write(html);
-
-            //if (context == null)
-            //{
-            //    throw new ArgumentNullException("context");
-            //}
-
-            //context.HttpContext.Response.ContentType = "text/html";
-            //string html = UcExecutor.Render(VirtualPath, Model);
-            //context.HttpContext.Response.Write(html);
         }
     }
 }

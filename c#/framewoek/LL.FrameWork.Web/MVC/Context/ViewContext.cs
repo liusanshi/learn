@@ -10,7 +10,8 @@ namespace LL.FrameWork.Web.MVC
     /// </summary>
     public class ViewContext : ControllerContext
     {
-        //public ViewContext() : base() { }
+        private string templatePath;
+        protected ViewContext() : base() { }
         /// <summary>
         /// 创建 ViewContext 实例
         /// </summary>
@@ -45,7 +46,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 视图数据
         /// </summary>
-        public object Model { get; set; }
+        public virtual object Model { get; set; }
         /// <summary>
         /// 视图结果的输入入口
         /// </summary>
@@ -61,7 +62,32 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 模板路径
         /// </summary>
-        public string TemplatePath { get; set; }
+        public string TemplatePath
+        {
+            get
+            {
+                if (TemplateViewType == MVC.TemplateViewType.Page && string.IsNullOrEmpty(templatePath))
+                {
+                    templatePath = HttpContext.Request.FilePath;
+                }
+                return templatePath;
+            }
+            set { templatePath = value; }
+        }
+
+        /// <summary>
+        /// 创建ViewContext
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="model"></param>
+        /// <param name="tempData"></param>
+        /// <returns></returns>
+        internal static ViewContext CreateViewContext(ControllerContext controllerContext, object model, TempDataDictionary tempData)
+        {
+            return new ViewContext(controllerContext, model,
+                tempData ?? new TempDataDictionary(),
+                controllerContext.HttpContext.Response.Output);
+        }
     }
 
     /// <summary>

@@ -74,6 +74,8 @@
     <Content Include="App_Code\Model\BlogEntity.cs" />
     <Content Include="App_Code\Model\BlogLink.cs" />
     <Content Include="App_Code\Model\Comment.cs" />
+    <Content Include="App_Code\ActionFilterTest.cs" />
+    <Content Include="App_Code\Controllers\ActionFilterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

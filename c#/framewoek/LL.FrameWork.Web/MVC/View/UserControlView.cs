@@ -23,7 +23,7 @@ namespace LL.FrameWork.Web.MVC
 
         protected override void RenderView(ViewContext viewContext, TextWriter writer, object instance)
         {
-            ViewUserControl viewUserControl = instance as ViewUserControl;
+            ViewUserControlBase viewUserControl = instance as ViewUserControlBase;
             if (viewUserControl != null)
             {
                 var oldWriter = viewContext.Writer;
@@ -40,7 +40,7 @@ namespace LL.FrameWork.Web.MVC
             }
         }
 
-        private void RenderViewUserControl(ViewContext context, ViewUserControl control)
+        private void RenderViewUserControl(ViewContext context, ViewUserControlBase control)
         {
             control.ViewContext = context;
             control.RenderView(context);
