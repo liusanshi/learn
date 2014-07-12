@@ -60,7 +60,7 @@ namespace LL.FrameWork.Web.MVC
                 ViewPageBase viewPage = this.Page as ViewPageBase;
                 if (viewPage == null)
                 {
-                    throw new InvalidOperationException("这个ViewUserControl 必须用于继承至ViewPageBae 或 ViewPageBae<TModel> 的页面");
+                    throw new InvalidOperationException("这个ViewUserControl 必须用于继承至ViewPageBase 或 ViewPageBase<TModel> 的页面");
                 }
                 return viewPage;
             }

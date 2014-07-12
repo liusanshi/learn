@@ -57,10 +57,14 @@
     <Content Include="BigPipeDemo.aspx" />
     <Content Include="css\StyleSheet.css" />
     <Content Include="Default.aspx" />
+    <Content Include="DEMO_7_ComplexForms.htm" />
     <Content Include="images\banner.gif" />
     <Content Include="images\bg.gif" />
     <Content Include="images\r_fish-logo.png" />
     <Content Include="images\r_top_opacity_65.png" />
+    <Content Include="js\jquery-1.4.4.min.js" />
+    <Content Include="js\jquery.form.js" />
+    <Content Include="js\jquery.json-2.4.js" />
     <Content Include="UserControls\BlogBody.ascx" />
     <Content Include="UserControls\CommentList.ascx" />
     <Content Include="UserControls\PageEnd.ascx" />
@@ -76,6 +80,10 @@
     <Content Include="App_Code\Model\Comment.cs" />
     <Content Include="App_Code\ActionFilterTest.cs" />
     <Content Include="App_Code\Controllers\ActionFilterTest.cs" />
+    <Content Include="App_Code\AjaxService\AjaxDemo.cs" />
+    <Content Include="App_Code\AjaxService\AjaxTestAutoAction.cs" />
+    <Content Include="App_Code\Model\Customer.cs" />
+    <Content Include="App_Code\Model\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

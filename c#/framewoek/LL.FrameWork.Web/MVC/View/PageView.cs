@@ -42,7 +42,7 @@ namespace LL.FrameWork.Web.MVC
             }
             else
             {
-                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "视图:{0}必须派生于ViewPageBae, ViewPageBae<TModel>", new object[]
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "视图:{0}必须派生于ViewPageBase, ViewPageBase<TModel>", new object[]
 			    {
 				    base.ViewPath
 			    }));

@@ -31,7 +31,9 @@ p{
 <a href="BigPipeDemo.aspx" >点击此处查看演示效果</a>
 </p>
 
-
+<p>
+<a href="DEMO_7_ComplexForms.htm" >查看Ajax的使用</a>
+</p>
 
 </body>
 </html>

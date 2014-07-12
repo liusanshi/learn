@@ -10,7 +10,7 @@ namespace LL.FrameWork.Web.MVC
         /// <summary>
         /// 用指定的Page以及视图数据呈现结果（HTML），
         /// 然后将产生的HTML代码写入HttpContext.Current.Response
-        /// 用户控件应从ViewPageBae&lt;T&gt;继承
+        /// 用户控件应从ViewPageBase&lt;T&gt;继承
         /// </summary>
         /// <param name="pageVirtualPath">Page的虚拟路径</param>
         /// <param name="model">视图数据</param>

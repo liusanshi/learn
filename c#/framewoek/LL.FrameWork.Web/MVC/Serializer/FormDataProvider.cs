@@ -52,7 +52,7 @@ namespace LL.FrameWork.Web.MVC.Serializer
                     // 如果参数是可支持的类型，则直接从HttpRequest中读取并赋值
                     if (paramterType.IsSupportableType())
                     {
-                        object val = GetValueByNameAndTypeFrommRequest(request, p);
+                        object val = GetValueByNameAndTypeFrommRequest(request, p.ParameterType.GetRealType(), p.ParameterName, p.BindingInfo.Prefix);
                         if (val != null)
                             parameters[p.ParameterName] = val;
                         else
@@ -98,7 +98,7 @@ namespace LL.FrameWork.Web.MVC.Serializer
 
                 // 这里的实现方式不支持嵌套类型的数据实体。
                 // 如果有这方面的需求，可以将这里改成递归的嵌套调用。
-                val = GetValueByNameAndTypeFrommRequest(request, parameterDescriptor);
+                val = GetValueByNameAndTypeFrommRequest(request, field.Type.GetRealType(), field.Name, parameterDescriptor.BindingInfo.Prefix);
                 if (val != null)
                     field.SetValue(model, val);
             }
@@ -119,13 +119,12 @@ namespace LL.FrameWork.Web.MVC.Serializer
 
             return val;
         }
-        
-        private static object GetValueByNameAndTypeFrommRequest(HttpRequest request, ParameterDescriptor parameterDescriptor)
+
+        private static object GetValueByNameAndTypeFrommRequest(HttpRequest request,
+            Type type, string name, string prefix)
         {
             MethodInfo stringImplicit = null;
-            Type type = parameterDescriptor.ParameterType.GetRealType();
-            string name = parameterDescriptor.ParameterName;
-
+            
             // 检查是否为不支持的参数类型
             if (type.IsSupportableType() == false)
             {
@@ -136,7 +135,7 @@ namespace LL.FrameWork.Web.MVC.Serializer
                     return null;
             }
 
-            string[] val = GetValueFromHttpRequest(request, name, parameterDescriptor.BindingInfo.Prefix);
+            string[] val = GetValueFromHttpRequest(request, name, prefix);
 
             if (type == typeof(string[]))
                 return val;

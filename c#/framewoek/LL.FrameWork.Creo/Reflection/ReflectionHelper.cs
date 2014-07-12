@@ -371,33 +371,33 @@ namespace LL.FrameWork.Core.Reflection
                             il.Emit(OpCodes.Castclass, returnType);
                     }
                 }
-                else //值类型
+                else //返回值类型
                 {
                     var fromTypeCode = Type.GetTypeCode(fromType);
                     var returnTypeCode = Type.GetTypeCode(returnType);
-                    //这里比较麻烦
-                    if (returnTypeCode == TypeCode.Decimal) //返回Decimal
+                    if (fromType.IsValueType) //传来值类型
                     {
-                        //call valuetype [mscorlib]System.Decimal [mscorlib]System.Decimal::op_Implicit(int32)
-                        il.EmitCall(OpCodes.Call, DecimalImplicitMethods[fromTypeCode], null);
-
-                    }
-                    //这里比较麻烦
-                    else if (fromTypeCode == TypeCode.Decimal) //传进来的是Decimal
-                    {
-                        //call int32 [mscorlib]System.Decimal::op_Explicit(valuetype [mscorlib]System.Decimal)
-                        il.EmitCall(OpCodes.Call, DecimalExplicitMethods[returnTypeCode], null);
-                    }
-                    else
-                    {
-                        if (fromType.IsValueType)
+                        //这里比较麻烦
+                        if (returnTypeCode == TypeCode.Decimal && DecimalImplicitMethods.ContainsKey(fromTypeCode)) //返回Decimal
                         {
-                            il.Emit(GetConvOpCode(Type.GetTypeCode(returnType)));
+                            //call valuetype [mscorlib]System.Decimal [mscorlib]System.Decimal::op_Implicit(int32)
+                            il.EmitCall(OpCodes.Call, DecimalImplicitMethods[fromTypeCode], null);
+
+                        }
+                        //这里比较麻烦
+                        else if (fromTypeCode == TypeCode.Decimal) //传进来的是Decimal
+                        {
+                            //call int32 [mscorlib]System.Decimal::op_Explicit(valuetype [mscorlib]System.Decimal)
+                            il.EmitCall(OpCodes.Call, DecimalExplicitMethods[returnTypeCode], null);
                         }
                         else
                         {
-                            il.Emit(OpCodes.Unbox_Any, returnType);
+                            il.Emit(GetConvOpCode(Type.GetTypeCode(returnType)));
                         }
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Unbox_Any, returnType);
                     }
                 }
             }

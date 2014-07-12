@@ -37,7 +37,7 @@ namespace LL.FrameWork.Web.MVC
         }
         /// <summary>
         /// 用指定的页面路径以及视图数据呈现结果，最后返回生成的HTML代码。
-        /// 页面应从ViewPageBae&lt;T&gt;继承
+        /// 页面应从ViewPageBase&lt;T&gt;继承
         /// </summary>
         /// <param name="context">HttpContext对象</param>
         /// <param name="pageVirtualPath">Page的虚拟路径</param>
@@ -49,7 +49,7 @@ namespace LL.FrameWork.Web.MVC
         }
         /// <summary>
         /// 用指定的页面路径以及视图数据呈现结果，最后返回生成的HTML代码。
-        /// 页面应从ViewPageBae&lt;T&gt;继承
+        /// 页面应从ViewPageBase&lt;T&gt;继承
         /// </summary>
         /// <param name="context"></param>
         internal static void PageRender(ViewContext context)

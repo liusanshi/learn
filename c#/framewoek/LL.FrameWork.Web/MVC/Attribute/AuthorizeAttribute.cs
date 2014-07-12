@@ -10,14 +10,12 @@ namespace LL.FrameWork.Web.MVC
 	/// 用于验证用户身份的修饰属性
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-	public class AuthorizeAttribute : Attribute
+    public class AuthorizeAttribute : ActionFilterAttribute
 	{
 		private string _user;
 		private string[] _users;
 		private string _role;
 		private string[] _roles;
-
-
 
 		/// <summary>
 		/// 允许访问的用户列表，用逗号分隔。
@@ -44,7 +42,6 @@ namespace LL.FrameWork.Web.MVC
 				_roles = value.SplitTrim(StringExtensions.CommaSeparatorArray);
 			}
 		}
-
 
 		public virtual bool AuthenticateRequest(HttpContext context)
 		{
