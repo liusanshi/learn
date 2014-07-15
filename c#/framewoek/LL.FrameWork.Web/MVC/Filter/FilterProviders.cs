@@ -2,6 +2,11 @@
 
 namespace LL.FrameWork.Web.MVC
 {
+    /// <summary>
+    /// 筛选器提供者
+    /// 提供所有的筛选器
+    /// 全局的筛选器、特性筛选器、控制器实例筛选器
+    /// </summary>
     public static class FilterProviders
     {
         public static FilterProviderCollection Providers

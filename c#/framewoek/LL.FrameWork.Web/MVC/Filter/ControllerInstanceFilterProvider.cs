@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace LL.FrameWork.Web.MVC
 {
+    /// <summary>
+    /// 控制器实例的筛选器的提供者
+    /// 控制器也是筛选器的情况下使用
+    /// </summary>
     public class ControllerInstanceFilterProvider : IFilterProvider
     {
         public IEnumerable<Filter> GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)

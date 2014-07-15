@@ -4,9 +4,15 @@ using System.Linq;
 
 namespace LL.FrameWork.Web.MVC
 {
+    /// <summary>
+    /// 特性筛选器的提供者
+    /// </summary>
     public class FilterAttributeFilterProvider : IFilterProvider
     {
         private readonly bool _cacheAttributeInstances;
+        /// <summary>
+        /// 特性筛选器的提供者
+        /// </summary>
         public FilterAttributeFilterProvider()
             : this(true)
         {

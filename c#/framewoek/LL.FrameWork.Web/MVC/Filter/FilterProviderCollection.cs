@@ -7,6 +7,9 @@ using LL.FrameWork.Core.Infrastructure.IOC;
 
 namespace LL.FrameWork.Web.MVC
 {
+    /// <summary>
+    /// 筛选器提供者的集合
+    /// </summary>
     public class FilterProviderCollection : Collection<IFilterProvider>
     {
         private class FilterComparer : IComparer<Filter>
