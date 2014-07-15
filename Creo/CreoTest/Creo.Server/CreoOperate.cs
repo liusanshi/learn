@@ -33,7 +33,7 @@ namespace Creo.Server
             server.RegisterValidator(new ValidateRequired(base.IndexFields));
             server.RegisterValidator(new ValidateCheckinDocPropertyLength(base.IndexFields));
             server.RegisterValidator(new ValidateIndexExists(base.IndexFields, base.IntegType));
-            server.RegisterValidator(new ValidateImportDoc3DExists(base.IndexFields));
+            server.RegisterValidator(new ValidateImportCreoExists(base.IndexFields));
             server.RegisterValidator(new ValidateDocumentCopy(base.IsCreateCopy, CreateCopyType.Import));
             //base.ImportValidator(server);
             //验证删除
@@ -93,7 +93,7 @@ namespace Creo.Server
             //server.Replace(typeof(ValidateStandardPartsState), empty);
             //server.Replace(typeof(ValidateStandardPartsMaterialRepeat), empty);
             // 验证删除的关系
-            server.RegisterValidator(new ValidateStandardPartsDelete(dicDeleteSTDRelation));
+            server.RegisterValidator(new ValidateZuInstanceDelete(dicDeleteSTDRelation));
         }
     }
 }
