@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 响应AJAX请求的HttpHandlerFactory。它要求将所有Action放在一个以Ajax开头的类型中。

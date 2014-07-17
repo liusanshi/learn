@@ -2,9 +2,9 @@
 using System.Globalization;
 
 using NHibernate;
-using LL.FrameWork.Core.Infrastructure.Logging;
+using LL.Framework.Core.Infrastructure.Logging;
 
-namespace LL.FrameWork.Impl.Infrastructure.Logging.Log4NetImpl
+namespace LL.Framework.Impl.Infrastructure.Logging.Log4NetImpl
 {
     class Log4NetLog : ILogger
     {

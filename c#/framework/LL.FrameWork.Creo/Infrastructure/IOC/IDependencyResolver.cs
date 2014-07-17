@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LL.FrameWork.Core.Infrastructure.IOC
+namespace LL.Framework.Core.Infrastructure.IOC
 {
     /// <summary>
     /// 解耦依赖 的接口

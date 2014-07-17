@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace LL.FrameWork.Core.Async
+namespace LL.Framework.Core.Async
 {
     /// <summary>
     /// 只能执行一次

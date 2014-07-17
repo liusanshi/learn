@@ -7,8 +7,8 @@
     <ProjectGuid>{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LL.FrameWork.Web</RootNamespace>
-    <AssemblyName>LL.FrameWork.Web</AssemblyName>
+    <RootNamespace>LL.Framework.Web</RootNamespace>
+    <AssemblyName>LL.Framework.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -179,13 +179,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LL.FrameWork.Creo\LL.FrameWork.Core.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Creo\LL.Framework.Core.csproj">
       <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
-      <Name>LL.FrameWork.Core</Name>
+      <Name>LL.Framework.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.FrameWork.Impl.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.Framework.Impl.csproj">
       <Project>{104531d1-7f5b-4748-a70d-a00699bc4130}</Project>
-      <Name>LL.FrameWork.Impl</Name>
+      <Name>LL.Framework.Impl</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

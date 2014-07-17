@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Core", "LL.FrameWork.Creo\LL.FrameWork.Core.csproj", "{8D4F9571-3022-4338-8301-337762D145BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Core", "LL.FrameWork.Creo\LL.Framework.Core.csproj", "{8D4F9571-3022-4338-8301-337762D145BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Core.Test", "LL.FrameWork.Core.Test\LL.FrameWork.Core.Test.csproj", "{648E1048-8310-4E05-95C9-EC26A7FB4DBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Core.Test", "LL.FrameWork.Core.Test\LL.Framework.Core.Test.csproj", "{648E1048-8310-4E05-95C9-EC26A7FB4DBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Impl", "LL.FrameWork.Implementation\LL.FrameWork.Impl.csproj", "{104531D1-7F5B-4748-A70D-A00699BC4130}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Impl", "LL.FrameWork.Implementation\LL.Framework.Impl.csproj", "{104531D1-7F5B-4748-A70D-A00699BC4130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Implementation.Test", "LL.FrameWork.Implementation.Test\LL.FrameWork.Implementation.Test.csproj", "{B8088A37-2F1D-4A63-B224-029C02148C20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Implementation.Test", "LL.FrameWork.Implementation.Test\LL.Framework.Implementation.Test.csproj", "{B8088A37-2F1D-4A63-B224-029C02148C20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FrameWork.Web", "LL.FrameWork.Web\LL.FrameWork.Web.csproj", "{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Web", "LL.FrameWork.Web\LL.Framework.Web.csproj", "{1BBA5B06-F69D-4CF1-B915-B3479D0F35E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTest", "WebTest\WebTest.csproj", "{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Permission", "LL.Framework.Permission\LL.Framework.Permission.csproj", "{54F426D3-E8FD-45BA-AA97-370783B8CC85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63E52B2A-554D-4EFD-8D4F-04C0D2F7D1B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

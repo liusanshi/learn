@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LL.FrameWork.Impl.Test
+namespace LL.Framework.Impl.Test
 {
     [TestClass]
     public class UnitTest1

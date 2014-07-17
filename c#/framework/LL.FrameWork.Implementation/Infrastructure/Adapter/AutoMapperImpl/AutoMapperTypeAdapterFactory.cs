@@ -1,11 +1,11 @@
-﻿namespace LL.FrameWork.Impl.Infrastructure.Adapter.AutoMapperImpl
+﻿namespace LL.Framework.Impl.Infrastructure.Adapter.AutoMapperImpl
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using AutoMapper;
 
-    using LL.FrameWork.Core.Infrastructure.Adapter;
+    using LL.Framework.Core.Infrastructure.Adapter;
 
     public class AutoMapperTypeAdapterFactory : ITypeAdapterFactory
     {

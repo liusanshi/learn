@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-using LL.FrameWork.Core.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.IOC;
 
-namespace LL.FrameWork.Impl.Infrastructure.IOC
+namespace LL.Framework.Impl.Infrastructure.IOC
 {
     public class CastleDependencyResolver : IDependencyResolver
     {

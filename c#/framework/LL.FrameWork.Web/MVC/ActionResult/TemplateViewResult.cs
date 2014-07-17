@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 动作结果为模板视图

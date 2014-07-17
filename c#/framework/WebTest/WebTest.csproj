@@ -95,17 +95,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LL.FrameWork.Creo\LL.FrameWork.Core.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Creo\LL.Framework.Core.csproj">
       <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
-      <Name>LL.FrameWork.Core</Name>
+      <Name>LL.Framework.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.FrameWork.Impl.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Implementation\LL.Framework.Impl.csproj">
       <Project>{104531d1-7f5b-4748-a70d-a00699bc4130}</Project>
-      <Name>LL.FrameWork.Impl</Name>
+      <Name>LL.Framework.Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LL.FrameWork.Web\LL.FrameWork.Web.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Web\LL.Framework.Web.csproj">
       <Project>{1bba5b06-f69d-4cf1-b915-b3479d0f35e3}</Project>
-      <Name>LL.FrameWork.Web</Name>
+      <Name>LL.Framework.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

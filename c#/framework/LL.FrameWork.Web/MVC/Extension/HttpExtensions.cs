@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.IO;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
 	internal static class HttpExtensions
 	{

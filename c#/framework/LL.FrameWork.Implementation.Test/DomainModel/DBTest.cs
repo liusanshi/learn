@@ -17,9 +17,9 @@ using NHibernate.Type;
 using NHibernate.Hql.Ast.ANTLR;
 using NHibernate.Mapping.ByCode;
 
-using LL.FrameWork.Impl.UOW;
-using LL.FrameWork.Core.Domain;
-using LL.FrameWork.Impl.Test.DomainModel;
+using LL.Framework.Impl.UOW;
+using LL.Framework.Core.Domain;
+using LL.Framework.Impl.Test.DomainModel;
 
 namespace LL.Core.Test.DomainModel
 {
@@ -159,8 +159,8 @@ namespace LL.Core.Test.DomainModel
         {
             using (UnitOfWork.StartStateless())
             {
-                UnitOfWork.CurrentStatelessSession.CreateQuery("delete from LL.FrameWork.Impl.Test.DomainModel.Student").ExecuteUpdate();
-                UnitOfWork.CurrentStatelessSession.CreateQuery("delete from LL.FrameWork.Impl.Test.DomainModel.Class").ExecuteUpdate();
+                UnitOfWork.CurrentStatelessSession.CreateQuery("delete from LL.Framework.Impl.Test.DomainModel.Student").ExecuteUpdate();
+                UnitOfWork.CurrentStatelessSession.CreateQuery("delete from LL.Framework.Impl.Test.DomainModel.Class").ExecuteUpdate();
                 //UnitOfWork.CurrentStatelessSession.CreateSQLQuery("delete from t_Student").ExecuteUpdate();
                 //UnitOfWork.CurrentStatelessSession.CreateSQLQuery("delete from t_Class").ExecuteUpdate();                
             }

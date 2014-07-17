@@ -3,7 +3,7 @@ using System.Web;
 using System.Collections.Specialized;
 using System.Web.UI;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 一个“用户控件”基类

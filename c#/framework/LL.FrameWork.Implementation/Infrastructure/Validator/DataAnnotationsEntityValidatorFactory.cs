@@ -1,10 +1,10 @@
-﻿namespace LL.FrameWork.Impl.Infrastructure.Validator
+﻿namespace LL.Framework.Impl.Infrastructure.Validator
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LL.FrameWork.Core.Infrastructure.Validator;
+    using LL.Framework.Core.Infrastructure.Validator;
 
     /// <summary>
     /// Data Annotations based entity validator factory

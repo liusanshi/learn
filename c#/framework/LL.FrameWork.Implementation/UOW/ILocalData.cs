@@ -3,7 +3,7 @@ using System.Collections;
 
 using NHibernate.Context;
 
-namespace LL.FrameWork.Impl.UOW
+namespace LL.Framework.Impl.UOW
 {
     public interface ILocalData
     {

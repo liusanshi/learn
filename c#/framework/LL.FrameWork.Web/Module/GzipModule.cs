@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace LL.FrameWork.Web
+namespace LL.Framework.Web
 {
     public class GzipModule : IHttpModule
     {

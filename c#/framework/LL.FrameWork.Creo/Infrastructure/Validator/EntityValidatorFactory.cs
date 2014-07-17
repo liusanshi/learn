@@ -12,7 +12,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Validator
+namespace LL.Framework.Core.Infrastructure.Validator
 {
     using System;
     using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace LL.FrameWork.Core.Infrastructure.Validator
         }
 
         /// <summary>
-        /// Createt a new <paramref name="LL.FrameWork.Core.Infrastructure.Crosscutting.Logging.ILog"/>
+        /// Createt a new <paramref name="LL.Framework.Core.Infrastructure.Crosscutting.Logging.ILog"/>
         /// </summary>
         /// <returns>Created ILog</returns>
         public static IEntityValidator CreateValidator()

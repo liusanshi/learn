@@ -6,9 +6,9 @@ using System.Web.Script.Serialization;
 using System.Reflection;
 using System.Web;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 
-namespace LL.FrameWork.Web.MVC.Serializer
+namespace LL.Framework.Web.MVC.Serializer
 {
     internal class JsonDataProvider : IActionParametersProvider
     {

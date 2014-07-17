@@ -5,7 +5,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
     public class OutputCacheAttribute : ActionFilterAttribute

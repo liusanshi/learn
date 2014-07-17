@@ -1,6 +1,6 @@
 using System;
 
-namespace LL.FrameWork.Core.Domain.Viewpoints
+namespace LL.Framework.Core.Domain.Viewpoints
 {
     /// <summary>
     /// Ë³Ðò

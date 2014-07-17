@@ -2,16 +2,16 @@
 
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
-using LL.FrameWork.Core.Infrastructure.Logging;
-using LL.FrameWork.Core.Infrastructure.Adapter;
-using LL.FrameWork.Impl.Infrastructure.Logging.Log4NetImpl;
-using LL.FrameWork.Impl.Infrastructure.Logging.TraceSourceImpl;
-using LL.FrameWork.Core.Infrastructure.Validator;
-using LL.FrameWork.Impl.Infrastructure.Validator;
-using LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl;
-using LL.FrameWork.Impl.Infrastructure.Adapter.AutoMapperImpl;
+using LL.Framework.Core.Infrastructure.Logging;
+using LL.Framework.Core.Infrastructure.Adapter;
+using LL.Framework.Impl.Infrastructure.Logging.Log4NetImpl;
+using LL.Framework.Impl.Infrastructure.Logging.TraceSourceImpl;
+using LL.Framework.Core.Infrastructure.Validator;
+using LL.Framework.Impl.Infrastructure.Validator;
+using LL.Framework.Impl.Infrastructure.Adapter.EmitMapperImpl;
+using LL.Framework.Impl.Infrastructure.Adapter.AutoMapperImpl;
 
-namespace LL.FrameWork.Impl.Infrastructure.IOC
+namespace LL.Framework.Impl.Infrastructure.IOC
 {
     /// <summary>
     /// Container

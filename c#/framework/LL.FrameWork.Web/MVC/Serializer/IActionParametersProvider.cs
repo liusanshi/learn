@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC.Serializer
+namespace LL.Framework.Web.MVC.Serializer
 {
 	internal interface IActionParametersProvider
 	{

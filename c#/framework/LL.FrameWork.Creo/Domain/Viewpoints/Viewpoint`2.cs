@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using LL.FrameWork.Core.Domain.Expanders;
+using LL.Framework.Core.Domain.Expanders;
 
-namespace LL.FrameWork.Core.Domain.Viewpoints
+namespace LL.Framework.Core.Domain.Viewpoints
 {
     /// <summary>
     /// 视点基类

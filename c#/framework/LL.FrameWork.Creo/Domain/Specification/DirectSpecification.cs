@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Domain.Specification
+namespace LL.Framework.Core.Domain.Specification
 {
     using System;
     using System.Linq.Expressions;

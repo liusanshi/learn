@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Security;
 
-using LL.FrameWork.Core.Infrastructure.Logging;
+using LL.Framework.Core.Infrastructure.Logging;
 
-namespace LL.FrameWork.Impl.Infrastructure.Logging.TraceSourceImpl
+namespace LL.Framework.Impl.Infrastructure.Logging.TraceSourceImpl
 {
     /// <summary>
     /// Implementation of contract <see cref="Microsoft.Samples.NLayerApp.Infrastructure.Crosscutting.Logging.ILogger"/>

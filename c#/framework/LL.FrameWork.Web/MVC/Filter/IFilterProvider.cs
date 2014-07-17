@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     public interface IFilterProvider
     {

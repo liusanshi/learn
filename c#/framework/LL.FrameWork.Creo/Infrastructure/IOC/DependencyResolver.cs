@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace LL.FrameWork.Core.Infrastructure.IOC
+namespace LL.Framework.Core.Infrastructure.IOC
 {
     /// <summary>
     /// 解耦依赖

@@ -11,15 +11,15 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Domain
+namespace LL.Framework.Core.Domain
 {
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
-    using LL.FrameWork.Core.Domain;
-    using LL.FrameWork.Core.Domain.Specification;
-    using LL.FrameWork.Core.Domain.Viewpoints;
+    using LL.Framework.Core.Domain;
+    using LL.Framework.Core.Domain.Specification;
+    using LL.Framework.Core.Domain.Viewpoints;
 
     /// <summary>
     /// Base interface for implement a "Repository Pattern", for

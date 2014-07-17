@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// ViewType

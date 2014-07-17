@@ -9,7 +9,7 @@ using System.Diagnostics.SymbolStore;
 using System.Linq.Expressions;
 using System.Configuration;
 
-namespace LL.FrameWork.Core.Reflection
+namespace LL.Framework.Core.Reflection
 {
     /// <summary>
     /// 反射帮助类

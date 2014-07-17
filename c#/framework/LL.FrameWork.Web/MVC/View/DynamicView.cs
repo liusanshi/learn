@@ -4,9 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Web.Compilation;
 
-using LL.FrameWork.Core.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.IOC;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 动态视图

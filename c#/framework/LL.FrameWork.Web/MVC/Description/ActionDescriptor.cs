@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web;
 
-using LL.FrameWork.Core.Reflection;
-using LL.FrameWork.Web.MVC.Serializer;
+using LL.Framework.Core.Reflection;
+using LL.Framework.Web.MVC.Serializer;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 动作的描述类

@@ -5,9 +5,9 @@ using System.Linq;
 using EmitMapper;
 using EmitMapper.Mappers;
 using EmitMapper.MappingConfiguration;
-using LL.FrameWork.Core.Infrastructure.Adapter;
+using LL.Framework.Core.Infrastructure.Adapter;
 
-namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
+namespace LL.Framework.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     /// <summary>
     /// EmitMapper 辅助类

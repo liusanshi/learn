@@ -1,5 +1,5 @@
 ﻿
-namespace LL.FrameWork.Core.Reflection
+namespace LL.Framework.Core.Reflection
 {
     /// <summary>
     /// 属性访问器

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 
-using LL.FrameWork.Web.MVC;
+using LL.Framework.Web.MVC;
 
 
 // MyMVC的用法可参考：http://www.cnblogs.com/fish-li/archive/2012/02/12/2348395.html

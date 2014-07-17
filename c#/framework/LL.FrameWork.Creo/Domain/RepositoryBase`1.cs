@@ -1,11 +1,11 @@
-﻿namespace LL.FrameWork.Core.Domain
+﻿namespace LL.Framework.Core.Domain
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using LL.FrameWork.Core.Domain.Specification;
-    using LL.FrameWork.Core.Domain.Viewpoints;
+    using LL.Framework.Core.Domain.Specification;
+    using LL.Framework.Core.Domain.Viewpoints;
 
     /// <summary>
     /// Repository 的基类

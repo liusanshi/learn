@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
 	/// <summary>
 	/// 用于指示不要用Http请求中的内容给一些实体成员赋值。

@@ -1,9 +1,9 @@
 ﻿using System;
 
-using LL.FrameWork.Core.Infrastructure.Adapter;
+using LL.Framework.Core.Infrastructure.Adapter;
 using EmitMapper;
 
-namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
+namespace LL.Framework.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     public interface IMappingSetting
     {

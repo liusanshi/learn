@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Impl.Infrastructure.Validator
+namespace LL.Framework.Impl.Infrastructure.Validator
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
 
-    using LL.FrameWork.Core.Infrastructure.Validator;
+    using LL.Framework.Core.Infrastructure.Validator;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel;
 
@@ -70,11 +70,11 @@ namespace LL.FrameWork.Impl.Infrastructure.Validator
 
 
         /// <summary>
-        /// <see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/>
+        /// <see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/>
         /// </summary>
-        /// <typeparam name="TEntity"><see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/></typeparam>
-        /// <param name="item"><see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/></param>
-        /// <returns><see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/></returns>
+        /// <typeparam name="TEntity"><see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/></typeparam>
+        /// <param name="item"><see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/></param>
+        /// <returns><see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/></returns>
         public bool IsValid<TEntity>(TEntity item) where TEntity : class
         {
 
@@ -89,11 +89,11 @@ namespace LL.FrameWork.Impl.Infrastructure.Validator
             return !validationErrors.Any();
         }
         /// <summary>
-        /// <see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/>
+        /// <see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/>
         /// </summary>
-        /// <typeparam name="TEntity"><see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/></typeparam>
-        /// <param name="item"><see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/></param>
-        /// <returns><see cref="LL.FrameWork.Core.Infrastructure.Validator.IEntityValidator"/></returns>
+        /// <typeparam name="TEntity"><see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/></typeparam>
+        /// <param name="item"><see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/></param>
+        /// <returns><see cref="LL.Framework.Core.Infrastructure.Validator.IEntityValidator"/></returns>
         public IEnumerable<string> GetInvalidMessages<TEntity>(TEntity item) where TEntity : class
         {
             if (item == null)

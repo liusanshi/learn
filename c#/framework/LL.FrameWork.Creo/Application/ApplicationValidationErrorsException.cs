@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Application
+namespace LL.Framework.Core.Application
 {
     using System;
     using System.Collections.Generic;

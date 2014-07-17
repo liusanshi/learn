@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LL.FrameWork.Core.Infrastructure.Adapter
+namespace LL.Framework.Core.Infrastructure.Adapter
 {
     /// <summary>
     /// 类型匹配使用的 标识

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.IO;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     public static class PartialExtensions
     {

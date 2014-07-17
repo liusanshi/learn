@@ -8,9 +8,9 @@ using System.Text;
 using System.Web;
 using System.Xml;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 元数据获取帮助类

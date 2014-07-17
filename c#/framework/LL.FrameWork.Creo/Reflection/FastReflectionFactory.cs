@@ -3,7 +3,7 @@ using System.Reflection;
 
 //using Castle.DynamicProxy;
 
-namespace LL.FrameWork.Core.Reflection
+namespace LL.Framework.Core.Reflection
 {
     /// <summary>
     /// 反射工厂接口

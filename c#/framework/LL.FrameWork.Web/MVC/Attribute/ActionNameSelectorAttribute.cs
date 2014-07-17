@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 动作的别名特性

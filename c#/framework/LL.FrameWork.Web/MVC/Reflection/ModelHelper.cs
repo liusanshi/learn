@@ -5,9 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Configuration;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     internal static class ModelHelper
     {

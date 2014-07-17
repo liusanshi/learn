@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 带OutputCache指令 的 UserControl 视图 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LL.FrameWork.Core.Infrastructure.IOC
+namespace LL.Framework.Core.Infrastructure.IOC
 {
     public static class DependencyResolverExtensions
     {

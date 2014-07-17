@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.SessionState;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// Session保存临时数据 提供者

@@ -19,9 +19,9 @@ namespace Domain.Seedwork.Tests
 
     using Domain.Seedwork.Tests.Classes;
 
-    using LL.FrameWork.Core.Domain.Specification;
+    using LL.Framework.Core.Domain.Specification;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using LL.FrameWork.Core.Domain;
+    using LL.Framework.Core.Domain;
     using System.Collections.Generic;
 
     /// <summary>

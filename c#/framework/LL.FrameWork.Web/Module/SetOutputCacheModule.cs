@@ -5,9 +5,9 @@ using System.Web;
 using System.Configuration;
 using System.IO;
 
-using LL.FrameWork.Web.MVC;
+using LL.Framework.Web.MVC;
 
-namespace LL.FrameWork.Web
+namespace LL.Framework.Web
 {
     public class SetOutputCacheModule : IHttpModule
     {

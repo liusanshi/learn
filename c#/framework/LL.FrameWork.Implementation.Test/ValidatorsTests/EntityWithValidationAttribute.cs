@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace LL.FrameWork.Implementation.Test.ValidatorsTests
+namespace LL.Framework.Implementation.Test.ValidatorsTests
 {
     class EntityWithValidationAttribute
     {

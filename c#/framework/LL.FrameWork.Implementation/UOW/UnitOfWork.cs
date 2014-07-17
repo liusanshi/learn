@@ -3,7 +3,7 @@
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace LL.FrameWork.Impl.UOW
+namespace LL.Framework.Impl.UOW
 {
     public static class UnitOfWork
     {

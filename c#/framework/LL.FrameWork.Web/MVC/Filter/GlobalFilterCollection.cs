@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     public sealed class GlobalFilterCollection : IEnumerable<Filter>, IEnumerable, IFilterProvider
     {

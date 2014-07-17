@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Text;
 
-using LL.FrameWork.Web.MVC;
+using LL.Framework.Web.MVC;
 
 // MyMVC的用法可参考：http://www.cnblogs.com/fish-li/archive/2012/02/12/2348395.html
 // MyMVC下载页面：http://www.cnblogs.com/fish-li/archive/2012/02/21/2361982.html

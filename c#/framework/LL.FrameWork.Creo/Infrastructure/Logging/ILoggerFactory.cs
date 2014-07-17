@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Logging
+namespace LL.Framework.Core.Infrastructure.Logging
 {
     using System;
     using System.Collections.Generic;

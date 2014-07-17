@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace LL.FrameWork.Core.Infrastructure.IOC
+namespace LL.Framework.Core.Infrastructure.IOC
 {
     /// <summary>
     ///  解耦之一次返回一个对象

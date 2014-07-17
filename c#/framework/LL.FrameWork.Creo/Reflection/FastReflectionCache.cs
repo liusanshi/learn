@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Castle.DynamicProxy;
 #endif
 
-namespace LL.FrameWork.Core.Reflection
+namespace LL.Framework.Core.Reflection
 {
     /// <summary>
     /// 反射缓存接口

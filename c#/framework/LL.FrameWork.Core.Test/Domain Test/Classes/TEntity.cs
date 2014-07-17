@@ -17,7 +17,7 @@ namespace Domain.Seedwork.Tests.Classes
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using LL.FrameWork.Core.Domain;
+    using LL.Framework.Core.Domain;
 
     public class SampleEntity : EntityBase<Guid>
     {

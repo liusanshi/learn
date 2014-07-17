@@ -3,12 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using LL.FrameWork.Impl.UOW;
-using LL.FrameWork.Impl.Test.DomainModel;
-using LL.FrameWork.Impl.Infrastructure.IOC;
+using LL.Framework.Impl.UOW;
+using LL.Framework.Impl.Test.DomainModel;
+using LL.Framework.Impl.Infrastructure.IOC;
 using Castle.MicroKernel.Registration;
 
-namespace LL.FrameWork.Implementation.Test.DomainModel
+namespace LL.Framework.Implementation.Test.DomainModel
 {
     [TestClass]
     public class AutoSessionTest

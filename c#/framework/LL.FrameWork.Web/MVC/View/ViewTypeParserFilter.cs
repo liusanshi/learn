@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Web.UI;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     // 说明：
     // 与ViewTypeParserFilter相关的代码，是从ASP.NET MVC框架中提取的。

@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 
-namespace LL.FrameWork.Core.Domain
+namespace LL.Framework.Core.Domain
 {
     using System;
 

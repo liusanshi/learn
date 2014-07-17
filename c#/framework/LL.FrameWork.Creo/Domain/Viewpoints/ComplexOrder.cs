@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace LL.FrameWork.Core.Domain.Viewpoints
+namespace LL.Framework.Core.Domain.Viewpoints
 {
     /// <summary>
     /// 组合顺序
