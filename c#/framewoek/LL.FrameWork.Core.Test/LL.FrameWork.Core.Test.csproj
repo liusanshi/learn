@@ -6,8 +6,8 @@
     <ProjectGuid>{648E1048-8310-4E05-95C9-EC26A7FB4DBE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LL.FrameWork.Core.Test</RootNamespace>
-    <AssemblyName>LL.FrameWork.Core.Test</AssemblyName>
+    <RootNamespace>LL.Framework.Core.Test</RootNamespace>
+    <AssemblyName>LL.Framework.Core.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -74,9 +74,9 @@
     <Compile Include="TypeMapIdentityTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LL.FrameWork.Creo\LL.FrameWork.Core.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Creo\LL.Framework.Core.csproj">
       <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
-      <Name>LL.FrameWork.Core</Name>
+      <Name>LL.Framework.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

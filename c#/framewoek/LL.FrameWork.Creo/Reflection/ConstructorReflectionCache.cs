@@ -1,4 +1,4 @@
-﻿namespace LL.FrameWork.Core.Reflection
+﻿namespace LL.Framework.Core.Reflection
 {
     using System;
     using System.Reflection;

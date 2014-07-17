@@ -1,6 +1,6 @@
-﻿using LL.FrameWork.Core.Infrastructure.Logging;
+﻿using LL.Framework.Core.Infrastructure.Logging;
 
-namespace LL.FrameWork.Impl.Infrastructure.Logging.TraceSourceImpl
+namespace LL.Framework.Impl.Infrastructure.Logging.TraceSourceImpl
 {
     /// <summary>
     /// A Trace Source base, log factory

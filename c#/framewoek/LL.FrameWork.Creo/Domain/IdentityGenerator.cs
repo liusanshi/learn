@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Domain
+namespace LL.Framework.Core.Domain
 {
     using System;
     using System.Collections.Generic;

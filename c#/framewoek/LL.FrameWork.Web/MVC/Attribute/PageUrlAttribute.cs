@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
 	/// <summary>
 	/// 用于描述一个Action可以处理哪些请求路径。

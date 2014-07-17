@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 动作结果为缓存模板视图 Output指令

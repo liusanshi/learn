@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LL.FrameWork.Core.Domain.Viewpoints
+namespace LL.Framework.Core.Domain.Viewpoints
 {
     /// <summary>
     /// 排序操作的描述

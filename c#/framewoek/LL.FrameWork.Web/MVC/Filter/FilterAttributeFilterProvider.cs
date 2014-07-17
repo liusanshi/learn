@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 特性筛选器的提供者

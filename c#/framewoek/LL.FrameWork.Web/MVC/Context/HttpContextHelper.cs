@@ -3,7 +3,7 @@ using System.Web;
 using System.Collections;
 using System.Collections.Specialized;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 用于访问当前请求上下文的工具类。这个类对测试环境仍然有效。

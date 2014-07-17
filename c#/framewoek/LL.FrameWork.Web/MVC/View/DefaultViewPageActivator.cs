@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using LL.FrameWork.Core.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.IOC;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 默认的 页面创建者

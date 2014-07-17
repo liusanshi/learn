@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace LL.FrameWork.Core.Domain.ExpressionVisitors
+namespace LL.Framework.Core.Domain.ExpressionVisitors
 {
     /// <summary>
     /// 表达式树的成员访问者

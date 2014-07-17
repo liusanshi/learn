@@ -1,9 +1,9 @@
 ﻿using System;
 
 using NHibernate;
-using LL.FrameWork.Core.Domain;
+using LL.Framework.Core.Domain;
 
-namespace LL.FrameWork.Impl.UOW
+namespace LL.Framework.Impl.UOW
 {
     public class UnitOfWorkImplementor : INhibernateUnitOfWork
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LL.FrameWork.Core.Infrastructure.Validator;
-using LL.FrameWork.Impl.Infrastructure.Validator;
+using LL.Framework.Core.Infrastructure.Validator;
+using LL.Framework.Impl.Infrastructure.Validator;
 
-namespace LL.FrameWork.Implementation.Test.ValidatorsTests
+namespace LL.Framework.Implementation.Test.ValidatorsTests
 {
     [TestClass]
     public class ValidatorsTests

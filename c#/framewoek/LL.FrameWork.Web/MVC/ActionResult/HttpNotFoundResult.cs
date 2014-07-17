@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     public class HttpNotFoundResult : HttpStatusCodeResult
     {

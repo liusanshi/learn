@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LL.FrameWork.Core.Infrastructure.Adapter;
-using LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl;
-using LL.FrameWork.Impl.Infrastructure.Adapter.AutoMapperImpl;
-using LL.FrameWork.Impl.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.Adapter;
+using LL.Framework.Impl.Infrastructure.Adapter.EmitMapperImpl;
+using LL.Framework.Impl.Infrastructure.Adapter.AutoMapperImpl;
+using LL.Framework.Impl.Infrastructure.IOC;
 using EmitMapper.MappingConfiguration.MappingOperations;
 
-namespace LL.FrameWork.Impl.Test.AdapterTest
+namespace LL.Framework.Impl.Test.AdapterTest
 {
     [TestClass]
     public class MappingTest

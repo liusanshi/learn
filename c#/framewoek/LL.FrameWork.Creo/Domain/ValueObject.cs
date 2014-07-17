@@ -11,13 +11,13 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Domain
+namespace LL.Framework.Core.Domain
 {
     using System;
     using System.Linq;
     using System.Reflection;
 
-    using LL.FrameWork.Core.Reflection;
+    using LL.Framework.Core.Reflection;
 
     /// <summary>
     /// Base class for value objects in domain.

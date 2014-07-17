@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.IO;
 
-using LL.FrameWork.Web.MVC;
+using LL.Framework.Web.MVC;
 
 namespace WebTest
 {

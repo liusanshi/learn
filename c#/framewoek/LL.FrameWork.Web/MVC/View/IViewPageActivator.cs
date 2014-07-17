@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 视图创建者

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Web.UI;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
 	/// <summary>
     /// MasterPage基类 母版页基类

@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 		
-namespace LL.FrameWork.Core.Infrastructure.Adapter
+namespace LL.Framework.Core.Infrastructure.Adapter
 {
     /// <summary>
     /// Base contract for map dto to aggregate or aggregate to dto.

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-using LL.FrameWork.Core.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.IOC;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 筛选器提供者的集合

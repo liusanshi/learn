@@ -11,13 +11,13 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Domain.Specification
+namespace LL.Framework.Core.Domain.Specification
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
     using Expression_ = System.Linq.Expressions.Expression;
-    using LL.FrameWork.Core.Domain;
+    using LL.Framework.Core.Domain;
 
     /// <summary>
     /// NotEspecification convert a original

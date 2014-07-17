@@ -5,7 +5,7 @@ using System.Text;
 
 using Castle.DynamicProxy;
 
-namespace LL.FrameWork.Impl.UOW
+namespace LL.Framework.Impl.UOW
 {
     /// <summary>
     /// 自动管理Seesion

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 视图接口

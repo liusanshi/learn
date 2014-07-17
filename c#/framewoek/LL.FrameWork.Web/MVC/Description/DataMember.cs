@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     internal abstract class DataMember
     {

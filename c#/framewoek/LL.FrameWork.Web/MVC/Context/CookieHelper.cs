@@ -2,7 +2,7 @@
 using System.Text;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 读写Cookie的辅助工具类。这个类对测试环境仍然有效。

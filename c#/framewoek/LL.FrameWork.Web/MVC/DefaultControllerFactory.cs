@@ -5,10 +5,10 @@ using System.Web;
 using System.Globalization;
 using System.Text;
 
-using LL.FrameWork.Core.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.IOC;
 using System.Collections.Concurrent;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 默认的控制器生成工厂类

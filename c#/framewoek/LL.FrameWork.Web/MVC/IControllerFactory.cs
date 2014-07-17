@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// IController 创建工厂

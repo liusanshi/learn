@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     internal class ControllerDescriptorCache : ReaderWriterCache<Type, ControllerDescriptor>
     {

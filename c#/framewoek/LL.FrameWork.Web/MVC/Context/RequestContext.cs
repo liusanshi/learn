@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 请求的上下文

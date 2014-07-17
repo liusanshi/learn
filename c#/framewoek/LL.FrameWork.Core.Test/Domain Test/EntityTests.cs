@@ -17,7 +17,7 @@ namespace Domain.Seedwork.Tests
     using System.Linq;
     using System.Text;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using LL.FrameWork.Core.Domain;
+    using LL.Framework.Core.Domain;
     using Domain.Seedwork.Tests.Classes;
 
     [TestClass()]

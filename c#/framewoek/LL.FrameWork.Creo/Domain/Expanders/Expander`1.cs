@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using LL.FrameWork.Core.Domain.ExpressionVisitors;
+using LL.Framework.Core.Domain.ExpressionVisitors;
 
-namespace LL.FrameWork.Core.Domain.Expanders
+namespace LL.Framework.Core.Domain.Expanders
 {
     /// <summary>
     /// 对象的扩展

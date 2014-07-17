@@ -9,7 +9,7 @@ using System.Xml;
 // 此处代码来源于博客【在.net中读写config文件的各种方法】的示例代码
 // http://www.cnblogs.com/fish-li/archive/2011/12/18/2292037.html
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
 	public static class XmlHelper
 	{

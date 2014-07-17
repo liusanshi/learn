@@ -2,7 +2,7 @@
 using System.Text;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     public class JsonResult : ActionResult
     {

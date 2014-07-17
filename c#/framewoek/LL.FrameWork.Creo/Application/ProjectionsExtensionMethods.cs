@@ -11,11 +11,11 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Application
+namespace LL.Framework.Core.Application
 {
     using System.Collections.Generic;
-    using LL.FrameWork.Core.Domain;
-    using LL.FrameWork.Core.Infrastructure.Adapter;
+    using LL.Framework.Core.Domain;
+    using LL.Framework.Core.Infrastructure.Adapter;
 
     public static class ProjectionsExtensionMethods
     {

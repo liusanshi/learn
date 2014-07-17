@@ -1,10 +1,10 @@
-﻿namespace LL.FrameWork.Core.Domain.Specification
+﻿namespace LL.Framework.Core.Domain.Specification
 {
     using System;
     using System.Linq.Expressions;
     using Expression_ = System.Linq.Expressions.Expression;
-    using LL.FrameWork.Core.Domain;
-    using LL.FrameWork.Core.Domain.ExpressionVisitors;
+    using LL.Framework.Core.Domain;
+    using LL.Framework.Core.Domain.ExpressionVisitors;
 
     /// <summary>
     /// Base class for composite specifications

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace LL.FrameWork.Core.Reflection
+namespace LL.Framework.Core.Reflection
 {
     public static class ReflectionExtensions
     {

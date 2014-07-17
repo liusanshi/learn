@@ -1,4 +1,4 @@
-﻿namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
+﻿namespace LL.Framework.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     using System;
     using System.Reflection;
@@ -9,8 +9,8 @@
     using EmitMapper.MappingConfiguration.MappingOperations;
     using EmitMapper.MappingConfiguration;
     using EmitMapper;
-    using LL.FrameWork.Core.Domain.Specification;
-    using LL.FrameWork.Core.Reflection;
+    using LL.Framework.Core.Domain.Specification;
+    using LL.Framework.Core.Reflection;
 
     public class FlatteringConfig : DefaultMapConfig
     {

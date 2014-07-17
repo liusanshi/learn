@@ -3,7 +3,7 @@ using System.Diagnostics.SymbolStore;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace LL.FrameWork.Core.Reflection
+namespace LL.Framework.Core.Reflection
 {
     public class DelegateFieldAccessor : IFieldAccessor
     {

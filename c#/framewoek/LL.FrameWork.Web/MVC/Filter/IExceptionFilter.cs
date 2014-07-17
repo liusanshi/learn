@@ -1,4 +1,4 @@
-﻿namespace LL.FrameWork.Web.MVC
+﻿namespace LL.Framework.Web.MVC
 {
     public interface IExceptionFilter
     {

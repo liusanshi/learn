@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LL.FrameWork.Impl.Infrastructure.Logging.TraceSourceImpl;
-using LL.FrameWork.Core.Infrastructure.Logging;
+using LL.Framework.Impl.Infrastructure.Logging.TraceSourceImpl;
+using LL.Framework.Core.Infrastructure.Logging;
 
-namespace LL.FrameWork.Impl.Test.LogTest
+namespace LL.Framework.Impl.Test.LogTest
 {
     [TestClass]
     public class LoggingTest

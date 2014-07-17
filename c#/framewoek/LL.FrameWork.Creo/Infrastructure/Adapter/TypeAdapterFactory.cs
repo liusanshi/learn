@@ -11,7 +11,7 @@
 //===================================================================================
 			
 
-namespace LL.FrameWork.Core.Infrastructure.Adapter
+namespace LL.Framework.Core.Infrastructure.Adapter
 {
     using System;
     using System.Collections.Generic;

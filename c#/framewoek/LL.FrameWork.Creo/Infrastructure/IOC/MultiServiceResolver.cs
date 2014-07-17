@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LL.FrameWork.Core.Infrastructure.IOC
+namespace LL.Framework.Core.Infrastructure.IOC
 {
     /// <summary>
     /// 解耦之一次返回多个对象

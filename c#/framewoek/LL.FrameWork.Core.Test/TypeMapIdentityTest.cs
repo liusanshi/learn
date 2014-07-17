@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LL.FrameWork.Core.Infrastructure.Adapter;
+using LL.Framework.Core.Infrastructure.Adapter;
 
 namespace LL.Core.Test
 {

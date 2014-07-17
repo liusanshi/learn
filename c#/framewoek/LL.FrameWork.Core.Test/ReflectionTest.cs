@@ -3,10 +3,10 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 using System.Linq.Expressions;
 
-namespace LL.FrameWork.Core.Test
+namespace LL.Framework.Core.Test
 {
     [TestClass]
     public class UnitTest1
@@ -181,7 +181,7 @@ namespace LL.FrameWork.Core.Test
         {
             Expression<Func<Test, object>> func = (Test test) => test.A.B.C.D;
 
-            var members = LL.FrameWork.Core.Reflection.ReflectionHelper.FindMembers(func);
+            var members = LL.Framework.Core.Reflection.ReflectionHelper.FindMembers(func);
 
             Assert.IsNotNull(members);
             Assert.AreEqual(4, members.Length);
@@ -196,7 +196,7 @@ namespace LL.FrameWork.Core.Test
         {
             Expression<Func<Test, object>> func = (Test test) => test.A.B.C.D.A;
 
-            var members = LL.FrameWork.Core.Reflection.ReflectionHelper.FindMembers(func);
+            var members = LL.Framework.Core.Reflection.ReflectionHelper.FindMembers(func);
 
             Assert.IsNotNull(members);
             Assert.AreEqual(5, members.Length);

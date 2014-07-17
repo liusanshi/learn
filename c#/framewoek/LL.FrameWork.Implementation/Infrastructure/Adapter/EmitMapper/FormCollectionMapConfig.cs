@@ -8,7 +8,7 @@ using EmitMapper.Utils;
 using EmitMapper.MappingConfiguration;
 using System.Collections.Specialized;
 
-namespace LL.FrameWork.Impl.Infrastructure.Adapter.EmitMapperImpl
+namespace LL.Framework.Impl.Infrastructure.Adapter.EmitMapperImpl
 {
     /// <summary>
     /// 将From里面的数据转换为值

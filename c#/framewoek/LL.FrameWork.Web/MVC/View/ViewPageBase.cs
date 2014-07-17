@@ -3,7 +3,7 @@ using System.Web.UI;
 using System.Globalization;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 一个基于“System.Web.UI.Page”的类

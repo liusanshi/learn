@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     public sealed class MvcPageHandlerFactory : IHttpHandlerFactory
     {

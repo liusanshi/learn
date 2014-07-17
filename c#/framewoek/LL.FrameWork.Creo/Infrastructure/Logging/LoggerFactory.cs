@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Logging
+namespace LL.Framework.Core.Infrastructure.Logging
 {
     /// <summary>
     /// Log Factory
@@ -37,7 +37,7 @@ namespace LL.FrameWork.Core.Infrastructure.Logging
         }
 
         /// <summary>
-        /// Createt a new <paramref name="LL.FrameWork.Core.Infrastructure.Logging.ILog"/>
+        /// Createt a new <paramref name="LL.Framework.Core.Infrastructure.Logging.ILog"/>
         /// </summary>
         /// <returns>Created ILog</returns>
         public static ILogger CreateLog()

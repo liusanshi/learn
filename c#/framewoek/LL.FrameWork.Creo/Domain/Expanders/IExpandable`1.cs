@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace LL.FrameWork.Core.Domain.Expanders
+namespace LL.Framework.Core.Domain.Expanders
 {
     public interface IExpandable<TEntity> where TEntity : class
     {

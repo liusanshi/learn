@@ -2,10 +2,10 @@
 using System.Runtime.CompilerServices;
 using System.Globalization;
 
-using LL.FrameWork.Core.Async;
+using LL.Framework.Core.Async;
 using System.Web;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 控制器基类

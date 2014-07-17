@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 基于用户控件的视图基类，这类用户控件只是用于呈现数据。

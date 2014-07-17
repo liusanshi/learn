@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-using LL.FrameWork.Core.Infrastructure.IOC;
+using LL.Framework.Core.Infrastructure.IOC;
 
-namespace LL.FrameWork.Web.MVC
+namespace LL.Framework.Web.MVC
 {
     /// <summary>
     /// 控制器的生成器

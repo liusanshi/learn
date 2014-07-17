@@ -11,7 +11,7 @@
 //===================================================================================
 
 
-namespace LL.FrameWork.Core.Infrastructure.Validator
+namespace LL.Framework.Core.Infrastructure.Validator
 {
     using System;
     using System.Collections.Generic;

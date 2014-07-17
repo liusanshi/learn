@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Xml.Serialization;
 using System.IO;
 
-using LL.FrameWork.Core.Reflection;
+using LL.Framework.Core.Reflection;
 
-namespace LL.FrameWork.Web.MVC.Serializer
+namespace LL.Framework.Web.MVC.Serializer
 {
     internal class XmlDataProvider : IActionParametersProvider
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{104531D1-7F5B-4748-A70D-A00699BC4130}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LL.FrameWork.Impl</RootNamespace>
-    <AssemblyName>LL.FrameWork.Impl</AssemblyName>
+    <RootNamespace>LL.Framework.Impl</RootNamespace>
+    <AssemblyName>LL.Framework.Impl</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -101,9 +101,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LL.FrameWork.Creo\LL.FrameWork.Core.csproj">
+    <ProjectReference Include="..\LL.FrameWork.Creo\LL.Framework.Core.csproj">
       <Project>{8d4f9571-3022-4338-8301-337762d145bb}</Project>
-      <Name>LL.FrameWork.Core</Name>
+      <Name>LL.Framework.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
