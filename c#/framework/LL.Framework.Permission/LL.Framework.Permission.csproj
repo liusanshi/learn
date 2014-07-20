@@ -39,8 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DomainModel\Department.cs" />
+    <Compile Include="DomainModel\App.cs" />
+    <Compile Include="DomainModel\AppPermission.cs" />
+    <Compile Include="DomainModel\OnlineUser.cs" />
+    <Compile Include="DomainModel\Organization.cs" />
+    <Compile Include="DomainModel\PermissionDesription.cs" />
     <Compile Include="DomainModel\Post.cs" />
+    <Compile Include="DomainModel\Role.cs" />
+    <Compile Include="DomainModel\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

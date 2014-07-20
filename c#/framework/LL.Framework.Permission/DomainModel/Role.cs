@@ -5,23 +5,23 @@ namespace LL.Framework.Permission.DomainModel
 {
 
     /// <summary>
-    /// 职位
+    /// 角色
     /// </summary>
-    public class Post : EntityBase<string>
+    public class Role : EntityBase<string>
     {
 
         /// <summary>
-        /// 职位构造函数
+        /// 角色构造函数
         /// </summary>
-        public Post()
+        public Role()
         {
             ///Todo
         }
-        
+
         private string m_Name;
 
         /// <summary>
-        /// 岗位名称
+        /// 角色名称
         /// </summary>
         public string Name
         {
@@ -33,7 +33,7 @@ namespace LL.Framework.Permission.DomainModel
         private string m_Code;
 
         /// <summary>
-        /// 岗位编码
+        /// 名称
         /// </summary>
         public string Code
         {
@@ -56,4 +56,3 @@ namespace LL.Framework.Permission.DomainModel
     }
 
 }
-
