@@ -60,17 +60,6 @@ namespace LL.Framework.Permission.DomainModel
             get { return m_ParentOrganization; }
             set { m_ParentOrganization = value; }
         }
-        //private string m_POID;
-
-        ///// <summary>
-        ///// 父组织ID
-        ///// </summary>
-        //public string POID
-        //{
-        //    get { return m_POID; }
-        //    set { m_POID = value; }
-        //}
-
     }
 
 }

@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTest", "WebTest\WebTest.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.Framework.Permission", "LL.Framework.Permission\LL.Framework.Permission.csproj", "{54F426D3-E8FD-45BA-AA97-370783B8CC85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentManagement", "DocumentManagement\DocumentManagement.csproj", "{6980A962-8D59-4143-95AF-DE973A8C8061}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54F426D3-E8FD-45BA-AA97-370783B8CC85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6980A962-8D59-4143-95AF-DE973A8C8061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6980A962-8D59-4143-95AF-DE973A8C8061}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6980A962-8D59-4143-95AF-DE973A8C8061}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6980A962-8D59-4143-95AF-DE973A8C8061}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

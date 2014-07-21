@@ -49,6 +49,9 @@
     <Compile Include="DomainModel\User.cs" />
     <Compile Include="DTO\AppDTO.cs" />
     <Compile Include="DTO\AppPermissionDTO.cs" />
+    <Compile Include="DTO\OnlineUserDTO.cs" />
+    <Compile Include="DTO\OrganizationDTO.cs" />
+    <Compile Include="DTO\PostDTO.cs" />
     <Compile Include="DTO\RoleDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
