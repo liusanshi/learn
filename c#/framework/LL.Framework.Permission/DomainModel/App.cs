@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LL.Framework.Core.Domain;
 
 namespace LL.Framework.Permission.DomainModel
@@ -72,6 +73,16 @@ namespace LL.Framework.Permission.DomainModel
         {
             get { return m_ParentApp; }
             set { m_ParentApp = value; }
+        }
+
+        private IList<PermissionDesription> m_Permissions;
+        /// <summary>
+        /// 应用的权限列表
+        /// </summary>
+        public virtual IList<PermissionDesription> Permissions
+        {
+            get { return m_Permissions; }
+            set { m_Permissions = value; }
         }
 
         //private string m_PAppId;
