@@ -63,15 +63,18 @@ listenMsg   //监听消息
 			box.appendChild(db);
 			return {
 				setItem : function (key, val) {
+					if(!key || !val) return;
 					db.setAttribute(key, val);
 					db.save(dbName);
 					isopen = false;
 				}
 				, getItem : function (key) {
+					if(!key) return null;
 					isopen || (isopen = true ,db.load(dbName));
 					return db.getAttribute(key)
 				}
 				, removeItem : function (key) {
+					if(!key) return;
 					db.removeAttribute(key);
 					db.save(dbName);
 					isopen = false;
@@ -138,7 +141,7 @@ listenMsg   //监听消息
 				oldValue = e.oldValue = c.oldvalue;
 				newval = e.newValue = ls.getItem(key);
 			}
-			if(key.indexOf(eventPrefix) !== 0) return; //只处理定义好的事件
+			if(key && key.indexOf(eventPrefix) !== 0) return; //只处理定义好的事件
 			if(newval && oldValue !== newval){
 				func({
 					key: key.replace(eventPrefix, '')

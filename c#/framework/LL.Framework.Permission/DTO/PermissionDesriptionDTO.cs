@@ -10,8 +10,8 @@ namespace LL.Framework.Permission.DTO
         /// </summary>
         public string Id
         {
-            get { return m_AppId; }
-            set { m_AppId = value; }
+            get { return m_Id; }
+            set { m_Id = value; }
         }
 
         private string m_Name;
