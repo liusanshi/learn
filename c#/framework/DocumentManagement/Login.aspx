@@ -31,9 +31,9 @@
     </style>
 </head>
 <body>
-    <form id="form1">
-        <section class="loginBox row-fluid">
-            <section class="span7 left">
+    <form id="form1" action="loginActive.aspx" method="post">
+        <div class="loginBox row-fluid">
+            <div class="span7 left">
                 <h2>用户登录</h2>
                 <p>
                     <input type="text" name="username" />
@@ -41,23 +41,30 @@
                 <p>
                     <input type="text" name="password" />
                 </p>
-                <section class="row-fluid">
-                    <section class="span8 lh30">
+                <div class="row-fluid">
+                    <div class="span8 lh30">
                         <label>
                             <input type="checkbox" name="rememberme" />下次自动登录</label>
-                    </section>
-                    <section class="span1">
-                        <input type="button" value=" 登录 " class="btn btn-primary" />
-                    </section>
-                </section>
-            </section>
-            <section class="span5 right">
+                    </div>
+                    <div class="span1">
+                        <input class="btn btn-primary" type="submit" value=" 登录 " id="btnlogin"/>
+                    </div>
+                </div>
+            </div>
+            <div class="span5 right">
                 <h2>写什么呢？</h2>
-                <section>
+                <div>
                     <p>这里有一段文字啊，很多的文字啊，太多太多的文字了，可以放一些图片之类的东西。。</p>
-                </section>
-            </section>
-        </section>
+                </div>
+            </div>
+        </div>
     </form>
+    <%--<script src="static/jquery-easyui/jquery.min.js"></script>
+    <script src="static/jquery-easyui/plugins/jquery.form.js"></script>
+    <script type="text/javascript">
+        $('#btnlogin').click(function () {
+            $("#form1").form({ url: "loginActive.aspx" }).submit();
+        });
+    </script>--%>
 </body>
 </html>
