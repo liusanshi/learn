@@ -59,14 +59,19 @@ namespace LL.Framework.Web.MVC
         /// <returns></returns>
         public MethodInfo FindActionMethod(ControllerContext controllerContext, string actionName)
         {
+            //添加 PageUrl过来的也走刷选器
+            List<MethodInfo> matchingAliasedMethods = null;
             if (controllerContext.RouteData.UsePageUrlRoute)
             {
                 var data = controllerContext.RouteData.PageUrlData;
                 if (data == null) return null;
-                return data.Item2;
+                matchingAliasedMethods = new List<MethodInfo>(1) { data.Item2 };
             }
-            List<MethodInfo> matchingAliasedMethods = this.GetMatchingAliasedMethods(controllerContext, actionName);
-            matchingAliasedMethods.AddRange(this.NonAliasedMethods[actionName]);
+            else
+            {
+                matchingAliasedMethods = this.GetMatchingAliasedMethods(controllerContext, actionName);
+                matchingAliasedMethods.AddRange(this.NonAliasedMethods[actionName]);
+            }
             List<MethodInfo> list = ActionMethodSelector.RunSelectionFilters(controllerContext, matchingAliasedMethods);
             switch (list.Count)
             {

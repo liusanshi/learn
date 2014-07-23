@@ -10,7 +10,7 @@ namespace LL.Framework.Web.MVC
 	/// 注意：这个Attribute可以多次使用，表示可以处理多个请求路径。
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class PageUrlAttribute : ActionNameSelectorAttribute
+    public class PageUrlAttribute : Attribute
 	{
         public PageUrlAttribute() { }
 
@@ -20,10 +20,5 @@ namespace LL.Framework.Web.MVC
 		/// 指示可以处理的请求路径。比如："/abc.aspx" 
 		/// </summary>
 		public string Url { get; set; }
-
-        public override bool IsValidName(ControllerContext controllerContext, string actionName, System.Reflection.MethodInfo methodInfo)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
