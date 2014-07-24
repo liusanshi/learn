@@ -21,7 +21,7 @@ namespace LL.Framework.Web.MVC
             if (context.HttpContext == null)
                 return;
 
-            var viewcontext = ViewContext.CreateViewContext(context, model, null);
+            var viewcontext = ViewContext.CreateViewContext(context, model);
             viewcontext.TemplatePath = pageVirtualPath;
 
             TemplateViewExecutor.PageRender(viewcontext);
@@ -43,7 +43,7 @@ namespace LL.Framework.Web.MVC
             if (context.HttpContext == null)
                 return;
 
-            var viewcontext = ViewContext.CreateViewContext(context, model, null);
+            var viewcontext = ViewContext.CreateViewContext(context, model);
             viewcontext.TemplatePath = ucVirtualPath;
 
             TemplateViewExecutor.UCRender(viewcontext);
@@ -70,7 +70,7 @@ namespace LL.Framework.Web.MVC
             if (string.IsNullOrEmpty(context.HttpContext.Response.ContentType))
                 context.HttpContext.Response.ContentType = "text/html";
 
-            var viewcontext = ViewContext.CreateViewContext(context, model, null);
+            var viewcontext = ViewContext.CreateViewContext(context, model);
             viewcontext.TemplatePath = ucVirtualPath;
 
             string html = TemplateViewExecutor.UCHTML(viewcontext);
@@ -103,7 +103,7 @@ namespace LL.Framework.Web.MVC
             if (context.HttpContext == null)
                 return;
 
-            var viewcontext = CacheViewContext.CreateCacheViewContext(context, getModel, null);
+            var viewcontext = CacheViewContext.CreateCacheViewContext(context, getModel);
             viewcontext.TemplatePath = ucVirtualPath;
 
             TemplateViewExecutor.UCCacheRender(viewcontext);
@@ -131,7 +131,7 @@ namespace LL.Framework.Web.MVC
             if (string.IsNullOrEmpty(context.HttpContext.Response.ContentType))
                 context.HttpContext.Response.ContentType = "text/html";
 
-            var viewcontext = CacheViewContext.CreateCacheViewContext(context, getModel, null);
+            var viewcontext = CacheViewContext.CreateCacheViewContext(context, getModel);
             viewcontext.TemplatePath = ucVirtualPath;
 
             string html = TemplateViewExecutor.UCCacheHTML(viewcontext);

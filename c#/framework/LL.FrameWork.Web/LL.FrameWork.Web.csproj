@@ -75,10 +75,16 @@
     <Compile Include="MVC\Context\CacheViewContext.cs" />
     <Compile Include="MVC\Context\CookieHelper.cs" />
     <Compile Include="MVC\Context\ViewContext.cs" />
+    <Compile Include="MVC\Data\DictionaryHelpers.cs" />
     <Compile Include="MVC\Data\ITempDataProvider.cs" />
+    <Compile Include="MVC\Data\ModelError.cs" />
+    <Compile Include="MVC\Data\ModelErrorCollection.cs" />
+    <Compile Include="MVC\Data\ModelState.cs" />
+    <Compile Include="MVC\Data\ModelStateDictionary.cs" />
     <Compile Include="MVC\Data\Route.cs" />
     <Compile Include="MVC\Data\SessionStateTempDataProvider.cs" />
     <Compile Include="MVC\Data\TempDataDictionary.cs" />
+    <Compile Include="MVC\Data\ViewDataDictionary.cs" />
     <Compile Include="MVC\Description\ActionDescriptor.cs" />
     <Compile Include="MVC\Context\HttpContextHelper.cs" />
     <Compile Include="MVC\Context\TestEnvironment.cs" />

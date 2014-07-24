@@ -11,7 +11,11 @@ namespace LL.Framework.Web.MVC
         /// <summary>
         /// 数据
         /// </summary>
-        public virtual object Model { get; set; }
+        public virtual object Model
+        {
+            get { return _viewData.Model; }
+            set { _viewData.Model = value; }
+        }
         /// <summary>
         /// 页面路径
         /// </summary>
@@ -21,8 +25,8 @@ namespace LL.Framework.Web.MVC
         /// </summary>
         /// <param name="virtualPath"></param>
         /// <param name="tempData"></param>
-        public TemplateViewResult(string virtualPath, TempDataDictionary tempData)
-            : this(virtualPath, tempData, null)
+        public TemplateViewResult(string virtualPath, ViewDataDictionary viewData)
+            : this(virtualPath, viewData, null)
         {
         }
         /// <summary>
@@ -30,14 +34,15 @@ namespace LL.Framework.Web.MVC
         /// </summary>
         /// <param name="virtualPath"></param>
         /// <param name="model"></param>
-        public TemplateViewResult(string virtualPath, TempDataDictionary tempData, object model)
+        public TemplateViewResult(string virtualPath, ViewDataDictionary viewData, TempDataDictionary tempData)
         {
             this.VirtualPath = virtualPath;
             _tempData = tempData;
-            this.Model = model;
+            _viewData = viewData;
         }
 
         private TempDataDictionary _tempData = null;
+        private ViewDataDictionary _viewData = null;
         /// <summary>
         /// 视图中的临时数据
         /// </summary>
@@ -50,6 +55,16 @@ namespace LL.Framework.Web.MVC
                     _tempData = new TempDataDictionary();
                 }
                 return _tempData;
+            }
+        }
+        /// <summary>
+        /// 视图中的数据
+        /// </summary>
+        public ViewDataDictionary ViewData
+        {
+            get
+            {
+                return _viewData;
             }
         }
         /// <summary>
@@ -74,7 +89,7 @@ namespace LL.Framework.Web.MVC
                 throw new ArgumentNullException("context");
             }
 
-            var viewContext = ViewContext.CreateViewContext(context, Model, TempData);
+            var viewContext = ViewContext.CreateViewContext(context, ViewData, TempData);
             viewContext.TemplateViewType = GetTemplateViewType();
             viewContext.TemplatePath = VirtualPath;
 

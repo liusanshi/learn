@@ -19,7 +19,6 @@ namespace LL.Framework.Web.MVC
         private readonly Lazy<string> _uniqueId;
         private ParameterDescriptor[] _parametersCache;
 
-        public ControllerDescriptor PageController; //为PageAction保留
         public MethodInfo MethodInfo { get; private set; }
         public bool HasReturn { get; private set; }
         /// <summary>

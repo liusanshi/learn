@@ -14,8 +14,8 @@ namespace LL.Framework.Web.MVC
         /// 创建 CacheTemplateViewResult 实例
         /// </summary>
         /// <param name="virtualPath"></param>
-        public CacheTemplateViewResult(string virtualPath)
-            : this(virtualPath, null)
+        public CacheTemplateViewResult(string virtualPath, ViewDataDictionary viewData)
+            : this(virtualPath, null, viewData, null)
         {
         }
         /// <summary>
@@ -23,8 +23,10 @@ namespace LL.Framework.Web.MVC
         /// </summary>
         /// <param name="virtualPath"></param>
         /// <param name="getModel"></param>
-        public CacheTemplateViewResult(string virtualPath, Func<object> getModel)
-            : base(virtualPath, null)
+        /// <param name="viewData"></param>
+        /// <param name="tempData"></param>
+        public CacheTemplateViewResult(string virtualPath, Func<object> getModel, ViewDataDictionary viewData, TempDataDictionary tempData)
+            : base(virtualPath, viewData, tempData)
         {
             if (getModel == null)
             {
@@ -39,7 +41,7 @@ namespace LL.Framework.Web.MVC
         private Func<object> GetModel;
         private bool isCalac = false;
         private object model = null;
-        
+
         /// <summary>
         /// 视图的model
         /// </summary>
@@ -60,7 +62,7 @@ namespace LL.Framework.Web.MVC
                 isCalac = true;
             }
         }
-        
+
         /// <summary>
         /// 执行动作结果
         /// </summary>
@@ -72,7 +74,7 @@ namespace LL.Framework.Web.MVC
                 throw new ArgumentNullException("context");
             }
 
-            var viewContext = CacheViewContext.CreateCacheViewContext(context, GetModel, null);
+            var viewContext = CacheViewContext.CreateCacheViewContext(context, GetModel, ViewData, TempData);
             viewContext.TemplatePath = VirtualPath;
             context.HttpContext.Response.ContentType = "text/html";
             TemplateViewExecutor.UCCacheRender(viewContext);

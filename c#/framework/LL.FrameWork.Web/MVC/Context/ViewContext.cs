@@ -16,20 +16,20 @@ namespace LL.Framework.Web.MVC
         /// 创建 ViewContext 实例
         /// </summary>
         /// <param name="controllerContext"></param>
-        /// <param name="model"></param>
+        /// <param name="viewData"></param>
         /// <param name="tempData"></param>
         /// <param name="writer"></param>
-        public ViewContext(ControllerContext controllerContext, object model, TempDataDictionary tempData, TextWriter writer)
+        public ViewContext(ControllerContext controllerContext, ViewDataDictionary viewData, TempDataDictionary tempData, TextWriter writer)
             : base(controllerContext)
         {
             if (controllerContext == null)
             {
                 throw new ArgumentNullException("controllerContext");
             }
-            //if (model == null)
-            //{
-            //    throw new ArgumentNullException("model");
-            //}
+            if (viewData == null)
+            {
+                throw new ArgumentNullException("viewData");
+            }
             if (tempData == null)
             {
                 throw new ArgumentNullException("tempData");
@@ -38,15 +38,19 @@ namespace LL.Framework.Web.MVC
             {
                 throw new ArgumentNullException("writer");
             }
-            this.Model = model;
             this.Writer = writer;
             this.TempData = tempData;
+            this.ViewData = viewData;
         }
 
         /// <summary>
         /// 视图数据
         /// </summary>
-        public virtual object Model { get; set; }
+        public virtual object Model
+        {
+            get { return ViewData.Model; }
+            set { ViewData.Model = value; }
+        }
         /// <summary>
         /// 视图结果的输入入口
         /// </summary>
@@ -59,6 +63,11 @@ namespace LL.Framework.Web.MVC
         /// 模板的类型
         /// </summary>
         public TemplateViewType TemplateViewType { get; set; }
+        /// <summary>
+        /// 视图数据
+        /// </summary>
+        public ViewDataDictionary ViewData { get; set; }
+
         /// <summary>
         /// 模板路径
         /// </summary>
@@ -79,14 +88,29 @@ namespace LL.Framework.Web.MVC
         /// 创建ViewContext
         /// </summary>
         /// <param name="controllerContext"></param>
-        /// <param name="model"></param>
+        /// <param name="model">模型</param>
+        /// <param name="viewData">视图数据</param>
         /// <param name="tempData"></param>
         /// <returns></returns>
-        internal static ViewContext CreateViewContext(ControllerContext controllerContext, object model, TempDataDictionary tempData)
+        internal static ViewContext CreateViewContext(ControllerContext controllerContext, ViewDataDictionary viewData, TempDataDictionary tempData)
         {
-            return new ViewContext(controllerContext, model,
+            return new ViewContext(controllerContext,
+                viewData ?? new ViewDataDictionary(),
                 tempData ?? new TempDataDictionary(),
                 controllerContext.HttpContext.Response.Output);
+        }
+        /// <summary>
+        /// 创建ViewContext
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="model"></param>
+        /// <param name="viewData"></param>
+        /// <returns></returns>
+        internal static ViewContext CreateViewContext(ControllerContext controllerContext, object model)
+        {
+            ViewDataDictionary viewData = new ViewDataDictionary();
+            viewData.Model = model;
+            return CreateViewContext(controllerContext, viewData, null);
         }
     }
 

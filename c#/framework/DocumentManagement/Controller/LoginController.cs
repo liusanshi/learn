@@ -28,7 +28,11 @@ namespace DocumentManagement.Controller
             if (username == "admin" && password == "admin")
             {
                 FormsAuthentication.SetAuthCookie(username, true);
-                return Redirect("/Default.aspx");
+                return Redirect("/Default.aspx");//转到页面
+            }
+            else
+            {
+                ModelState.AddModelError("", "账号密码错误！");
             }
             return View("/Login.aspx", null);
         }

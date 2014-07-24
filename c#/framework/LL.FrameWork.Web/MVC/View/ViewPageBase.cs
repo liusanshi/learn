@@ -68,6 +68,16 @@ namespace LL.Framework.Web.MVC
             }
         }
         /// <summary>
+        /// 视图数据
+        /// </summary>
+        public ViewDataDictionary ViewData
+        {
+            get
+            {
+                return this.ViewContext.ViewData;
+            }
+        }
+        /// <summary>
         /// 页面HTML写入入口
         /// </summary>
         public HtmlTextWriter Writer
