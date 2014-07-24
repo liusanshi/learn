@@ -57,6 +57,20 @@ namespace LL.Framework.Web.MVC
             this.ErrorMessage = (errorMessage ?? string.Empty);
         }
         #endregion
-        
+
+        /// <summary>
+        /// 所有错误信息
+        /// </summary>
+        public string AllErrorMsg
+        {
+            get
+            {
+                if (Exception == null)
+                    return ErrorMessage;
+                else if (string.IsNullOrEmpty(ErrorMessage))
+                    return Exception.Message;
+                return ErrorMessage + "    " + Exception.Message;
+            }
+        }
     }
 }

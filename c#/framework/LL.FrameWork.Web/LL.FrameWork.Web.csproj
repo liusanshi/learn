@@ -72,7 +72,6 @@
     <Compile Include="MVC\Attribute\PageUrlAttribute.cs" />
     <Compile Include="MVC\Attribute\SessionModeAttribute.cs" />
     <Compile Include="MVC\Cache\PageUrl2ControllerTypeCache.cs" />
-    <Compile Include="MVC\Context\CacheViewContext.cs" />
     <Compile Include="MVC\Context\CookieHelper.cs" />
     <Compile Include="MVC\Context\ViewContext.cs" />
     <Compile Include="MVC\Data\DictionaryHelpers.cs" />
@@ -94,6 +93,7 @@
     <Compile Include="MVC\HTML\RenderPartialExtensions.cs" />
     <Compile Include="MVC\HTML\ResponseWriter.cs" />
     <Compile Include="MVC\HTML\TemplateViewExecutor.cs" />
+    <Compile Include="MVC\HTML\ValidationExtensions.cs" />
     <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />
     <Compile Include="MVC\Pipeline\BaseMvcHandlerFactory.cs" />
     <Compile Include="MVC\Cache\ControllerDescriptorCache.cs" />

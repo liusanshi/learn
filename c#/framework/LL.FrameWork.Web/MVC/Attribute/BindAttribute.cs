@@ -24,7 +24,7 @@ namespace LL.Framework.Web.MVC
             set
             {
                 this._exclude = value;
-                this._excludeSplit = AuthorizeAttribute.SplitString(value);
+                this._excludeSplit = value.SplitTrim(StringExtensions.CommaSeparatorArray);
             }
         }
         public string Include
@@ -36,7 +36,7 @@ namespace LL.Framework.Web.MVC
             set
             {
                 this._include = value;
-                this._includeSplit = AuthorizeAttribute.SplitString(value);
+                this._includeSplit = value.SplitTrim(StringExtensions.CommaSeparatorArray);
             }
         }
         public string Prefix

@@ -46,7 +46,7 @@ namespace LL.Framework.Web.MVC
         /// <summary>
         /// 视图数据
         /// </summary>
-        public virtual object Model
+        public object Model
         {
             get { return ViewData.Model; }
             set { ViewData.Model = value; }
@@ -110,6 +110,18 @@ namespace LL.Framework.Web.MVC
         {
             ViewDataDictionary viewData = new ViewDataDictionary();
             viewData.Model = model;
+            return CreateViewContext(controllerContext, viewData, null);
+        }
+        /// <summary>
+        /// 创建ViewContext
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="getModel"></param>
+        /// <returns></returns>
+        internal static ViewContext CreateViewContext(ControllerContext controllerContext, Func<object> getModel)
+        {
+            ViewDataDictionary viewData = new ViewDataDictionary();
+            viewData.GetModel = getModel;
             return CreateViewContext(controllerContext, viewData, null);
         }
     }

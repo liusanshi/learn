@@ -29,7 +29,7 @@ namespace LL.Framework.Web.MVC
                 throw new InvalidOperationException(string.Format("页面:{0} 的ViewContext 为null"));
             using (StringWriter stringWriter = new StringWriter(CultureInfo.CurrentCulture))
             {
-                htmlHelper.ViewContext.Model = model;
+                htmlHelper.ViewData.Model = model;
                 new CacheUserControlView(htmlHelper.ViewContext, partialViewPath).Render(htmlHelper.ViewContext, stringWriter);
                 return stringWriter.ToString();
             }

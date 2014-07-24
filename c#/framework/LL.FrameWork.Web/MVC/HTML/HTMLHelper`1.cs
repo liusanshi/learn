@@ -24,14 +24,14 @@ namespace LL.Framework.Web.MVC
             {
                 try
                 {
-                    return (TModel)ViewContext.Model;
+                    return (TModel)ViewData.Model;
                 }
                 catch (Exception ex)
                 {
                     throw new ArgumentException("参数model与目标类型不匹配。", ex);
                 }
             }
-            set { ViewContext.Model = value; }
+            set { ViewData.Model = value; }
         }
     }
 }

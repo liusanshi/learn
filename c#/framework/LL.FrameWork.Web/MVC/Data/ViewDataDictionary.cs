@@ -13,33 +13,52 @@ namespace LL.Framework.Web.MVC
         private readonly Dictionary<string, object> _innerDictionary;
         private readonly ModelStateDictionary _modelState;
         private object _model;
+        /// <summary>
+        /// 是否已经初始化了model
+        /// </summary>
+        private bool isInitModel = false;
+        /// <summary>
+        /// 延迟获取model
+        /// </summary>
+        private Func<object> _getModel;
 
         #region 构造函数
         /// <summary>
         /// 创建 ViewDataDictionary 对象
         /// </summary>
         public ViewDataDictionary()
-            : this((object)null)
         {
+            this._innerDictionary = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            this._modelState = new ModelStateDictionary();
+        }
+        /// <summary>
+        /// 创建 ViewDataDictionary 对象
+        /// </summary>
+        /// <param name="getmodel"></param>
+        public ViewDataDictionary(Func<object> getmodel)
+            : this()
+        {
+            isInitModel = false;
+            _getModel = getmodel;
         }
         /// <summary>
         /// 创建 ViewDataDictionary 对象
         /// </summary>
         /// <param name="model"></param>
         public ViewDataDictionary(object model)
+            : this()
         {
-            this._innerDictionary = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            this._modelState = new ModelStateDictionary();
-            this.Model = model;
+            isInitModel = true;
+            this._model = model;
+            _getModel = () => _model;
         }
         /// <summary>
         /// 创建 ViewDataDictionary 对象
         /// </summary>
         /// <param name="dictionary"></param>
         public ViewDataDictionary(ViewDataDictionary dictionary)
+            : this()
         {
-            this._innerDictionary = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-            this._modelState = new ModelStateDictionary();
             if (dictionary == null)
             {
                 throw new ArgumentNullException("dictionary");
@@ -52,7 +71,9 @@ namespace LL.Framework.Web.MVC
             {
                 this.ModelState.Add(current2.Key, current2.Value);
             }
-            this.Model = dictionary.Model;
+            isInitModel = true;
+            this._model = dictionary.Model;
+            _getModel = () => _model;
         }
         #endregion
 
@@ -73,11 +94,31 @@ namespace LL.Framework.Web.MVC
         {
             get
             {
-                return this._model;
+                if (!isInitModel && _getModel != null)
+                {
+                    _model = _getModel();
+                    isInitModel = true;
+                }
+                return _model;
             }
             set
             {
-                this._model = value;
+                _model = value;
+                if (_model != null)
+                    isInitModel = true;
+            }
+        }
+
+        /// <summary>
+        /// 获取模型的延迟方法
+        /// </summary>
+        public Func<object> GetModel
+        {
+            get { return _getModel; }
+            set
+            {
+                _getModel = value;
+                isInitModel = false;
             }
         }
 

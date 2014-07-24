@@ -58,16 +58,18 @@ namespace LL.Framework.Web.MVC
 		/// <returns></returns>
 		public static string[] SplitTrim(this string str, params char[] separator)
 		{
-			if( string.IsNullOrEmpty(str) )
-				return null;
-			else
-				return (from s in str.Split(separator)
-						let u = s.Trim()
-						where u.Length > 0
-						select u).ToArray();
+            if (string.IsNullOrEmpty(str))
+                return new string[0];
+            else
+                return (from s in str.Split(separator)
+                        let u = s.Trim()
+                        where u.Length > 0
+                        select u).ToArray();
 		}
 
-
+        /// <summary>
+        /// 一般通用的分隔符","
+        /// </summary>
 		internal static readonly char[] CommaSeparatorArray = new char[] { ',' };
 
 

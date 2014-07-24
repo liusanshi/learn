@@ -44,7 +44,7 @@ namespace LL.Framework.Web.MVC
         {
             get
             {
-                return this.ViewContext.Model;
+                return this.ViewData.Model;
             }
         }
         /// <summary>

@@ -103,7 +103,7 @@ namespace LL.Framework.Web.MVC
             if (context.HttpContext == null)
                 return;
 
-            var viewcontext = CacheViewContext.CreateCacheViewContext(context, getModel);
+            var viewcontext = ViewContext.CreateViewContext(context, getModel);
             viewcontext.TemplatePath = ucVirtualPath;
 
             TemplateViewExecutor.UCCacheRender(viewcontext);
@@ -131,7 +131,7 @@ namespace LL.Framework.Web.MVC
             if (string.IsNullOrEmpty(context.HttpContext.Response.ContentType))
                 context.HttpContext.Response.ContentType = "text/html";
 
-            var viewcontext = CacheViewContext.CreateCacheViewContext(context, getModel);
+            var viewcontext = ViewContext.CreateViewContext(context, getModel);
             viewcontext.TemplatePath = ucVirtualPath;
 
             string html = TemplateViewExecutor.UCCacheHTML(viewcontext);

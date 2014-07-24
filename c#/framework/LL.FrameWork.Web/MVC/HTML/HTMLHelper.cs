@@ -19,6 +19,16 @@ namespace LL.Framework.Web.MVC
         /// 视图上下文
         /// </summary>
         public ViewContext ViewContext { get; private set; }
+        /// <summary>
+        /// 试图数据
+        /// </summary>
+        public ViewDataDictionary ViewData
+        {
+            get
+            {
+                return ViewContext.ViewData;
+            }
+        }
 
         /// <summary>
         /// 将字符串最小限度地转换为 HTML 编码的字符串。

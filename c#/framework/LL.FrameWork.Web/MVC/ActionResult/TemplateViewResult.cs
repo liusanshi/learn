@@ -9,14 +9,6 @@ namespace LL.Framework.Web.MVC
     public class TemplateViewResult : ActionResult
     {
         /// <summary>
-        /// 数据
-        /// </summary>
-        public virtual object Model
-        {
-            get { return _viewData.Model; }
-            set { _viewData.Model = value; }
-        }
-        /// <summary>
         /// 页面路径
         /// </summary>
         public string VirtualPath { get; private set; }

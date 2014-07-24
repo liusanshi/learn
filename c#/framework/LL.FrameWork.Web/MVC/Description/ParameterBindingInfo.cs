@@ -60,8 +60,8 @@ namespace LL.Framework.Web.MVC
             {
                 return;
             }
-            this._exclude = new ReadOnlyCollection<string>(AuthorizeAttribute.SplitString(bindAttribute.Exclude));
-            this._include = new ReadOnlyCollection<string>(AuthorizeAttribute.SplitString(bindAttribute.Include));
+            this._exclude = new ReadOnlyCollection<string>(bindAttribute.Exclude.SplitTrim(StringExtensions.CommaSeparatorArray));
+            this._include = new ReadOnlyCollection<string>(bindAttribute.Include.SplitTrim(StringExtensions.CommaSeparatorArray));
             this._prefix = bindAttribute.Prefix;
         }
     }

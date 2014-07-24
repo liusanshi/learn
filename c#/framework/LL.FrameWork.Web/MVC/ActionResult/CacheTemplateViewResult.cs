@@ -39,30 +39,7 @@ namespace LL.Framework.Web.MVC
         }
 
         private Func<object> GetModel;
-        private bool isCalac = false;
-        private object model = null;
-
-        /// <summary>
-        /// 视图的model
-        /// </summary>
-        public override object Model
-        {
-            get
-            {
-                if (!isCalac)
-                {
-                    model = GetModel();
-                    isCalac = true;
-                }
-                return model;
-            }
-            set
-            {
-                model = value;
-                isCalac = true;
-            }
-        }
-
+        
         /// <summary>
         /// 执行动作结果
         /// </summary>
@@ -74,7 +51,10 @@ namespace LL.Framework.Web.MVC
                 throw new ArgumentNullException("context");
             }
 
-            var viewContext = CacheViewContext.CreateCacheViewContext(context, GetModel, ViewData, TempData);
+            var viewData = ViewData ?? new ViewDataDictionary();
+            viewData.GetModel = GetModel;
+
+            var viewContext = ViewContext.CreateViewContext(context, viewData, TempData);
             viewContext.TemplatePath = VirtualPath;
             context.HttpContext.Response.ContentType = "text/html";
             TemplateViewExecutor.UCCacheRender(viewContext);
