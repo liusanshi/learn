@@ -21,7 +21,8 @@ namespace LL.Framework.Web.MVC
         {
             string vPath = UrlHelper.GetRealVirtualPath(context, context.Request.FilePath);
 
-            var data = PageUrl2ControllerTypeCache.DefaultPageUrl2ControllerTypeCache.GetDescriptor(vPath);
+            var data = PageUrl2ControllerTypeCache.DefaultPageUrl2ControllerTypeCache
+                .GetDescriptor(PageUrlAttribute.ConvertToUniqueId(vPath, context.Request.HttpMethod));
             if (data == null)
                 return null;
 
@@ -45,7 +46,8 @@ namespace LL.Framework.Web.MVC
             string requestPath = context.Request.Path;
             string vPath = UrlHelper.GetRealVirtualPath(context, requestPath);
 
-            var data = PageUrl2ControllerTypeCache.DefaultPageUrl2ControllerTypeCache.GetDescriptor(vPath);
+            var data = PageUrl2ControllerTypeCache.DefaultPageUrl2ControllerTypeCache
+                .GetDescriptor(PageUrlAttribute.ConvertToUniqueId(vPath, context.Request.HttpMethod));
 
             // 如果没有找到合适的Action，并且请求的是一个ASPX页面，则按ASP.NET默认的方式来继续处理
             if (data == null && requestPath.EndsWith(".aspx", StringComparison.OrdinalIgnoreCase))

@@ -11,6 +11,13 @@ namespace LL.Framework.Web.MVC
     internal class PageUrl2ControllerTypeCache : ReaderWriterCache<string, Tuple<Type, MethodInfo>>
     {
         /// <summary>
+        /// 创建 PageUrl2ControllerTypeCache 实例
+        /// </summary>
+        public PageUrl2ControllerTypeCache()
+            : base(StringComparer.OrdinalIgnoreCase)
+        { }
+
+        /// <summary>
         /// 获取类型与方法
         /// </summary>
         /// <param name="url"></param>
@@ -54,7 +61,7 @@ namespace LL.Framework.Web.MVC
                 {
                     foreach (var attr in ReflectedAttributeCache.GetPageUrlAttributes(method))
                     {
-                        base.Cache[attr.Url] = new Tuple<Type, MethodInfo>(type, method);
+                        base.Cache[attr.UniqueId] = new Tuple<Type, MethodInfo>(type, method);
                     }
                 }
             }

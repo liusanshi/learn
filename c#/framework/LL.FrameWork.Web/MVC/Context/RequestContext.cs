@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-
-namespace LL.Framework.Web.MVC
+﻿namespace LL.Framework.Web.MVC
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+
     /// <summary>
     /// 请求的上下文
     /// </summary>
@@ -12,7 +12,16 @@ namespace LL.Framework.Web.MVC
         /// <summary>
         /// 创建RequestContext对象
         /// </summary>
-        public RequestContext() { }
+        protected RequestContext() { }
+        /// <summary>
+        /// 创建RequestContext对象
+        /// </summary>
+        /// <param name="httpContext"></param>
+        public RequestContext(HttpContext httpContext)
+        {
+            HttpContext = httpContext;
+            RouteData = Route.Instance;
+        }
         /// <summary>
         /// 创建RequestContext对象
         /// </summary>

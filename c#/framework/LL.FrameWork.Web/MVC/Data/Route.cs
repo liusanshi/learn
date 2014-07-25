@@ -109,8 +109,38 @@ namespace LL.Framework.Web.MVC
             set
             {
                 RouteData["Controller"] = value;
+                ShortController = value;
             }
         }
+        /// <summary>
+        /// 获取短格式控制器名称
+        /// </summary>
+        public string ShortController
+        {
+            get
+            {
+                //ShortController//短格式控制器
+                var sc = Convert.ToString(GetValue(RouteData, "ShortController", ""));
+                if (string.IsNullOrEmpty(sc))
+                    return Controller;
+                return sc;
+            }
+            private set
+            {
+                int len = value.Length;
+                var shortlen = "Controller".Length;
+                if (len > shortlen)
+                {
+                    if (string.Equals("Controller", value.Substring(len - shortlen), StringComparison.OrdinalIgnoreCase))
+                    {
+                        RouteData["ShortController"] = value.Substring(0, len - shortlen);
+                        return;
+                    }
+                }
+                RouteData["ShortController"] = value;
+            }
+        }
+
         /// <summary>
         /// 获取动作
         /// </summary>

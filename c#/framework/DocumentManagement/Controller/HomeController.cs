@@ -10,7 +10,7 @@ namespace DocumentManagement.Controller
         [PageUrl("/Default.aspx")]
         public TemplateViewResult Index()
         {
-            return View("/Default.aspx");
+            return View();
         }
     }
 }

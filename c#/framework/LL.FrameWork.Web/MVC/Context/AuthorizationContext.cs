@@ -1,7 +1,10 @@
-﻿using System;
-
-namespace LL.Framework.Web.MVC
+﻿namespace LL.Framework.Web.MVC
 {
+    using System;
+
+    /// <summary>
+    /// 授权验证的上下文
+    /// </summary>
     public class AuthorizationContext : ControllerContext
     {
         /// <summary>
@@ -20,9 +23,17 @@ namespace LL.Framework.Web.MVC
             get;
             set;
         }
-        public AuthorizationContext()
+        /// <summary>
+        /// 创建 授权验证的上下文 对象
+        /// </summary>
+        protected AuthorizationContext()
         {
         }
+        /// <summary>
+        /// 创建 授权验证的上下文 对象
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="actiondescription"></param>
         public AuthorizationContext(ControllerContext controllerContext, ActionDescriptor actiondescription)
             : base(controllerContext)
         {

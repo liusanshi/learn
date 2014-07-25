@@ -1,8 +1,11 @@
-﻿using System;
-using System.Web;
-
-namespace LL.Framework.Web.MVC
+﻿namespace LL.Framework.Web.MVC
 {
+    using System;
+    using System.Web;
+
+    /// <summary>
+    /// 控制器上下文
+    /// </summary>
     public class ControllerContext
     {
         private HttpContext _httpcontext;
@@ -52,6 +55,9 @@ namespace LL.Framework.Web.MVC
                 _routeData = value;
             }
         }
+        /// <summary>
+        /// 请求的上下文
+        /// </summary>
         public RequestContext RequestContext
         {
             get
@@ -68,7 +74,15 @@ namespace LL.Framework.Web.MVC
             }
         }
 
+        /// <summary>
+        /// 创建ControllerContext对象
+        /// </summary>
         protected ControllerContext() { }
+        /// <summary>
+        /// 创建ControllerContext对象
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controller"></param>
         public ControllerContext(RequestContext requestContext, ControllerBase controller)
         {
             if (requestContext == null)
@@ -82,6 +96,10 @@ namespace LL.Framework.Web.MVC
             this.Controller = controller;
             this.RequestContext = requestContext;
         }
+        /// <summary>
+        /// 创建ControllerContext对象
+        /// </summary>
+        /// <param name="controllerContext"></param>
         protected ControllerContext(ControllerContext controllerContext)
         {
             if (controllerContext == null)

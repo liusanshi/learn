@@ -48,6 +48,7 @@
     <Compile Include="MVC\ActionResult\CacheTemplateViewResult.cs" />
     <Compile Include="MVC\ActionResult\HttpNotFoundResult.cs" />
     <Compile Include="MVC\Attribute\ActionFilterAttribute.cs" />
+    <Compile Include="MVC\Attribute\AllowAnonymousAttribute.cs" />
     <Compile Include="MVC\Cache\ConfigManager.cs" />
     <Compile Include="Module\GzipModule.cs" />
     <Compile Include="MVC\Attribute\OutputCacheAttribute.cs" />

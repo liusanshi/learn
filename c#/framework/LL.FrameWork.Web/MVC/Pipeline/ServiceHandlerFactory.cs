@@ -23,7 +23,7 @@ namespace LL.Framework.Web.MVC
             Match match = s_urlRegex.Match(path);
             if (match.Success == false)
             {
-                return new RequestContext() { HttpContext = context };
+                return new RequestContext(context);
             }
             else
             {
@@ -32,12 +32,9 @@ namespace LL.Framework.Web.MVC
                 string className = match.Groups["name"].Value;
                 string extname = match.Groups["extname"].Value;
 
-                return new RequestContext()
-                {
-                    HttpContext = context,
-                    RouteData = CreateRouteData(GetControllerName(serivceType, nspace, className, extname)
-                    , match.Groups["method"].Value)
-                };
+                return new RequestContext(context,
+                    CreateRouteData(GetControllerName(serivceType, nspace, className, extname), match.Groups["method"].Value)
+                    );
             }
         }
         /// <summary>

@@ -158,12 +158,18 @@ namespace LL.Framework.Web.MVC
         protected virtual AuthorizationContext InvokeAuthorizationFilters(ControllerContext controllerContext, IList<IAuthorizationFilter> filters, ActionDescriptor actionDescriptor)
         {
             AuthorizationContext authorizationContext = new AuthorizationContext(controllerContext, actionDescriptor);
-            foreach (IAuthorizationFilter current in filters)
+            //是否允许匿名访问
+            var AllowAnonymous = GetControllerDescriptor(controllerContext).IsDefined(typeof(AllowAnonymousAttribute), true)
+                    || actionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+            if (!AllowAnonymous)
             {
-                current.OnAuthorization(authorizationContext);
-                if (authorizationContext.Result != null)
+                foreach (IAuthorizationFilter current in filters)
                 {
-                    break;
+                    current.OnAuthorization(authorizationContext);
+                    if (authorizationContext.Result != null)
+                    {
+                        break;
+                    }
                 }
             }
             return authorizationContext;

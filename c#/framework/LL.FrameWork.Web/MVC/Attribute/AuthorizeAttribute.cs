@@ -13,6 +13,12 @@ namespace LL.Framework.Web.MVC
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class AuthorizeAttribute : FilterAttribute, IAuthorizationFilter
 	{
+        /// <summary>
+        /// 创建 AuthorizeAttribute 实例
+        /// 用于验证用户身份的修饰属性
+        /// </summary>
+        public AuthorizeAttribute() { }
+
         private readonly object _typeId = new object();
         /// <summary>
         /// 未通过验证的请求的状态码

@@ -8,12 +8,13 @@ using System.Web.Security;
 
 namespace DocumentManagement.Controller
 {
+    [AllowAnonymous]
     public class LoginController : ControllerBase
     {
         [PageUrl("/Login.aspx")]
-        public TemplateViewResult LoginPage()
+        public TemplateViewResult Login()
         {
-            return View("/Login.aspx");
+            return View();
         }
 
         /// <summary>
@@ -21,8 +22,7 @@ namespace DocumentManagement.Controller
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        [PageUrl("/loginActive.aspx")]
-        [Action(Verb = "post")]
+        [PageUrl("/Login.aspx", "post")]
         public ActionResult Login(string username, string password)
         {
             if (username == "admin" && password == "admin")
@@ -34,8 +34,7 @@ namespace DocumentManagement.Controller
             {
                 ModelState.AddModelError("", "账号密码错误！");
             }
-
-            return View("/Login.aspx", null);
+            return View();
         }
     }
 }

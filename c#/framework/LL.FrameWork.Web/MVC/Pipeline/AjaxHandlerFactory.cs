@@ -36,15 +36,12 @@ namespace LL.Framework.Web.MVC
             Match match = s_urlRegex.Match(path);
             if (match.Success == false)
             {
-                return new RequestContext() { HttpContext = context };
+                return new RequestContext(context);
             }
             else
             {
-                return new RequestContext()
-                {
-                    HttpContext = context,
-                    RouteData = CreateRouteData(match.Groups["name"].Value.Replace("/", "."), match.Groups["method"].Value)
-                };
+                return new RequestContext(context, 
+                    CreateRouteData(match.Groups["name"].Value.Replace("/", "."), match.Groups["method"].Value));
             }
         }
     }

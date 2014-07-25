@@ -27,7 +27,7 @@ namespace LL.Framework.Web.MVC
             set;
         }
         /// <summary>
-        /// 请求是否验证通过
+        /// 是否验证请求
         /// </summary>
         public bool ValidateRequest
         {
@@ -227,6 +227,22 @@ namespace LL.Framework.Web.MVC
 
         #region Result 返回
         /// <summary>
+        /// 计算view的虚拟路径
+        /// </summary>
+        /// <returns></returns>
+        private string CompViewVirtualPath()
+        {
+            if (RouteData.UsePageUrlRoute)
+            {
+                return RouteData.Url;
+            }
+            else
+            {
+                return string.Format("/Views/{0}/{1}.ascx", RouteData.ShortController, RouteData.Action);
+            }
+        }
+
+        /// <summary>
         /// 重定向
         /// </summary>
         /// <param name="url"></param>
@@ -251,6 +267,23 @@ namespace LL.Framework.Web.MVC
                 throw new ArgumentException("不能为空或者null", "url");
             }
             return new RedirectResult(url, true);
+        }
+        /// <summary>
+        /// 呈现模板
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual TemplateViewResult View()
+        {
+            return View(CompViewVirtualPath());
+        }
+        /// <summary>
+        /// 呈现模板
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        protected internal virtual TemplateViewResult View(object model)
+        {
+            return View(CompViewVirtualPath(), model);
         }
         /// <summary>
         /// 呈现模板

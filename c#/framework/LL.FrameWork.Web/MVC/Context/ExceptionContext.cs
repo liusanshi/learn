@@ -2,9 +2,15 @@
 {
     using System;
 
+    /// <summary>
+    /// 异常筛选器使用的上下文
+    /// </summary>
     public class ExceptionContext : ControllerContext
     {
         private ActionResult _result;
+        /// <summary>
+        /// 筛选到的异常
+        /// </summary>
         public virtual Exception Exception
         {
             get;
@@ -18,6 +24,9 @@
             get;
             set;
         }
+        /// <summary>
+        /// 动作执行的结果
+        /// </summary>
         public ActionResult Result
         {
             get
@@ -29,9 +38,17 @@
                 this._result = value;
             }
         }
-        public ExceptionContext()
+        /// <summary>
+        /// 创建ExceptionContext对象
+        /// </summary>
+        protected ExceptionContext()
         {
         }
+        /// <summary>
+        /// 创建ExceptionContext对象
+        /// </summary>
+        /// <param name="controllerContext"></param>
+        /// <param name="exception"></param>
         public ExceptionContext(ControllerContext controllerContext, Exception exception)
             : base(controllerContext)
         {

@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-    <form id="form1" action="loginActive.aspx" method="post">
+    <form id="form1" action="login.aspx" method="post">
         <div class="loginBox row-fluid">
             <div class="span7 left">
                 <h2>用户登录</h2>
