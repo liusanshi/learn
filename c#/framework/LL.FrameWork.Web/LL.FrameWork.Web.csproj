@@ -47,8 +47,15 @@
   <ItemGroup>
     <Compile Include="MVC\ActionResult\CacheTemplateViewResult.cs" />
     <Compile Include="MVC\ActionResult\HttpNotFoundResult.cs" />
+    <Compile Include="MVC\AntiForgery\AntiForgery.cs" />
+    <Compile Include="MVC\AntiForgery\AntiForgeryData.cs" />
+    <Compile Include="MVC\AntiForgery\AntiForgeryDataSerializer.cs" />
+    <Compile Include="MVC\AntiForgery\AntiForgeryWorker.cs" />
+    <Compile Include="MVC\AntiForgery\HttpAntiForgeryException.cs" />
     <Compile Include="MVC\Attribute\ActionFilterAttribute.cs" />
     <Compile Include="MVC\Attribute\AllowAnonymousAttribute.cs" />
+    <Compile Include="MVC\Attribute\ValidateAntiForgeryTokenAttribute.cs" />
+    <Compile Include="MVC\Attribute\ValidateRequestAttribute.cs" />
     <Compile Include="MVC\Cache\ConfigManager.cs" />
     <Compile Include="Module\GzipModule.cs" />
     <Compile Include="MVC\Attribute\OutputCacheAttribute.cs" />
@@ -93,6 +100,8 @@
     <Compile Include="MVC\HTML\PartialExtensions.cs" />
     <Compile Include="MVC\HTML\RenderPartialExtensions.cs" />
     <Compile Include="MVC\HTML\ResponseWriter.cs" />
+    <Compile Include="MVC\HTML\TagBuilder.cs" />
+    <Compile Include="MVC\HTML\TagRenderMode.cs" />
     <Compile Include="MVC\HTML\TemplateViewExecutor.cs" />
     <Compile Include="MVC\HTML\ValidationExtensions.cs" />
     <Compile Include="MVC\Pipeline\AjaxHandlerFactory.cs" />

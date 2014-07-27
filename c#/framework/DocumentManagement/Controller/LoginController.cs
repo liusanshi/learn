@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 using LL.Framework.Web.MVC;
-using System.Web.Security;
 
 namespace DocumentManagement.Controller
 {
@@ -23,6 +23,7 @@ namespace DocumentManagement.Controller
         /// <param name="username"></param>
         /// <param name="password"></param>
         [PageUrl("/Login.aspx", "post")]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(string username, string password)
         {
             if (username == "admin" && password == "admin")

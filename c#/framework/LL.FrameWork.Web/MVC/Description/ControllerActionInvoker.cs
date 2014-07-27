@@ -12,7 +12,8 @@ namespace LL.Framework.Web.MVC
         private static readonly ControllerDescriptorCache _staticDescriptorCache = new ControllerDescriptorCache();
         private Func<ControllerContext, ActionDescriptor, IEnumerable<Filter>> _getFiltersThunk = (ControllerContext cc, ActionDescriptor ad) => FilterProviders.Providers.GetFilters(cc, ad);
 
-        internal ControllerActionInvoker(params object[] filters): this()
+        internal ControllerActionInvoker(params object[] filters)
+            : this()
         {
             if (filters != null)
             {
@@ -88,10 +89,10 @@ namespace LL.Framework.Web.MVC
         /// <param name="args"></param>
         /// <returns></returns>
         protected virtual ActionResult InvokeActionMethod(ControllerContext controllerContext, ActionDescriptor actionDescriptor, IDictionary<string, object> args)
-		{
+        {
             object actionReturnValue = actionDescriptor.Execute(controllerContext, args);
-			return this.CreateActionResult(controllerContext, actionDescriptor, actionReturnValue);
-		}
+            return this.CreateActionResult(controllerContext, actionDescriptor, actionReturnValue);
+        }
 
         /// <summary>
         /// 创建 ActionResult
@@ -158,18 +159,12 @@ namespace LL.Framework.Web.MVC
         protected virtual AuthorizationContext InvokeAuthorizationFilters(ControllerContext controllerContext, IList<IAuthorizationFilter> filters, ActionDescriptor actionDescriptor)
         {
             AuthorizationContext authorizationContext = new AuthorizationContext(controllerContext, actionDescriptor);
-            //是否允许匿名访问
-            var AllowAnonymous = GetControllerDescriptor(controllerContext).IsDefined(typeof(AllowAnonymousAttribute), true)
-                    || actionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
-            if (!AllowAnonymous)
+            foreach (IAuthorizationFilter current in filters)
             {
-                foreach (IAuthorizationFilter current in filters)
+                current.OnAuthorization(authorizationContext);
+                if (authorizationContext.Result != null)
                 {
-                    current.OnAuthorization(authorizationContext);
-                    if (authorizationContext.Result != null)
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
             return authorizationContext;
@@ -211,8 +206,8 @@ namespace LL.Framework.Web.MVC
                 Result = this.InvokeActionMethod(controllerContext, actionDescriptor, parameters)
             };
             Func<ActionExecutedContext> func = filters.Reverse<IActionFilter>().Aggregate(seed
-                , (Func<ActionExecutedContext> next, IActionFilter filter) => 
-                    () => 
+                , (Func<ActionExecutedContext> next, IActionFilter filter) =>
+                    () =>
                         ControllerActionInvoker.InvokeActionMethodFilter(filter, preContext, next));
             return func();
         }
@@ -231,9 +226,9 @@ namespace LL.Framework.Web.MVC
                 this.InvokeActionResult(controllerContext, actionResult);
                 return new ResultExecutedContext(controllerContext, actionResult, false, null);
             };
-            Func<ResultExecutedContext> func = filters.Reverse<IResultFilter>().Aggregate(seed, 
-                (Func<ResultExecutedContext> next, IResultFilter filter) => 
-                    () => 
+            Func<ResultExecutedContext> func = filters.Reverse<IResultFilter>().Aggregate(seed,
+                (Func<ResultExecutedContext> next, IResultFilter filter) =>
+                    () =>
                         ControllerActionInvoker.InvokeActionResultFilter(filter, preContext, next));
             return func();
         }

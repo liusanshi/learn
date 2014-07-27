@@ -32,6 +32,7 @@
 </head>
 <body>
     <form id="form1" action="login.aspx" method="post">
+        <%= AntiForgery.GetHtml() %>
         <div class="loginBox row-fluid">
             <div class="span7 left">
                 <h2>用户登录</h2>
