@@ -11,7 +11,7 @@ namespace WebTest
     public class HomeController : ControllerBase
     {
         [Action]
-        [PageUrl(Url = "/BigPipeDemo.aspx")]
+        [PageUrl("/BigPipeDemo.aspx")]
         [OutputCache()]
         public void ShowHomePage()
         {

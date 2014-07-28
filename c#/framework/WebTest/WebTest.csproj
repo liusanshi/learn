@@ -58,6 +58,7 @@
     <Content Include="css\StyleSheet.css" />
     <Content Include="Default.aspx" />
     <Content Include="DEMO_7_ComplexForms.htm" />
+    <Content Include="GetIp.aspx" />
     <Content Include="images\banner.gif" />
     <Content Include="images\bg.gif" />
     <Content Include="images\r_fish-logo.png" />
