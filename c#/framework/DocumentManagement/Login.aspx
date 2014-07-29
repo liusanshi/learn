@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>登录</title>
 
-    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="modules/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <style type="text/css">
         .loginBox {
             width: 420px;

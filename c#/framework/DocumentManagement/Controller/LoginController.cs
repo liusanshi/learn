@@ -26,7 +26,7 @@ namespace DocumentManagement.Controller
         [ValidateAntiForgeryToken]
         public ActionResult Login(string username, string password)
         {
-            if (username == "admin" && password == "admin")
+            if (username == password)
             {
                 FormsAuthentication.SetAuthCookie(username, true);
                 return Redirect("/Default.aspx");//转到页面
