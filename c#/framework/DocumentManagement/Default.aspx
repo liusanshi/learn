@@ -2,7 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>首页</title>
+    <title>我的文档管理</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge;ie=9;ie=8;" />
     <link rel="stylesheet" type="text/css" href="modules/jquery-easyui/themes/default/easyui.css">
@@ -88,7 +88,7 @@
     </div>
     <div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
         <div class="easyui-tabs" id="main_content" data-options="fit:true,border:false,plain:true">
-            <div title="About" data-options="href:'_content.html'" style="padding: 10px"></div>
+            <div title="主页" data-options="href:'_content.html'" style="padding: 10px"></div>
             <div title="DataGrid" style="padding: 5px">
                 <table class="easyui-datagrid"
                     data-options="url:'datagrid_data1.json',method:'get',singleSelect:true,fit:true,fitColumns:true">
@@ -116,7 +116,7 @@
 <script type="text/javascript">
     seajs.use('/static/index', function (obj) {
         var Menu = obj.Menu, Data = obj.Data,
-        menu = new Menu($('.main-menu'), [new Data(), new Data()]);
+        menu = new Menu($('.main-menu'), [new Data(), new Data()]);//添加菜单
         menu.render();
     });
     //TabManager
