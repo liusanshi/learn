@@ -4,6 +4,7 @@
 <head runat="server">
     <title>首页</title>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;ie=9;ie=8;" />
     <link rel="stylesheet" type="text/css" href="modules/jquery-easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="modules/jquery-easyui/themes/icon.css">
 
@@ -80,24 +81,13 @@
             </div>
             <div title="系统设置" style="padding: 10px">
                 <ul class="main-menu">
-                    <li>
-                        <div class="menuitem-icon icon-ok">功能管理图标</div>
-                        <div>功能管理</div>
-                    </li>
-                    <li>
-                        <div class="menuitem-icon icon-ok">角色管理图标</div>
-                        <div>角色管理</div>
-                    </li>
-                    <li>
-                        <div class="menuitem-icon icon-ok">用户管理图标</div>
-                        <div>用户管理</div>
-                    </li>
+                    <!--菜单-->
                 </ul>
             </div>
         </div>
     </div>
     <div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
-        <div class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+        <div class="easyui-tabs" id="main_content" data-options="fit:true,border:false,plain:true">
             <div title="About" data-options="href:'_content.html'" style="padding: 10px"></div>
             <div title="DataGrid" style="padding: 5px">
                 <table class="easyui-datagrid"
@@ -117,12 +107,24 @@
         </div>
     </div>
 </body>
-<script type="text/javascript" src="modules/sea.js"></script>
+<script type="text/javascript" src="modules/sea-debug.js"></script>
 <script type="text/javascript" src="static/seajs-config.js"></script>
+<script src="modules/jquery-1.11.0.min.js"></script>
+<script src="modules/jquery-easyui/jquery.easyui.min.js"></script>
+<script src="modules/jquery-easyui/easyloader.js"></script>
 
 <script type="text/javascript">
-    seajs.use('backbone', function (bb) {
-
-    })
+    seajs.use('/static/index', function (obj) {
+        var Menu = obj.Menu, Data = obj.Data,
+        menu = new Menu($('.main-menu'), [new Data(), new Data()]);
+        menu.render();
+    });
+    //TabManager
+    seajs.use('/static/tabManager', function (tabobj) {
+        using('tabs', function () {
+            var TabManager = tabobj.TabManager.tabManager = new tabobj.TabManager($('#main_content'));
+            TabManager.open({ title: "nihao", url: 'nihao' });
+        });
+    });
 </script>
 </html>

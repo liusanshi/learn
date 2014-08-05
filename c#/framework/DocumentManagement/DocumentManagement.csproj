@@ -52,6 +52,8 @@
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
+    <Content Include="static\index.js" />
+    <Content Include="static\tabManager.js" />
     <Content Include="static\_references.js" />
     <Content Include="modules\backbone-min.js" />
     <Content Include="modules\backbone.js" />
