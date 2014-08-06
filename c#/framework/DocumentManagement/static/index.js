@@ -1,9 +1,13 @@
-﻿define('/static/index', ['backbone'], function (require, exports, module) {
+﻿define('/static/index', ['backbone', '/static/tabManager'], function (require, exports, module) {
     
     var _ = require('underscore'),
         Backbone = require('backbone'), Menu, MenuItemView, MenuItemData;
 
     MenuItemView = Backbone.View.extend({
+        constructor : function (args) {
+            this.tabManager = args.tabManager;
+            Backbone.View.call(this, args);
+        },
         tagName: 'li'
         , events: {
             'click': 'open'
@@ -25,18 +29,21 @@
             this.model.destroy();
         }
         , open: function () {
-            alert(1);
+            var model = this.model;
+            this.tabManager.open({ title: model.get('title'), url: model.get('title') });
         }
     });
     //菜单项
     Menu = Backbone.View.extend({
-        constructor: function (el, models) {
+        constructor: function (el, tabManager, models) {
             this.el = el;
             this.$el = $(el);
+            this.tabManager = tabManager;
             var coll = this.collection = new Backbone.Collection();
             _(models || []).each(function (m) {
                 coll.add(m);
             });
+            Backbone.View.call(this);
         }
         , initialize: function () {
             // this.render();
@@ -48,7 +55,7 @@
             });
         }
         , appendItem: function (model) {
-            var item = new MenuItemView({ model: model });
+            var item = new MenuItemView({ model: model, tabManager: this.tabManager });
             this.$el.append(item.render().el);
         }
     });

@@ -88,7 +88,7 @@
     </div>
     <div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
         <div class="easyui-tabs" id="main_content" data-options="fit:true,border:false,plain:true">
-            <div title="主页" data-options="href:'_content.html'" style="padding: 10px"></div>
+            <div title="主页" style="padding: 10px"></div>
             <div title="DataGrid" style="padding: 5px">
                 <table class="easyui-datagrid"
                     data-options="url:'datagrid_data1.json',method:'get',singleSelect:true,fit:true,fitColumns:true">
@@ -115,15 +115,20 @@
 
 <script type="text/javascript">
     seajs.use('/static/index', function (obj) {
-        var Menu = obj.Menu, Data = obj.Data,
-        menu = new Menu($('.main-menu'), [new Data(), new Data()]);//添加菜单
-        menu.render();
-    });
-    //TabManager
-    seajs.use('/static/tabManager', function (tabobj) {
-        using('tabs', function () {
-            var TabManager = tabobj.TabManager.tabManager = new tabobj.TabManager($('#main_content'));
-            TabManager.open({ title: "nihao", url: 'nihao' });
+        using('tabs', function () {//加载 tabs
+
+            var Menu = obj.Menu, Data = obj.Data,
+            tabobj = seajs.require('/static/tabManager'), TabManager, menu;
+
+            TabManager = tabobj.TabViewCollection.tabManager = new tabobj.TabViewCollection($('#main_content'));
+            menu = new Menu($('.main-menu'), TabManager, [new Data(), new Data()]);//添加菜单
+            menu.render();
+
+            TabManager.open({ title: '1111', url: '222222' });
+
+            $(document).click(function () {
+                TabManager.close(TabManager.findTabModel('222222'));
+            })
         });
     });
 </script>

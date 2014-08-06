@@ -1,13 +1,13 @@
 ﻿define('/static/tabManager', ['backbone'], function (require, exports, module) {
 
-    var $ = require('$UI'), _ = require('underscore'),
+    var _ = require('underscore'),
         Backbone = require('backbone'), TabView, TabViewCollection;
 
     TabView = Backbone.View.extend({
         constructor: function (arg) {
             this.el = arg.el;
             this.model = new Backbone.Model(arg.model);
-            Backbone.View.apply(this, arg);
+            Backbone.View.call(this);
         }
         , initialize: function () {
             this.listenTo(this.model, 'destroy', this.close);
@@ -16,9 +16,10 @@
             /*{title : 'test', url:'...aspx', }*/
             var model = this.model;
 
-            this.$el.tabs('add', {
+            var tab = this.$el.tabs('add', {
                 title: model.get('title'),
-                content: '<div style="padding:10px">Content' + model.get('url') + '</div>',
+                content: '<div class="panel-loading">Loading...</div>',
+                href : 'login.aspx', //加载页面来填充
                 closable: true
             });
         }
@@ -28,16 +29,16 @@
                 var index = el.tabs('getTabIndex', tab);
                 el.tabs('close', index);
             }
+            return this;
         }
     });
 
     TabViewCollection = Backbone.View.extend({
         constructor : function (el) {
             this.el = el;
+            Backbone.View.call(this);
         }
         , initialize: function () {
-
-            this.itemCount = 0;
             this.collection = new Backbone.Collection();
             this.listenTo(this.collection, 'add', this.open);
             this.listenTo(this.collection, 'remove', this.close);
@@ -47,20 +48,28 @@
             _(this.collection.models).each(function (model) {
                 $this.open(model);
             });
+            return this;
         }
         , open: function (model) {
-            new TabView({ model: model, el: this.el }).render();
+            var tv = new TabView({ model: model, el: this.el })
+            tv.render();
+            this.collection.add(tv.model, { silent: true });
+            return this;
         }
         , close: function (model) {
-            var tab = this.findTab(model.get('url'));
-            if (tab) {
-                tab.trigger('destroy');
+            if (model) {
+                var tab = this.findTabModel(model.get('url'));
+                if (tab) {
+                    tab.trigger('destroy');
+                    this.collection.remove(tab, { silent: true });
+                }
             }
+            return this;
         }
-        , findTab: function (url) {
-            return _(this.collection).find(function (m) { return m.get('url') === url; });
+        , findTabModel: function (url) {
+            return this.collection.findWhere({ 'url': url });
         }
     });
 
-    return { TabView: TabView, TabManager: TabViewCollection };
+    return { TabView: TabView, TabViewCollection: TabViewCollection };
 });
