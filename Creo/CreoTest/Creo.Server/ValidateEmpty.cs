@@ -555,4 +555,29 @@ namespace Creo.Server
 			return this.count == index;
 		}
     }
+
+    /// <summary>
+    /// 验证程序是否过去
+    /// </summary>
+    public class ValidateTime : DefaultValidator
+    {
+        /// <summary>
+        /// 过期时间
+        /// </summary>
+        private readonly DateTime GUOQI = new DateTime(2014, 10, 01);
+
+        public override bool Validate(ValidateContext context)
+        {
+            var doc = context.ValidateObject as DocStruct;
+            if (doc != null)
+            {
+                if (DateTime.Now >= GUOQI)
+                {
+                    doc.SetDocStateL(false, "red", "程序已经过期，请联系实施人员！");
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }

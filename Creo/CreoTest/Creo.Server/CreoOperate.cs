@@ -25,6 +25,8 @@ namespace Creo.Server
         {
             server.Context.ExtendProperty[_.MultiConfiguration] = SupportMultiConfiguration;
 
+            //验证过期时间
+            server.RegisterValidator(new ValidateTime());
             server.RegisterValidator(new ValidateOption());
             server.RegisterValidator(new ValidateDocName(true));
             server.RegisterValidator(new ValidateDrawingType(base.IntegType));
@@ -58,6 +60,8 @@ namespace Creo.Server
         {
             server.Context.ExtendProperty[_.MultiConfiguration] = SupportMultiConfiguration;
 
+            //验证过期时间
+            server.RegisterValidator(new ValidateTime());
             server.RegisterValidator(new ValidateRootExists(base.IndexFields));
             server.RegisterValidator(new ValidateDocName(true));
             server.RegisterValidator(new ValidateDrawingType(base.IntegType));
