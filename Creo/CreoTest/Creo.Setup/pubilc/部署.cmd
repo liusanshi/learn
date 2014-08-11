@@ -58,7 +58,8 @@ echo f|xcopy /r /y "Intgration.Common.dll" "%Integration%\Resources\Common\Dll\I
 echo f|xcopy /r /y "Message.txt" "%Integration%\Resources\Proe\Text\chinese_cn\Message.txt"
 echo f|xcopy /r /y "PLM.dll" "%Integration%\Resources\Proe\PLM.dll"
 echo f|xcopy /r /y "PLM64.dll" "%Integration%\Resources\Proe\PLM64.dll"
-
+echo f|xcopy /r /y "openAssistent.exe" "%Integration%\Resources\Proe\openAssistent.exe"
+echo f|xcopy /r /y "openAssistent64.exe" "%Integration%\Resources\Proe\openAssistent64.exe"
 
 echo 插件部署完成
 echo.

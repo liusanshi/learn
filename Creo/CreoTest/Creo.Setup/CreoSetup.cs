@@ -165,6 +165,8 @@ namespace Creo.Setup
                 throw new Exception("未发现当前creo所处平台");
             }
 
+            OpenAssistentDeal(CreoCommonPath, pf);
+
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe"))
                 CommonBase.CopyFile(str2 + "IntegrationLogin.exe", "c:\\WINDOWS\\IntegrationLogin.exe");
             if (!File.Exists("c:\\WINDOWS\\IntegrationLogin.exe.config"))
@@ -206,6 +208,32 @@ namespace Creo.Setup
             yield return Path.Combine(allusers, "LoginSetting.ini");
             yield return Path.Combine(system32path, "proeCheckFile.txt");
             yield return Path.Combine(system64path, "proeCheckFile.txt");
+        }
+
+        /// <summary>
+        /// 打开图纸的处理
+        /// </summary>
+        /// <param name="CreoCommonPath"></param>
+        /// <param name="pf"></param>
+        private void OpenAssistentDeal(string CreoCommonPath, Platform pf)
+        {
+            var xtopPath = FileAndDirectoryManager.SearchFile(CreoCommonPath, new string[] { "i486_nt\\obj", "x86e_win64\\obj" }, "pro_comm_msg.exe").FirstOrDefault();
+            //添加环境变量
+            Environment.SetEnvironmentVariable("PRO_COMM_MSG_EXE", xtopPath, EnvironmentVariableTarget.Machine);
+
+            //将OpenAssistent.exe 拷到system32
+            string OpenAssistentName = "openAssistent.exe";
+            string OpenAssistentName64 = "openAssistent64.exe";
+            string str = string.Format("{0}\\{1}\\", this.SourceDefaultDir, this.DirName);
+            if (pf == Platform.X64)
+            {
+                CommonBase.CopyFile(str + OpenAssistentName64, "C:\\Windows\\System32\\" + OpenAssistentName);
+            }
+            else if (pf == Platform.X86)
+            {
+                CommonBase.CopyFile(str + OpenAssistentName, "C:\\Windows\\System32\\" + OpenAssistentName);
+                CommonBase.CopyFile(str + OpenAssistentName, "C:\\Windows\\syswow64\\" + OpenAssistentName);
+            }
         }
 
         private void CopyMenuFile()
