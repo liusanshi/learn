@@ -580,4 +580,24 @@ namespace Creo.Server
             return true;
         }
     }
+
+    /// <summary>
+    /// 记录文档的MD5值
+    /// </summary>
+    public class ValidateRecodeMD5 : DefaultValidator
+    {
+        public override bool Validate(ValidateContext context)
+        {
+            var doc = context.ValidateObject as DocStruct;
+            if (doc != null)
+            {
+                var doccopy = BOMHelp.GetOValueFromDictionary(context.CurScopeProperty, _.CURVALIDATEDOCCOPY) as DocumentCopy;
+                if (doccopy != null)
+                {
+                    doc.WriteValue("__FileMD5__DB", doccopy.FileMD5);
+                }
+            }
+            return true;
+        }
+    }
 }

@@ -82,6 +82,8 @@ namespace Creo.Server
             server.RegisterValidator(new ValidateDocumentMaterialState(this.dicDeleteDoc));
             server.RegisterValidator(new ValidateCheckMaterialProperty(base.IndexFields));
             server.RegisterValidator(new ValidateCheckNeedAddReation());
+
+            server.RegisterValidator(new ValidateRecodeMD5());//记录MD5值
             
             //base.CheckInValidator(server);            
             Type typeFromHandle = typeof(ValidateIsNewMaterial);

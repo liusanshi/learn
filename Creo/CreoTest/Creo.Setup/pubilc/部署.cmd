@@ -38,6 +38,7 @@ if not exist "%PLMPath%\Integration_back.config.xml" (
 ModifyConfig.exe "%PLMPath%\Integration.config.xml" IntegrationConfiguration/appSettings update PROE "Creo.Server.CreoOperate, Creo.Server"
 ModifyConfig.exe "%PLMPath%\web.config" configuration/appSettings add Multi-Configuration true
 
+ModifyConfig.exe "%PLMPath%\Javascript\Integration\3DCadIntegration.js" 3D replace "if ((ot & notcheckout) === notcheckout) return;" "if ((ot & notcheckout)===notcheckout) return;if(o.__filemd5===o.__FileMD5__DB) return;"
 
 echo 服务器部署完成
 echo.
