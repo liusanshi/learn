@@ -463,15 +463,15 @@ namespace Creo.Server
     }
 
     /// <summary>
-    /// 验证族实例的删除
+    /// 验证族实例关系的删除
     /// </summary>
-    public class ValidateZuInstanceDelete : DefaultValidator
+    public class ValidateZuInstanceRelDelete : DefaultValidator
     {
         private Dictionary<string, ArrayList> dicDeleteSTDRelation;
 		private DocumentVersionManager dvManager = new DocumentVersionManager();
 		private bool SupportMultiConfig;
 		private int count = -1;
-        public ValidateZuInstanceDelete(Dictionary<string, ArrayList> dic)
+        public ValidateZuInstanceRelDelete(Dictionary<string, ArrayList> dic)
 		{
 			this.dicDeleteSTDRelation = dic;
 		}
@@ -531,14 +531,12 @@ namespace Creo.Server
 					if (doc.IsBorrow)
 					{
 						doc.SetDocStateL(false, "red", "借用：不允许修改文档结构");
-						bool result = false;
-						return result;
+                        return false;
 					}
 					if (BOMHelp.Contains(doc.OperateType, EntityOperateType.NotCheckOut))
 					{
 						doc.SetDocStateL(false, "red", "未检出：不允许修改文档结构");
-						bool result = false;
-						return result;
+                        return false;
 					}
 					list.Add(objectRelation.RelationId);
 				}
@@ -598,6 +596,93 @@ namespace Creo.Server
                 }
             }
             return true;
+        }
+    }
+
+    /// <summary>
+    /// 验证族实例的删除
+    /// </summary>
+    public class ValidateZuInstanceDelete : DefaultValidator
+    {
+        private DocConfigManager docconfigManager = new DocConfigManager();
+        private ObjectRelationDataAccess objrelatda = new ObjectRelationDataAccess();
+        /// <summary>
+        /// 族表实例的名称列表
+        /// </summary>
+        readonly string ZuBiaoNames = "";
+
+        public override bool Validate(ValidateContext context)
+        {
+            DocStruct docStruct = context.ValidateObject as DocStruct;
+            BOMStruct bOMStruct = context.ValidateList as BOMStruct;
+            if (docStruct != null && bOMStruct != null)
+            {
+                List<string> list = new List<string>();
+                if (docStruct.IsConfigPart && !docStruct.ContainsKey(_.DELETE_CONFIG))
+                {
+                    var Configs = docStruct.GetString(ZuBiaoNames).Split(';');
+                    foreach (DocConfig cfg in
+                        from p in this.docconfigManager.GetStandardPartsConfigByDVerId(docStruct.RealityVerId)
+                        where !string.IsNullOrEmpty(p.ConfigName)
+                        select p)
+                    {
+                        if (!Configs.Any((string p) => BOMHelp.IsEquals(p, cfg.ConfigName)))
+                        {
+                            if (docStruct.IsBorrow || BOMHelp.Contains(docStruct.OperateType, EntityOperateType.NotCheckOut))
+                            {
+                                string msg = string.Format("{0}：不允许修改文档族表实例", docStruct.IsBorrow ? "借用" : "未检出");
+                                this.DealDocStruct(docStruct, delegate(DocStruct p)
+                                {
+                                    p.SetDocStateL(false, "red", msg);
+                                });
+                                return false;
+                            }
+                            if (!list.Contains(cfg.ConfigID))
+                            {
+                                list.Add(cfg.ConfigID);
+                            }
+                        }
+                    }
+                    if (list.Count > 0)
+                    {
+                        docStruct.WriteValue(_.DELETE_CONFIG, string.Join(",", list.ToArray()));
+                    }
+                }
+                if (context.CurIndex == bOMStruct.Count && !this.ValidateConfigUse(bOMStruct))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        private bool ValidateConfigUse(BOMStruct bom)
+        {
+            foreach (DocStruct current in bom)
+            {
+                if (current.GetString(_.DELETE_CONFIG).Length != 0)
+                {
+                    string[] delconfigs = current.GetString(_.DELETE_CONFIG).Split(new char[] { ',' });
+
+                    IEnumerable<ObjectRelation> source = this.objrelatda.SearchObjectRelationByVerId(current.RealityVerId).Cast<ObjectRelation>();
+
+                    IEnumerable<ObjectRelation> dbParents = source.Where(p => delconfigs.Any((string c) => BOMHelp.IsEquals(c, p.ConfigID)));
+                    IEnumerable<ObjectRelation> dbChildren = source.Where(p => delconfigs.Any((string c) => BOMHelp.IsEquals(c, p.ParentConfigID)));
+
+                    if (dbParents.Any() || dbChildren.Any())
+                    {
+                        this.DealDocStruct(current, (DocStruct p) => p.SetDocStateL(false, "red", "配置已经被使用，不能删除配置"));
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        private void DealDocStruct(DocStruct doc, Action<DocStruct> func)
+        {
+            foreach (DocStruct current in doc.Configs)
+            {
+                func(current);
+            }
         }
     }
 }

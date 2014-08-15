@@ -90,7 +90,7 @@ namespace Creo.Server
             //验证删除参数
             server.InsertBefore(typeFromHandle, new ValidateCreoConfig(base.IndexFields));
             //是否有删除配置
-            //server.InsertBefore(typeFromHandle, new ValidateDocConfigDelete());
+            server.InsertBefore(typeFromHandle, new ValidateZuInstanceDelete());
             //验证物料是否已经被使用
             server.RegisterValidator(new ValidateCanUseMaterial());
             //var empty = new ValidateEmpty();
@@ -99,7 +99,7 @@ namespace Creo.Server
             //server.Replace(typeof(ValidateStandardPartsState), empty);
             //server.Replace(typeof(ValidateStandardPartsMaterialRepeat), empty);
             // 验证删除的关系
-            server.RegisterValidator(new ValidateZuInstanceDelete(dicDeleteSTDRelation));
+            server.RegisterValidator(new ValidateZuInstanceRelDelete(dicDeleteSTDRelation));
         }
     }
 }
