@@ -101,5 +101,24 @@ namespace Creo.Server
             // 验证删除的关系
             server.RegisterValidator(new ValidateZuInstanceRelDelete(dicDeleteSTDRelation));
         }
+
+        /// <summary>
+        /// 设置序号
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <param name="bom"></param>
+        protected override void PreShowData(ViewMode vm, BOMStruct bom)
+        {
+            base.PreShowData(vm, bom);
+
+            foreach (var doc in bom)
+            {
+                int index = 1;
+                foreach (var item in doc.Child)
+                {
+                    item.OrderId = (index++).ToString();
+                }
+            }
+        }
     }
 }
