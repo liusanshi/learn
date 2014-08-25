@@ -82,13 +82,15 @@ namespace Creo.Server
             server.RegisterValidator(new ValidateDocumentMaterialState(this.dicDeleteDoc));
             server.RegisterValidator(new ValidateCheckMaterialProperty(base.IndexFields));
             server.RegisterValidator(new ValidateCheckNeedAddReation());
+
+            server.RegisterValidator(new ValidateRecodeMD5());//记录MD5值
             
             //base.CheckInValidator(server);            
             Type typeFromHandle = typeof(ValidateIsNewMaterial);
             //验证删除参数
             server.InsertBefore(typeFromHandle, new ValidateCreoConfig(base.IndexFields));
             //是否有删除配置
-            //server.InsertBefore(typeFromHandle, new ValidateDocConfigDelete());
+            server.InsertBefore(typeFromHandle, new ValidateZuInstanceDelete());
             //验证物料是否已经被使用
             server.RegisterValidator(new ValidateCanUseMaterial());
             //var empty = new ValidateEmpty();
@@ -97,7 +99,26 @@ namespace Creo.Server
             //server.Replace(typeof(ValidateStandardPartsState), empty);
             //server.Replace(typeof(ValidateStandardPartsMaterialRepeat), empty);
             // 验证删除的关系
-            server.RegisterValidator(new ValidateZuInstanceDelete(dicDeleteSTDRelation));
+            server.RegisterValidator(new ValidateZuInstanceRelDelete(dicDeleteSTDRelation));
+        }
+
+        /// <summary>
+        /// 设置序号
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <param name="bom"></param>
+        protected override void PreShowData(ViewMode vm, BOMStruct bom)
+        {
+            base.PreShowData(vm, bom);
+
+            foreach (var doc in bom)
+            {
+                int index = 1;
+                foreach (var item in doc.Child)
+                {
+                    item.OrderId = (index++).ToString();
+                }
+            }
         }
     }
 }

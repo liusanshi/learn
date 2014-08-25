@@ -38,6 +38,11 @@ if not exist "%PLMPath%\Integration_back.config.xml" (
 ModifyConfig.exe "%PLMPath%\Integration.config.xml" IntegrationConfiguration/appSettings update PROE "Creo.Server.CreoOperate, Creo.Server"
 ModifyConfig.exe "%PLMPath%\web.config" configuration/appSettings add Multi-Configuration true
 
+ModifyConfig.exe "%PLMPath%\Javascript\Integration\3DCadIntegration.js" 3D replace "if ((ot & notcheckout) === notcheckout) return;" "if ((ot & notcheckout)===notcheckout) return;if(o.__filemd5===o.__FileMD5__DB) return;"
+
+::添加openCreo
+ModifyConfig.exe "%PLMPath%\Document\Class\Document.js" 3D replace "fileControler.Controler.Execute(LocalFileName);" "if(/prt.\d*$/.test(LocalFileName) || /asm.\d*$/.test(LocalFileName)) openCreo(LocalFileName);else fileControler.Controler.Execute(LocalFileName);"
+ModifyConfig.exe "%PLMPath%\Document\Class\Document.js" 3D append "/***function openCreo(filepath)***/" ";function openCreo(filepath){/***function openCreo(filepath)***/ var ws = new ActiveXObject('Wscript.Shell'); var cmd = 'openAssistent.exe \"' + filepath + '\"'; ws.run(cmd);}"
 
 echo 服务器部署完成
 echo.
