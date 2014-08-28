@@ -1,0 +1,46 @@
+<script type="text/javascript">
+function convertTo(n, chars){
+   var res = '', l = chars.length;
+   if(l <= 0) return '';
+   while(true){
+   		res = chars[n%l] + res;
+   		if((n = ((n / l)>>0)) < l){
+   			res = chars[n] + res;
+   			break;
+   		}
+   }
+   return res;
+}
+
+function completion(str, len ,chr) {
+	var c = len - str.length;
+	if(c <= 0) return str;
+	while(c-- > 0){
+		str = chr + str;
+
+	}
+	return str;
+}
+
+// alert(convertTo(9,['a','b','c', 'd']));
+
+var iteaor = (function (count, chars) {
+	var index = -1;
+	return {
+		current : function (argument) {
+			return completion(convertTo(index, chars), 3, chars[0]);
+		}
+		, next : function (argument) {
+			return ++index < count;
+		}
+		, reset : function (argument) {
+			index = 0;
+		}
+	};
+})(100, ['a', 'b', 'c']);
+
+while(iteaor.next()){
+	console.log(iteaor.current());
+}
+
+</script>

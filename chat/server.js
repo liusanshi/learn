@@ -45,6 +45,8 @@ send404.inc = 1;
 io = require('./node_modules/socket.io').listen(server);
 
 io.sockets.on('connection', function(socket){
+	console.log(socket);
+	
 	console.log('connection' + socket.id + ' accepted.');
 
 	console.log(send404.inc++);
