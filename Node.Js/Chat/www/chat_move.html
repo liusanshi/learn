@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>聊天窗口</title>
+    <meta name="description" content="移动端聊天窗口">
+    <meta name="keywords" content="移动,实时,聊天,沟通,交流">
+    <link href="/styles/global/_rester.css" rel="stylesheet">
+    <link href="/styles/global/_common.css" rel="stylesheet">
+    <link href="/styles/page/_page.css" rel="stylesheet">
+    <script id="im_chat_list_block" type="text/template">
+        <div class="chat_list">
+            <ul>
+                <% for(var i=0, item; item=data[i]; ++i){include('im_chat_item_block', item);}%>
+            </ul>
+        </div>
+    </script>
+    <script id="im_chat_item_block" type="text/template">
+        <li class="clearfix <%=isme%>">
+            <div class="img">
+                <a href="#">
+                    <img src="<%=iconsrc%>" /></a>
+            </div>
+            <div class="msg">
+                <%if(!isme){%>
+                <h3 class="name"><%=$name(sendername2, receivename, companyname)%></h3>
+                <%}%>
+                <div class="cont">
+                    <p><%=#Msg%></p>
+                </div>
+            </div>
+        </li>
+    </script>
+    <style type="text/css">
+        .ico_pic { position: relative; }
+        #filesInput {
+            position: absolute;
+            border:0;
+            width: 32px;
+            line-height: 32px;
+            left: 0;
+            padding: 0;
+            opacity: 0;
+            margin-top: 0px;
+            overflow: hidden;
+            filter: Alpha(opacity=0);
+        }
+        #emojiWrapper {
+            display: none;
+            padding: 0;
+            margin: 0;
+            background-color: white;
+        }
+        .page-control {
+            text-align:center;
+        }
+            .page-control span {
+                display: inline-block;
+                text-align: center;
+                background-color: rgb(218,218,218);
+                margin-right: 15px;
+                width: 8px;
+                height: 8px;
+                border-radius: 4px;
+            }
+
+        .page-control span.page-item {
+            background-color: rgb(170,170,170);
+        }
+        .im_chat_end {
+            display:none;
+            z-index:10001;
+            position:fixed;
+            bottom:0px;
+            width:100%;
+            text-align:center;
+            padding:0.5em 0;
+            line-height : 32px;
+            height:32px;
+            background-color:#fff;
+        }
+        .in {
+            display:block;
+        }
+        .input_area .im_send {
+            background-color:rgb(153,153,153);
+            border-radius:5px;
+            line-height:30px;
+            text-align:center;
+            padding:0 0.5em;
+            right:1em;
+            color:#fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat_window" id="im_chat_window">
+        </div>
+    </div>
+    <div id="emojiWrapper">
+        <div id="emojis"></div>
+        <div class="page-control" id="pageControls"></div>
+    </div>
+    <div class="input_area">
+		<div class="inner">
+			<input type="text" id="txt_msg" />
+			<span class="ico_face"><i></i></span>
+			<span class="ico_pic"><input type="file" id="filesInput" /></span>
+            <span class="im_send" id="btn_send">发送</span>
+		</div>
+	</div>
+    <div class="im_chat_end">
+        当前对话已终止，不能发送消息
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/artTemplate.js" type="text/javascript"></script>
+    <script src="/scripts/libs/jquery.1.9.1.min.js" type="text/javascript"></script>
+    <script src="/scripts/public.js" type="text/javascript"></script>
+    <script src="/scripts/chat_move.js" type="text/javascript"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.mobile/1.4.2/jquery.mobile-1.4.2.min.js"  type="text/javascript"></script>
+</body>
+</html>

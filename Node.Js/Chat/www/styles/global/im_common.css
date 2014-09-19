@@ -1,0 +1,121 @@
+﻿@charset "utf-8";
+
+/* -- 清除浮动 -- */
+.clearfix:before,
+.clearfix:after{ content:""; display:table;}
+.clearfix:after{ clear:both; overflow:hidden;}
+.clearfix{ zoom:1;}
+
+/*--按钮上的文字隐藏(不适用于原生button)--*/
+.a_txt_hide{ display: inline-block; font: 0/0 a; overflow: hidden;}
+
+/*--按钮上的文字隐藏(适用于原生button)--*/
+.btn_txt_hide { text-align: left; letter-spacing: -3em; overflow: hidden;}
+.btn_txt_hide:first-letter { margin-left: -20em;}
+
+/*--文本超出显示省略号--*/
+.txt_eps{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+/*页面居中*/
+.m_a{ margin-left: auto; margin-right: auto;}
+
+/*--文本样式--*/
+.ta_l { text-align: left;}
+.ta_c { text-align: center;}
+.ta_r { text-align: right; }
+
+/*--浮动样式--*/
+.fl { float: left; }
+.fr { float: right; }
+.none { display: none; }
+
+/*--溢出隐藏--*/
+.o_h{ overflow: hidden;}
+
+/*--公用按钮--*/
+.im_btn{ border-style:solid; border-width: 1px; border-radius: 4px; height: 24px;}
+/*--公用灰色按钮--*/
+.im_btn_gray{
+	background-color: #f2f2f2;
+	border-color:#bbb;
+	background-image: -webkit-linear-gradient(bottom, #f5f5f5, #fff);
+	background-image: -moz-linear-gradient(bottom, #f5f5f5, #fff);
+	background-image: -o-linear-gradient(bottom, #f5f5f5, #fff);
+	background-image: linear-gradient(to top, #f5f5f5, #fff);
+	color:#666;
+}
+/*--公用蓝色按钮--*/
+.im_btn_blue{
+	background-color: #0088e9;
+	border-color:#005baa;
+	background-image: -webkit-linear-gradient(bottom, #07c 1%, #0088e9);
+	background-image: -moz-linear-gradient(bottom, #07c 1%, #0088e9);
+	background-image: -o-linear-gradient(bottom, #07c 1%, #0088e9);
+	background-image: linear-gradient(to top, #07c 1%, #0088e9);
+	color:#fff;
+}
+/*--公用图标引用--*/
+.im_ico{ background:url(../../images/bg/im_ico.png); cursor: pointer; height:20px; width:20px;}
+
+/*--公用外框--*/
+.im_ob .im_ob_tit{
+	border: solid 1px #bcd4e5;
+	background-color:#d8f2ff;
+	background-image: -webkit-linear-gradient(bottom, #d8f2ff, #ebf9ff);
+	background-image: -moz-linear-gradient(bottom, #d8f2ff, #ebf9ff);
+	background-image: -o-linear-gradient(bottom, #d8f2ff, #ebf9ff);
+	background-image: linear-gradient(to top, #d8f2ff, #ebf9ff);
+	color:#000; font-weight: 700; height: 28px; line-height: 28px; padding:0 1em;
+}
+.im_ob .im_ob_cont{ border:solid #ddd; border-width: 0 1px 1px 1px;}
+
+
+.im_window{ background: #fff; width: 760px; position:absolute; z-index:9998;}
+/*--会话窗口头部--*/
+.im_header{ background: #517dc0; height: 30px; position:relative;}
+
+.im_header .im_tit{ background:url(../../images/bg/im_window_tit.png); position:absolute; height:36px; width: 125px; left:0; top:-6px;}
+.im_header .im_tit a{ display:block; color:#fff; font-weight: 700; padding-left:42px; line-height:36px;}
+.im_header .im_opera{ float: right; width: 100px;}
+.im_header .im_tab_list{ margin-left:140px; margin-right:110px;}
+.im_header .im_tab_list ul{ padding-top:5px;}
+.im_header .im_tab_list li{ background: #afc6dc; border-style:solid; border-color: transparent; border-width: 1px 1px 0 1px; border-radius: 5px 5px 0 0; float: left; height: 24px;
+	line-height: 24px; margin-left: 10px; padding: 0 1em; position: relative;}
+.im_header .im_tab_list li.curr{ background: #eef4fa; border-color: #444;}
+.im_header .im_tab_list li .im_ico{ display: none;}
+.im_header .im_tab_list li:hover .im_ico{ background-position: -180px 0; display: block; position: absolute; top:-10px; right: -10px;}
+.im_header .im_tab_list .im_record_tit{ color:#fff; height:30px; line-height:30px;}
+
+.im_header .im_opera li{ cursor:pointer; float:left; margin:5px 5px 0 5px; text-indent:-150%; overflow:hidden;}
+.im_header .im_opera li.im_min{ background-position:0 0;}
+.im_header .im_opera li.im_max{ background-position:-20px 0;}
+.im_header .im_opera li.im_colse{ background-position:-40px 0;}
+
+.im_header .im_window_tit{ color:#fff; line-height: 30px; padding: 0 1em; position: relative;}
+.im_header .im_window_tit .im_ico{ background-position: -40px 0; cursor: pointer; position: absolute; right: 1em; top:50%; margin-top:-10px;}
+
+/*--操作区域--*/
+.im_common_opera{ background:#eef4fa; border:solid #b6b5b5; border-width:0 1px 1px 1px; height: 30px; padding: 0 0.5em;}
+.im_common_opera .im_btn_wrap{ padding-top: 3px;}
+.im_common_opera .im_btn{ width:80px; cursor:pointer;}
+
+.im_common_opera .im_tab_tit li{ background:#e6eaed; border:1px solid #b6b5b5; border-radius: 5px 5px 0 0; cursor: pointer; float: left; margin:7px 5px -1px 0; padding: 2px 1em; position: relative;}
+.im_common_opera .im_tab_tit li.curr{ background:#fff; border:solid #07c; border-width:1px 1px 0 1px; cursor: default; padding: 5px 10px; margin-top: 2px;}
+
+.im_common_opera .im_search_bar{ background:#fff; border:1px solid #b5b5b5; border-radius: 11px; margin-top:3px; padding: 2px 30px 2px 10px; position: relative;}
+.im_common_opera .im_search_bar .im_search_txt{ background: none; width: 160px;}
+.im_common_opera .im_search_bar .im_ico{ background-position: -140px 0; position: absolute; top:1px; right:5px;}
+
+/*--会话窗口主体内容--*/
+.im_container{ background: #fff; border-style:solid; border-color:#b6b5b5; border-width: 0 1px 1px 1px;}
+
+/*--会话窗口尾部--*/
+.im_footer{ background: #f2f2f2; border-style:solid; border-color:#b6b5b5; border-width: 0 1px 1px 1px; height: 30px; overflow:hidden;}
+.im_footer .im_btn_wrap{ padding: 3px 5px; text-align: right;}
+.im_footer .im_btn_wrap .im_btn{ width: 80px; }
+.im_footer .im_side_btn{float: right; width: 180px;}
+.im_footer .im_main_btn{ border-right: 1px solid #b6b5b5; margin-right: 200px;}
+
+/*--弹窗--*/
+.im_shade{ background: #000; position: fixed; top:0; left:0; height:100%; width: 100%; z-index: 9999; opacity: 0.3; filter: alpha(opacity=30);}
+.im_pop{ z-index: 10000;}

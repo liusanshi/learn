@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="ie"><![endif]-->
+<!--[if IE 7]><html class="ie7"><![endif]-->
+<!--[if IE 8]><html class="ie8"><![endif]-->
+<!--[if IE 9]><html class="ie9"><![endif]-->
+<!--[if !(lt IE 9)]><!--><html><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>沟通大厅</title>
+<meta name="description" content="在这里可以进行工作圈的维护，以及实时和工作圈人员聊天交流">
+<meta name="keywords" content="工作圈,实时,聊天,沟通,交流">
+<link href="styles/global/im_rester.css" rel="stylesheet">
+<link href="styles/global/im_common.css" rel="stylesheet">
+<link href="styles/page/im_page.css" rel="stylesheet">
+ <style>
+     #tabContainer li { cursor:pointer; }
+     .userFrame { overflow:hidden;display:none;background: #fff; width: 760px; position:absolute; z-index:10000;height:490px;position:absolute; top:50%; left:50%; margin:-249px 0 0 -380px; }
+ </style>
+</head>
+<body style="overflow:hidden">
+    <div class="im_window">
+    	<div class="im_header cleafix">
+    		<div class="im_tit">
+    			<a href="javascript:;" id="chatRecordTitle" onclick="changeTarget('record_iframe')">沟通大厅</a>
+    		</div>
+    		<div class="im_opera">
+    			<ul class="clearfix" style="display:none">
+    				<li class="im_ico im_min">最小</li>
+    				<li class="im_ico im_max">最大化</li>
+    				<li class="im_ico im_colse">关闭</li>
+    			</ul>
+    		</div>
+    		<div class="im_tab_list">
+    			<ul class="clearfix" id="tabContainer">
+    				
+    			</ul>
+    		</div>
+    	</div>
+    	<div class="im_iframe_list" id="main_iframeContainer">
+	    	<iframe id="record_iframe" class="im_chat_record" frameboder="0"></iframe>
+    	</div>
+    </div>
+    <div id="userIframe" class="userFrame">
+        <iframe src="" style="height:100%;width:100%; border:0;overflow:hidden;"></iframe>
+    </div>
+</body>
+<script src="scripts/libs/jquery.1.9.1.min.js" type="text/javascript"></script>
+<script src="scripts/plugs/autoVerticalCenter.js" type="text/javascript"></script>
+<script src="scripts/records.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        init();
+    })
+</script>
+</html>

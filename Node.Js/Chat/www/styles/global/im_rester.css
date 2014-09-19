@@ -1,0 +1,46 @@
+@charset "utf-8";
+
+/* -- 重置样式 -- */
+html,body{ height:100%; *overflow: auto;}
+body{ background:#ecf2f5; color:#666; font:12px/1.5 '\5FAE\8F6F\96C5\9ED1',Helvetica,arial; margin:0;}
+h1,h2,h3,h4,h5,h6,p,form,dl,dd{margin:0;}
+h1,h2,h3,h4,h5,h6,th{ font-size: 100%; font-weight: normal;}
+ul,ol{ list-style: none; margin: 0; padding: 0;}
+sup,sub{ font-size: 75%; -webkit-transform:scale(0.75);}
+table{ border-collapse:collapse; border-spacing:0;}
+img{ border:none; vertical-align:top;}
+th,td{padding: 0;}
+i,em{ font-style: normal;}
+input,button,textarea,select{ border:none; font-size:100%; margin:0; outline: none; padding:0;}
+input::-ms-clear{display:none;}/*--去掉IE10以上的X--*/
+textarea{ overflow: auto; vertical-align: top; resize:none;}
+option{ padding: 0;}
+iframe{ border:0; width: 100%; height: 100%; vertical-align: middle;}
+
+a { color: #0077cc; text-decoration: none; }
+a:hover { color: #0077cc; text-decoration: none; }
+a:hover,a:active,a:visited { color: #0077cc; text-decoration: none; outline:none; }
+
+/*---表单---*/
+/*input[type="text"],
+input[type="button"],
+input[type="file"]{vertical-align: middle;}*/
+input[type="text"]{ background-color:#fff; height: 18px; line-height:18px;}
+input[type="radio"],
+input[type="checkbox"]{ font-size: 13px; height: 13px; margin-right:5px; vertical-align: -3px; width: 13px;}
+.ie7 input[type="radio"],
+.ie7 input[type="checkbox"]{vertical-align:middle;}
+input[type="button"]{ cursor:pointer; overflow: hidden;}
+.ie7 input[type="button"]{overflow: visible;}
+@-moz-document url-prefix(){
+	input[type="button"]{ padding-bottom:3px; }
+}
+textarea{line-height: 1.5;}
+
+/* html5 */
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{ display: block; }
+audio,canvas,video{ display: inline-block; *display: inline; *zoom: 1;}/*--*display: inline; *zoom: 1;模拟inline-block--*/
+audio:not([controls]){ display: none; height: 0;}
+input[type="search"]{ -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box;}
+:-moz-placeholder{ color: #999;}
+::-webkit-input-placeholder{ color: #999;}

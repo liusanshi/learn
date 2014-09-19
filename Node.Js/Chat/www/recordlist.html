@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>我的工作圈</title>
+    <meta name="description" content="我的工作圈列表">
+    <meta name="keywords" content="工作圈">
+    <link href="../styles/global/_rester.css" rel="stylesheet">
+    <link href="../styles/global/_common.css" rel="stylesheet">
+    <link href="../styles/page/_page.css" rel="stylesheet">
+    <script type="text/javascript" src="../scripts/libs/jquery.1.9.1.min.js"></script>
+    <script type="text/javascript" src="../scripts/plugs/iscroll.js"></script>
+    <script type="text/javascript">
+        QueryString = {
+            data: {},
+            Initial: function () {
+                var aPairs, aTmp;
+                var queryString = new String(window.location.search);
+                queryString = queryString.substr(1, queryString.length); //remove   "?"       
+                aPairs = queryString.split("&");
+                for (var i = 0; i < aPairs.length; i++) {
+                    aTmp = aPairs[i].split("=");
+                    this.data[aTmp[0]] = aTmp[1];
+                }
+            },
+            GetValue: function (key) {
+                if (this.data[key] != null)
+                    return decodeURIComponent(this.data[key]);
+                else
+                    return null;
+            }
+        };
+
+        var __participantid = null;
+        var myScroll,
+            pullDownEl, pullDownOffset,
+            pullUpEl, pullUpOffset;
+
+        var page = 0;
+        var pagesize = 10;
+        var isShowMore = true;
+
+        function setValue(type) {
+            $.ajax({
+                type: "get",
+                url: "/GetChatRoomDetails2?page=" + page + "&pagesize=8&participantid=" + escape(__participantid),
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    var now = new Date();
+                    var el, li, i;
+                    el = document.getElementById('thelist');
+                                       
+                    if (data.isshowmore==0) {
+                        isShowMore = false;
+                    }
+
+                    for (i = 0; i < data.data.length; i++) {
+                        var recordinfo = { recordsender: "&nbsp;", recorddate: "&nbsp;", recordmessage: "&nbsp;" };
+
+                        if (data.data[i].recordinfo != "{}") {
+                            recordinfo = JSON.parse(data.data[i].recordinfo);
+                        }
+                        li = document.createElement('li');
+                        $(li).attr({ "id": data.data[i].chatroomid});
+                        var arrHtml=[];
+                        arrHtml.push('<div class="img"><a href="#"><img src="', (data.data[i].ChatType == "1" ? "/images/pic/more.png" : data.data[i].iconsrc), '" /></a>', (data.data[i].chatnotreadcount > 0 ? (data.data[i].chatnotreadcount > 99 ? "<i>99+</i>" : ("<i>" + data.data[i].chatnotreadcount.toString() + "</i>")) : ""), '</div>');
+                        arrHtml.push('<div class="item_infor"><h3 class="tit"> <a class="text">', data.data[i].chatroomname, '</a><span class="time">', recordinfo.recorddate, '</span></h3><p>', (recordinfo.recordsender == "&nbsp;" ? "&nbsp;" : recordinfo.recordsender + ":" + recordinfo.recordmessage), '</p></div>');
+
+
+                        li.innerHTML =arrHtml.join("") ;
+
+                        if (type == "Down") {
+                            el.insertBefore(li, el.childNodes[0]);
+                        }
+                        else {
+                            el.appendChild(li, el.childNodes[0]);
+                        }
+                    }
+                    if (type == "Down") {
+                        $(pullDownEl).hide();
+                    }
+                    else {
+                        $(pullUpEl).hide();
+                    }
+                    myScroll.refresh();		// Remember to refresh when contents are loaded (ie: on ajax completion)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+
+
+        function pullDownAction() {
+            setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+                page = page + 1;
+                setValue("Down");
+            }, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+        }
+
+        function pullUpAction() {
+            setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+                page = page + 1;
+                setValue("Up");
+            }, 1000);	// <-- Simulate network congestion, remove setTimeout from production!
+        }
+
+        function loaded() {
+            QueryString.Initial();//先初始化
+            __participantid = QueryString.GetValue('openid');
+
+            if (__participantid == null)
+            {
+                return;
+            }
+
+            pullDownEl = document.getElementById('pullDown');
+            pullDownOffset = pullDownEl.offsetHeight;
+            $(pullDownEl).hide();
+
+            pullUpEl = document.getElementById('pullUp');
+            pullUpOffset = pullUpEl.offsetHeight;
+            $(pullUpEl).hide();
+
+            myScroll = new iScroll('wrapper', {
+                useTransition: true,
+                topOffset: 0,
+                onRefresh: function () {
+                    if (pullDownEl.className.match('loading')) {
+                        pullDownEl.className = '';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                    } else if (pullUpEl.className.match('loading')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉显示更多...';
+                    }
+                },
+                onScrollMove: function () {
+                    if (isShowMore && this.y > 5 && !pullDownEl.className.match('flip')) {
+                        $(pullDownEl).show();
+                        pullDownEl.className = 'flip';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '准备刷新...';
+                        this.minScrollY = 0;
+                    } else if (isShowMore && this.y < 5 && pullDownEl.className.match('flip')) {
+                        pullDownEl.className = '';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                        this.minScrollY = -pullDownOffset;
+                    } else if (isShowMore && this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                        $(pullUpEl).show();
+                        pullUpEl.className = 'flip';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '准备刷新...';
+                        this.maxScrollY = this.maxScrollY;
+                    } else if (isShowMore && this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                        pullUpEl.className = '';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉显示更多...';
+                        this.maxScrollY = pullUpOffset;
+                    }
+                },
+                onScrollEnd: function () {
+                    if (pullDownEl.className.match('flip')) {
+                        pullDownEl.className = 'loading';
+                        pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                        pullDownAction();	// Execute custom function (ajax call?)
+                    } else if (pullUpEl.className.match('flip')) {
+                        pullUpEl.className = 'loading';
+                        pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                        pullUpAction();	// Execute custom function (ajax call?)
+                    }
+                }
+            });
+
+            setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+
+            pullUpEl.className = 'loading';
+            pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+            pullUpAction();
+
+            $('#thelist').delegate("li", "click", function (e) {
+                window.open("/chat_move.html?senderid=" + escape(__participantid) + "&roomid=" + $(this).attr("id"));
+            });
+        }
+
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+    </script>
+
+    <style type="text/css" media="all">
+       #wrapper {
+            position: absolute;
+            z-index: 1;
+            top: 5px;
+            bottom: 0px;
+            left: -9999px;
+            width: 100%;
+            background: white;
+            overflow: auto;
+        }            
+
+        h3 a {
+            font-size:1.5em
+        }
+        p {
+            font-size:1.3em
+        }
+        #pullDown, #pullUp {
+            background: #fff;
+            height: 40px;
+            line-height: 40px;
+            padding: 5px 10px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            font-size: 14px;
+            color: #888;
+        }
+
+            #pullDown .pullDownIcon, #pullUp .pullUpIcon {
+                display: block;
+                float: left;
+                width: 40px;
+                height: 40px;
+                /*background: url(images/pull-icon@2x.png) 0 0 no-repeat;*/
+                -webkit-background-size: 40px 80px;
+                background-size: 40px 80px;
+                -webkit-transition-property: -webkit-transform;
+                -webkit-transition-duration: 250ms;
+            }
+
+            #pullDown .pullDownIcon {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            #pullUp .pullUpIcon {
+                -webkit-transform: rotate(-180deg) translateZ(0);
+            }
+
+            #pullDown.flip .pullDownIcon {
+                -webkit-transform: rotate(-180deg) translateZ(0);
+            }
+
+            #pullUp.flip .pullUpIcon {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+                background-position: 0 100%;
+                -webkit-transform: rotate(0deg) translateZ(0);
+                -webkit-transition-duration: 0ms;
+                -webkit-animation-name: loading;
+                -webkit-animation-duration: 2s;
+                -webkit-animation-iteration-count: infinite;
+                -webkit-animation-timing-function: linear;
+            }
+
+        /*.pullUpLabel {
+            text-align:center
+        }
+
+         .pullDownLabel {
+            text-align:center
+        }*/
+
+        @-webkit-keyframes loading {
+            from {
+                -webkit-transform: rotate(0deg) translateZ(0);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg) translateZ(0);
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div id="wrapper" class="work_world_List">
+            <div id="scroller">
+                <div id="pullDown" style="margin: 0px auto; text-align: center">
+                    <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+                </div>
+                <ul id="thelist" style="padding-left:10px">             
+                </ul>
+                <div id="pullUp" style="margin: 0px auto; text-align: center">
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉显示更多...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

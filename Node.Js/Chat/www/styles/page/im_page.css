@@ -1,0 +1,189 @@
+﻿@charset "utf-8";
+
+.im_iframe_list iframe{ background:#fff;}
+.im_iframe_list .im_chat_window{ height: 743px;}
+.im_iframe_list .im_chat_record{ height: 464px;}
+.im_iframe_list .im_sel_personnel{ height: 459px;}
+
+/*--会话窗口群主标题--*/
+.im_group_info{ background: #eef4fa; padding: 5px 10px;}
+.im_group_info .im_group_img{ border:1px solid #367daf; border-radius: 5px; float: left; height:48px; width: 48px;}
+.im_group_info .im_group_msg{ margin-left: 60px; height: 50px; overflow: hidden;}
+.im_group_info .im_group_msg h3{ color:#000; font-size: 14px;}
+.im_group_info .im_group_msg h5{ color:#888; padding: 5px 0 0 0;}
+.im_group_info .im_user_name{ padding-right: 10px;}
+.im_group_info .im_time{ padding-left: 10px;}
+
+/*--会话窗口内容--*/
+.im_content{border-top:1px solid #b6b5b5;}
+.im_content .im_side,
+.im_content .im_main{ padding-bottom: 3000px; margin-bottom: -3000px;}
+.im_content .im_record_list .im_img,
+.im_content .im_friend_list .im_img{ background: #ddd; float: left; height: 30px; width: 30px;}
+.im_content .im_record_list .im_info,
+.im_content .im_friend_list .im_info{ margin-left: 40px; min-height: 30px;}
+.im_content .im_friend_list .im_reply_btn,
+.im_content .im_record_list .im_reply_btn{ display: none; background:#07c; border-radius: 5px; color:#fff; cursor: pointer; width: 48px; padding: 3px 5px; position: absolute;}
+
+/*--会话窗口内容--*/
+.im_content .im_main{ border-right: 1px solid #b6b5b5; margin-right: 200px;}
+.im_content .im_record_list{ height:250px; padding:10px 0; overflow:auto;}
+.im_content .im_record_list li{ padding:5px 10px; position: relative;}
+.im_content .im_record_list .im_info{ color:#000; padding:0 20% 0 0;}
+.im_content .im_record_list .im_time{ color:#888; margin-left:30px;}
+.im_content .im_record_list .im_msg{ background:#e7f5ff; border:1px solid #b5defa; border-radius:5px; display: inline-block; margin:5px 5px 0 5px; min-height:18px; padding:5px 10px; position:relative;}
+.ie7 .im_content .im_record_list .im_msg{ display: inline; zoom:1;}
+.im_content .im_record_list .im_msg:after,
+.im_content .im_record_list .im_msg:before{ content:''; position:absolute; height:0; width:0;}
+.im_content .im_record_list .im_msg:after{ border-top:8px solid transparent; border-bottom:8px solid transparent; border-right:10px solid #b5defa; left:-10px; top:6px; z-index:5;}
+.im_content .im_record_list .im_msg:before{ border-top:7px solid transparent; border-bottom:7px solid transparent; border-right:10px solid #e7f5ff; left:-9px; top:7px; z-index:6;}
+.im_content .im_record_list .im_msg p{ word-break:break-all;}
+.im_content .im_record_list .im_reply_btn{ left:100%; top:0; margin-left: 15px;}
+.im_content .im_record_list .im_info:hover .im_reply_btn{ display: block;}
+
+
+.im_content .im_record_list .im_r_show .im_img{ float:right;}
+.im_content .im_record_list .im_r_show .im_info{ margin:0 40px 0 0; padding:0 0 0 20%; text-align:right;}
+.im_content .im_record_list .im_r_show .im_msg{ background:#cbf1d9; border-color:#a1e2b9; text-align: left;}
+.im_content .im_record_list .im_r_show .im_msg:before,
+.im_content .im_record_list .im_r_show .im_msg:after{ border-right:0; left:auto;}
+.im_content .im_record_list .im_r_show .im_msg:after{ border-left:10px solid #a1e2b9; right:-10px;}
+.im_content .im_record_list .im_r_show .im_msg:before{ border-left:10px solid #cbf1d9; right:-9px;}
+
+.im_content .im_edit .im_tool{ background:#f6f6f6; height:30px;}
+.im_content .im_tool li{ float:left; margin:5px 0 0 10px;}
+.im_content .im_tool .im_face{ background-position:-80px 0;}
+.im_content .im_tool .im_send_pic{ background-position:-100px 0;}
+
+
+
+.im_content .im_edit .im_input_msg{ padding:5px 10px; height:100px;}
+.im_content .im_edit .im_input_msg textarea{ width:100%; height:100%; overflow-y:hidden;}
+
+/*--会话窗口侧边--*/
+.im_content .im_side{ float: right; width: 200px;}
+.im_content .im_add_friend{ padding:10px 10px 0 10px;}
+.im_content .im_add_friend .im_btn{ display: block; position:relative; padding-left:70px; line-height:24px;}
+.im_content .im_add_friend .im_ico{ background-position:-60px 0; position:absolute; left:50px; top:3px;}
+.im_content .im_friend_list{ height:320px; overflow-y:auto; padding:10px;}
+.im_content .im_friend_list li{ padding: 10px 0 0 0; position: relative;}
+.im_content .im_friend_list .im_info p{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.im_content .im_friend_list .im_user_name{ color:#000;}
+.im_content .im_friend_list .im_company_name{ color:#888; height: 12px; line-height: 1;}
+.im_content .im_friend_list .im_reply_btn{ right:0; top:10px;}
+.im_content .im_friend_list li:hover .im_reply_btn{ display: block;}
+
+
+/*--会话记录列表--*/
+.im_chatting_records_list{ height:366px; overflow-y:auto; padding:10px;}
+.im_chatting_records_list li{ background:#fff; float:left; width:340px; margin:10px 10px 0 10px; position: relative;}
+.im_chatting_records_list li:hover{ border-color:#07c;}
+.im_chatting_records_list li .im_ico_close{ display: none;}
+/*.im_chatting_records_list li:hover .im_ico_close{ background-position: -180px 0; display: block; position: absolute; top:-10px; right: -10px;}*/
+.im_chatting_records_list .im_item_inner{ border:1px solid #b5b5b5; padding:10px; height:90px;}
+.im_chatting_records_list .im_records_msg { padding-bottom:10px;}
+.im_chatting_records_list .im_records_msg .im_img{ float:left; height:48px; width:48px;}
+.im_chatting_records_list .im_records_msg .im_info{ margin-left:58px;}
+.im_chatting_records_list .im_records_msg .im_info h3{ color:#000; padding-right:40px; position:relative;}
+.im_chatting_records_list .im_records_msg .im_num{ background-position:-120px 0; position:absolute; top:0; right:0;}
+.im_chatting_records_list .im_records_msg .im_num span{ color:#fff; display:block; padding:0 0 0 3px;}
+.im_chatting_records_list .im_records_msg .im_info p{ color:#888; overflow:hidden; padding-top:10px;}
+.im_chatting_records_list .im_records_msg .im_info h3,
+.im_chatting_records_list .im_records_msg .im_info p span{ height:18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.im_chatting_records_list .im_records_msg .im_info .im_user_name{ float:left; width:72%;}
+.im_chatting_records_list .im_records_msg .im_info .im_time{ float:right; width:12%;}
+
+
+.im_chatting_records_list .im_tip_msg{ background:#e7f5ff; border-radius:5px; padding:8px 10px; position:relative;}
+.im_chatting_records_list .im_tip_msg:before{ border-bottom:10px solid #e7f5ff; border-left:8px solid transparent; border-right:8px solid transparent; content:''; position:absolute; height:0;
+ width:0; left:58px; top:-10px;}
+.im_chatting_records_list .im_tip_msg p,
+.im_chatting_records .im_more_msg p{ height:18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.im_chatting_records .im_more_msg{ background:#fbfbfb; border:1px solid #b5b5b5; cursor:pointer; padding:8px 10px; text-align:center; margin:0 38px 10px 20px;}
+
+
+
+
+
+
+
+
+
+/*--选择会话人员--*/
+.im_personnel_list{}
+.im_personnel_list .im_item{ padding: 5px;}
+.im_sel_contacts{ height: 331px; overflow-y:auto; padding: 10px 10px 10px 20px;}
+.im_sel_contacts li{ float: left; width: 50%;  padding:5px 0;}
+.im_sel_contacts li label span{ max-width:300px;}
+.im_sel_contacts li label span{ display:inline-block; height:18px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align:middle;}
+.im_ob .im_sel_contacts{ height: 300px;}
+.sel_supper .im_sel_contacts li label span{ max-width:200px;}
+.sel_tongshi .im_sel_contacts li{ width: 20%; }
+.sel_tongshi .im_sel_contacts li label span{ max-width:60px;}
+
+.empty_data{ height:100%; text-align:center;}
+.empty_data span{ display:inline-block; vertical-align:middle;}
+.empty_data .no_data{ font-size:14px;}
+.empty_data .empty_tag{ height:100%;}
+.ie7 .empty_data .empty_tag{ width:1px;}
+
+
+/*--已选择列表--*/
+.im_sel_cont{border-top:1px solid #b6b5b5; padding: 2px 15px 5px 15px;}
+.im_sel_cont .im_text{ float: left; width: 60px;}
+.im_sel_cont .im_text,
+.im_sel_cont .im_clear_btn{ height: 24px; line-height: 24px; padding-top: 3px;}
+.im_sel_cont .im_clear_btn{ color:#07c; cursor: pointer; float: right; width: 50px;}
+.im_sel_cont .im_sel_list{ margin:0 60px; min-height: 27px; max-height: 81px; overflow-y:auto;}
+.im_sel_cont .im_sel_list li{ background-color:#fff; border:#ccc solid 1px; float: left; margin :3px 5px 0 0; height:22px; line-height:22px; position: relative; padding:0 25px 0 10px; }
+.im_sel_cont .im_sel_list li:hover{ border-color:#07c;}
+.im_sel_cont .im_sel_list li .im_ico{ background-position: -160px 0; position: absolute; top:1px; right:1px;}
+
+
+
+.im_tree_cont{ float: left; width: 200px;}
+.im_tree_cont .im_tree{ height: 300px; padding: 10px 0;}
+
+.im_sel_area{ margin-left: 210px;}
+
+.im_face:hover, .im_send_pic:hover {
+    background-color:#ccc;
+    cursor:pointer;
+}
+.imageLable {
+    position: relative;
+}
+#sendImage {
+    position: absolute;
+    width: 52px;
+    left: 5px;
+    opacity: 0;
+    margin-top:2px;
+    overflow: hidden;
+    filter:Alpha(opacity=0); 
+    cursor:pointer;
+}
+
+#emojiWrapper {
+    display: none;
+    width: 300px;
+    position: absolute;
+    box-shadow: 0 0 10px #555;
+}
+#emojiWrapper img {
+    border:1px solid rgb(211,228,240);
+    margin:0;
+    padding:2px;
+    width: 24px;
+    height: 24px;
+}
+#emojiWrapper img:hover {
+    border:1px solid rgb(76,160,217);
+    padding:0 0 4px 4px;
+}
+.emoji{
+    display: inline;
+}
+.send_img {
+    width:200px;
+}

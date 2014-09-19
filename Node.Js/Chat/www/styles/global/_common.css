@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+/* -- 清除浮动 -- */
+.clearfix:before,
+.clearfix:after{ content:""; display:table;}
+.clearfix:after{ clear:both; overflow:hidden;}
+.clearfix{ zoom:1;}
+
+/*--按钮上的文字隐藏(不适用于原生button)--*/
+.a_txt_hide{ display: inline-block; font: 0/0 a; overflow: hidden;}
+
+/*--按钮上的文字隐藏(适用于原生button)--*/
+.btn_txt_hide { text-align: left; letter-spacing: -3em; overflow: hidden;}
+.btn_txt_hide:first-letter { margin-left: -20em;}
+
+/*--文本超出显示省略号--*/
+.txt_eps{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+
+/*页面居中*/
+.m_a{ margin-left: auto; margin-right: auto;}
+
+/*--文本样式--*/
+.ta_l { text-align: left;}
+.ta_c { text-align: center;}
+.ta_r { text-align: right; }
+
+/*--浮动样式--*/
+.fl { float: left; }
+.fr { float: right; }
+.none { display: none; }
+
+/*--溢出隐藏--*/
+.o_h{ overflow: hidden;}
+
+
+/*--头部--*/
+/*.header{ background:#22292c; color:#fff; font-size: 1.5em; height: 60px; width: 100%; position: fixed; top:0; left:0; z-index: 10000;}
+.header .tit p{ line-height: 60px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.header .go_back{ line-height: 60px;}
+
+.header .btn{ float: left; width: 40px; padding-left: 30px}
+.header .go_back{ display: block; position: relative;}
+.header .go_back::before,
+.header .go_back::after{
+	background: #fff;
+	content: '';
+	position: absolute;
+	height: 2px;
+	left:-15px;
+	top:28px;
+	-webkit-transform-origin: left top;
+	-moz-transform-origin: left top;
+	-o-transform-origin: left top;
+	transform-origin: left top;
+}
+.header .go_back::before{
+	-webkit-transform:rotate(-45deg);
+	-moz-transform:rotate(-45deg);
+	-o-transform:rotate(-45deg);
+	transform:rotate(-45deg);
+	width: 10px;}
+.header .go_back::after{
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	-o-transform:rotate(45deg);
+	transform:rotate(45deg);
+	width: 12px;
+}
+
+.header .opera{ float: right; height: 100%; width: 50px; position: relative;}
+.header .more_btn{ display: block; position: absolute; top:50%; margin-top: -4px; left:12px;}
+.header .more_btn::before,
+.header .more_btn::after{ background: #fff; content: ''; position: absolute; top:0;}
+.header .more_btn,
+.header .more_btn::before,
+.header .more_btn::after{ background: #fff; border-radius: 50%; height: 8px; width: 8px; }
+.header .more_btn::before{ left:150%;}
+.header .more_btn::after{ right:150%;}
+
+.header .tit{ margin:0 60px 0 70px; }*/
