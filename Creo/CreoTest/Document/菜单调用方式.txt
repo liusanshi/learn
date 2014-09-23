@@ -1,0 +1,37 @@
+ IntegrationLogin.exe 是安装的时候自己定义放的地方。可以放在 system32 下面
+
+登录plm：
+ IntegrationLogin.exe "LOGIN,PROE"
+
+登出：
+ IntegrationLogin.exe "LOGOUT,PROE"
+
+打开plm：
+ IntegrationLogin.exe "OPENPLM,PROE"
+
+文档查找
+ IntegrationLogin.exe "DOCFIND,PROE"
+
+物料查找
+ IntegrationLogin.exe "MATFIND,PROE"
+
+物料标准化
+ IntegrationLogin.exe "GM,PROE"
+
+文档检出：
+ IntegrationLogin.exe "CHECKOUT,PROE"
+
+文档检入：
+ IntegrationLogin.exe "CHECKIN,PROE,/Document/ElectronIntegration.aspx?Optype=1"
+
+导入工作区：
+ IntegrationLogin.exe "WORKSPACE,PROE,/Document/ElectronIntegration.aspx?Optype=2"
+
+导入项目输出：
+ IntegrationLogin.exe "PROJECT,PROE,/Document/ElectronIntegration.aspx?Optype=3"
+
+导入任务输出：
+ IntegrationLogin.exe "TASK,PROE,/Document/ElectronIntegration.aspx?Optype=4"
+
+配置：
+ IntegrationLogin.exe "CONFIG,PROE"
