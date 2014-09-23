@@ -605,3 +605,67 @@ def get_count(num):
 
 sum((int(x) for x in str(2**1000)))
 # 1366
+
+
+# 大整数的四则运算
+
+class BigDigit(object):
+	"""大的位数"""
+
+	_max_value = 9999 #能表示的最大数
+
+	def __init__(self, data, exponent, back_value=0, carry_value=0):
+		super(BigDigit, self).__init__()
+		self.data = data #数据
+		self.exponent = exponent #指数
+		self.back_value = back_value # 退位值
+		self.carry_value = carry_value # 进位值
+		
+	def __sub__(self, bigdigit):
+		"减法"
+		temp = self.data - bigdigit.data
+		back_value = 0 if temp >= 0 else 1
+		return BigDigit(temp, self.exponent, back_value=back_value)
+		
+	def __add__(self, bigdigit):
+		"加法"
+		temp = self.data + bigdigit.data
+		carry_value = 0 if temp <= BigDigit._max_value else 1
+		return BigDigit(temp, self.exponent, carry_value=carry_value)
+
+	def __mul__(self, bigdigit):
+		"乘法"
+		temp = self.data * bigdigit.data
+		carry_value = 0
+		if temp > BigDigit._max_value:
+			carry_value = temp // (BigDigit._max_value + 1)
+		return BigDigit(temp, self.exponent, carry_value=carry_value)
+
+	def __floordiv__(self, bigdigit):
+		'整除'
+		pass
+
+	def __div__(self, bigdigit):
+		"除法"
+		pass
+
+	def __str__(self, is_begin = True):
+		"转换为字符串"
+		if is_begin:
+			if self.is_back():
+				return '-' + ('0' * 4 + str(-self.data))[-4:]
+			else:
+				return ('0' * 4 + str(self.data))[-4:]
+		else:
+			if self.is_back():
+				return ('0' * 4 + str(-self.data))[-4:]
+			else:
+				return ('0' * 4 + str(self.data))[-4:]
+
+	def is_back(self):
+		'是否退位'
+		return self.data < 0
+
+	def is_carry(self):
+		"是否进位"
+		return self.data > BigDigit._max_value
