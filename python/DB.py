@@ -93,12 +93,14 @@ class MSSQL:
         self.conn.close()
         return resList
 
-    def ExecScalar(this, sql, param):
+    def ExecScalar(self, sql, param):
         "参数化查询,返回第一行第一列"
         cur = self.__GetConnect()
         cur.execute(sql, param)
+        # res = cur.fetchall()
         result = None
         for row in cur:
             result = row[0]
+        self.conn.commit()
         self.conn.close()
         return result

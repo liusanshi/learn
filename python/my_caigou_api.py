@@ -26,11 +26,13 @@ class My_Caigou_API(object):
 	_get_supplier_id_server_url = '/WebPage/SupplierManage/SupplierEdit.aspx?mode=1' #获取供应商id的服务地址
 	_save_supplier_server_url = '/Mycaigou/Business/SupplierManage/SupplierService.SaveSupplier.ajax' #保存供应商服务地址
 	_check_companyname_server_url = '/Mycaigou/Business/SupplierManage/SupplierService.CheckCompanyName.ajax' #检查公司名称是否重复服务地址
+	_save_form_server_url = '/Mycaigou/Business/Control/AppFormService.Save.ajax' #表单保存的方法
 	_user = ''
 	_pwd = ''
 	_session = None #访问服务的会话
 
-	def __init__(this, username = 'admin', password = 'e10adc3949ba59abbe56e057f20f883e'):
+	def __init__(this, username = 'db2014', password = 'e10adc3949ba59abbe56e057f20f883e'):
+		"正式环境账号：db2014 测试环境账号：admin"
 		this._user = username
 		this._pwd = password
 	
@@ -58,6 +60,11 @@ class My_Caigou_API(object):
 	def check_companyname_server_url(this):
 		"检查公司名称是否重复服务地址"
 		return My_Caigou_API.Host + this._check_companyname_server_url
+
+	@property
+	def save_form_server_url(this):
+		"保存表单信息的服务地址"
+		return My_Caigou_API.Host + this._save_form_server_url
 
 	def login(this):
 		"调用登录服务, 返回session"
@@ -146,6 +153,34 @@ class My_Caigou_API(object):
 		# print('导入供应商荣誉证书', data)
 		r = this._session.post(this._save_certificate_server_url, {"cdata": json.dumps(data)})
 		return r.json().get('result', False)
+
+	def save_company_introduction(this, supplier_id, intro, mode=1, metadataId='eca4ce68'):
+		"上传简介信息 正式环境：metadataId='eca4ce68'； 测试环境: metadataId='26585ad4'"
+		if len(intro) == 0: return True
+		data = {
+			'__mode' : mode,
+			'__controlId' : 'form4',
+			'__oid' : supplier_id,
+			'__metadataId' : metadataId,
+			'supplier_intro' : intro
+		}
+		r = this.submit_form(data)
+		print(r)
+		return r.get('result', False)
+
+	def submit_form(this, data):
+		"""提交表单
+			data的数据格式：
+			{
+				__mode=1, #1:新增、2：修改
+				__oid=7615, #对象的id
+				__controlId=form4, #空间的id
+				__metadataId=26585ad4, #元数据的id
+			}
+			返回字典 {"result":true,"message":"7615"}
+		"""
+		r = this._session.post(this.save_form_server_url, {"cdata": json.dumps(data)})
+		return r.json()
 
 
 class My_Caigou_Upload_Img(object):
