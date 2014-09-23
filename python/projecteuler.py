@@ -598,3 +598,10 @@ def get_count(num):
 			data[i][j] = data[i + 1][j] + data[i][j+1]
 
 	return data[0][0]
+
+# 第十六题
+# 215 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
+# What is the sum of the digits of the number 21000?
+
+sum((int(x) for x in str(2**1000)))
+# 1366
