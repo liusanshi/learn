@@ -562,7 +562,7 @@ namespace Creo.Server
         /// <summary>
         /// 过期时间
         /// </summary>
-        private readonly DateTime GUOQI = new DateTime(2014, 10, 01);
+        private readonly DateTime GUOQI = new DateTime(2014, 10, 20);
 
         public override bool Validate(ValidateContext context)
         {
@@ -620,7 +620,12 @@ namespace Creo.Server
                 List<string> list = new List<string>();
                 if (docStruct.IsConfigPart && !docStruct.ContainsKey(_.DELETE_CONFIG))
                 {
-                    var Configs = docStruct.GetString(ZuBiaoNames).Split(';');
+                    var zubiaoName = docStruct.GetString(ZuBiaoNames).Trim();
+                    if (string.IsNullOrEmpty(zubiaoName)) //由于装配文档可能没有族实例，所以以当前的实例名称来处理
+                    {
+                        zubiaoName = docStruct.ConfigName;
+                    }
+                    var Configs = zubiaoName.Split(';');
                     foreach (DocConfig cfg in
                         from p in this.docconfigManager.GetStandardPartsConfigByDVerId(docStruct.RealityVerId)
                         where !string.IsNullOrEmpty(p.ConfigName)
