@@ -30,6 +30,20 @@ namespace CreoTest
 
         static void Main(string[] args)
         {
+            var reg_prt = new System.Text.RegularExpressions.Regex(@"(.+)\.prt(?:.\d+)?$");
+            var reg_asm = new System.Text.RegularExpressions.Regex(@"(.+)\.asm(?:.\d+)?$");
+
+            Console.WriteLine(GetFileWithoutExt("GB5781"));
+            Console.WriteLine(GetFileWithoutExt("GB5781.prt"));
+            Console.WriteLine(GetFileWithoutExt("GB5781.prt.23"));
+            Console.WriteLine(GetFileWithoutExt("M12X30_GB5781.asm"));
+            Console.WriteLine(GetFileWithoutExt("M12X30_GB5781.asm.677"));
+
+            Console.WriteLine(Path.GetFileNameWithoutExtension("GB5781"));
+            Console.WriteLine(Path.GetFileNameWithoutExtension("GB5781.prt.1"));
+            Console.WriteLine(Path.GetFileNameWithoutExtension("M12X30_GB5781.asm.1"));
+            Console.Read();
+            return;
 
             //var t = getTime();
             if (DateTime.Now >= new DateTime(2014, 8, 1))
@@ -184,6 +198,36 @@ namespace CreoTest
 
             docprop.SaveXml(@"c:\123.txt");
 #endif
+        }
+
+        /// <summary>
+        /// 零件的名称的匹配串
+        /// </summary>
+        private static readonly System.Text.RegularExpressions.Regex reg_prt
+            = new System.Text.RegularExpressions.Regex(@"(.+)\.prt(?:.\d+)?$"
+                    , System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+        /// <summary>
+        /// 装配件的名称匹配串
+        /// </summary>
+        private static readonly System.Text.RegularExpressions.Regex reg_asm
+            = new System.Text.RegularExpressions.Regex(@"(.+)\.asm(?:.\d+)?$"
+                , System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+
+        public static string GetFileWithoutExt(string filename)
+        {
+            var m = reg_prt.Match(filename);
+            if (m.Success)
+            {
+                return m.Groups[1].Value;
+            }
+            m = reg_asm.Match(filename);
+            if (m.Success)
+            {
+                return m.Groups[1].Value;
+            }
+            //System.IO.Path.GetFileNameWithoutExtension()
+            return filename;
         }
 
         static PartProperty getPartData(string index, int fileid, string filetype)

@@ -610,6 +610,10 @@ namespace Creo.Server
         /// 族表实例的名称列表
         /// </summary>
         readonly string ZuBiaoNames = "_zubiaonames";
+        /// <summary>
+        /// 已经比较过了的文件列表
+        /// </summary>
+        List<string> comp_arr = new List<string>();
 
         public override bool Validate(ValidateContext context)
         {
@@ -618,14 +622,14 @@ namespace Creo.Server
             if (docStruct != null && bOMStruct != null)
             {
                 List<string> list = new List<string>();
-                if (docStruct.IsConfigPart && !docStruct.ContainsKey(_.DELETE_CONFIG))
+                if (docStruct.IsConfigPart && !docStruct.ContainsKey(_.DELETE_CONFIG)
+                    && ValidateCreoConfig.IsZuBiao(docStruct)//不是族表实例的时候。判断不了实例的添加与删除
+                    && !comp_arr.Contains(docStruct.FileName)) //每一个文件只比较一次
                 {
-                    var zubiaoName = docStruct.GetString(ZuBiaoNames).Trim();
-                    if (string.IsNullOrEmpty(zubiaoName)) //由于装配文档可能没有族实例，所以以当前的实例名称来处理
-                    {
-                        zubiaoName = docStruct.ConfigName;
-                    }
-                    var Configs = zubiaoName.Split(';');
+                    comp_arr.Add(docStruct.FileName);
+                    var Configs = docStruct.GetString(ZuBiaoNames).Trim().Split(';');
+                    Configs = Configs.Concat(new string[] { GetFileWithoutExt(docStruct.FileName) }).ToArray();
+
                     foreach (DocConfig cfg in
                         from p in this.docconfigManager.GetStandardPartsConfigByDVerId(docStruct.RealityVerId)
                         where !string.IsNullOrEmpty(p.ConfigName)
@@ -688,6 +692,38 @@ namespace Creo.Server
             {
                 func(current);
             }
+        }
+        /// <summary>
+        /// 零件的名称的匹配串
+        /// </summary>
+        private static readonly System.Text.RegularExpressions.Regex reg_prt
+            = new System.Text.RegularExpressions.Regex(@"(.+)\.prt(?:.\d+)?$"
+                    , System.Text.RegularExpressions.RegexOptions.IgnoreCase| System.Text.RegularExpressions.RegexOptions.Compiled);
+        /// <summary>
+        /// 装配件的名称匹配串
+        /// </summary>
+        private static readonly System.Text.RegularExpressions.Regex reg_asm
+            = new System.Text.RegularExpressions.Regex(@"(.+)\.asm(?:.\d+)?$"
+                , System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+
+        /// <summary>
+        /// 获取Creo的没有后缀的文件名称
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static string GetFileWithoutExt(string filename)
+        {
+            var m = reg_prt.Match(filename);
+            if (m.Success)
+            {
+                return m.Groups[1].Value;
+            }
+            m = reg_asm.Match(filename);
+            if (m.Success)
+            {
+                return m.Groups[1].Value;
+            }
+            return filename;
         }
     }
 }
