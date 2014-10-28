@@ -562,7 +562,7 @@ namespace Creo.Server
         /// <summary>
         /// 过期时间
         /// </summary>
-        private readonly DateTime GUOQI = new DateTime(2014, 10, 20);
+        private readonly DateTime GUOQI = new DateTime(2014, 12, 20);
 
         public override bool Validate(ValidateContext context)
         {
