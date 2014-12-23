@@ -614,7 +614,7 @@ class BigDigit(object):
 
 	_max_value = 9999 #能表示的最大数
 
-	def __init__(self, data, exponent, back_value=0, carry_value=0):
+	def __init__(self, data, exponent = 4, back_value=0, carry_value=0):
 		super(BigDigit, self).__init__()
 		self.data = data #数据
 		self.exponent = exponent #指数
@@ -669,3 +669,11 @@ class BigDigit(object):
 	def is_carry(self):
 		"是否进位"
 		return self.data > BigDigit._max_value
+
+class BigNumber(object):
+
+	def __init__(self, numbers):
+		self.org_num = numbers;
+		self.Digits = []
+
+	pass
