@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireFiddler", "FireFiddler\FireFiddler.csproj", "{EECF825D-E72B-4D2E-A0EB-B58E1DD5CCD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{A6488E63-0B4D-42BB-BB46-56B0825DEC03}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EECF825D-E72B-4D2E-A0EB-B58E1DD5CCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EECF825D-E72B-4D2E-A0EB-B58E1DD5CCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EECF825D-E72B-4D2E-A0EB-B58E1DD5CCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EECF825D-E72B-4D2E-A0EB-B58E1DD5CCD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6488E63-0B4D-42BB-BB46-56B0825DEC03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6488E63-0B4D-42BB-BB46-56B0825DEC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6488E63-0B4D-42BB-BB46-56B0825DEC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6488E63-0B4D-42BB-BB46-56B0825DEC03}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
