@@ -15,7 +15,7 @@
          backbone: 'modules/backbone-min',
          underscore: 'modules/underscore-min'
       },
-      base : 'file://E:/github/learn/backbone.js',
+      base : 'file://D:/github/learn/backbone.js',
       preload:['jquery','underscore','backbone']
    });
    seajs.use('jquery', function () {
@@ -24,12 +24,16 @@
       Module.get(Module.resolve('underscore')).exports = _;
       Module.get(Module.resolve('backbone')).exports = Backbone;
 
-      console.log(cache);
+      // console.log(cache);
 
    });
    seajs.on('exec', function (mod) {
-      console.log(mod);
+      // console.log(mod);
    })
+   seajs.on('resolve', function (mod) {
+      debugger;
+      console.log(arguments);
+   });
    seajs.use('static/ItemView', function (iv, ListView, World) {
       var lv = new (seajs.require('static/ListView'));
       var World = seajs.require('static/World');
