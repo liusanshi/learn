@@ -21,9 +21,18 @@ namespace FireFiddler
         {
             if (session != null)
             {
-                Logger log = new Logger(false);
-                log.LogString(session.RequestMethod);
+                //Logger log = new Logger(false);
+                //log.LogString(session.RequestMethod);
+
+                //MessageBox.Show(string.Join("\r\n", session.ResponseHeaders.Select(p => p.Name + ":" + p.Value).ToArray()));
+
+                Render(session);
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
         }
 
         private void cb_disabled_CheckedChanged(object sender, EventArgs e)
@@ -31,9 +40,9 @@ namespace FireFiddler
             PacketManger.PManger.Disabled = cb_disabled.Checked;
         }
 
-        private void btn_AddRule_Click(object sender, EventArgs e)
+        private void Render(Session session)
         {
-
+            new Packet(session.url, session.ResponseHeaders).Render(tv_view.Nodes);
         }
     }
 }

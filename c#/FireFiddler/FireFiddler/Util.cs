@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace FireFiddler
 {
@@ -16,8 +16,25 @@ namespace FireFiddler
         /// </summary>
         static Util()
         {
-            LogPath = "";
-            CfgPath = "";
+            string BasePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            LogPath = Path.Combine(Path.GetDirectoryName(BasePath), "FireFiddler\\log");
+            CfgPath = Path.Combine(Path.GetDirectoryName(BasePath), "FireFiddler\\");
+
+            initallDir(LogPath);
+            initallDir(CfgPath);
+        }
+
+        /// <summary>
+        /// 初始化目录
+        /// </summary>
+        /// <param name="dir"></param>
+        static void initallDir(string dir)
+        {
+            if (!Directory.Exists(dir)) 
+            {
+                initallDir(Path.GetDirectoryName(dir));
+                Directory.CreateDirectory(dir);
+            }
         }
 
         /// <summary>

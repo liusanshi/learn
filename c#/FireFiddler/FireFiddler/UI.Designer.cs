@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cb_disabled = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btn_AddRule = new System.Windows.Forms.Button();
+            this.ruleTypesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tv_view = new System.Windows.Forms.TreeView();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ruleTypesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_disabled
@@ -47,23 +50,25 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btn_AddRule);
+            this.groupBox1.Controls.Add(this.tv_view);
             this.groupBox1.Controls.Add(this.cb_disabled);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(995, 156);
+            this.groupBox1.Size = new System.Drawing.Size(995, 445);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
-            // btn_AddRule
+            // ruleTypesBindingSource
             // 
-            this.btn_AddRule.Location = new System.Drawing.Point(12, 22);
-            this.btn_AddRule.Name = "btn_AddRule";
-            this.btn_AddRule.Size = new System.Drawing.Size(75, 23);
-            this.btn_AddRule.TabIndex = 1;
-            this.btn_AddRule.Text = "添加规则";
-            this.btn_AddRule.UseVisualStyleBackColor = true;
-            this.btn_AddRule.Click += new System.EventHandler(this.btn_AddRule_Click);
+            this.ruleTypesBindingSource.DataSource = typeof(FireFiddler.RuleTypes);
+            // 
+            // tv_view
+            // 
+            this.tv_view.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tv_view.Location = new System.Drawing.Point(3, 17);
+            this.tv_view.Name = "tv_view";
+            this.tv_view.Size = new System.Drawing.Size(989, 425);
+            this.tv_view.TabIndex = 1;
             // 
             // UI
             // 
@@ -74,6 +79,7 @@
             this.Size = new System.Drawing.Size(1001, 655);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ruleTypesBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -82,7 +88,8 @@
 
         private System.Windows.Forms.CheckBox cb_disabled;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btn_AddRule;
+        private System.Windows.Forms.BindingSource ruleTypesBindingSource;
+        private System.Windows.Forms.TreeView tv_view;
 
 
     }

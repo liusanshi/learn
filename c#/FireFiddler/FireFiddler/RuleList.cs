@@ -31,7 +31,7 @@ namespace FireFiddler
         /// </summary>
         public static string SavePath
         {
-            get 
+            get
             {
                 return Path.Combine(Util.CfgPath, "RuleList.xml");
             }
@@ -150,7 +150,14 @@ namespace FireFiddler
         /// <returns></returns>
         public static RuleList LoadFile()
         {
-            return LoadFile(SavePath);
+            if (File.Exists(SavePath))
+            {
+                return LoadFile(SavePath);
+            }
+            else
+            {
+                return new RuleList();
+            }
         }
     }
 }
