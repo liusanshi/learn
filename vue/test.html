@@ -1,0 +1,31 @@
+<html>
+<head>
+	<title>vue </title>
+	<script type="text/javascript" src="vue.js"></script>
+</head>
+<body>
+	<div id="msg_content" :style="display">
+		{{msg}}
+	</div>
+
+	<script type="text/javascript">
+		setTimeout(function (argument) {
+			new Vue({
+				el :'#msg_content',
+				data : {
+					msg : 'sfsdfsdf',
+					display : ''
+				},
+				ready : function(){
+					console.log('ready');
+					// this.$el.style.display = '';
+				},
+				created : function(){
+					console.log('created');
+					console.log(this);
+				}
+			});
+		}, 100);
+	</script>
+</body>
+</html>
