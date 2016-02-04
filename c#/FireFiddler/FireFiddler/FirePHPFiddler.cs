@@ -71,18 +71,6 @@ namespace FireFiddler
         public void AutoTamperResponseBefore(Session oSession)
         {
             PacketManger.PManger.FilterSession(oSession);
-
-            //if (oSession.hostname == "iyouxi.vip.qq.com")
-            //{
-            //    MessageBox.Show(string.Join("\r\n", oSession.ResponseHeaders.Where(p => p.Name.IndexOf("X-Wf") > -1).Select(p => p.Name + " : " + p.Value)));
-
-            //    var list = oSession.ResponseHeaders.Where(p => p.Name.IndexOf("X-Wf") > -1).ToList();
-            //    foreach (var item in list)
-            //    {
-            //        oSession.ResponseHeaders.Remove(item);
-            //    }
-            //}
-            //throw new NotImplementedException();
         }
 
         public void OnBeforeReturningError(Session oSession)

@@ -45,5 +45,28 @@ namespace FireFiddler
         /// 配置文件存放地址
         /// </summary>
         public static readonly string CfgPath;
+
+        /// <summary>
+        /// 记录错误信息
+        /// </summary>
+        /// <param name="exp"></param>
+        public static void Log(Exception exp) 
+        {
+            StringBuilder sb = new StringBuilder(100);
+            sb.Append(exp.Message);
+            sb.Append(exp.StackTrace);
+            Log(sb.ToString());
+        }
+
+        /// <summary>
+        /// 记录日志
+        /// </summary>
+        /// <param name="msg">日志文本信息</param>
+        public static void Log(string msg)
+        {
+            string FileFullName = Path.Combine(LogPath, DateTime.Now.ToString("yyyyMMdd") + ".txt");
+
+            File.AppendAllText(FileFullName, msg);
+        }
     }
 }

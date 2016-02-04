@@ -37,14 +37,20 @@ namespace FireFiddler
         {
             get
             {
-                if (!string.IsNullOrEmpty(mIdentity))
+                if (string.IsNullOrEmpty(mIdentity))
                 {
-                    //使用 sha1 算法 散列 数据
-                    var sha1 = new SHA1CryptoServiceProvider();
-                    mIdentity = Encoding.UTF8.GetString(sha1.ComputeHash(Encoding.UTF8.GetBytes(mUrl)));
+                    mIdentity = CreateIdentity(mUrl);
                 }
                 return mIdentity;
             }
+        }
+
+        /// <summary>
+        /// 获取包的所有数据
+        /// </summary>
+        public List<Tuple<int, string>> Data
+        {
+            get { return mData; }
         }
 
         /// <summary>
@@ -60,7 +66,7 @@ namespace FireFiddler
             UnPacket();
         }
 
-        private Packet(string url)
+        internal Packet(string url)
         {
             mUrl = url;
         }
@@ -78,7 +84,10 @@ namespace FireFiddler
                     int headerIndex;
                     int.TryParse(item.Name.Substring(token.Length), out headerIndex);
 
-                    mData.Add(Tuple.Create<int, string>(headerIndex, msg));
+                    int Start = msg.IndexOf('|') + 1;
+                    int End = msg.LastIndexOf('|');
+
+                    mData.Add(Tuple.Create<int, string>(headerIndex, msg.Substring(Start, End - Start)));
                     msg = "";
                 }
             }
@@ -92,31 +101,41 @@ namespace FireFiddler
         {
             foreach (var item in mData)
             {
-                nodes.Add(ConvertToTN(item.Item2));
+                var node = ConvertToTN(item.Item2);
+                if (node != null)
+                {
+                    nodes.Add(node);
+                }
             }
         }
 
 
         private TreeNode ConvertToTN(string text)
         {
-            var data = JsonConvert.DeserializeObject(text) as JArray;
-            DebugInfo debug = new DebugInfo(data.First as JObject);
-            TreeNode node = new TreeNode();
-            node.Name = debug.Label;
-            node.Tag = debug;
+            try
+            {
+                var data = JsonConvert.DeserializeObject(text) as JArray;
+                DebugInfo debug = new DebugInfo(data.First as JObject);
+                TreeNode node = new TreeNode();
+                node.Name = debug.Label;
+                node.Tag = debug;
+                node.Text = debug.Label;
 
-            node.Nodes.Add(ConvertToTN(data.Last));
+                ConvertToTN(node, data.Last);
 
-            return node;
+                return node;
+            }
+            catch (Exception ex)
+            {
+                Util.Log(ex);
+                return null;
+            }
         }
 
-        private TreeNode ConvertToTN(JToken token)
+        private void ConvertToTN(TreeNode node, JToken token)
         {
-            TreeNode node = new TreeNode();
             switch (token.Type)
             {
-                case JTokenType.Array: //不支持
-                    break;
                 case JTokenType.String:
                     node.Name = token.ToObject<string>();
                     break;
@@ -124,63 +143,63 @@ namespace FireFiddler
                     var body = token as JObject;
                     foreach (var item in body)
                     {
-                        TreeNode child = new TreeNode(item.Key);
-                        node.Nodes.Add(child);
-                        child.Nodes.Add(ConvertToTN(item.Value));
+                        if (item.Value.Type == JTokenType.String || item.Value.Type == JTokenType.Integer)
+                        {
+                            TreeNode child = new TreeNode(item.Key + " : " + item.Value.ToString());
+                            node.Nodes.Add(child);
+                        }
+                        else
+                        {
+                            TreeNode child = new TreeNode(item.Key);
+                            node.Nodes.Add(child);
+                            ConvertToTN(child, item.Value);
+                        }
+                    }
+                    break;
+                case JTokenType.Array:
+                    JArray jarr = token as JArray;
+                    TreeNode array = new TreeNode("array-items");
+                    node.Nodes.Add(array);
+                    foreach (var item in jarr.AsJEnumerable())
+                    {
+                        ConvertToTN(array, item);
                     }
                     break;
                 default: //不存在
                     break;
             }
-            return node;
-        }
-
-        /// <summary>
-        /// 保存包
-        /// </summary>
-        public void Save()
-        {
-            StringBuilder content = new StringBuilder(100);
-            foreach (var item in mData)
-            {
-                content.AppendLine(item.Item2);
-            }
-
-            File.WriteAllText(GetFilePath(), content.ToString(), Encoding.UTF8);
-        }
-
-        /// <summary>
-        /// 从文件中加载 包
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        public static Packet LoadFile(string url)
-        {
-            Packet pk = new Packet(url);
-
-            string[] content = File.ReadAllLines(pk.GetFilePath(), Encoding.UTF8);
-            int index = 0;
-
-            foreach (var item in content)
-            {
-                pk.mData.Add(Tuple.Create(index, item));
-            }
-
-            return null;
-        }
-
-        private string GetFilePath()
-        {
-            return Path.Combine(Util.LogPath, Identity + ".txt");
         }
 
         /// <summary>
         /// 获取过滤到的 HTTPHeader
         /// </summary>
+        /// <param name="mHTTPHeaders"></param>
         /// <returns></returns>
-        public IEnumerable<HTTPHeaderItem> GetFilterHeader()
+        public static IEnumerable<HTTPHeaderItem> GetFirePhpHeader(IEnumerable<HTTPHeaderItem> mHTTPHeaders)
         {
             return mHTTPHeaders.Where(p => p.Name.IndexOf(token) > -1);
+        }
+
+        /// <summary>
+        /// 创建标识
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string CreateIdentity(string url)
+        {
+            //使用 sha1 算法 散列 数据
+            var sha1 = new SHA1CryptoServiceProvider();
+            return Encoding.UTF8.GetString(sha1.ComputeHash(Encoding.UTF8.GetBytes(url)));
+        }
+
+        /// <summary>
+        /// 创建标识
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public static string CreateIdentity(Session session)
+        {
+            return CreateIdentity(session.url);
         }
     }
 }

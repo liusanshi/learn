@@ -15,6 +15,10 @@ namespace Test
         static void Main(string[] args)
         {
             //RuleList rl = new RuleList();
+
+            //rl.Disabled = true;
+
+
             //rl.Add(new RegExpRule { Disabled = true, Pattern = "/asdasdadad/" });
             //rl.Add(new HostRule { Disabled = false, Host = "youxi.vip.qq.com" });
             //rl.Add(new PathRule { Disabled = true, Path = "http://youxi.vip.qq.com/" });
@@ -41,12 +45,22 @@ namespace Test
             //Console.WriteLine(data);
 
 
-            //Console.Read();
+            FixedLengthDictionary<string, string> fldic = new FixedLengthDictionary<string, string>(2);
+
+            fldic.Add("1", "2");
+            fldic.Add("2", "2");
+            fldic.Add("3", "2");
+            fldic.Add("4", "2");
+
+            fldic["1"] = "2";
+
+            Console.ReadLine();
+            //Console.ReadKey();
 
             
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
 
         }
     }

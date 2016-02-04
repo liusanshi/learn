@@ -36,7 +36,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,7 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\HttpHeaderRemove.cs" />
+    <Compile Include="Component\HttpHeaderToFileSystem.cs" />
+    <Compile Include="Component\HttpHeaderToMemory.cs" />
     <Compile Include="DebugInfo.cs" />
+    <Compile Include="FixedLengthDictionary`1.cs" />
+    <Compile Include="IHttpHeaderDeal.cs" />
+    <Compile Include="IHttpHeaderPersistence.cs" />
     <Compile Include="RuleList.cs" />
     <Compile Include="FirePHPFiddler.cs" />
     <Compile Include="Packet.cs" />
@@ -72,14 +78,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\Fiddler.exe" />
+    <Content Include="lib\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\RuleTypes.datasource" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="document\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "D:\Program Files\Fiddler2\Scripts\$(TargetFilename)"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "C:\Program Files (x86)\Fiddler2\Scripts\$(TargetFilename)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -27,6 +27,11 @@ namespace FireFiddler
         }
 
         /// <summary>
+        /// 是否有效
+        /// </summary>
+        public bool Disabled { get; set; }
+
+        /// <summary>
         /// 规则保存文件
         /// </summary>
         public static string SavePath
@@ -61,6 +66,11 @@ namespace FireFiddler
 
         public void ReadXml(System.Xml.XmlReader reader)
         {
+            if (reader.MoveToAttribute("Disabled"))
+            {
+                Disabled = reader.Value == "1";
+            }
+
             reader.ReadStartElement("RuleList");
             while (reader.IsStartElement())
             {
@@ -89,6 +99,7 @@ namespace FireFiddler
         public void WriteXml(System.Xml.XmlWriter writer)
         {
             //writer.WriteStartElement("RuleList");
+            writer.WriteAttributeString("Disabled", Disabled ? "1" : "0"); //保存是否有效
             foreach (var item in this.Cast<IXmlSerializable>())
             {
                 item.WriteXml(writer);
@@ -130,6 +141,14 @@ namespace FireFiddler
         public void Save(string filepath)
         {
             File.WriteAllText(filepath, this.SaveXML(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// 保存到文件
+        /// </summary>
+        public void Save()
+        {
+            this.Save(SavePath);
         }
 
         /// <summary>

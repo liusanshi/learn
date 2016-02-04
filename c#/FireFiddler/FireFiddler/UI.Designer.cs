@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.cb_disabled = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.ruleTypesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tv_view = new System.Windows.Forms.TreeView();
+            this.ruleTypesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ruleTypesBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -52,23 +52,24 @@
             // 
             this.groupBox1.Controls.Add(this.tv_view);
             this.groupBox1.Controls.Add(this.cb_disabled);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(995, 445);
+            this.groupBox1.Size = new System.Drawing.Size(1001, 704);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            // 
-            // ruleTypesBindingSource
-            // 
-            this.ruleTypesBindingSource.DataSource = typeof(FireFiddler.RuleTypes);
             // 
             // tv_view
             // 
             this.tv_view.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tv_view.Location = new System.Drawing.Point(3, 17);
             this.tv_view.Name = "tv_view";
-            this.tv_view.Size = new System.Drawing.Size(989, 425);
+            this.tv_view.Size = new System.Drawing.Size(995, 684);
             this.tv_view.TabIndex = 1;
+            // 
+            // ruleTypesBindingSource
+            // 
+            this.ruleTypesBindingSource.DataSource = typeof(FireFiddler.RuleTypes);
             // 
             // UI
             // 
@@ -76,7 +77,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "UI";
-            this.Size = new System.Drawing.Size(1001, 655);
+            this.Size = new System.Drawing.Size(1001, 704);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ruleTypesBindingSource)).EndInit();

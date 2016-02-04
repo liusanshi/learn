@@ -21,22 +21,28 @@ namespace FireFiddler
         /// 规则列表
         /// </summary>
         private RuleList RuleList;
-        /// <summary>
-        /// 包列表
-        /// </summary>
-        private List<Packet> Packetes;
+        private bool mDisabled = true;
+        private IHttpHeaderPersistence mPHPersistence = null;
+        private IHttpHeaderProcess mHttpHeaderProcess = null;
 
         private static PacketManger packetManger;
-
         /// <summary>
         /// 是否启用
         /// </summary>
-        public bool Disabled { get; set; }
+        public bool Disabled
+        {
+            get { return mDisabled; }
+            set
+            {
+                mDisabled = value;
+                RuleList.Disabled = value;
+            }
+        }
 
         private PacketManger()
         {
             RuleList = RuleList.LoadFile();
-            Packetes = new List<Packet>();
+            mDisabled = RuleList.Disabled;
         }
 
         static PacketManger()
@@ -56,6 +62,25 @@ namespace FireFiddler
         }
 
         /// <summary>
+        /// http保存的接口
+        /// </summary>
+        public IHttpHeaderPersistence PHPersistence
+        {
+            set { mPHPersistence = value; }
+            private get { return mPHPersistence; }
+        }
+
+        /// <summary>
+        /// 处理程序
+        /// </summary>
+        /// <param name="deal"></param>
+        public IHttpHeaderProcess HttpHeaderProcess
+        {
+            set { mHttpHeaderProcess = value; }
+            private get { return mHttpHeaderProcess; }
+        }
+
+        /// <summary>
         /// 过滤session
         /// </summary>
         /// <param name="session"></param>
@@ -63,46 +88,62 @@ namespace FireFiddler
         {
             if (Disabled && RuleList.Match(session))
             {
-                Packet p = new Packet(session.url, session.ResponseHeaders);
-                var header = p.GetFilterHeader();
-                if (header.Any()) //存在需要处理的头
+                if (PHPersistence != null) //保存请求头
                 {
-                    foreach (var item in header) //移除
-                    {
-                        session.ResponseHeaders.Remove(item);
-                    }
-                    //Packetes.Add(p); //先不存内存
-                    p.Save(); //保存
+                    Packet p = new Packet(session.url, session.ResponseHeaders);
+                    PHPersistence.Save(p);
+                }
+
+                if (HttpHeaderProcess != null)
+                {
+                    HttpHeaderProcess.Do(session);
                 }
             }
         }
 
         /// <summary>
-        /// 清空所有包
+        /// 获取session对应的包
         /// </summary>
-        public void ClearPacket()
-        {
-            Packetes.Clear();
-            try
-            {
-                foreach (var item in Directory.GetFiles(Util.LogPath, "*.txt"))
-                {
-                    File.Delete(item);
-                }
-            }
-            catch
-            {
-            }            
-        }
-
-        /// <summary>
-        /// 加载包
-        /// </summary>
-        /// <param name="url"></param>
+        /// <param name="session"></param>
         /// <returns></returns>
-        public Packet LoadPacket(string url)
+        public Packet GetPacket(Session session)
         {
-            return Packet.LoadFile(url);
+            Packet packet = null;
+            if (PHPersistence != null)
+            {
+                packet = PHPersistence.Load(session.url);
+            }
+            if (packet == null)
+            {
+                packet = new Packet(session.url, session.ResponseHeaders);
+            }
+            return packet;
+        }
+
+        /// <summary>
+        /// 添加rule
+        /// </summary>
+        /// <param name="rule"></param>
+        public void AddRule(IRule rule)
+        {
+            RuleList.Add(rule);
+        }
+
+        /// <summary>
+        /// 获取所有的条件
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IRule> GetRules()
+        {
+            return RuleList;
+        }
+
+        /// <summary>
+        /// 保存rule
+        /// </summary>
+        public void SaveRule()
+        {
+            RuleList.Save();
         }
     }
 }
