@@ -109,12 +109,22 @@ namespace FireFiddler
             }
         }
 
+        /// <summary>
+        /// 是否有数据
+        /// </summary>
+        /// <returns></returns>
+        public bool HasData()
+        {
+            return mData.Any();
+        }
 
         private TreeNode ConvertToTN(string text)
         {
             try
             {
+                if (string.IsNullOrEmpty(text)) return null;
                 var data = JsonConvert.DeserializeObject(text) as JArray;
+                if (data == null) return null;
                 DebugInfo debug = new DebugInfo(data.First as JObject);
                 TreeNode node = new TreeNode();
                 node.Name = debug.Label;

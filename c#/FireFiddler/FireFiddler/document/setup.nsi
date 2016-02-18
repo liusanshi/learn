@@ -46,8 +46,8 @@ ShowUnInstDetails show
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "..\Documents\Visual Studio 2013\Projects\FireFiddler\FireFiddler\bin\Release\Newtonsoft.Json.dll"
-  File "..\Documents\Visual Studio 2013\Projects\FireFiddler\FireFiddler\bin\Release\FireFiddler.dll"
+  File "..\bin\Release\Newtonsoft.Json.dll"
+  File "..\bin\Release\FireFiddler.dll"
 SectionEnd
 
 Section -Post

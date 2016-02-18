@@ -35,6 +35,8 @@ namespace FireFiddler
 
         public void OnLoad()
         {
+            ui.Dock = DockStyle.Fill; //自适应
+
             //将用户控件添加到选项卡中
             this.tabPage.Controls.Add(this.ui);
             //为选项卡添加icon图标，这里使用Fiddler 自带的

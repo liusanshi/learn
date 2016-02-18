@@ -91,7 +91,10 @@ namespace FireFiddler
                 if (PHPersistence != null) //保存请求头
                 {
                     Packet p = new Packet(session.url, session.ResponseHeaders);
-                    PHPersistence.Save(p);
+                    if (p.HasData())
+                    {
+                        PHPersistence.Save(p);
+                    }
                 }
 
                 if (HttpHeaderProcess != null)

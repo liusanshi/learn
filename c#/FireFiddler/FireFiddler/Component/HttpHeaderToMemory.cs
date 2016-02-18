@@ -21,7 +21,8 @@ namespace FireFiddler.Component
 
         public void Save(Packet packet)
         {
-            Packetes.Add(packet.Identity, packet);
+            Packetes[packet.Identity] = packet;
+            //Packetes.Add(packet.Identity, packet);
         }
 
         public Packet Load(string url)

@@ -51,7 +51,8 @@ namespace FireFiddler
             }
             set
             {
-                this.Add(key, value);
+                base[key] = value;
+                //this.Add(key, value);
             }
         }
     }

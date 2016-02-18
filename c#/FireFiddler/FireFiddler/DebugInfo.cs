@@ -13,11 +13,31 @@ namespace FireFiddler
         {
             if (obj != null && obj.HasValues)
             {
-                Type = obj.GetValue("Type").ToObject<string>();
-                Label = obj.GetValue("Label").ToObject<string>();
-                File = obj.GetValue("File").ToObject<string>();
-                Line = obj.GetValue("Line").ToObject<int>();
+                Type = TryGetValue<string>(obj, "Type");
+                Label = TryGetValue<string>(obj, "Label");
+                File = TryGetValue<string>(obj, "File");
+                Line = TryGetValue<int>(obj, "Line");
             }
+        }
+
+        /// <summary>
+        /// 安全获取值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private T TryGetValue<T>(JObject obj, string key)
+        {
+            if (obj != null && obj.HasValues)
+            {
+                JToken val;
+                if (obj.TryGetValue(key, out val))
+                {
+                    return val.ToObject<T>();
+                }
+            }
+            return default(T);
         }
 
         /// <summary>
