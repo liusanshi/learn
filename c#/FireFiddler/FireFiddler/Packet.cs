@@ -130,9 +130,9 @@ namespace FireFiddler
                 node.Name = debug.Label;
                 node.Tag = debug;
                 node.Text = debug.Label;
-
+                
                 ConvertToTN(node, data.Last);
-
+                
                 return node;
             }
             catch (Exception ex)
@@ -147,15 +147,24 @@ namespace FireFiddler
             switch (token.Type)
             {
                 case JTokenType.String:
-                    node.Name = token.ToObject<string>();
+                    if (string.IsNullOrEmpty(node.Text))
+                    {
+                        node.Text = token.ToObject<string>();
+                    }
+                    else
+                    {
+                        node.Text += " : " + token.ToObject<string>();
+                    }                    
                     break;
                 case JTokenType.Object:
                     var body = token as JObject;
+                    node.Text = string.IsNullOrEmpty(node.Text) ? "Object" : node.Text;
                     foreach (var item in body)
                     {
                         if (item.Value.Type == JTokenType.String || item.Value.Type == JTokenType.Integer)
                         {
-                            TreeNode child = new TreeNode(item.Key + " : " + item.Value.ToString());
+                            string key = string.IsNullOrEmpty(item.Key) ? "Object" : item.Key;
+                            TreeNode child = new TreeNode(key + " : " + item.Value.ToString());
                             node.Nodes.Add(child);
                         }
                         else
