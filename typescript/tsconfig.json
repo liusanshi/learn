@@ -1,0 +1,15 @@
+{
+    "compileOnSave": true,//保存时编译
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "project" : "./",
+        // "outFile": "../../built/local/tsc.js",
+        "outDir" : "./output",
+        "sourceMap": true
+    },
+    "exclude" : [] //排除
+}
