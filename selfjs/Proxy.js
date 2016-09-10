@@ -100,18 +100,19 @@ function isFunction(val){
 //标识
 function Identity(){
     this.pre = '__id__';
-    this.id = this.pre + (+new Date);
+    this.id = this.pre + (+new Date) + (Identity.uid++);
 }
 Identity.prototype.getIdentity = Identity.prototype.toString = Identity.prototype.valueOf = function(){
     return this.id;
 };
+Identity.uid = 0;
 
 //调用描述
 function Invocation(proxy, context, handler){
     this.proxy = proxy;
     this.context = context;
     this.handler = handler;
-    this.info = '';
+    this.desc = '';
 }
 //执行
 Invocation.prototype.procced = function() {
@@ -129,46 +130,34 @@ var FunctionProxy = (function(){
         this.invocation = invocation;
         this.list = [];
         this.state = 0;//0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
-        this._max = 0;
         this._index = -1;
         this._error = null;  //异常
     }
     //注册拦截函数
-    InvokeProxy.prototype.register = function(/*before, after, except, index, info*/){
+    InvokeProxy.prototype.register = function(param){
+        /*{before, after, except, index, desc}*/
         if(this.state === 6){
             this.state = 0; //重置
         } else if(this.state !== 0){
             //在执行的过程中不能添加拦截函数
             throw new Error('function was running');
         }
-        var len = arguments.length, before = arguments[0], after, except, index, info;
-        if(len === 3 || len === 4 || len === 5){
-            after = arguments[1];
-            except = arguments[2];
-            index = compCurIndex(this, arguments[3]);
-            this.list.push({"before" : before, "after" : after, "except" : except, "index" : index, 'info' : arguments[4] || ''});
-            this.state = 0;
-        } else if(len === 1 && before){
-            if(isFunction(before)){ //只传递before
-                index = compCurIndex(this);
-                this.list.push({"before" : before, "index" : index});
-            } else {
-                before.index = compCurIndex(this, before.index);
-                this.list.push(before);
-            }
-            this.state = 0;
+        if(param.index !== null && isFinite(param.index)){
+            param.index = parseFloat(param.index, 10);
         } else {
-            throw new Error('arguments error');
+            param.index = 0;    
         }
+        this.list.push(param);
+        this.state = 0;
     };
     //重置状态
-    InvokeProxy.prototype.reset = function(){
+    InvokeProxy.prototype._reset = function(){
         if(this.state === 6){
             this.state = 1;
         }
     };
     //执行下一个拦截器 可重入
-    InvokeProxy.prototype.next = function(){
+    InvokeProxy.prototype._next = function(){
         var step = 1;
         switch(this.state){
             case 0 : //初始化之前
@@ -180,8 +169,7 @@ var FunctionProxy = (function(){
                 this.state = 2; //标识开始执行before
             // break;
             case 2 : //开始执行before
-                this._index += step;
-                if(!this._next(this._index, step, 'before')){
+                if(!this._innernext(step, 'before')){
                     this.state = 3; //标识before执行结束
                 } else{
                     break;        
@@ -190,40 +178,39 @@ var FunctionProxy = (function(){
                 try{
                     this.invocation.procced();
                     this.state = 4;
-                    this.next();
                 } catch(e){
                     this._error = e;
                     this._index = this.list.length;
                     this.state = 5;
-                    this.next();
+                    this._next();
+                    break;
                 }
-            break;
             case 4 : //开始执行after
                 step = -1;
-                this._index += step;
-                if(!this._next(this._index, step, 'after')){
+                if(!this._innernext(step, 'after')){
                     this.state = 6; //标识after执行结束
                 }
             break;
             case 5 : //开始执行except
                 step = -1;
-                this._index += step;
-                if(!this._next(this._index, step, 'except')){
+                if(!this._innernext(step, 'except')){
                     this.state = 6; //标识except执行结束
                 }
             break;
         }
     }
     //执行下一个拦截器
-    InvokeProxy.prototype._next = function(pos, step, method){
-        var current = this.list[pos], m, that = this;
+    InvokeProxy.prototype._innernext = function(step, method){
+        this._index += step;
+        var current = this.list[this._index], m, that = this;
         if(current){
             if(m = current[method]){
-                this.invocation.info = current.info || '';
-                m.call(this.invocation.context, this.invocation, function(){ that.next() }); //调用
+                this.invocation.desc = current.desc || '';
+                m.call(this.invocation.context, this.invocation, function(){ that._next() }); //调用
                 return true;
             } else {
-                return this._next(pos, step, method);
+
+                return this._innernext(step, method);
             }
         }
         return false;
@@ -231,23 +218,14 @@ var FunctionProxy = (function(){
     //执行
     InvokeProxy.prototype.run = function(args){
         this.invocation.setArgs(args);
-        this.next();
-    }
-
-    //计算当前的索引
-    function compCurIndex(fp, index){
-        index = +index;
-        if(isFinite(index)){ //数字
-            if(fp._max > index){
-                return fp._max;
-            } else {
-                fp._max = index;
-                return index;
-            }
-        } else {
-            return ++fp._max;
-        }
-    }
+        this._reset();//重置状态
+        this._next(); //开始执行
+        return this.invocation.result;
+    };
+    //获取执行结果
+    InvokeProxy.prototype.getResult = function(){
+        return this.invocation.result;
+    };
 
     //函数的代理
     function FunctionProxy(invocation){
@@ -258,36 +236,43 @@ var FunctionProxy = (function(){
     FunctionProxy.prototype.setInvocation = function(invocation){
         this.invokeproxy.invocation = invocation;
     };
+    //获取执行结果
+    FunctionProxy.prototype.getResult = function(){
+        return this.invokeproxy.getResult();
+    };
     //执行
     FunctionProxy.prototype.run = function(args){
-        this.invokeproxy.reset();
         this.invokeproxy.run(Array.prototype.slice.call(args || []));
         return this.invokeproxy.invocation.result;
     };
     //注册函数的拦截器
-    FunctionProxy.prototype.register = function(before, after, except, index, info){
-        this.invokeproxy.register(before, after, except, index, info);
+    FunctionProxy.prototype.register = function(param){
+        this.invokeproxy.register(param);
     };
     //注册回调函数的拦截器
-    FunctionProxy.prototype.register_args = function(posi/*参数所在的位置*/, before, after, except, index, info){
+    FunctionProxy.prototype.register_args = function(posi/*参数所在的位置*/, param){
         var me = this, inproxy;
         if(!(inproxy = me.cb[posi])){
             inproxy = me.cb[posi] = new InvokeProxy();
-            this.invokeproxy.register(function(invocation, next){
-                if(invocation.args[posi] && isFunction(invocation.args[posi])){
-                    inproxy.invocation = new Invocation(me, me, invocation.args[posi]);
-                    invocation.args[posi] = function(){
-                        inproxy.run(arguments);
+            this.invokeproxy.register({before: function(invocation, next){
+                    if(invocation.args[posi] && isFunction(invocation.args[posi])){
+                        inproxy.invocation = new Invocation(me, me, invocation.args[posi]);
+                        invocation.args[posi] = function(){
+                            inproxy.run(arguments);
+                        }
                     }
-                }
-                next();
-            }, null, null, -1);
+                    next();
+                }, 
+                index: -9007199254740991, //Number.MIN_SAFE_INTEGER,
+                desc : 'system callback'
+            });
         }
-        inproxy.register(before, after, except, index, info);
+        inproxy.register(param);
     };
     //注册返回CallBack的拦截器
-    FunctionProxy.prototype.register_cb = function(proxy, index, except, info){
-        this.invokeproxy.register(null, function(invocation, next){
+    FunctionProxy.prototype.register_cb = function(param){
+        var after = param.after;
+        param.after = function(invocation, next){
             var cb = new qv.zero.CallBack();
             invocation.result.add(function(ret){
                 proxy(ret);
@@ -295,10 +280,11 @@ var FunctionProxy = (function(){
             });
             invocation.result = cb;
             next();
-        }, except, index, info);
+        }
+        this.invokeproxy.register(param);
     };
     //注册返回promise的拦截器
-    FunctionProxy.prototype.register_promise = function(before, after, except, index, info){
+    FunctionProxy.prototype.register_promise = function(param){
         throw 'not support';
         // this.invokeproxy.register(before, after, except, index);
     };
@@ -381,19 +367,64 @@ function ObjectDecorator(obj, handlers){
     this.proxy = new ObjectProxy(obj, list);
 }
 //注册拦截器
-ObjectDecorator.prototype.interception = function(key, before, after, except, index, name){
+ObjectDecorator.prototype.interception = function(key, before/*, after, except, index, desc*/){
+    var len = arguments.length, param;
+    if(len > 2){
+        param = {
+            'before' : before,
+            'after' : arguments[2],
+            'except' : arguments[3],
+            'index' : arguments[4],
+            'desc' : arguments[5] || ''
+        };
+    } else if(len === 2 && key && !isFunction(before)){
+        param = before;
+        param.desc = param.desc || '';
+    } else {
+        throw new Error('arguments error');
+    }
     var interceptor = this.interceptorList[key] || (this.interceptorList[key] = new FunctionProxy());
-    interceptor.register(before, after, except, index, name);
+    interceptor.register(param);
 };
 //注册拦截器
-ObjectDecorator.prototype.interception_args = function(key, posi/*参数所在的位置*/, before, after, except, index, name){
+ObjectDecorator.prototype.interception_args = function(key, posi/*参数所在的位置*/, before/*, after, except, index, desc*/){
+    var len = arguments.length, param;
+    posi = +posi;
+    if(len > 3){
+        param = {
+            'before' : before,
+            'after' : arguments[2],
+            'except' : arguments[3],
+            'index' : arguments[4],
+            'desc' : arguments[5] || ''
+        };
+    } else if(len === 3 && key && isFinite(posi) && !isFunction(before)){
+        param = before;
+        param.desc = param.desc || '';
+    } else {
+        throw new Error('arguments error');
+    }
     var interceptor = this.interceptorList[key] || (this.interceptorList[key] = new FunctionProxy());
-    interceptor.register_args(posi, before, after, except, index, name);
+    interceptor.register_args(posi, param);
 };
 //注册拦截器
-ObjectDecorator.prototype.interception_cb = function(key, proxy, index, except, name){
+ObjectDecorator.prototype.interception_cb = function(key, proxy/*, except, index, desc*/){
+    var len = arguments.length, param;
+    if(len > 2){
+        param = {
+            'after' : proxy,
+            'except' : arguments[2],
+            'index' : arguments[3],
+            'desc' : arguments[4] || ''
+        };
+    } else if(len === 2 && key && !isFunction(proxy) && proxy.after){
+        param = proxy;
+        param.desc = param.desc || '';
+    } else {
+        throw new Error('arguments error');
+    }
     var interceptor = this.interceptorList[key] || (this.interceptorList[key] = new FunctionProxy());
-    interceptor.register_cb(proxy, index, except, name);
+    interceptor.register_cb(param);
 };
 ObjectDecorator.getObjectDecorator = function(obj, types){
     types = types || 'apply|get|set';
@@ -410,10 +441,20 @@ ObjectDecorator.getObjectDecorator = function(obj, types){
     return cache[obj[key]];
 }
 
+var Http = {
+    send : function(data, cb){
+        setTimeout(function(){
+            console.log(data);
+            cb && cb();
+        }, 10);
+    }
+}
 
-qv.zero.Http = ObjectDecorator.getObjectDecorator(qv.zero.Http).proxy;
+Http = ObjectDecorator.getObjectDecorator(Http).proxy;
 
-ObjectDecorator.getObjectDecorator(qv.zero.Http).interception('send', function(inv, next){
+var od = ObjectDecorator.getObjectDecorator(Http);
+
+od.interception('send', function(inv, next){
         console.log('begin1');
         next();
     },
@@ -421,10 +462,10 @@ ObjectDecorator.getObjectDecorator(qv.zero.Http).interception('send', function(i
         console.log('end1');
         next();
     },
-    null, null, 'wo de 1'
+    null, 1, 'wo de 1'
 );
 
-ObjectDecorator.getObjectDecorator(qv.zero.Http).interception('send', function(inv, next){
+od.interception('send', function(inv, next){
         console.log('begin2');
         next();
     },
@@ -432,5 +473,21 @@ ObjectDecorator.getObjectDecorator(qv.zero.Http).interception('send', function(i
         console.log('end2');
         next();
     },
-    null, null, 'wo de 2'
+    null, 2, 'wo de 2'
 );
+
+od.interception_args('send', 1, { before : function(inv, next){
+
+    console.log('拦截1');
+    next();
+
+}, 
+index : 2,
+desc : 'callback1' });
+
+od.interception_args('send', 1, { before : function(inv, next){
+
+    console.log('拦截2');
+    next();
+
+},index : 1, desc : 'callback2' });
