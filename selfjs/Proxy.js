@@ -124,176 +124,210 @@ Invocation.prototype.setArgs = function(args) {
     this.args = args;
 };
 
-var FunctionProxy = (function(){
-    //函数调用代理
-    function InvokeProxy(invocation){
-        this.invocation = invocation;
-        this.list = [];
-        this.state = 0;//0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
-        this._index = -1;
-        this._error = null;  //异常
+//函数调用代理
+function InvokeProxy(invocation){
+    this.invocation = invocation;
+    this.list = [];
+    this.state = 0;//0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
+    this._index = -1;
+    this._error = null;  //异常
+}
+//注册拦截函数
+InvokeProxy.prototype.register = function(param){
+    /*{before, after, except, index, desc}*/
+    if(this.state === 6){
+        this.state = 0; //重置
+    } else if(this.state !== 0){
+        //在执行的过程中不能添加拦截函数
+        throw new Error('function was running');
     }
-    //注册拦截函数
-    InvokeProxy.prototype.register = function(param){
-        /*{before, after, except, index, desc}*/
-        if(this.state === 6){
-            this.state = 0; //重置
-        } else if(this.state !== 0){
-            //在执行的过程中不能添加拦截函数
-            throw new Error('function was running');
-        }
-        if(param.index !== null && isFinite(param.index)){
-            param.index = parseFloat(param.index, 10);
-        } else {
-            param.index = 0;    
-        }
-        this.list.push(param);
-        this.state = 0;
-    };
-    //重置状态
-    InvokeProxy.prototype._reset = function(){
-        if(this.state === 6){
-            this.state = 1;
-        }
-    };
-    //执行下一个拦截器 可重入
-    InvokeProxy.prototype._next = function(){
-        var step = 1;
-        switch(this.state){
-            case 0 : //初始化之前
-                this.list.sort(function(a, b){ return b.index - a.index; });
-                this.state = 1;//标识初始化完成
-            case 1 : //初始化完成
-                this._index = -1;
-                step = 1;
-                this.state = 2; //标识开始执行before
-            // break;
-            case 2 : //开始执行before
-                if(!this._innernext(step, 'before')){
-                    this.state = 3; //标识before执行结束
-                } else{
-                    break;        
-                }            
-            case 3 : //开始执行原始函数
-                try{
-                    this.invocation.procced();
-                    this.state = 4;
-                } catch(e){
-                    this._error = e;
-                    this._index = this.list.length;
-                    this.state = 5;
-                    this._next();
-                    break;
-                }
-            case 4 : //开始执行after
-                step = -1;
-                if(!this._innernext(step, 'after')){
-                    this.state = 6; //标识after执行结束
-                }
-            break;
-            case 5 : //开始执行except
-                step = -1;
-                if(!this._innernext(step, 'except')){
-                    this.state = 6; //标识except执行结束
-                }
-            break;
-        }
+    if(param.index !== null && isFinite(param.index)){
+        param.index = parseFloat(param.index, 10);
+    } else {
+        param.index = 0;    
     }
-    //执行下一个拦截器
-    InvokeProxy.prototype._innernext = function(step, method){
-        this._index += step;
-        var current = this.list[this._index], m, that = this;
-        if(current){
-            if(m = current[method]){
-                this.invocation.desc = current.desc || '';
-                m.call(this.invocation.context, this.invocation, function(){ that._next() }); //调用
-                return true;
-            } else {
-
-                return this._innernext(step, method);
+    this.list.push(param);
+    this.state = 0;
+};
+//重置状态
+InvokeProxy.prototype._reset = function(){
+    if(this.state === 6){
+        this.state = 1;
+    }
+};
+//执行下一个拦截器 可重入
+InvokeProxy.prototype._next = function(){
+    var step = 1;
+    switch(this.state){
+        case 0 : //初始化之前
+            this.list.sort(function(a, b){ return b.index - a.index; });
+            this.state = 1;//标识初始化完成
+        case 1 : //初始化完成
+            this._index = -1;
+            step = 1;
+            this.state = 2; //标识开始执行before
+        // break;
+        case 2 : //开始执行before
+            if(!this._innernext(step, 'before')){
+                this.state = 3; //标识before执行结束
+            } else{
+                break;        
+            }            
+        case 3 : //开始执行原始函数
+            try{
+                this.invocation.procced();
+                this.state = 4;
+            } catch(e){
+                this._error = e;
+                this._index = this.list.length;
+                this.state = 5;
+                this._next();
+                break;
             }
-        }
-        return false;
-    };
-    //执行
-    InvokeProxy.prototype.run = function(args){
-        this.invocation.setArgs(args);
-        this._reset();//重置状态
-        this._next(); //开始执行
-        return this.invocation.result;
-    };
-    //获取执行结果
-    InvokeProxy.prototype.getResult = function(){
-        return this.invocation.result;
-    };
-
-    //函数的代理
-    function FunctionProxy(invocation){
-        this.invokeproxy = new InvokeProxy(invocation);
-        this.cb = {};
+        case 4 : //开始执行after
+            step = -1;
+            if(!this._innernext(step, 'after')){
+                this.state = 6; //标识after执行结束
+            }
+        break;
+        case 5 : //开始执行except
+            step = -1;
+            if(!this._innernext(step, 'except')){
+                this.state = 6; //标识except执行结束
+            }
+        break;
     }
-    //设置执行描述
-    FunctionProxy.prototype.setInvocation = function(invocation){
-        this.invokeproxy.invocation = invocation;
-    };
-    //获取执行结果
-    FunctionProxy.prototype.getResult = function(){
-        return this.invokeproxy.getResult();
-    };
-    //执行
-    FunctionProxy.prototype.run = function(args){
-        this.invokeproxy.run(Array.prototype.slice.call(args || []));
-        return this.invokeproxy.invocation.result;
-    };
-    //注册函数的拦截器
-    FunctionProxy.prototype.register = function(param){
-        this.invokeproxy.register(param);
-    };
-    //注册回调函数的拦截器
-    FunctionProxy.prototype.register_args = function(posi/*参数所在的位置*/, param){
-        var me = this, inproxy;
-        if(!(inproxy = me.cb[posi])){
-            inproxy = me.cb[posi] = new InvokeProxy();
-            this.invokeproxy.register({before: function(invocation, next){
-                    if(invocation.args[posi] && isFunction(invocation.args[posi])){
-                        inproxy.invocation = new Invocation(me, me, invocation.args[posi]);
-                        invocation.args[posi] = function(){
-                            inproxy.run(arguments);
-                        }
+}
+//执行下一个拦截器
+InvokeProxy.prototype._innernext = function(step, method){
+    this._index += step;
+    var current = this.list[this._index], m, that = this;
+    if(current){
+        if(m = current[method]){
+            this.invocation.desc = current.desc || '';
+            m.call(this.invocation.context, this.invocation, function(){ that._next() }); //调用
+            return true;
+        } else {
+
+            return this._innernext(step, method);
+        }
+    }
+    return false;
+};
+//执行
+InvokeProxy.prototype.run = function(args){
+    this.invocation.setArgs(args);
+    this._reset();//重置状态
+    this._next(); //开始执行
+    return this.invocation.result;
+};
+//获取执行结果
+InvokeProxy.prototype.getResult = function(){
+    return this.invocation.result;
+};
+
+//函数的代理
+function FunctionProxy(invocation){
+    this.invokeproxy = new InvokeProxy(invocation);
+    this.cb = {};
+}
+//设置执行描述
+FunctionProxy.prototype.setInvocation = function(invocation){
+    this.invokeproxy.invocation = invocation;
+};
+//获取执行结果
+FunctionProxy.prototype.getResult = function(){
+    return this.invokeproxy.getResult();
+};
+//执行
+FunctionProxy.prototype.run = function(args){
+    this.invokeproxy.run(Array.prototype.slice.call(args || []));
+    return this.invokeproxy.getResult();
+};
+//注册函数的拦截器
+FunctionProxy.prototype.interception = function(param){
+    this.invokeproxy.register(param);
+};
+//注册回调函数的拦截器
+FunctionProxy.prototype.interception_args = function(posi/*参数所在的位置*/, param){
+    var me = this, inproxy;
+    if(!(inproxy = me.cb[posi])){
+        inproxy = me.cb[posi] = new InvokeProxy();
+        this.invokeproxy.register({before: function(invocation, next){
+                if(invocation.args[posi] && isFunction(invocation.args[posi])){
+                    inproxy.invocation = new Invocation(me, me, invocation.args[posi]);
+                    invocation.args[posi] = function(){
+                        inproxy.run(arguments);
                     }
-                    next();
-                }, 
-                index: -9007199254740991, //Number.MIN_SAFE_INTEGER,
-                desc : 'system callback'
-            });
-        }
-        inproxy.register(param);
-    };
-    //注册返回CallBack的拦截器
-    FunctionProxy.prototype.register_cb = function(param){
-        var after = param.after;
-        param.after = function(invocation, next){
-            var cb = new qv.zero.CallBack();
-            invocation.result.add(function(ret){
-                proxy(ret);
-                cb.execute(ret);
-            });
-            invocation.result = cb;
-            next();
-        }
-        this.invokeproxy.register(param);
-    };
-    //注册返回promise的拦截器
-    FunctionProxy.prototype.register_promise = function(param){
-        throw 'not support';
-        // this.invokeproxy.register(before, after, except, index);
-    };
-    return FunctionProxy;
-})();
+                }
+                next();
+            }, 
+            index: -9007199254740991, //Number.MIN_SAFE_INTEGER,
+            desc : 'system callback'
+        });
+    }
+    inproxy.register(param);
+};
+//注册返回CallBack的拦截器
+FunctionProxy.prototype.interception_cb = function(param){
+    var after = param.after;
+    param.after = function(invocation, next){
+        var cb = new qv.zero.CallBack();
+        invocation.result.add(function(ret){
+            proxy(ret);
+            cb.execute(ret);
+        });
+        invocation.result = cb;
+        next();
+    }
+    this.invokeproxy.register(param);
+};
+//注册返回promise的拦截器
+FunctionProxy.prototype.interception_promise = function(param){
+    throw 'not support';
+    // this.invokeproxy.register(before, after, except, index);
+};
 
 //代理工厂
 var ProxyFactory = (function(){
-    var factory = {};
+    var factory = {
+        //代理方法
+        apply : function(getFuncProxy){
+            return function(target, thisArg, args, name, receiver){
+                var proxy = getFuncProxy(name);
+                if(proxy){
+                    proxy.setInvocation(new Invocation(receiver, thisArg, target));
+                    return proxy.run(args);
+                } else {
+                    return target.apply(thisArg, args);
+                }
+            }
+        },
+        //代理get
+        get : function(getFuncProxy){
+            return function(target, property, receiver){
+                var proxy = getFuncProxy(property);
+                if(proxy){
+                    proxy.setInvocation(new Invocation(receiver, target, function(){ return target[property]; }));
+                    return proxy.run();
+                } else {
+                    return target[property];
+                }
+            }
+        },
+        //代理set
+        set : function(getFuncProxy){
+            return function(target, property, value, receiver){
+                var proxy = getFuncProxy(property);
+                if(proxy){
+                    proxy.setInvocation(new Invocation(receiver, target, function(){ return target[property] = value; }));
+                    proxy.run(value);
+                } else {
+                    target[property] = value;
+                }
+            }
+        }
+    };
     return {
         get : function(types){
             var list = types.split('|'), handlers = {};
@@ -313,42 +347,7 @@ var ProxyFactory = (function(){
         }
     };
 }());
-//只代理方法
-ProxyFactory.set('apply', function(getFuncProxy){
-    return function(target, thisArg, args, name, receiver){
-        var proxy = getFuncProxy(name);
-        if(proxy){
-            proxy.setInvocation(new Invocation(receiver, thisArg, target));
-            return proxy.run(args);
-        } else {
-            return target.apply(thisArg, args);
-        }
-    }
-});
-//只代理属性
-ProxyFactory.set('get', function(getFuncProxy){
-    return function(target, property, receiver){
-        var proxy = getFuncProxy(property);
-        if(proxy){
-            proxy.setInvocation(new Invocation(receiver, target, function(){ return target[property]; }));
-            return proxy.run();
-        } else {
-            return target[property];
-        }
-    }
-});
-//代理方法与属性
-ProxyFactory.set('set', function(getFuncProxy){
-    return function(target, property, value, receiver){
-        var proxy = getFuncProxy(property);
-        if(proxy){
-            proxy.setInvocation(new Invocation(receiver, target, function(){ return target[property] = value; }));
-            proxy.run(value);
-        } else {
-            target[property] = value;
-        }
-    }
-});
+
 //对象装饰者
 function ObjectDecorator(obj, handlers){
     this.interceptorList = {};
@@ -384,7 +383,7 @@ ObjectDecorator.prototype.interception = function(key, before/*, after, except, 
         throw new Error('arguments error');
     }
     var interceptor = this.interceptorList[key] || (this.interceptorList[key] = new FunctionProxy());
-    interceptor.register(param);
+    interceptor.interception(param);
 };
 //注册拦截器
 ObjectDecorator.prototype.interception_args = function(key, posi/*参数所在的位置*/, before/*, after, except, index, desc*/){
@@ -405,7 +404,7 @@ ObjectDecorator.prototype.interception_args = function(key, posi/*参数所在�
         throw new Error('arguments error');
     }
     var interceptor = this.interceptorList[key] || (this.interceptorList[key] = new FunctionProxy());
-    interceptor.register_args(posi, param);
+    interceptor.interception_args(posi, param);
 };
 //注册拦截器
 ObjectDecorator.prototype.interception_cb = function(key, proxy/*, except, index, desc*/){
@@ -424,14 +423,15 @@ ObjectDecorator.prototype.interception_cb = function(key, proxy/*, except, index
         throw new Error('arguments error');
     }
     var interceptor = this.interceptorList[key] || (this.interceptorList[key] = new FunctionProxy());
-    interceptor.register_cb(param);
+    interceptor.interception_cb(param);
 };
+//获取装饰对象，如果本身是的话，将会返回本身。否则将创建新的装饰者
 ObjectDecorator.getObjectDecorator = function(obj, types){
     types = types || 'apply|get|set';
     var key = '__decortor__', cache = ObjectDecorator.cache || (ObjectDecorator.cache = {});
     if(obj[key]){
         if(!cache[obj[key]]){
-            cache[obj[key]] = new ObjectDecorator(obj, /*默认的代理*/ProxyFactory.get(types));
+            cache[obj[key]] = new ObjectDecorator(obj, ProxyFactory.get(types));
         }
     } else {
         var id = new Identity();
@@ -440,6 +440,20 @@ ObjectDecorator.getObjectDecorator = function(obj, types){
     }
     return cache[obj[key]];
 }
+//获取装饰者的原始对象
+ObjectDecorator.getOriginalObject = function(obj){
+    var key = '__decortor__';
+    if(obj[key]){
+        if(Object.getPrototypeOf){
+            return Object.getPrototypeOf(obj);
+        } else if(obj.__proto__){
+            return obj.__proto__;
+        } else {
+            return obj;
+        }
+    }
+    return obj;
+};
 
 var Http = {
     send : function(data, cb){
@@ -447,12 +461,23 @@ var Http = {
             console.log(data);
             cb && cb();
         }, 10);
-    }
+    },
+    variable : 10
 }
 
 Http = ObjectDecorator.getObjectDecorator(Http).proxy;
 
 var od = ObjectDecorator.getObjectDecorator(Http);
+
+od.interception('variable', { after : function(inv, next){
+    inv.result = 11;
+    console.log('拦截2');
+    next();
+
+},index : 1, desc : 'callback2' });
+
+Http.variable = 1;
+console.log(Http.variable);
 
 od.interception('send', function(inv, next){
         console.log('begin1');
@@ -485,9 +510,11 @@ od.interception_args('send', 1, { before : function(inv, next){
 index : 2,
 desc : 'callback1' });
 
-od.interception_args('send', 1, { before : function(inv, next){
+od.interception_args('send', 1, { after : function(inv, next){
 
     console.log('拦截2');
     next();
 
 },index : 1, desc : 'callback2' });
+
+Http.send({actid:2324}, function(a,b){ console.log('callback') })
