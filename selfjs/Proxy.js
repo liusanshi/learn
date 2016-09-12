@@ -1,3 +1,48 @@
+/*
+* 
+* 接口说明：
+* 参数说明：
+* var Http = {
+*     send : function(data, cb){
+*         setTimeout(function(){
+*             console.log(data);
+*             cb && cb();
+*         }, 10);
+*     },
+*     variable : 10
+* }
+* var od = ObjectDecorator.getObjectDecorator(Http); //获取装饰对象
+* 
+* od.interception('send', {before:function(inv,next){}, after :function(inv,next){}, except:function(inv,next){}, index:1, desc: ''});
+* 其中：
+*    'send' 方法名称
+*    before 在拦截的函数执行之前触发
+*    after  在拦截的函数执行之后触发
+*    except 在拦截的函数执行发生异常时触发
+*    index  拦截器的顺序
+*    desc   当前拦截器的描述，方便调试
+*
+* 
+* od.interception_args('send', 1, {before:function(inv,next){}, after :function(inv,next){}, except:function(inv,next){}, index:1, desc: ''});
+* 其中：
+*    'send' 方法名称
+*    1      参数的顺序
+*    before 在拦截的函数执行之前触发
+*    after  在拦截的函数执行之后触发
+*    except 在拦截的函数执行发生异常时触发
+*    index  拦截器的顺序
+*    desc   当前拦截器的描述，方便调试
+*
+* od.interception('variable', {before:function(inv,next){}, after :function(inv,next){}, except:function(inv,next){}, index:1, desc: ''});
+* 其中：
+*    'variable' 属性名称
+*    before 在拦截的函数执行之前触发
+*    after  在拦截的函数执行之后触发
+*    except 在拦截的函数执行发生异常时触发
+*    index  拦截器的顺序
+*    desc   当前拦截器的描述，方便调试
+* 
+*/
 if (typeof Object.create !== 'function') {
   // Production steps of ECMA-262, Edition 5, 15.2.3.5
   // Reference: http://es5.github.io/#x15.2.3.5
