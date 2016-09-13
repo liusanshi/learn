@@ -250,7 +250,7 @@ InvokeProxy.prototype._innernext = function(step, method){
     if(current){
         if(m = current[method]){
             this.invocation.desc = current.desc || '';
-            m.call(this.invocation.context, this.invocation, function(){ that._next() }); //调用
+            m.call(this.invocation.context, this.invocation, function(isend){ !!isend ? (that.state = 6) : that._next(); }); //调用
             return true;
         } else {
 
