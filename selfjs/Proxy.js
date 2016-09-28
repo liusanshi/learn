@@ -154,13 +154,14 @@ if (typeof Object.create !== 'function') {
     Identity.uid = 0;
 
     //调用描述
-    function Invocation(proxy, context, handler, args){
+    function Invocation(proxy, context, handler, args, parent){
         this.proxy = proxy;
         this.context = context;
         this.handler = handler;
         this.args = Array.prototype.slice.call(args);
         this.desc = '';
         this.exception = null; //异常
+        this.parent = parent;  //父描述
         
         this._state = 0;  //0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
         this._index = -1; //执行的序号
@@ -294,7 +295,7 @@ if (typeof Object.create !== 'function') {
                     if(invocation.args[posi] && isFunction(invocation.args[posi])){
                         var old_cb = invocation.args[posi];
                         invocation.args[posi] = function(){
-                            inproxy.run(new Invocation(me, me, old_cb, arguments));
+                            inproxy.run(new Invocation(me, me, old_cb, arguments, invocation));
                         }
                     }
                     next();
