@@ -159,6 +159,7 @@ if (typeof Object.create !== 'function') {
         this.context = context;
         this.handler = handler;
         this.desc = '';
+        this.exception = null; //异常
     }
     //执行
     Invocation.prototype.procced = function() {
@@ -176,7 +177,6 @@ if (typeof Object.create !== 'function') {
         this.list = [];
         this.state = 0;//0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
         this._index = -1;
-        this._error = null;  //异常
     }
     //注册拦截函数
     InvokeProxy.prototype.register = function(param){
@@ -224,7 +224,7 @@ if (typeof Object.create !== 'function') {
                     this.invocation.procced();
                     this.state = 4;
                 } catch(e){
-                    this._error = e;
+                    this.invocation.exception = e;
                     this._index = this.list.length;
                     this.state = 5;
                     this._next();
