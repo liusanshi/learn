@@ -251,7 +251,17 @@ if (typeof Object.create !== 'function') {
         if(current){
             if(m = current[method]){
                 this.invocation.desc = current.desc || '';
-                m.call(this.invocation.context, this.invocation, function(isend){ !!isend ? (that.state = 6) : that._next(); }); //调用
+                m.call(this.invocation.context, this.invocation, function(isend){ 
+                    if(isend){
+                        if(step > 0){ //before阶段
+                            that.state = 4;
+                            that._index += step;
+                        } else if(step < 0){ //after阶段
+                            that.state = 6;
+                        }
+                    } 
+                    that._next(); 
+                }); //调用
                 return true;
             } else {
 
@@ -308,7 +318,7 @@ if (typeof Object.create !== 'function') {
                     }
                     next();
                 }, 
-                index: -9007199254740991, //Number.MIN_SAFE_INTEGER,
+                index: 9007199254740991, //Number.MAX_SAFE_INTEGER,
                 desc : 'system callback'
             });
         }
