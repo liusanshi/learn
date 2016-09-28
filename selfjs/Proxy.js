@@ -154,36 +154,33 @@ if (typeof Object.create !== 'function') {
     Identity.uid = 0;
 
     //调用描述
-    function Invocation(proxy, context, handler){
+    function Invocation(proxy, context, handler, args){
         this.proxy = proxy;
         this.context = context;
         this.handler = handler;
+        this.args = Array.prototype.slice.call(args);
         this.desc = '';
         this.exception = null; //异常
+        
+        this._state = 0;  //0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
+        this._index = -1; //执行的序号
     }
     //执行
     Invocation.prototype.procced = function() {
         this.result = this.handler.apply(this.context, this.args);
         return this.result;
     };
-    //设置参数
-    Invocation.prototype.setArgs = function(args) {
-        this.args = args;
-    };
 
     //函数调用代理
-    function InvokeProxy(invocation){
-        this.invocation = invocation;
+    function InvokeProxy(){
         this.list = [];
-        this.state = 0;//0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
-        this._index = -1;
+        this.executing = false; 
+        
     }
     //注册拦截函数
     InvokeProxy.prototype.register = function(param){
         /*{before, after, except, index, desc}*/
-        if(this.state === 6){
-            this.state = 0; //重置
-        } else if(this.state !== 0){
+        if(this.executing){
             //在执行的过程中不能添加拦截函数
             throw new Error('function was running');
         }
@@ -193,112 +190,96 @@ if (typeof Object.create !== 'function') {
             param.index = 0;    
         }
         this.list.push(param);
-        this.state = 0;
-    };
-    //重置状态
-    InvokeProxy.prototype._reset = function(){
-        if(this.state === 6){
-            this.state = 1;
-        }
     };
     //执行下一个拦截器 可重入
-    InvokeProxy.prototype._next = function(){
+    InvokeProxy.prototype._next = function(invocation){
         var step = 1;
-        switch(this.state){
+        switch(invocation._state){
             case 0 : //初始化之前
+                this.executing = true;
                 this.list.sort(function(a, b){ return b.index - a.index; });
-                this.state = 1;//标识初始化完成
+                invocation._state = 1;//标识初始化完成
             case 1 : //初始化完成
-                this._index = -1;
+                invocation._index = -1;
                 step = 1;
-                this.state = 2; //标识开始执行before
+                invocation._state = 2; //标识开始执行before
             // break;
             case 2 : //开始执行before
-                if(!this._innernext(step, 'before')){
-                    this.state = 3; //标识before执行结束
+                if(!this._innernext(invocation, step, 'before')){
+                    invocation._state = 3; //标识before执行结束
                 } else{
                     break;        
                 }            
             case 3 : //开始执行原始函数
                 try{
-                    this.invocation.procced();
-                    this.state = 4;
+                    invocation.procced();
+                    invocation._state = 4;
                 } catch(e){
-                    this.invocation.exception = e;
-                    this._index = this.list.length;
-                    this.state = 5;
-                    this._next();
+                    invocation.exception = e;
+                    invocation._index = this.list.length;
+                    invocation._state = 5;
+                    this._next(invocation);
                     break;
                 }
             case 4 : //开始执行after
                 step = -1;
-                if(!this._innernext(step, 'after')){
-                    this.state = 6; //标识after执行结束
+                if(!this._innernext(invocation, step, 'after')){
+                    invocation._state = 6; //标识after执行结束
+                    this._next(invocation);
                 }
             break;
             case 5 : //开始执行except
                 step = -1;
-                if(!this._innernext(step, 'except')){
-                    this.state = 6; //标识except执行结束
+                if(!this._innernext(invocation, step, 'except')){
+                    invocation._state = 6; //标识except执行结束
+                    this._next(invocation);
                 }
+            break;
+            default:
+            case 6:
+                this.executing = false;
             break;
         }
     }
     //执行下一个拦截器
-    InvokeProxy.prototype._innernext = function(step, method){
-        this._index += step;
-        var current = this.list[this._index], m, that = this;
+    InvokeProxy.prototype._innernext = function(invocation, step, method){
+        invocation._index += step;
+        var current = this.list[invocation._index], m, that = this;
         if(current){
             if(m = current[method]){
-                this.invocation.desc = current.desc || '';
-                m.call(this.invocation.context, this.invocation, function(isend){ 
+                invocation.desc = current.desc || '';
+                m.call(invocation.context, invocation, function(isend){ 
                     if(isend){
                         if(step > 0){ //before阶段
-                            that.state = 4;
-                            that._index += step;
+                            invocation._state = 4;
+                            invocation._index += step;
                         } else if(step < 0){ //after阶段
-                            that.state = 6;
+                            invocation._state = 6;
                         }
                     } 
-                    that._next(); 
+                    that._next(invocation);
                 }); //调用
                 return true;
             } else {
-
-                return this._innernext(step, method);
+                return this._innernext(invocation, step, method);
             }
         }
         return false;
     };
     //执行
-    InvokeProxy.prototype.run = function(args){
-        this.invocation.setArgs(args);
-        this._reset();//重置状态
-        this._next(); //开始执行
-        return this.invocation.result;
-    };
-    //获取执行结果
-    InvokeProxy.prototype.getResult = function(){
-        return this.invocation.result;
+    InvokeProxy.prototype.run = function(invocation){
+        this._next(invocation); //开始执行
+        return invocation.result;
     };
 
     //函数的代理
-    function FunctionProxy(invocation){
-        this.invokeproxy = new InvokeProxy(invocation);
+    function FunctionProxy(){
+        this.invokeproxy = new InvokeProxy();
         this.cb = {};
     }
-    //设置执行描述
-    FunctionProxy.prototype.setInvocation = function(invocation){
-        this.invokeproxy.invocation = invocation;
-    };
-    //获取执行结果
-    FunctionProxy.prototype.getResult = function(){
-        return this.invokeproxy.getResult();
-    };
     //执行
-    FunctionProxy.prototype.run = function(args){
-        this.invokeproxy.run(Array.prototype.slice.call(args || []));
-        return this.invokeproxy.getResult();
+    FunctionProxy.prototype.run = function(invocation){
+        return this.invokeproxy.run(invocation);
     };
     //注册函数的拦截器
     FunctionProxy.prototype.interception = function(param){
@@ -311,9 +292,9 @@ if (typeof Object.create !== 'function') {
             inproxy = me.cb[posi] = new InvokeProxy();
             this.invokeproxy.register({before: function(invocation, next){
                     if(invocation.args[posi] && isFunction(invocation.args[posi])){
-                        inproxy.invocation = new Invocation(me, me, invocation.args[posi]);
+                        var old_cb = invocation.args[posi];
                         invocation.args[posi] = function(){
-                            inproxy.run(arguments);
+                            inproxy.run(new Invocation(me, me, old_cb, arguments));
                         }
                     }
                     next();
@@ -330,7 +311,7 @@ if (typeof Object.create !== 'function') {
         param.after = function(invocation, next){
             var cb = new qv.zero.CallBack();
             invocation.result.add(function(ret){
-                proxy(ret);
+                after(ret);
                 cb.execute(ret);
             });
             invocation.result = cb;
@@ -352,8 +333,7 @@ if (typeof Object.create !== 'function') {
                 return function(target, thisArg, args, name, receiver){
                     var proxy = getFuncProxy(name);
                     if(proxy){
-                        proxy.setInvocation(new Invocation(receiver, thisArg, target));
-                        return proxy.run(args);
+                        return proxy.run(new Invocation(receiver, thisArg, target, args));
                     } else {
                         return target.apply(thisArg, args);
                     }
@@ -364,8 +344,7 @@ if (typeof Object.create !== 'function') {
                 return function(target, property, receiver){
                     var proxy = getFuncProxy(property);
                     if(proxy){
-                        proxy.setInvocation(new Invocation(receiver, target, function(){ return target[property]; }));
-                        return proxy.run();
+                        return proxy.run(new Invocation(receiver, target, function(){ return target[property]; }, []));
                     } else {
                         return target[property];
                     }
@@ -376,8 +355,7 @@ if (typeof Object.create !== 'function') {
                 return function(target, property, value, receiver){
                     var proxy = getFuncProxy(property);
                     if(proxy){
-                        proxy.setInvocation(new Invocation(receiver, target, function(){ return target[property] = value; }));
-                        proxy.run(value);
+                        proxy.run(new Invocation(receiver, target, function(){ return target[property] = value; }, [value]));
                     } else {
                         target[property] = value;
                     }
@@ -586,4 +564,8 @@ od.interception_args('send', 1, { after : function(inv, next){
 
 },index : 1, desc : 'callback2' });
 
-Http.send({actid:2324}, function(a,b){ console.log('callback') })
+//回调函数覆盖了
+Http.send({actid:123}, function(a,b){ console.log('callback1') });
+Http.send({actid:124}, function(a,b){ console.log('callback2') });
+Http.send({actid:125}, function(a,b){ console.log('callback3') });
+Http.send({actid:126}, function(a,b){ console.log('callback4') })
