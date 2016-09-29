@@ -166,111 +166,111 @@ if (typeof Object.create !== 'function') {
         this._state = 0;  //0: 初始化之前，1: 初始化完成，2：开始执行before，3：执行原始函数，4：开始执行after，5：开始执行except， 6：执行完成
         this._index = -1; //执行的序号
     }
-    //执行
-    Invocation.prototype.procced = function() {
+    //执行原始的函数
+    Invocation.prototype._procced = function() {
         this.result = this.handler.apply(this.context, this.args);
         return this.result;
     };
+    //执行下一个拦截器 可重入
+    Invocation.prototype._next = function(list){
+        var step = 1;
+        switch(this._state){
+            case 0 : //初始化之前
+                this.list = list;
+                this._state = 1;//标识初始化完成
+            case 1 : //初始化完成
+                this._index = -1;
+                step = 1;
+                this._state = 2; //标识开始执行before
+            // break;
+            case 2 : //开始执行before
+                if(!this._innernext(step, 'before')){
+                    this._state = 3; //标识before执行结束
+                } else{
+                    break;        
+                }            
+            case 3 : //开始执行原始函数
+                try{
+                    this._procced();
+                    this._state = 4;
+                } catch(e){
+                    this.exception = e;
+                    this._index = this.list.length;
+                    this._state = 5;
+                    this._next();
+                    break;
+                }
+            case 4 : //开始执行after
+                step = -1;
+                if(!this._innernext(step, 'after')){
+                    this._state = 6; //标识after执行结束
+                }
+            break;
+            case 5 : //开始执行except
+                step = -1;
+                if(!this._innernext(step, 'except')){
+                    this._state = 6; //标识except执行结束
+                }
+            break;
+            default:
+            case 6:
+            break;
+        }
+    }
+    //执行下一个拦截器
+    Invocation.prototype._innernext = function(step, method){
+        this._index += step;
+        var current = this.list[this._index], m, that = this;
+        if(current){
+            if(m = current[method]){
+                this.desc = current.desc || '';
+                m.call(this.context, this, function(isend){ 
+                    if(isend){
+                        if(step > 0){ //before阶段
+                            that._state = 4;
+                            that._index += step;
+                        } else if(step < 0){ //after阶段
+                            that._state = 6;
+                        }
+                    } 
+                    that._next();
+                }); //调用
+                return true;
+            } else {
+                return this._innernext(step, method);
+            }
+        }
+        return false;
+    };
+    //执行包含了拦截器的函数
+    Invocation.prototype.run = function(list){
+        this._next(list); //开始执行
+        return this.result;
+    }
 
     //函数调用代理
     function InvokeProxy(){
-        this.list = [];
-        this.executing = false; 
-        
+        this.list = [];       //拦截器
+        this.isOrder = false; //是否排序
     }
     //注册拦截函数
     InvokeProxy.prototype.register = function(param){
-        /*{before, after, except, index, desc}*/
-        if(this.executing){
-            //在执行的过程中不能添加拦截函数
-            throw new Error('function was running');
-        }
         if(param.index !== null && isFinite(param.index)){
             param.index = parseFloat(param.index, 10);
         } else {
             param.index = 0;    
         }
         this.list.push(param);
-    };
-    //执行下一个拦截器 可重入
-    InvokeProxy.prototype._next = function(invocation){
-        var step = 1;
-        switch(invocation._state){
-            case 0 : //初始化之前
-                this.executing = true;
-                this.list.sort(function(a, b){ return b.index - a.index; });
-                invocation._state = 1;//标识初始化完成
-            case 1 : //初始化完成
-                invocation._index = -1;
-                step = 1;
-                invocation._state = 2; //标识开始执行before
-            // break;
-            case 2 : //开始执行before
-                if(!this._innernext(invocation, step, 'before')){
-                    invocation._state = 3; //标识before执行结束
-                } else{
-                    break;        
-                }            
-            case 3 : //开始执行原始函数
-                try{
-                    invocation.procced();
-                    invocation._state = 4;
-                } catch(e){
-                    invocation.exception = e;
-                    invocation._index = this.list.length;
-                    invocation._state = 5;
-                    this._next(invocation);
-                    break;
-                }
-            case 4 : //开始执行after
-                step = -1;
-                if(!this._innernext(invocation, step, 'after')){
-                    invocation._state = 6; //标识after执行结束
-                    this._next(invocation);
-                }
-            break;
-            case 5 : //开始执行except
-                step = -1;
-                if(!this._innernext(invocation, step, 'except')){
-                    invocation._state = 6; //标识except执行结束
-                    this._next(invocation);
-                }
-            break;
-            default:
-            case 6:
-                this.executing = false;
-            break;
-        }
-    }
-    //执行下一个拦截器
-    InvokeProxy.prototype._innernext = function(invocation, step, method){
-        invocation._index += step;
-        var current = this.list[invocation._index], m, that = this;
-        if(current){
-            if(m = current[method]){
-                invocation.desc = current.desc || '';
-                m.call(invocation.context, invocation, function(isend){ 
-                    if(isend){
-                        if(step > 0){ //before阶段
-                            invocation._state = 4;
-                            invocation._index += step;
-                        } else if(step < 0){ //after阶段
-                            invocation._state = 6;
-                        }
-                    } 
-                    that._next(invocation);
-                }); //调用
-                return true;
-            } else {
-                return this._innernext(invocation, step, method);
-            }
-        }
-        return false;
+        this.isOrder = false;
     };
     //执行
     InvokeProxy.prototype.run = function(invocation){
-        this._next(invocation); //开始执行
-        return invocation.result;
+        if(!this.isOrder){ //防止多次排序
+            this.isOrder = true;
+            this.list.sort(function(a, b){ return b.index - a.index; });
+        }
+        /*复制一份出来，防止执行的过程中有添加拦截器*/
+        return invocation.run([].concat(this.list)); //开始执行
     };
 
     //函数的代理
