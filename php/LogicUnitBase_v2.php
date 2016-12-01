@@ -62,8 +62,12 @@ abstract class LogicUnitBase {
      */
     public function next($context, $data = null){
         if(!$context -> isEnd()) { //如果结束了就不会继续传播
-            $context->CurLogicUnit = $this->nLogicUnit;
-            $this->nLogicUnit->exec($context, $data);
+            if($this->nLogicUnit){
+                $context->CurLogicUnit = $this->nLogicUnit;
+                $this->nLogicUnit->exec($context, $data);
+            } else {
+                $context->next(true, $data);
+            }
         }
     }
 
