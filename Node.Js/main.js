@@ -1,11 +1,11 @@
 //main.jS
 
-var exp = require('E:\\learn\\Node.Js\\example.js')
+var exp = require('./example.js')
 var exp2 = require('./funexports.js')
 var exp3 = require('./module').footbar,
 fb = new exp3(),
 fs = require('fs'),
-file = 'E:\\learn\\Node.Js\\module\\index.html',
+file = './module/index.html',
 encode = 'utf8';
 
 var EventEmitter = require('events').EventEmitter,
