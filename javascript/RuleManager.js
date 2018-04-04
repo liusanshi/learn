@@ -13,8 +13,8 @@ var rule = new qv.zero.RuleManager({
         next(2, '参数错误');
     }
 });
-rule.exec({arg1: 1, arg2: 2}, function(success, msg){
-    console.log(success, msg);
+rule.exec({arg1: 1, arg2: 2}, function(match, msg){
+    console.log(match, msg);
 });
 
 var rule2 = new qv.zero.RuleManager({
@@ -36,8 +36,8 @@ var rule2 = new qv.zero.RuleManager({
         },
 ]
 });
-rule2.exec({arg1: 1, arg2: 3}, function(success, msg){
-    console.log(success, msg);
+rule2.exec({arg1: 1, arg2: 3}, function(match, msg){
+    console.log(match, msg);
 });
 
 var rule3 = new qv.zero.RuleManager({
@@ -59,8 +59,8 @@ var rule3 = new qv.zero.RuleManager({
         },
 ]
 });
-rule3.exec({arg1: 1, arg2: 3}, function(success, msg){
-    console.log(success, msg);
+rule3.exec({arg1: 1, arg2: 3}, function(match, msg){
+    console.log(match, msg);
 });
 
 
@@ -107,39 +107,40 @@ var rule4 = new qv.zero.RuleManager({
         },
 ]
 });
-rule4.exec({arg1: 1, arg2: 3}, function(success, msg){
-    console.log(success, msg);
+rule4.exec({arg1: 1, arg2: 3}, function(match, msg){
+    console.log(match, msg);
 });
 
  */
 (function (exports) {
-    function Rule(logic, value, executor){
+    function Rule(logic, value, executor, plist){
         this.value = value;
         this.logic = logic;
         this.executor = executor;
+        this.plist = plist || {};
     }
     Rule.prototype.exec = function(context, next){
         var me = this;
-        this.executor(context, function(res, msg){
+        this.executor(context, function(res, data){
             switch (me.logic){
                 case '>':
-                    return next(res > me.value, msg);
+                    return next(res > me.value, data);
                 case '>=':
-                    return (res >= me.value, msg);
+                    return (res >= me.value, data);
                 case '<':
-                    return next(res < me.value, msg);
+                    return next(res < me.value, data);
                 case '<=':
-                    return next(res <= me.value, msg);
+                    return next(res <= me.value, data);
                 case '==':
-                    return next(res == me.value, msg);
+                    return next(res == me.value, data);
                 case 'in':
                     if(me.value.indexOf){ //string || array
-                        return next(~me.value.indexOf(res), msg);
+                        return next(~me.value.indexOf(res), data);
                     } else { //object
-                        return next(!!(me.value && me.value[res]), msg);
+                        return next(!!(me.value && me.value[res]), data);
                     }
                 default:
-                    return next(false, 'logic error');
+                    return next(false, {msg: 'logic error'});
             }
         });
     };
@@ -155,7 +156,7 @@ rule4.exec({arg1: 1, arg2: 3}, function(success, msg){
                 throw '数据格式错误';
             }
         } else if('logic' in data && 'value' in data && 'executor' in data) {
-            return new Rule(data.logic, data.value, data.executor);
+            return new Rule(data.logic, data.value, data.executor, data.plist);
         } else {
             throw '数据格式错误';
         }
@@ -190,8 +191,8 @@ rule4.exec({arg1: 1, arg2: 3}, function(success, msg){
                 var element = this.list[index];
                 total = (function(prev, item){
                     return function(context){
-                        item.exec(context, function(success, msg){
-                            if(success){
+                        item.exec(context, function(match, msg){
+                            if(match){
                                 prev ? prev(context) : next(true, msg);
                             } else {
                                 next(false, msg);
@@ -223,8 +224,8 @@ rule4.exec({arg1: 1, arg2: 3}, function(success, msg){
                 var element = this.list[index];
                 total = (function(prev, item){
                     return function(context){
-                        item.exec(context, function(success, msg){
-                            if(success){
+                        item.exec(context, function(match, msg){
+                            if(match){
                                 next(true, msg);
                             } else {
                                 prev ? prev(context) : next(false, msg) ;
