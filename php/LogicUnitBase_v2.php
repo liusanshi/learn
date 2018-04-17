@@ -448,7 +448,7 @@ class LogicContainer{
 
 //使用方法：===================================================
 
-class LUA extends ILogicUnit{
+class LUA implements ILogicUnit{
     public function process($context, $data = null) {
 
         echo "处理逻辑： A\n";
@@ -458,7 +458,7 @@ class LUA extends ILogicUnit{
     }
 }
 
-class LUB extends ILogicUnit{
+class LUB implements ILogicUnit{
     public function process($context, $data = null) {
 
         echo "处理逻辑： B\n";
@@ -467,7 +467,7 @@ class LUB extends ILogicUnit{
     }
 }
 
-class LUEnd extends ILogicUnit{
+class LUEnd implements ILogicUnit{
     public function process($context, $data = null) {
 
         echo "处理结束\n";
