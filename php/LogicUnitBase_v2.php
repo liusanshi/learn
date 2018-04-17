@@ -11,11 +11,6 @@
  */
 
 /**
- * 逻辑处理单元
- * Class LogicalUnit
- */
-<?php
-/**
  * 逻辑单元的接口
  * Interface ILogicUnit
  */
