@@ -7,5 +7,7 @@ func main(){
 
 	fmt.Println(arr);
 
+	fmt.Println(12);
+
 	fmt.Println("Hello, World!");
 }
