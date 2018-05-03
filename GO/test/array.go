@@ -1,10 +1,10 @@
-package main
+package test
 
 import (
 	"fmt"
 )
 
-func main(){
+func Array(){
 	arr1 := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 	fmt.Printf("arr1 = %p\n", &arr1)

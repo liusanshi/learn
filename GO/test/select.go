@@ -1,8 +1,8 @@
-package main
+package test
 
 import "fmt";
 
-func main () {
+func Select () {
 	var c1, c2, c3 chan int;
 	var i1, i2 int;
 
