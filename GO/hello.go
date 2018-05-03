@@ -22,6 +22,7 @@ func main(){
 
 	var arr [5]int;
 	fmt.Printf("arr:%t\n", arr);
+	//arr = []int{1, 2, 3, 4}
 
 	fmt.Println("Hello, World!");
 
