@@ -25,6 +25,11 @@ func main(){
 
 	fmt.Println("Hello, World!");
 
-	test.Array()
+	// fmt.Println(test.GetFunctionName(test.Array))
+
+	var getFunctionName func(interface{}) string;
+	test.Decorator(&getFunctionName, test.GetFunctionName)
+
+	fmt.Println(getFunctionName(test.Array))
 }
 
