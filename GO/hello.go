@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"./test"
-	"time"
+	// "time"
 )
 //import "unsafe"
 
@@ -34,7 +34,7 @@ func main(){
 
 	fmt.Println(getFunctionName(test.Array))
 	
-	const MAX = 100000;
+/* 	const MAX = 100000;
 	fmt.Println("PrintArgs => begin")
 	begin := time.Now().UnixNano()
 	test.TestPrint(MAX, test.PrintArgs)
@@ -45,8 +45,18 @@ func main(){
 	begin = time.Now().UnixNano()
 	test.TestPrint(MAX, test.PrintArgsStrings)
 	fmt.Println("PrintArgsStrings => end", time.Now().UnixNano() - begin)
+ */
+	test.FetchAll([]string{
+		"www.qq.com",
+		"www.baidu.com",
+	});
 
-	
+	test.FetchAllSeq([]string{
+		"www.qq.com",
+		"www.baidu.com",
+	});
+
+	test.WebServer();
 }
 
 

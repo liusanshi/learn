@@ -6,7 +6,10 @@
 			"type": "go",
 			"request": "launch",
 			"mode": "debug",
-			"program": "${file}"
+			"program": "${file}",
+			"args": [
+				"http://www.baidu.com"
+			]
 		},
 		{
 			"name": "Launch index.html with sourcemaps",
