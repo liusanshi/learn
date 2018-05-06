@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"./test"
+	"time"
 )
 //import "unsafe"
 
@@ -32,5 +33,23 @@ func main(){
 	test.Decorator(&getFunctionName, test.GetFunctionName)
 
 	fmt.Println(getFunctionName(test.Array))
+	
+	const MAX = 100000;
+	fmt.Println("PrintArgs => begin")
+	begin := time.Now().UnixNano()
+	test.TestPrint(MAX, test.PrintArgs)
+	fmt.Println("PrintArgs => end", time.Now().UnixNano() - begin)
+
+
+	fmt.Println("PrintArgsStrings => begin")
+	begin = time.Now().UnixNano()
+	test.TestPrint(MAX, test.PrintArgsStrings)
+	fmt.Println("PrintArgsStrings => end", time.Now().UnixNano() - begin)
+
+	
 }
 
+
+func init(){
+	fmt.Println("main init ....")
+}

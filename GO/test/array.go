@@ -23,3 +23,7 @@ func Array(){
 
 	fmt.Printf("arr3 = %x\n", arr3)
 }
+
+func init(){
+	fmt.Println("test/array/init...")
+}
