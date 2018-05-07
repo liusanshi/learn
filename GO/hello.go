@@ -48,15 +48,17 @@ func main(){
  */
 	test.FetchAll([]string{
 		"www.qq.com",
-		"www.baidu.com",
+		// "www.baidu.com",
 	});
 
 	test.FetchAllSeq([]string{
 		"www.qq.com",
-		"www.baidu.com",
+		// "www.baidu.com",
 	});
 
-	test.WebServer();
+	// test.WebServer();
+
+	test.Escapes();
 }
 
 
