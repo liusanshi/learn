@@ -56,9 +56,9 @@ func main(){
 		// "www.baidu.com",
 	});
 
-	// test.WebServer();
+	test.WebServer();
 
-	test.Escapes();
+	// test.Escapes();
 }
 
 

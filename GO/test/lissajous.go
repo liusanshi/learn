@@ -19,7 +19,7 @@ const (
 	blackIndex = 1
 )
 
-func Lissajous(out io.Writer, cycles int){
+func Lissajous(out io.Writer, cycles float64){
 	// out := os.Stdout
 	if out == nil {
 		out = os.Stdout
@@ -40,7 +40,7 @@ func Lissajous(out io.Writer, cycles int){
 	for i:= 0; i<= nframes; i++ {
 		rect := image.Rect(0, 0, 2 * size + 1, 2 * size + 1)
 		img := image.NewPaletted(rect, palettle)
-		for t := 0.0; t < float64(cycles) * 2 * math.Pi; t += res {
+		for t := 0.0; t < cycles * 2 * math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t * freq + phase)
 			img.SetColorIndex(size + int(x * size + 0.5), size + int(y * size + 0.5), 4)

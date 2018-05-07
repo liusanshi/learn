@@ -30,14 +30,23 @@ func WebServer(){
 		if err := req.ParseForm(); err != nil{
 			log.Print(err);
 		}
-		cycle,err := strconv.Atoi(req.Form.Get("cycle"))
+		// cycle,err := strconv.Atoi(req.Form.Get("cycle"))
+		strcycle := req.Form.Get("cycle")
+		if strcycle == "" {
+			strcycle = "5"
+		}
+		cycle,err := strconv.ParseFloat(strcycle, 64)
 		if err != nil {
 			fmt.Fprintf(resp, "cycle type err")
 			return
 		}
 		Lissajous(resp, cycle)
 	})
-	log.Fatal(http.ListenAndServe("127.0.0.1:8080", nil))
+	http.HandleFunc("/surface", func(resp http.ResponseWriter, req *http.Request){
+		resp.Header().Add("Content-Type", "text/html; charset=UTF-8"); //指示输出为html格式不是文本
+		Surface(resp)
+	})
+	log.Fatal(http.ListenAndServe("127.0.0.1:8888", nil))
 }
 
 func info(resp http.ResponseWriter, req *http.Request){
