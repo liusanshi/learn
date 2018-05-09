@@ -47,16 +47,20 @@ func main(){
 	fmt.Println("PrintArgsStrings => end", time.Now().UnixNano() - begin)
  */
 	test.FetchAll([]string{
-		"www.qq.com",
+		"www.baidu.com",
 		// "www.baidu.com",
 	});
 
 	test.FetchAllSeq([]string{
-		"www.qq.com",
+		"www.baidu.com",
 		// "www.baidu.com",
 	});
 
-	test.WebServer();
+	fmt.Println(test.CommaDecimal("123146.122323"))
+	fmt.Println(test.IntsToString([]int{1,2,3,4,5,6,7,8,9}))
+	// fmt.Println("basename:", test.Basename("/a/b/你好acn.x.s."))
+	// test.StrToRune("hello 世界!")
+	// test.WebServer();
 
 	// test.Escapes();
 }
