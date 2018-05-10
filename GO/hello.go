@@ -47,12 +47,12 @@ func main(){
 	fmt.Println("PrintArgsStrings => end", time.Now().UnixNano() - begin)
  */
 	test.FetchAll([]string{
-		"www.baidu.com",
+		"www.qq.com",
 		// "www.baidu.com",
 	});
 
 	test.FetchAllSeq([]string{
-		"www.baidu.com",
+		"www.qq.com",
 		// "www.baidu.com",
 	});
 
@@ -63,8 +63,17 @@ func main(){
 	// test.WebServer();
 
 	// test.Escapes();
-}
+	
+	Arr := []int{1,2,3,4,5,6}
+	test.Reverse(Arr)
+	fmt.Println(Arr)
 
+	// Arr = []int{1,2,3,4,5,6}
+	test.Move3(Arr, 2)
+	fmt.Println(Arr)
+
+	test.Array()
+}
 
 func init(){
 	fmt.Println("main init ....")

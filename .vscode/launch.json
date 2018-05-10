@@ -6,7 +6,7 @@
 			"type": "go",
 			"request": "launch",
 			"mode": "debug",
-			"program": "${file}",
+			"program": "${workspaceRoot}/GO/hello.go",
 			"args": [
 				"http://www.baidu.com"
 			]
