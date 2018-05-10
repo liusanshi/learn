@@ -14,6 +14,9 @@ var (
 )
 
 func WebServer(){
+	http.HandleFunc("/test", func(resp http.ResponseWriter, req *http.Request){
+		fmt.Fprintf(resp, "hello world\n")
+	})
 	http.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request){
 		mu.Lock()
 		count++
