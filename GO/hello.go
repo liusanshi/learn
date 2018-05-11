@@ -76,7 +76,7 @@ func main(){
 	fmt.Println(Arr)
 	// test.Array()
 
-	test.JsonUnmarshal()
+	test.PrintSearchIssues([]string{"golang/go"})
 }
 
 func init(){
