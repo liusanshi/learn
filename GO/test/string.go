@@ -68,7 +68,8 @@ func Comma(s string) string{
 		return s
 	}
 	const LEN = 3
-	var str *bytes.Buffer = bytes.NewBufferString("")
+	// var str *bytes.Buffer = bytes.NewBufferString("")
+	var str *bytes.Buffer = bytes.NewBuffer(make([]byte, 0, 50)) //预先设置长度，防止多次复制
 	index, length := l % LEN, l / LEN
 	str.WriteString(s[:index])
 	s = s[index:]

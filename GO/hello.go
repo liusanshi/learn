@@ -64,7 +64,7 @@ func main(){
 
 	// test.Escapes();
 	
-	Arr := []int{1,2,3,4,5,6}
+	Arr := []int{1,2,3,4,5,6, 8, 23}
 	test.Reverse(Arr)
 	fmt.Println(Arr)
 
@@ -72,7 +72,11 @@ func main(){
 	test.Move3(Arr, 2)
 	fmt.Println(Arr)
 
-	test.Array()
+	test.Sort(Arr)
+	fmt.Println(Arr)
+	// test.Array()
+
+	test.JsonUnmarshal()
 }
 
 func init(){
