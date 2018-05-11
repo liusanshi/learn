@@ -76,7 +76,7 @@ func main(){
 	fmt.Println(Arr)
 	// test.Array()
 
-	test.PrintSearchIssues([]string{"golang/go"})
+	test.PrintSearchIssues([]string{"repo:golang/go", "is:open", "json", "decoder"})
 }
 
 func init(){

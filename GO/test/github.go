@@ -1,6 +1,8 @@
 package test
 
 import (
+	// "os"
+	// "io"
 	"fmt"
 	"time"
 	"encoding/json"
@@ -22,7 +24,7 @@ type Issues struct {
 	Title string
 	State string
 	User *User
-	CreateAt time.Time `json:"create_at"`
+	CreateAt time.Time `json:"created_at"`
 	Body string
 }
 
@@ -39,7 +41,7 @@ func PrintSearchIssues(terms []string){
 	}
 	fmt.Printf("%d issues:\n", result.TotalCount)
 	for _, item := range result.Items {
-		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+		fmt.Printf("#%-5d %9.9s %.55s %s\n", item.Number, item.User.Login, item.Title, item.CreateAt.String())
 	}
 }
 
@@ -54,7 +56,7 @@ func SearchIssues(terms []string) (*IssuesSearchResult, error){
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("search query fail: %s", resp.Status)
 	}
-
+	// io.Copy(os.Stdout, resp.Body)
 	var result IssuesSearchResult
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return nil, err
