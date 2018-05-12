@@ -76,7 +76,9 @@ func main(){
 	fmt.Println(Arr)
 	// test.Array()
 
-	test.PrintSearchIssues([]string{"repo:golang/go", "is:open", "json", "decoder"})
+	// test.PrintSearchIssues([]string{"repo:golang/go", "is:open", "json", "decoder"})
+
+	fmt.Println(test.CountWordAndImage("https://github.com/liusanshi"))
 }
 
 func init(){

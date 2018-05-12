@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"html/template"
 )
 
 var (
@@ -29,6 +30,8 @@ func WebServer(){
 		mu.RUnlock()
 	});
 	http.HandleFunc("/info", info)
+	http.HandleFunc("/issues", IssuesInfo)
+	http.HandleFunc("/escape", HTMLEscape)
 	http.HandleFunc("/img", func(resp http.ResponseWriter, req *http.Request){
 		if err := req.ParseForm(); err != nil{
 			log.Print(err);
@@ -66,4 +69,44 @@ func info(resp http.ResponseWriter, req *http.Request){
 	for k ,v := range req.Form{
 		fmt.Fprintf(resp, "Form:[%q] = %q\n", k, v)
 	}
+}
+
+func IssuesInfo(resp http.ResponseWriter, req *http.Request){
+	issuessList := template.Must(template.New("issues").Parse(`
+		<h1>{{.TotalCount}}</h1>
+		<table>
+		<tr style="text-align:left;">
+			<th>#</th>
+			<th>State</th>
+			<th>User</th>
+			<th>Title</th>
+		</tr>
+		{{range .Items}}
+			<tr>
+				<td><a href="{{.HTMLURL}}" />{{.Number}}</td>
+				<td>{{.State}}</td>
+				<td><a href="{{.User.HTMLURL}}">{{.User.Login}}</td>
+				<td><a href="{{.HTMLURL}}" />{{.Title}}</td>
+			</tr>
+		{{end}}
+		<table>
+		`))
+
+		result, err := SearchIssues([]string{"repo:golang/go", "is:open", "json", "decoder"})
+		if err != nil {
+			fmt.Fprintf(resp, "search issues fail: %s\n", err)
+			return
+		}
+		issuessList.Execute(resp, result)
+}
+
+func HTMLEscape(resp http.ResponseWriter, req *http.Request){
+	var data struct {
+		A string
+		B template.HTML
+	}
+	data.A = "<b>Hello!</b>"
+	data.B = "<b>Hello!</b>"
+	template.Must(template.New("escape").Parse(`<p>A:{{.A}}</p><p>B:{{.B}}</p>`)).
+		Execute(resp, data)
 }
