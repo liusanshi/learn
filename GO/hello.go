@@ -80,7 +80,7 @@ func main(){
 
 	// fmt.Println(test.CountWordAndImage("https://github.com/liusanshi"))
 
-	test.MethodTest()
+	test.IntSetTest()
 }
 
 func init(){
