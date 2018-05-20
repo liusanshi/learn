@@ -1,9 +1,10 @@
-package test
+package unit
 
 import (
 	"reflect"
 	"unsafe"
 	"testing"
+	"../test"
 )
 
 //go test .\test\benchmark_test.go -v -bench=".*"
@@ -44,4 +45,16 @@ func BenchmarkBytesToStringNomal(b *testing.B){
 
 func TestMyFristTesting(t *testing.T) {
 	t.Log("hi~")
+}
+
+func Benchmark_FiltName(b *testing.B){
+	for i := 0; i < b.N; i++ {
+		test.FiltName(&test.LocalUser{"", "ll", 34}, "哈哈")
+	}
+}
+
+func Benchmark_FiltNameWithOffset(b *testing.B){
+	for i := 0; i < b.N; i++ {
+		test.FiltNameWithOffset(&test.LocalUser{"", "ll", 34}, "哈哈")
+	}
 }

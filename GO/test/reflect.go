@@ -1,6 +1,8 @@
 package test
 
 import (
+	"io/ioutil"
+	"unsafe"
 	"fmt"
 	"reflect"
 	"runtime"
@@ -31,3 +33,46 @@ func Decorator(decoptr, fn interface{}) (err error){
 
 	return;
 }
+
+type LocalUser struct {
+	Address string
+	Name string
+	Age int
+}
+
+var handler = func(u *LocalUser, message string) {
+	fmt.Fprintln(ioutil.Discard,"Hello, My Name is %s, I am %d year old! so, %s\n", u.Name, u.Age, message)
+}
+
+func FiltName(u *LocalUser, messgae string){
+	fn := reflect.ValueOf(handler)
+	uv := reflect.ValueOf(u)
+	name := uv.Elem().FieldByName("Name")
+	name.SetString("***")
+	fn.Call([]reflect.Value{uv, reflect.ValueOf(messgae)})
+}
+
+var offset uintptr = 0xFFFF
+func FiltNameWithOffset(u *LocalUser, messgae string){
+	if offset == 0xFFFF {
+		t := reflect.TypeOf(*u)//.Elem()
+		name, _ := t.FieldByName("Name")
+		offset = name.Offset
+	}
+	up := (*[2]uintptr)(unsafe.Pointer(&u))
+	upnamePtr := (*string)(unsafe.Pointer(up[0]+offset))
+	*upnamePtr = "~~~"
+	fn := reflect.ValueOf(handler)
+	uv := reflect.ValueOf(u)
+	fn.Call([]reflect.Value{uv, reflect.ValueOf(messgae)})
+}
+
+
+func ReflectTesting(){
+	fmt.Println("reflect===============")
+	FiltName(&LocalUser{"",  "PLM", 34 }, "hehe")
+	fmt.Println("reflect offset========")
+	FiltNameWithOffset(&LocalUser{ "",  "PLM", 34 }, "hehe")
+	
+}
+
