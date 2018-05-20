@@ -48,13 +48,22 @@ func TestMyFristTesting(t *testing.T) {
 }
 
 func Benchmark_FiltName(b *testing.B){
+	user := &test.LocalUser{"", "ll", 34}
 	for i := 0; i < b.N; i++ {
-		test.FiltName(&test.LocalUser{"", "ll", 34}, "哈哈")
+		test.FiltName(user, "哈哈1")
 	}
 }
 
 func Benchmark_FiltNameWithOffset(b *testing.B){
+	user := &test.LocalUser{"", "ll", 34}
 	for i := 0; i < b.N; i++ {
-		test.FiltNameWithOffset(&test.LocalUser{"", "ll", 34}, "哈哈")
+		test.FiltNameWithOffset(user, "哈哈2")
+	}
+}
+
+func Benchmark_FiltNameWithCache(b *testing.B){
+	user := &test.LocalUser{"", "ll", 34}
+	for i := 0; i < b.N; i++ {
+		test.FiltNameWithCache(user, "哈哈3")
 	}
 }
