@@ -17,8 +17,9 @@ func ClockServer() {
 		conn, err := listen.Accept()
 		if err != nil {
 			log.Print(err)
+			continue
 		}
-		handleConn(conn)
+		go handleConn(conn)
 	}
 }
 
@@ -29,6 +30,7 @@ func handleConn(conn net.Conn) {
 		_, err := io.WriteString(conn, t)
 		if err != nil {
 			log.Print(err)
+			break
 		}
 		time.Sleep(1 * time.Second)
 	}
