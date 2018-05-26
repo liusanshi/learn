@@ -11,6 +11,7 @@ func ClockServer() {
 	listen, err := net.Listen("tcp", "127.0.0.1:8000")
 	if err != nil {
 		log.Print(err)
+		return
 	}
 
 	for {

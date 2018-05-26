@@ -6,9 +6,9 @@
 			"type": "go",
 			"request": "launch",
 			"mode": "debug",
-			"program": "${workspaceRoot}/GO/hello.go",
+			"program": "${workspaceRoot}/GO/src/main.go",
 			"args": [
-				"http://www.baidu.com"
+				"--func=ftpClient"
 			]
 		},
 		{
