@@ -30,6 +30,8 @@ func main() {
 		ch8.StartFtpClient("127.0.0.1:8000")
 	case "pipeline":
 		ch8.PipeLine()
+	case "parall":
+		ch8.Parall()
 	default:
 		println("method not found")
 	}
