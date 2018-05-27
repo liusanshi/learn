@@ -2,6 +2,7 @@ package ch8
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -61,7 +62,7 @@ func (this *Ftp) Close() {
 
 func (this *User) process(ctx context.Context) {
 	conn := this.conn
-	if _, err := this.Write([]byte("220 FTP Server v1.0\r\n")); err != nil {
+	if _, err := this.Write([]byte("220 FTP Server v1.0")); err != nil {
 		return
 	}
 	for {
@@ -92,7 +93,7 @@ func (this *User) process(ctx context.Context) {
 		if method.IsValid() {
 			method.Call([]reflect.Value{})
 		} else {
-			if _, err := this.Write([]byte("方法未找到\r\n")); err != nil {
+			if _, err := this.Write([]byte("方法[" + strMethod + "]未找到")); err != nil {
 				return
 			}
 		}
@@ -100,7 +101,7 @@ func (this *User) process(ctx context.Context) {
 }
 
 func (this *User) Write(cmd []byte) (int, error) {
-	length, err := this.conn.Write(cmd)
+	length, err := this.conn.Write(append(cmd, '\n', '\n'))
 	if err != nil {
 		log.Print(err)
 	}
@@ -111,29 +112,33 @@ func (this *User) List() {
 	writer := this.conn
 	list, err := ioutil.ReadDir(this.ctx.path)
 	if err != nil {
-		fmt.Fprintf(writer, "server err:%v\r\n", err)
+		fmt.Fprintf(writer, "server err:%v\n\n", err)
 		return
 	}
-
+	var resp = bytes.NewBuffer(make([]byte, 0, 100))
 	for _, dir := range list {
 		if dir.IsDir() {
-			log.Printf("DIR: Name:%s Size:%d\n", dir.Name(), dir.Size())
-			_, err = fmt.Fprintf(writer, "DIR: Name:%s Size:%d\r\n", dir.Name(), dir.Size())
+			_, err = fmt.Fprintf(resp, "DIR: Name:%s Size:%d\n", dir.Name(), dir.Size())
 		} else {
-			log.Printf("DIR: Name:%s Size:%d\n", dir.Name(), dir.Size())
-			_, err = fmt.Fprintf(writer, "FILE:Name:%s Size:%d\r\n", dir.Name(), dir.Size())
+			_, err = fmt.Fprintf(resp, "FILE:Name:%s Size:%d\n", dir.Name(), dir.Size())
 		}
 		if err != nil {
 			log.Print(err)
 			return
 		}
 	}
+	log.Printf("%s\n", resp)
+	this.Write(resp.Bytes())
 }
 
 func (this *User) Quit() {
-	_, _ = fmt.Fprintf(this.conn, "Bye\r\n")
+	this.Write([]byte("Bye"))
+	log.Println("Quit")
 	this.closed = true
-	this.conn.Close()
+	err := this.conn.Close()
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func StartFtpServer(port int, path string) *Ftp {
