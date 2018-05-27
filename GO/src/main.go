@@ -28,6 +28,8 @@ func main() {
 		ch8.StartFtpServer(8000, "E:\\git\\learn\\GO")
 	case "ch8.ftpClient", "ftpClient":
 		ch8.StartFtpClient("127.0.0.1:8000")
+	case "pipeline":
+		ch8.PipeLine()
 	default:
 		println("method not found")
 	}
