@@ -65,18 +65,13 @@ func (this *User) process(ctx context.Context) {
 	if _, err := this.Write([]byte("220 FTP Server v1.0")); err != nil {
 		return
 	}
-	for {
+	input := bufio.NewScanner(conn)
+	for input.Scan() {
 		if this.closed {
 			log.Println("closing...")
 			return
 		}
-		// conn.SetReadDeadline(time.Now().Add(100 * time.Millisecond)) //100ms超时时间
-		bstr, _, err := bufio.NewReader(conn).ReadLine()
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		strMethod := string(bstr)
+		strMethod := input.Text()
 		log.Printf("remoting ip:%v connecting; cmd:%s;\n", conn.RemoteAddr(), strMethod)
 		cache.RLock()
 		method, ok := cache.data[strMethod]

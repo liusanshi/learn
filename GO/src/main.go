@@ -32,6 +32,10 @@ func main() {
 		ch8.PipeLine()
 	case "parall":
 		ch8.Parall()
+	case "echoServer":
+		ch8.EchoServer()
+	case "echoClient":
+		ch8.EchoClient()
 	default:
 		println("method not found")
 	}

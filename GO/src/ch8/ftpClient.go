@@ -3,6 +3,8 @@ package ch8
 import (
 	"bufio"
 	"bytes"
+	"fmt"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -20,38 +22,21 @@ func StartFtpClient(addr string) {
 		log.Println(err)
 		return
 	}
-	go readConn(conn)
-	isend := false
-	for {
-		cmd, _, err := bufio.NewReader(os.Stdin).ReadLine()
-		if err != nil {
-			log.Println(err)
-			return
-		}
+	defer conn.Close()
+	conn.Write([]byte("HI~\n"))
+	go mustCopy(os.Stdout, conn)
+	mustCopy(conn, os.Stdin)
+}
 
-		if compSlice(cmd, []byte("Quit")) {
-			isend = true
-		}
-		cmd = append(cmd, '\n')
-		log.Printf("send msg:%s\n", cmd)
-		_, err = conn.Write(cmd)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		// log.Println("result:")
-		// readConn(conn)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		log.Println("完成一次交互")
-		if isend {
-			conn.Close()
-			return
-		}
+func mustCopybuff(dis io.Writer, src io.Reader) {
+	buf := make([]byte, 1024)
+	count, err := io.CopyBuffer(dis, src, buf)
+	if count > 0 {
+		fmt.Println("end...")
 	}
-
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func readConn(conn net.Conn) {
