@@ -23,7 +23,7 @@ func StartFtpClient(addr string) {
 		return
 	}
 	defer conn.Close()
-	conn.Write([]byte("HI~\n"))
+	// conn.Write([]byte("HI~\n"))
 	go mustCopy(os.Stdout, conn)
 	mustCopy(conn, os.Stdin)
 }

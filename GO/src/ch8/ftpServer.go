@@ -48,6 +48,7 @@ func (this *Ftp) Start() {
 			log.Print(err)
 			continue
 		}
+		fmt.Printf("conn:%#v\n", conn)
 		user := &User{
 			conn: conn,
 			ctx:  this,

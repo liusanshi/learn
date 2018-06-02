@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/myproject/src/ch8"
+	"./ch8"
 )
 
 func main() {
@@ -36,6 +36,8 @@ func main() {
 		ch8.EchoServer()
 	case "echoClient":
 		ch8.EchoClient()
+	case "crawler":
+		ch8.Crawler("http://vip.qq.com")
 	default:
 		println("method not found")
 	}
