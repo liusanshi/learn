@@ -38,6 +38,8 @@ func main() {
 		ch8.EchoClient()
 	case "crawler":
 		ch8.Crawler("http://vip.qq.com")
+	case "crawler2":
+		ch8.LinkInfoTest("http://vip.qq.com")
 	default:
 		println("method not found")
 	}

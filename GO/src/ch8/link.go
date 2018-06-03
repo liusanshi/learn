@@ -1,8 +1,16 @@
 package ch8
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
+	"net/url"
+	"os"
+	"path"
+	"sync"
+	"time"
 
 	"golang.org/x/net/html"
 	// "golang.org/x/net/html"
@@ -19,6 +27,184 @@ func (this *Element) getAttr(key string) (string, bool) {
 		return a.Val, true
 	}
 	return "", false
+}
+
+//文档类型
+const (
+	HTML = iota
+	TEXT
+	JS
+	CSS
+	IMG
+)
+
+type linkInfo struct {
+	content  []byte
+	linkType int
+	URL      *url.URL
+	level    int //层级
+}
+
+var urlCache = struct {
+	m map[string]bool
+	sync.RWMutex
+}{
+	m: make(map[string]bool),
+}
+
+//保存文件
+func (this *linkInfo) save(filepath string) error {
+	if len(this.content) <= 0 {
+		return nil
+	}
+	host := this.URL.Hostname()
+	filepath += "/" + host
+	filename := this.URL.Path
+	if filename == "/" || filename == "" {
+		filename = "/index.html"
+	}
+	filepath += filename
+	distdir := path.Dir(filepath)
+	_, err := os.Stat(distdir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = os.MkdirAll(distdir, os.ModePerm)
+			if err != nil {
+				return err
+			}
+		} else {
+			return err
+		}
+	}
+	if filepath[len(filepath)-1:] == "/" {
+		filepath += "index.htm"
+	}
+	fmt.Printf("begin save file:%s\n", filepath)
+	return ioutil.WriteFile(filepath, this.content, os.ModePerm)
+}
+
+//获取url
+func (this *linkInfo) getUrl(url string) string {
+	if this.URL != nil {
+		url = this.URL.String()
+	}
+	return url
+}
+
+//下载文件
+func (this *linkInfo) download(url string) error {
+	url = this.getUrl(url)
+	if len(url) <= 0 {
+		return nil
+	}
+	fmt.Printf("begin download level:%d, type:%d, url:%s\n", this.level, this.linkType, url)
+	client := &http.Client{
+		Timeout: 1 * time.Second,
+	}
+	resp, err := client.Get(url)
+	if err != nil {
+		return err
+	}
+	if resp.StatusCode != http.StatusOK {
+		resp.Body.Close()
+		return fmt.Errorf("getting %s: %s", url, resp.Status)
+	}
+	content, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err != nil {
+		return err
+	}
+	this.content = content
+	this.URL = resp.Request.URL
+	return nil
+}
+
+func (this *linkInfo) extract() ([]*linkInfo, error) {
+	links := make([]*linkInfo, 0, 20)
+	visitNode := func(n *html.Node) {
+		if n.Type == html.ElementNode {
+			ele := (*Element)(n)
+			key := ""
+			docType := TEXT
+			switch n.Data {
+			case "link":
+				docType = CSS
+				key = "href"
+			case "a":
+				docType = HTML
+				key = "href"
+			case "script":
+				docType = JS
+				key = "src"
+			case "img":
+				docType = IMG
+				key = "src"
+			}
+			val, ok := ele.getAttr(key)
+			if ok {
+				link, err := this.URL.Parse(val)
+				if err == nil && link.Opaque == "" {
+					links = append(links, &linkInfo{
+						URL:      link,
+						linkType: docType,
+						level:    this.level + 1,
+					})
+				}
+			}
+		}
+	}
+	doc, err := html.Parse(bytes.NewReader(this.content))
+	if err != nil {
+		return nil, err
+	}
+	forEachNode(doc, visitNode, nil)
+	return links, nil
+}
+
+func (this *linkInfo) Crawler(url, path string) error {
+	url = this.getUrl(url)
+	if _, ok := urlCache.m[url]; ok {
+		return nil
+	}
+	urlCache.Lock()
+	if _, ok := urlCache.m[url]; ok {
+		urlCache.Unlock()
+		return nil
+	}
+	urlCache.m[url] = true
+	urlCache.Unlock()
+	err := this.download(url)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	err = this.save(path)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	if this.linkType != HTML || this.level >= 10 {
+		return nil
+	}
+	list, err := this.extract()
+	if err != nil {
+		return err
+	}
+	for _, l := range list {
+		err = l.Crawler("", path)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+	}
+	return nil
+}
+
+func LinkInfoTest(url string) error {
+	link := linkInfo{
+		linkType: HTML,
+	}
+	return link.Crawler(url, "e:/download")
 }
 
 func Crawler(url string) {
