@@ -1,1 +1,1 @@
-[{"task":"{\"Url\":\"http://www.qq.com\",\"Param\":\"\",\"Method\":0,\"Head\":null}","type":"CurlTask"},{"task":"{\"Cmd\":\"/usr/bin/bash\",\"Args\":[\"echo hi\"]}","type":"ShellTask"}]
+[{"Head":{"a":"1","content-type":"html/text"},"Method":1,"Param":"","Url":"http://www.qq.com","type":"CurlTask"},{"Args":["echo hi","echo hi-1"],"Cmd":"/usr/bin/bash","type":"ShellTask"}]

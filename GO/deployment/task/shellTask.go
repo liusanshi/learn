@@ -1,11 +1,11 @@
 package task
 
 import (
-	// "encoding/json"
 	"os/exec"
 	"context"
-	// "log"
+	"fmt"
 	"bytes"
+	"../util"
 )
 
 type ShellTask struct {
@@ -13,23 +13,29 @@ type ShellTask struct {
 	Args []string
 }
 
-// func (this *ShellTask) MarshalJSON() ([]byte, error) {
-// 	data, err := json.Marshal(this)
-// 	if err != nil {
-// 		log.Printf("ShellTask MarshalJSON fail:%v\n", err)
-// 		return nil, err
-// 	}
-// 	return data, nil
-// }
+func (this *ShellTask) Init(data map[string]interface{}) (error) {
+	var ok bool
+	this.Cmd, ok = data["Cmd"].(string)
+	if !ok {
+		return fmt.Errorf("ShellTask Cmd type error")
+	}
+	args, ok := data["Args"].([]interface{})
+	if !ok {
+		return fmt.Errorf("ShellTask Args type error")
+	} else {
+		for _, a := range args {
+			this.Args = append(this.Args, a.(string))
+		}
+	}
+	return nil
+}
 
-// func (this *ShellTask) UnmarshalJSON(data []byte) error {
-// 	err := json.Unmarshal(data, &this)
-// 	if err != nil {
-// 		log.Printf("ShellTask UnmarshalJSON fail:%v\n", err)
-// 		return err
-// 	}
-// 	return nil
-// }
+func (this *ShellTask) ToMap() map[string]interface{} {
+	data := make(map[string]interface{})
+	data["Cmd"] = this.Cmd
+	data["Args"] = this.Args
+	return data
+}
 
 func (this *ShellTask) Run(ctx context.Context) (string, error){
 	args := make([]string, len(this.Args) + 1)
@@ -49,4 +55,8 @@ func (this *ShellTask) Run(ctx context.Context) (string, error){
 		return out.String(), err
 	}	
 	return out.String(), nil
+}
+
+func init(){
+	util.RegisterType((*ShellTask)(nil))
 }

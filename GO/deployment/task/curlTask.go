@@ -8,6 +8,7 @@ import (
 	// "encoding/json"
 	"context"
 	"net/http"
+	"../util"
 )
 
 type CurlMethod int
@@ -25,23 +26,43 @@ type CurlTask struct {
 	Head map[string]string
 }
 
-// func (this *CurlTask) MarshalJSON() ([]byte, error) {
-// 	data, err := json.Marshal(this)
-// 	if err != nil {
-// 		log.Printf("CurlTask MarshalJSON fail:%v\n", err)
-// 		return nil, err
-// 	}
-// 	return data, nil
-// }
+func (this *CurlTask) Init(data map[string]interface{}) (error) {
+	var ok bool
+	this.Url, ok = data["Url"].(string)
+	if !ok {
+		return fmt.Errorf("CurlTask Url type error")
+	}
+	this.Param, ok = data["Param"].(string)
+	if !ok {
+		return fmt.Errorf("CurlTask Param type error")
+	}
+	method := data["Method"].(float64)
+	if !ok {
+		return fmt.Errorf("CurlTask CurlMethod type error")
+	} else {
+		this.Method = CurlMethod(int(method))
+	}
+	if data["Head"] != nil {
+		this.Head = make(map[string]string)
+		if head, ok := data["Head"].(map[string]interface{}); ok {
+			for k, v := range head {
+				this.Head[k] = v.(string)
+			}
+		} else {
+			return fmt.Errorf("CurlTask Head type error")
+		}
+	}	
+	return nil
+}
 
-// func (this *CurlTask) UnmarshalJSON(data []byte) error {
-// 	err := json.Unmarshal(data, &this)
-// 	if err != nil {
-// 		log.Printf("CurlTask UnmarshalJSON fail:%v\n", err)
-// 		return err
-// 	}
-// 	return nil
-// }
+func (this *CurlTask) ToMap() map[string]interface{} {
+	data := make(map[string]interface{})
+	data["Url"] = this.Url
+	data["Param"] = this.Param
+	data["Method"] = this.Method
+	data["Head"] = this.Head
+	return data
+}
 
 func (this *CurlTask) Run(ctx context.Context) (string, error){
 	var method string = "GET"
@@ -90,4 +111,8 @@ func (this *CurlTask) Run(ctx context.Context) (string, error){
 		return "", err
 	}
 	return string(result), nil
+}
+
+func init(){
+	util.RegisterType((*CurlTask)(nil))
 }

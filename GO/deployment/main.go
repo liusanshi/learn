@@ -25,7 +25,7 @@ func main(){
 			}
 			config.Set(params[0], params[1])
 		case "client":
-			client.TestSaveTask(*args)
+			client.TestLoadTask(*args)
 		default :
 			log.Println("方法名称错误")
 	}
