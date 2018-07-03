@@ -65,3 +65,13 @@ func (this *Task) UnmarshalJSON(data []byte) error {
 func (this *Task) Run(ctx context.Context) (string, error) {
 	return this.Task.Run(ctx)
 }
+
+//判断是否结束
+func isEnd(ctx context.Context) bool{
+	select {
+	case <- ctx.Done():
+		return true
+	default:
+		return false
+	}
+}

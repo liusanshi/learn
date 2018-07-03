@@ -12,6 +12,9 @@ func Command(cmd string){
 
 }
 
+
+
+//测试任务的反序列化
 func TestLoadTask(cmd string){
 	path := util.GetCurrentPath() + "/task.json"
 	if !util.FileExists(path) {
@@ -29,6 +32,7 @@ func TestLoadTask(cmd string){
 	fmt.Printf("%s\n", temp)
 }
 
+//测试任务的序列化
 func TestSaveTask(cmd string){
 	taskQueue := task.TaskQueue{
 		TaskList: []task.Task{

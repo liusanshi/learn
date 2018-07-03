@@ -1,1 +1,14 @@
-[{"Head":{"a":"1","content-type":"html/text"},"Method":1,"Param":"","Url":"http://www.qq.com","type":"CurlTask"},{"Args":["echo hi","echo hi-1"],"Cmd":"/usr/bin/bash","type":"ShellTask"}]
+[{
+    "Head": {
+        "a": "1",
+        "content-type": "html/text"
+    },
+    "Method": 1,
+    "Param": "",
+    "Url": "http://www.qq.com",
+    "type": "CurlTask"
+}, {
+    "Args": ["echo hi", "echo hi-1"],
+    "Cmd": "/usr/bin/bash",
+    "type": "ShellTask"
+}]
