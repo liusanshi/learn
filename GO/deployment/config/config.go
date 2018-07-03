@@ -2,12 +2,11 @@ package config
 
 import (
 	"fmt"
-	"strings"
-	"path/filepath"
 	"os"
 	"encoding/json"
 	"log"
 	"io/ioutil"
+	"../util"
 )
 
 
@@ -39,18 +38,11 @@ type Config struct{
 }
 
 func NewConfig() *Config {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		log.Fatal(err)
-	}
-	path := strings.Replace(dir, "\\", "/", -1) + "/config.json"
-	_, err = os.Stat(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			_, err = os.Create(path)
-			if err != nil {
-				log.Fatalf("配置文件创建失败：%v", err)
-			}
+	path := util.GetCurrentPath() + "/config.json"
+	if !util.FileExists(path) {
+		_, err := os.Create(path)
+		if err != nil {
+			log.Fatalf("配置文件创建失败：%v", err)
 		}
 	}
 	return &Config{

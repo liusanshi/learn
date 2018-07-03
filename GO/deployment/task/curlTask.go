@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"log"
-	"encoding/json"
+	// "encoding/json"
 	"context"
 	"net/http"
 )
@@ -25,23 +25,23 @@ type CurlTask struct {
 	Head map[string]string
 }
 
-func (this *CurlTask) MarshalJSON() ([]byte, error) {
-	data, err := json.Marshal(this)
-	if err != nil {
-		log.Printf("CurlTask MarshalJSON fail:%v\n", err)
-		return nil, err
-	}
-	return data, nil
-}
+// func (this *CurlTask) MarshalJSON() ([]byte, error) {
+// 	data, err := json.Marshal(this)
+// 	if err != nil {
+// 		log.Printf("CurlTask MarshalJSON fail:%v\n", err)
+// 		return nil, err
+// 	}
+// 	return data, nil
+// }
 
-func (this *CurlTask) UnmarshalJSON(data []byte) error {
-	err := json.Unmarshal(data, &this)
-	if err != nil {
-		log.Printf("CurlTask UnmarshalJSON fail:%v\n", err)
-		return err
-	}
-	return nil
-}
+// func (this *CurlTask) UnmarshalJSON(data []byte) error {
+// 	err := json.Unmarshal(data, &this)
+// 	if err != nil {
+// 		log.Printf("CurlTask UnmarshalJSON fail:%v\n", err)
+// 		return err
+// 	}
+// 	return nil
+// }
 
 func (this *CurlTask) Run(ctx context.Context) (string, error){
 	var method string = "GET"

@@ -1,0 +1,1 @@
+[{"task":"{\"Url\":\"http://www.qq.com\",\"Param\":\"\",\"Method\":0,\"Head\":null}","type":"CurlTask"},{"task":"{\"Cmd\":\"/usr/bin/bash\",\"Args\":[\"echo hi\"]}","type":"ShellTask"}]

@@ -7,15 +7,8 @@ import (
 )
 
 //任务执行器
-type IRun interface {
-	Run(ctx context.Context) (string, error)
-}
-
-//任务接口
 type ITask interface {
-	IRun
-	json.Marshaler
-	json.Unmarshaler
+	Run(ctx context.Context) (string, error)
 }
 
 type Task struct {
@@ -26,7 +19,7 @@ type Task struct {
 func (this *Task) MarshalJSON() ([]byte, error) {
 	dic := make(map[string]string)
 	dic["type"] = this.Type
-	task, err := this.Task.MarshalJSON()
+	task, err := json.Marshal(this.Task)
 	if err != nil {
 		log.Printf("Task subTask MarshalJSON err:%v\n", err)
 		return nil, err
@@ -48,7 +41,7 @@ func (this *Task) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	this.Type = dic["type"]
-	err = this.Task.UnmarshalJSON([]byte(dic["task"]))
+	err = json.Unmarshal([]byte(dic["task"]), &this.Task)
 	if err != nil {
 		log.Printf("Task - iTask UnmarshalJSON err:%v\n", err)
 		return err

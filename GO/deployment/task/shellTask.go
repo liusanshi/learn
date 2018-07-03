@@ -1,10 +1,10 @@
 package task
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"os/exec"
 	"context"
-	"log"
+	// "log"
 	"bytes"
 )
 
@@ -13,23 +13,23 @@ type ShellTask struct {
 	Args []string
 }
 
-func (this *ShellTask) MarshalJSON() ([]byte, error) {
-	data, err := json.Marshal(this)
-	if err != nil {
-		log.Printf("ShellTask MarshalJSON fail:%v\n", err)
-		return nil, err
-	}
-	return data, nil
-}
+// func (this *ShellTask) MarshalJSON() ([]byte, error) {
+// 	data, err := json.Marshal(this)
+// 	if err != nil {
+// 		log.Printf("ShellTask MarshalJSON fail:%v\n", err)
+// 		return nil, err
+// 	}
+// 	return data, nil
+// }
 
-func (this *ShellTask) UnmarshalJSON(data []byte) error {
-	err := json.Unmarshal(data, &this)
-	if err != nil {
-		log.Printf("ShellTask UnmarshalJSON fail:%v\n", err)
-		return err
-	}
-	return nil
-}
+// func (this *ShellTask) UnmarshalJSON(data []byte) error {
+// 	err := json.Unmarshal(data, &this)
+// 	if err != nil {
+// 		log.Printf("ShellTask UnmarshalJSON fail:%v\n", err)
+// 		return err
+// 	}
+// 	return nil
+// }
 
 func (this *ShellTask) Run(ctx context.Context) (string, error){
 	args := make([]string, len(this.Args) + 1)

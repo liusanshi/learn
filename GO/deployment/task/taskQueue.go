@@ -1,6 +1,7 @@
 package task
 
 import (
+	"os"
 	"fmt"
 	"encoding/json"
 	"log"
@@ -42,6 +43,7 @@ func (this *TaskQueue) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &this.TaskList)
 }
 
+//获取任务
 func (this *TaskQueue) Load(filePath string) error {
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -54,6 +56,16 @@ func (this *TaskQueue) Load(filePath string) error {
 		return err
 	}
 	return nil
+}
+
+//保存任务
+func (this *TaskQueue) Save(filePath string) error {
+	data, err := this.MarshalJSON()
+	if err != nil {
+		log.Fatalf("TaskQueue MarshalJSON fail; err:%v", err)
+		return err
+	}
+	return ioutil.WriteFile(filePath, data, os.ModePerm)
 }
 
 //取消任务执行
