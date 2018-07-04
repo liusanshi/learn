@@ -92,6 +92,6 @@ func TestLoadTask(t *testing.T){
 	if err != nil {
 		t.Log(err)
 	}
-	// temp, _ := taskQueue.MarshalJSON()
-	t.Log(taskQueue.TaskList)
+	temp, _ := taskQueue.MarshalJSON()
+	t.Logf("%s\n", temp)
 }
