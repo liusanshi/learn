@@ -9,9 +9,45 @@ import (
 	"io/ioutil"
 )
 
+type TaskList []Task
+
+func (this *TaskList) Init(data []interface{}) (error) {
+	*this = make([]Task, len(data))
+	for i, item := range data {
+		if task, ok := item.(map[string]interface{}); ok {
+			nt := Task{}
+			err := nt.Init(task)
+			if err != nil {
+				log.Printf("TcpServerTask - subTask; err:%v\n", err)
+				return err
+			}
+			(*this)[i] = nt
+		} else {
+			return fmt.Errorf("TcpServerTask TaskList subTask type error")
+		}
+	}
+	return nil
+}
+
+func (this *TaskList) ToArray() []interface{} {
+	data := make([]interface{}, 0, len(*this))
+	for _, item := range *this {
+		data = append(data, item.ToMap())
+	}
+	return data
+}
+
+func (this *TaskList) MarshalJSON() ([]byte, error) {
+	return json.Marshal(*this)
+}
+
+func (this *TaskList) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, this)
+}
+
 //任务队列
 type TaskQueue struct {
-	TaskList []Task
+	TaskList
 	ctx context.Context
 	cancel bool
 	cancelFunc context.CancelFunc
@@ -36,11 +72,20 @@ func (this *TaskQueue) Run(ctx context.Context) (string, error) {
 }
 
 func (this *TaskQueue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(this.TaskList)
+	data := this.ToArray()
+	return json.Marshal(data)
+	// return json.Marshal(this.TaskList)
 }
 
 func (this *TaskQueue) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &this.TaskList)
+	array := []interface{}{}
+	err := json.Unmarshal(data, &array)
+	if err != nil {
+		return err
+	} else {
+		return this.Init(array)
+	}
+	// return json.Unmarshal(data, &this.TaskList)
 }
 
 //获取任务

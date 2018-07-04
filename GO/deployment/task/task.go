@@ -25,9 +25,41 @@ type Task struct {
 	Task ITask
 }
 
+const (
+	TypeKey = "__type__" //类型的key
+)
+
+func (this *Task) Init(data map[string]interface{}) (error) {
+	var ok bool
+	if this.Type, ok = data[TypeKey].(string); !ok {
+		return fmt.Errorf("Task Type type error")
+	}
+	if temp, ok := util.NewStructPtr(this.Type); ok {
+		this.Task, ok = temp.(ITask)
+		if !ok {
+			log.Printf("Task - iTask UnmarshalJSON; type err:%s, need ITask;\n", this.Type)
+			return fmt.Errorf("Task - iTask UnmarshalJSON; type err:%s, need ITask;\n", this.Type)
+		}
+	} else {
+		log.Printf("Task - iTask NewStructPtr; type err:%s;\n", this.Type)
+		return fmt.Errorf("Task - iTask NewStructPtr; type err:%s;\n", this.Type)
+	}
+	err := this.Task.Init(data)
+	if err != nil {
+		log.Printf("Task - iTask UnmarshalJSON; err:%v\n", err)
+		return err
+	}
+	return nil
+}
+
+func (this *Task) ToMap() map[string]interface{} {
+	data := this.Task.ToMap()
+	data[TypeKey] = this.Type
+	return data
+}
+
 func (this *Task) MarshalJSON() ([]byte, error) {
-	dic := this.Task.ToMap()
-	dic["type"] = this.Type
+	dic := this.ToMap()
 	data, err := json.Marshal(dic)
 	if err != nil {
 		log.Printf("Task MarshalJSON err:%v\n", err)
@@ -43,20 +75,9 @@ func (this *Task) UnmarshalJSON(data []byte) error {
 		log.Printf("Task UnmarshalJSON err:%v\n", err)
 		return err
 	}
-	this.Type = dic["type"].(string)
-	if temp, ok := util.NewStructPtr(this.Type); ok {
-		this.Task, ok = temp.(ITask)
-		if !ok {
-			log.Printf("Task - iTask UnmarshalJSON; type err:%s, need ITask;\n", this.Type)
-			return fmt.Errorf("Task - iTask UnmarshalJSON; type err:%s, need ITask;\n", this.Type)
-		}
-	} else {
-		log.Printf("Task - iTask NewStructPtr; type err:%s;\n", this.Type)
-		return fmt.Errorf("Task - iTask NewStructPtr; type err:%s;\n", this.Type)
-	}
-	err = this.Task.Init(dic)
+	err = this.Init(dic)
 	if err != nil {
-		log.Printf("Task - iTask UnmarshalJSON; origin:%s; err:%v\n", dic["task"], err)
+		log.Printf("Task - init; origin:%s; err:%v\n", data, err)
 		return err
 	}
 	return nil

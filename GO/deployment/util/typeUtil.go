@@ -7,7 +7,7 @@ import (
 //类型缓存
 var typeRegistry = make(map[string]reflect.Type)
 
-//创建知道类型的结构体的指针
+//创建指定类型的结构体的指针
 func NewStructPtr(clsName string) (interface{}, bool) {
 	if typ, ok := typeRegistry[clsName]; ok {
 		return reflect.New(typ).Interface(), true
@@ -15,7 +15,7 @@ func NewStructPtr(clsName string) (interface{}, bool) {
 	return nil, false
 }
 
-//创建知道类型的结构体
+//创建指定类型的结构体
 func NewStruct(clsName string) (interface{}, bool) {
 	if typ, ok := typeRegistry[clsName]; ok {
 		return reflect.New(typ).Elem().Interface(), true
