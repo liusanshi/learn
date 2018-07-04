@@ -4,7 +4,7 @@ import(
 	"flag"
 	"./client"
 	"./config"
-	// "./server"
+	 "./server"
 	"strings"
 	"log"
 )
@@ -25,7 +25,9 @@ func main(){
 			}
 			config.Set(params[0], params[1])
 		case "client":
-			client.TestLoadTask(*args)
+			client.Command(*args)
+		case "server":
+			server.Sev(*args)
 		default :
 			log.Println("方法名称错误")
 	}

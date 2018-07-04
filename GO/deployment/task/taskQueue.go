@@ -132,7 +132,9 @@ func (this *TaskQueue) Start(writer io.Writer) error {
 		return err
 	} else {
 		fmt.Println(result) //输出打印到日志
-		writer.Write([]byte(result)) //将数据输出到客户端
+		if writer != nil {
+			writer.Write([]byte(result)) //将数据输出到客户端
+		}
 		return nil
 	}
 }
