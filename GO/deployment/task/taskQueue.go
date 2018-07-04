@@ -7,6 +7,7 @@ import (
 	"log"
 	"context"
 	"io/ioutil"
+	"io"
 )
 
 type TaskList []Task
@@ -122,7 +123,7 @@ func (this *TaskQueue) Canel() {
 }
 
 //执行任务
-func (this *TaskQueue) Start() error {
+func (this *TaskQueue) Start(writer io.Writer) error {
 	if this.ctx == nil {
 		this.ctx, this.cancelFunc = context.WithCancel(context.Background())
 	}
@@ -130,7 +131,8 @@ func (this *TaskQueue) Start() error {
 	if err != nil {
 		return err
 	} else {
-		fmt.Println(result)
+		fmt.Println(result) //输出打印到日志
+		writer.Write([]byte(result)) //将数据输出到客户端
 		return nil
 	}
 }
