@@ -46,11 +46,8 @@ func (s *ShellTask) Run(ctx context.Context) (string, error) {
 	args[0] = "-c"
 	copy(args[1:], s.Args)
 	cmd := exec.Command(s.Cmd, args...)
-	select {
-	case <-ctx.Done():
+	if isEnd(ctx) {
 		return CANCEL, nil
-	default:
-		break
 	}
 	var out bytes.Buffer
 	cmd.Stdout = &out

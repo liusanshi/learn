@@ -97,11 +97,8 @@ func (c *CurlTask) Run(ctx context.Context) (string, error) {
 			request.Header.Add(k, v)
 		}
 	}
-	select {
-	case <-ctx.Done():
+	if isEnd(ctx) {
 		return CANCEL, nil
-	default:
-		break
 	}
 	request = request.WithContext(ctx)
 	resp, err := http.DefaultClient.Do(request)
