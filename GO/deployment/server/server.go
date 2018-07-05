@@ -6,8 +6,10 @@ import (
 	"../util"
 )
 
-func Sev(args string){
-	path := util.GetCurrentPath() + "/task.json"
+func Sev(path string){
+	if len(path) == 0 {
+		path = util.GetCurrentPath() + "/task.json"
+	}
 	if !util.FileExists(path) {
 		fmt.Printf("配置文件:%s 不存在\n", path)
 		return
