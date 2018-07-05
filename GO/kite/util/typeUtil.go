@@ -4,10 +4,10 @@ import (
 	"reflect"
 )
 
-//类型缓存
+//typeRegistry 类型缓存
 var typeRegistry = make(map[string]reflect.Type)
 
-//创建指定类型的结构体的指针
+//NewStructPtr 创建指定类型的结构体的指针
 func NewStructPtr(clsName string) (interface{}, bool) {
 	if typ, ok := typeRegistry[clsName]; ok {
 		return reflect.New(typ).Interface(), true
@@ -15,7 +15,7 @@ func NewStructPtr(clsName string) (interface{}, bool) {
 	return nil, false
 }
 
-//创建指定类型的结构体
+//NewStruct 创建指定类型的结构体
 func NewStruct(clsName string) (interface{}, bool) {
 	if typ, ok := typeRegistry[clsName]; ok {
 		return reflect.New(typ).Elem().Interface(), true
@@ -23,8 +23,8 @@ func NewStruct(clsName string) (interface{}, bool) {
 	return nil, false
 }
 
-//注册
-func RegisterType(elem interface{}){
+//RegisterType 注册
+func RegisterType(elem interface{}) {
 	t := reflect.TypeOf(elem).Elem()
-    typeRegistry[t.Name()] = t
+	typeRegistry[t.Name()] = t
 }

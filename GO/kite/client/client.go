@@ -1,13 +1,12 @@
 package client
 
-import (
-	// "fmt"
-	// "../task"
-	// "../util"
-	// "os"
-	// "log"
-)
+// "fmt"
+// "../task"
+// "../util"
+// "os"
+// "log"
 
-func Command(cmd string){
+//Command 执行命令
+func Command(cmd string) {
 
 }

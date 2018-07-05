@@ -1,13 +1,13 @@
 package util
 
 import (
-	"path/filepath"
-	"os"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
-//获取当前运行的路径
+//GetCurrentPath 获取当前运行的路径
 func GetCurrentPath() string {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
@@ -17,7 +17,7 @@ func GetCurrentPath() string {
 	return strings.Replace(dir, "\\", "/", -1)
 }
 
-//判断文件路径是否存在
+//FileExists 判断文件路径是否存在
 func FileExists(path string) bool {
 	_, err := os.Stat(path)
 	if err != nil {
