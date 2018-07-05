@@ -2,11 +2,13 @@ package server
 
 import (
 	"fmt"
+
 	"../task"
 	"../util"
 )
 
-func Sev(path string){
+// Sev 服务入口
+func Sev(path string) {
 	if len(path) == 0 {
 		path = util.GetCurrentPath() + "/task.json"
 	}

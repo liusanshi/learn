@@ -1,66 +1,73 @@
 package task
 
 import (
-	"os"
-	"fmt"
-	"encoding/json"
-	"log"
 	"context"
-	"io/ioutil"
+	"encoding/json"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"log"
+	"os"
 )
 
+// TaskList 是一个Task任务的列表
 type TaskList []Task
 
-func (this *TaskList) Init(data []interface{}) (error) {
-	*this = make([]Task, len(data))
+// Init 根据数据初始化
+func (l *TaskList) Init(data []interface{}) error {
+	*l = make([]Task, len(data))
 	for i, item := range data {
 		if task, ok := item.(map[string]interface{}); ok {
 			nt := Task{}
 			err := nt.Init(task)
 			if err != nil {
-				log.Printf("TcpServerTask - subTask; err:%v\n", err)
+				log.Printf("TaskList - subTask; err:%v\n", err)
 				return err
 			}
-			(*this)[i] = nt
+			(*l)[i] = nt
 		} else {
-			return fmt.Errorf("TcpServerTask TaskList subTask type error")
+			return fmt.Errorf("TaskList TaskList subTask type error")
 		}
 	}
 	return nil
 }
 
-func (this *TaskList) ToArray() []interface{} {
-	data := make([]interface{}, 0, len(*this))
-	for _, item := range *this {
+//ToArray 将列表数据序列化为[]interface{}
+func (l *TaskList) ToArray() []interface{} {
+	data := make([]interface{}, 0, len(*l))
+	for _, item := range *l {
 		data = append(data, item.ToMap())
 	}
 	return data
 }
 
-func (this *TaskList) MarshalJSON() ([]byte, error) {
-	return json.Marshal(*this)
+// MarshalJSON 序列化接口
+func (l *TaskList) MarshalJSON() ([]byte, error) {
+	return json.Marshal(*l)
 }
 
-func (this *TaskList) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, this)
+// UnmarshalJSON 反序列化
+func (l *TaskList) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, l)
 }
 
-//任务队列
+//TaskQueue 任务队列
 type TaskQueue struct {
 	TaskList
-	ctx context.Context
-	cancel bool
+	ctx        context.Context
+	cancel     bool
 	cancelFunc context.CancelFunc
 }
 
 const (
-	CANCEL string = "cancel"
+	// CANCEL 取消操作的常量
+	CANCEL = "cancel"
 )
 
-func (this *TaskQueue) Run(ctx context.Context) (string, error) {
-	for _, task := range this.TaskList {
-		if this.cancel {
+//Run 执行任务
+func (q *TaskQueue) Run(ctx context.Context) (string, error) {
+	for _, task := range q.TaskList {
+		if q.cancel {
 			return CANCEL, nil
 		}
 		res, err := task.Run(ctx)
@@ -72,31 +79,32 @@ func (this *TaskQueue) Run(ctx context.Context) (string, error) {
 	return "", nil
 }
 
-func (this *TaskQueue) MarshalJSON() ([]byte, error) {
-	data := this.ToArray()
+//MarshalJSON 序列化
+func (q *TaskQueue) MarshalJSON() ([]byte, error) {
+	data := q.ToArray()
 	return json.Marshal(data)
-	// return json.Marshal(this.TaskList)
+	// return json.Marshal(q.TaskList)
 }
 
-func (this *TaskQueue) UnmarshalJSON(data []byte) error {
+//UnmarshalJSON 反序列化
+func (q *TaskQueue) UnmarshalJSON(data []byte) error {
 	array := []interface{}{}
 	err := json.Unmarshal(data, &array)
 	if err != nil {
 		return err
-	} else {
-		return this.Init(array)
 	}
-	// return json.Unmarshal(data, &this.TaskList)
+	return q.Init(array)
+	// return json.Unmarshal(data, &q.TaskList)
 }
 
-//获取任务
-func (this *TaskQueue) Load(filePath string) error {
+//Load 获取任务
+func (q *TaskQueue) Load(filePath string) error {
 	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatalf("TaskQueue load fail; path:%s; err:%v", filePath, err)
 		return err
 	}
-	err = this.UnmarshalJSON(content)
+	err = q.UnmarshalJSON(content)
 	if err != nil {
 		log.Fatalf("TaskQueue resolve fail; err:%v", err)
 		return err
@@ -104,9 +112,9 @@ func (this *TaskQueue) Load(filePath string) error {
 	return nil
 }
 
-//保存任务
-func (this *TaskQueue) Save(filePath string) error {
-	data, err := this.MarshalJSON()
+//Save 保存任务
+func (q *TaskQueue) Save(filePath string) error {
+	data, err := q.MarshalJSON()
 	if err != nil {
 		log.Fatalf("TaskQueue MarshalJSON fail; err:%v", err)
 		return err
@@ -114,28 +122,26 @@ func (this *TaskQueue) Save(filePath string) error {
 	return ioutil.WriteFile(filePath, data, os.ModePerm)
 }
 
-//取消任务执行
-func (this *TaskQueue) Canel() {
-	this.cancel = true
-	if this.cancelFunc != nil {
-		this.cancelFunc()
+//Canel 取消任务执行
+func (q *TaskQueue) Canel() {
+	q.cancel = true
+	if q.cancelFunc != nil {
+		q.cancelFunc()
 	}
 }
 
-//执行任务
-func (this *TaskQueue) Start(writer io.Writer) error {
-	if this.ctx == nil {
-		this.ctx, this.cancelFunc = context.WithCancel(context.Background())
+// Start 执行任务
+func (q *TaskQueue) Start(writer io.Writer) error {
+	if q.ctx == nil {
+		q.ctx, q.cancelFunc = context.WithCancel(context.Background())
 	}
-	result, err := this.Run(this.ctx)
+	result, err := q.Run(q.ctx)
 	if err != nil {
 		return err
-	} else {
-		fmt.Println(result) //输出打印到日志
-		if writer != nil {
-			writer.Write([]byte(result)) //将数据输出到客户端
-		}
-		return nil
 	}
+	fmt.Println(result) //输出打印到日志
+	if writer != nil {
+		writer.Write([]byte(result)) //将数据输出到客户端
+	}
+	return nil
 }
-

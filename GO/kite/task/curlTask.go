@@ -1,80 +1,89 @@
 package task
 
 import (
-	"io/ioutil"
-	"fmt"
-	"strings"
-	"log"
-	// "encoding/json"
 	"context"
+	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
+	"strings"
+
 	"../util"
 )
 
+// CurlMethod curl的类型
 type CurlMethod int
 
 const (
+	//GET get请求
 	GET = CurlMethod(iota)
+	//POST post请求
 	POST = CurlMethod(iota)
 )
 
-//curl任务
+//CurlTask curl任务
 type CurlTask struct {
+	//Url 请求的地址
 	Url string
+	//Param 请求的参数
 	Param string
+	//Method 请求的方法
 	Method CurlMethod
+	//Head http头
 	Head map[string]string
 }
 
-func (this *CurlTask) Init(data map[string]interface{}) (error) {
+//Init 数据初始化
+func (c *CurlTask) Init(data map[string]interface{}) error {
 	var ok bool
-	this.Url, ok = data["Url"].(string)
+	c.Url, ok = data["Url"].(string)
 	if !ok {
 		return fmt.Errorf("CurlTask Url type error")
 	}
-	this.Param, ok = data["Param"].(string)
+	c.Param, ok = data["Param"].(string)
 	if !ok {
 		return fmt.Errorf("CurlTask Param type error")
 	}
 	method := data["Method"].(float64)
 	if !ok {
 		return fmt.Errorf("CurlTask CurlMethod type error")
-	} else {
-		this.Method = CurlMethod(int(method))
 	}
+	c.Method = CurlMethod(int(method))
 	if data["Head"] != nil {
-		this.Head = make(map[string]string)
+		c.Head = make(map[string]string)
 		if head, ok := data["Head"].(map[string]interface{}); ok {
 			for k, v := range head {
-				this.Head[k] = v.(string)
+				c.Head[k] = v.(string)
 			}
 		} else {
 			return fmt.Errorf("CurlTask Head type error")
 		}
-	}	
+	}
 	return nil
 }
 
-func (this *CurlTask) ToMap() map[string]interface{} {
+//ToMap 数据转换为map
+func (c *CurlTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
-	data["Url"] = this.Url
-	data["Param"] = this.Param
-	data["Method"] = this.Method
-	data["Head"] = this.Head
+	data["Url"] = c.Url
+	data["Param"] = c.Param
+	data["Method"] = c.Method
+	data["Head"] = c.Head
 	return data
 }
 
-func (this *CurlTask) Run(ctx context.Context) (string, error){
-	var method string = "GET"
-	var url string = this.Url
-	var body string = this.Param
-	if this.Method == POST {
+//Run 执行任务
+func (c *CurlTask) Run(ctx context.Context) (string, error) {
+	var method = "GET"
+	var url = c.Url
+	var body = c.Param
+	if c.Method == POST {
 		method = "POST"
-	} else if len(this.Param) > 0 {
-		if strings.Index(this.Param, "?") > -1 {
-			url += "&" + this.Param
+	} else if len(c.Param) > 0 {
+		if strings.Index(c.Param, "?") > -1 {
+			url += "&" + c.Param
 		} else {
-			url += "?" + this.Param
+			url += "?" + c.Param
 		}
 		body = ""
 	}
@@ -83,13 +92,13 @@ func (this *CurlTask) Run(ctx context.Context) (string, error){
 		log.Printf("Curl NewRequest fail:%v\n", err)
 		return "", err
 	}
-	if len(this.Head) > 0 {
-		for k, v := range this.Head {
+	if len(c.Head) > 0 {
+		for k, v := range c.Head {
 			request.Header.Add(k, v)
 		}
 	}
 	select {
-	case <- ctx.Done():
+	case <-ctx.Done():
 		return CANCEL, nil
 	default:
 		break
@@ -103,7 +112,7 @@ func (this *CurlTask) Run(ctx context.Context) (string, error){
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		log.Printf("get url err code: %d\n", resp.StatusCode)
-		return "", fmt.Errorf("get url err code: %d\n", resp.StatusCode)
+		return "", fmt.Errorf("get url err code: %d", resp.StatusCode)
 	}
 	result, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -113,6 +122,6 @@ func (this *CurlTask) Run(ctx context.Context) (string, error){
 	return string(result), nil
 }
 
-func init(){
+func init() {
 	util.RegisterType((*CurlTask)(nil))
 }

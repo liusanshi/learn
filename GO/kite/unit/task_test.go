@@ -1,60 +1,61 @@
 package unit
 
 import (
-	"testing"
 	"os"
-	"../util"
+	"testing"
+
 	"../task"
+	"../util"
 )
 
 //测试任务的序列化
-func TestSaveTask(t *testing.T){
+func TestSaveTask(t *testing.T) {
 	taskQueue := task.TaskQueue{
 		TaskList: []task.Task{
-			task.Task{ 
-				Type: "CurlTask", 
-				Task: &task.CurlTask{ 
-					Url:"http://www.qq.com",
+			task.Task{
+				Type: "CurlTask",
+				Task: &task.CurlTask{
+					Url:    "http://www.qq.com",
 					Method: task.POST,
-					Head: map[string]string{"content-type": "html/text", "a":"1"},
+					Head:   map[string]string{"content-type": "html/text", "a": "1"},
 				},
 			},
-			task.Task{ 
-				Type: "ShellTask", 
-				Task: &task.ShellTask{ 
-					Cmd: "/usr/bin/bash", 
-					Args: []string{ "echo hi", "echo hi-1" }, 
-					},
+			task.Task{
+				Type: "ShellTask",
+				Task: &task.ShellTask{
+					Cmd:  "/usr/bin/bash",
+					Args: []string{"echo hi", "echo hi-1"},
+				},
 			},
-			task.Task{ 
-				Type: "TcpServerTask", 
-				Task: &task.TcpServerTask{ 
+			task.Task{
+				Type: "TCPServerTask",
+				Task: &task.TCPServerTask{
 					Port: "80",
 					TaskDict: map[string]task.TaskList{
 						"list": {
-							task.Task{ 
-								Type: "CurlTask", 
-								Task: &task.CurlTask{ 
-									Url:"http://www.qq.com",
+							task.Task{
+								Type: "CurlTask",
+								Task: &task.CurlTask{
+									Url:    "http://www.qq.com",
 									Method: task.POST,
-									Head: map[string]string{"content-type": "html/text", "a":"1"},
+									Head:   map[string]string{"content-type": "html/text", "a": "1"},
 								},
 							},
-							task.Task{ 
-								Type: "ShellTask", 
-								Task: &task.ShellTask{ 
-									Cmd: "/usr/bin/bash", 
-									Args: []string{ "echo hi", "echo hi-1" }, 
-									},
+							task.Task{
+								Type: "ShellTask",
+								Task: &task.ShellTask{
+									Cmd:  "/usr/bin/bash",
+									Args: []string{"echo hi", "echo hi-1"},
+								},
 							},
 						},
 						"modify": {
-							task.Task{ 
-								Type: "ShellTask", 
-								Task: &task.ShellTask{ 
-									Cmd: "/usr/bin/bash", 
-									Args: []string{ "echo hi", "echo hi-1" }, 
-									},
+							task.Task{
+								Type: "ShellTask",
+								Task: &task.ShellTask{
+									Cmd:  "/usr/bin/bash",
+									Args: []string{"echo hi", "echo hi-1"},
+								},
 							},
 						},
 					},
@@ -70,15 +71,14 @@ func TestSaveTask(t *testing.T){
 			return
 		}
 	}
-	err := taskQueue.Save("E:\\git\\learn\\GO\\deployment\\task.json")
+	err := taskQueue.Save("E:\\git\\learn\\GO\\kite\\task.json")
 	if err != nil {
 		t.Log(err)
 	}
 }
 
-
 //测试任务的反序列化
-func TestLoadTask(t *testing.T){
+func TestLoadTask(t *testing.T) {
 	// path := util.GetCurrentPath() + "/task.json"
 	// if !util.FileExists(path) {
 	// 	_, err := os.Create(path)
@@ -88,7 +88,7 @@ func TestLoadTask(t *testing.T){
 	// 	}
 	// }
 	taskQueue := task.TaskQueue{}
-	err := taskQueue.Load("E:\\git\\learn\\GO\\deployment\\task.json")
+	err := taskQueue.Load("E:\\git\\learn\\GO\\kite\\task.json")
 	if err != nil {
 		t.Log(err)
 	}

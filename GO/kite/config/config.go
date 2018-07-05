@@ -1,16 +1,16 @@
 package config
 
 import (
-	"fmt"
-	"os"
 	"encoding/json"
-	"log"
+	"fmt"
 	"io/ioutil"
+	"log"
+	"os"
+
 	"../util"
 )
 
-
-func List(key string){
+func List(key string) {
 	config := NewConfig()
 	config.Load()
 	if len(key) == 0 {
@@ -32,9 +32,9 @@ func Set(ket, val string) {
 }
 
 //配置文件的结构体
-type Config struct{
+type Config struct {
 	LocalPath string
-	Data map[string]string
+	Data      map[string]string
 }
 
 func NewConfig() *Config {
@@ -47,24 +47,24 @@ func NewConfig() *Config {
 	}
 	return &Config{
 		LocalPath: path,
-		Data: make(map[string]string),
+		Data:      make(map[string]string),
 	}
 }
 
-func (this *Config) SetServerHost(host string){
+func (this *Config) SetServerHost(host string) {
 	this.SetValue("ServerHost", host)
 }
 func (this *Config) GetServerHost() (string, bool) {
 	return this.GetValue("ServerHost")
 }
-func (this *Config) SetPort(port string){
+func (this *Config) SetPort(port string) {
 	this.SetValue("Port", port)
 }
 func (this *Config) GetPort() (string, bool) {
 	return this.GetValue("Port")
 }
 
-func (this *Config) SetWorkPath(path string){
+func (this *Config) SetWorkPath(path string) {
 	this.SetValue("SetWorkPath", path)
 }
 func (this *Config) GetWorkPath() (string, bool) {
@@ -106,5 +106,5 @@ func (this *Config) Load() error {
 			return err
 		}
 	}
-	return nil;
+	return nil
 }

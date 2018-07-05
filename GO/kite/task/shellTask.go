@@ -1,49 +1,53 @@
 package task
 
 import (
-	"os/exec"
+	"bytes"
 	"context"
 	"fmt"
-	"bytes"
+	"os/exec"
+
 	"../util"
 )
 
+//ShellTask shell任务
 type ShellTask struct {
-	Cmd string
+	Cmd  string
 	Args []string
 }
 
-func (this *ShellTask) Init(data map[string]interface{}) (error) {
+//Init 数据初始化
+func (s *ShellTask) Init(data map[string]interface{}) error {
 	var ok bool
-	this.Cmd, ok = data["Cmd"].(string)
+	s.Cmd, ok = data["Cmd"].(string)
 	if !ok {
 		return fmt.Errorf("ShellTask Cmd type error")
 	}
 	args, ok := data["Args"].([]interface{})
 	if !ok {
 		return fmt.Errorf("ShellTask Args type error")
-	} else {
-		for _, a := range args {
-			this.Args = append(this.Args, a.(string))
-		}
+	}
+	for _, a := range args {
+		s.Args = append(s.Args, a.(string))
 	}
 	return nil
 }
 
-func (this *ShellTask) ToMap() map[string]interface{} {
+//ToMap 数据转换为map
+func (s *ShellTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
-	data["Cmd"] = this.Cmd
-	data["Args"] = this.Args
+	data["Cmd"] = s.Cmd
+	data["Args"] = s.Args
 	return data
 }
 
-func (this *ShellTask) Run(ctx context.Context) (string, error){
-	args := make([]string, len(this.Args) + 1)
-	args[0] = "-c";
-	copy(args[1:], this.Args)
-	cmd := exec.Command(this.Cmd, args...)
+//Run 执行任务
+func (s *ShellTask) Run(ctx context.Context) (string, error) {
+	args := make([]string, len(s.Args)+1)
+	args[0] = "-c"
+	copy(args[1:], s.Args)
+	cmd := exec.Command(s.Cmd, args...)
 	select {
-	case <- ctx.Done():
+	case <-ctx.Done():
 		return CANCEL, nil
 	default:
 		break
@@ -53,10 +57,10 @@ func (this *ShellTask) Run(ctx context.Context) (string, error){
 	err := cmd.Run()
 	if err != nil {
 		return out.String(), err
-	}	
+	}
 	return out.String(), nil
 }
 
-func init(){
+func init() {
 	util.RegisterType((*ShellTask)(nil))
 }
