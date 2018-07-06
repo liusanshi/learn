@@ -57,6 +57,7 @@ type TaskQueue struct {
 	ctx        context.Context
 	cancel     bool
 	cancelFunc context.CancelFunc
+	writer     io.Writer
 }
 
 const (
@@ -72,9 +73,13 @@ func (q *TaskQueue) Run(ctx context.Context) (string, error) {
 		}
 		res, err := task.Run(ctx)
 		if err != nil {
-			log.Printf("Task:%s Run fail err:%v;\n", task.Type, err)
+			errMsg := fmt.Sprintf("Task:%s Run fail err:%v;\n", task.Type, err)
+			log.Printf(errMsg)
+			q.writer.Write([]byte(errMsg)) //将数据输出到客户端
 			return res, err
 		}
+		fmt.Println(res)
+		q.writer.Write([]byte(res + "\n")) //将数据输出到客户端
 	}
 	return "", nil
 }
@@ -135,13 +140,13 @@ func (q *TaskQueue) Start(writer io.Writer) error {
 	if q.ctx == nil {
 		q.ctx, q.cancelFunc = context.WithCancel(context.Background())
 	}
+	q.writer = writer
+	if q.writer == nil {
+		q.writer = ioutil.Discard
+	}
 	result, err := q.Run(q.ctx)
 	if err != nil {
 		return err
-	}
-	fmt.Println(result) //输出打印到日志
-	if writer != nil {
-		writer.Write([]byte(result)) //将数据输出到客户端
 	}
 	return nil
 }
