@@ -1,11 +1,11 @@
 package test
 
 type Tree struct {
-	value int
+	value       int
 	left, right *Tree
 }
 
-func Sort(values []int){
+func Sort(values []int) {
 	var root *Tree
 	for _, i := range values {
 		root = add(root, i)
@@ -14,7 +14,7 @@ func Sort(values []int){
 }
 
 //中序遍历树形将顺序输出来
-func appendValues(values []int, root *Tree) []int{
+func appendValues(values []int, root *Tree) []int {
 	if root != nil {
 		values = appendValues(values, root.left)
 		values = append(values, root.value)
@@ -24,7 +24,7 @@ func appendValues(values []int, root *Tree) []int{
 }
 
 //构建树 小于父节点的放左边，大于等于的放右边 如果逆序这里修改方向即可
-func add(t *Tree, i int) *Tree{
+func add(t *Tree, i int) *Tree {
 	if t == nil {
 		t = new(Tree)
 		t.value = i

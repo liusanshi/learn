@@ -6,9 +6,9 @@ import (
 )
 
 type Movie struct {
-	Title string
-	Year int `json:"released"`
-	Color bool `json:"color,omitempty"`
+	Title  string
+	Year   int  `json:"released"`
+	Color  bool `json:"color,omitempty"`
 	Actors []string
 }
 
@@ -18,7 +18,7 @@ var movies = []Movie{
 	{Title: "射雕英雄传", Year: 1985, Color: true, Actors: []string{"翁美玲", "黄日华", "三哥"}},
 }
 
-func JsonMarshal(){
+func JsonMarshal() {
 
 	// data, err := json.Marshal(movies)
 	data, err := json.MarshalIndent(movies, "", "	")
@@ -34,8 +34,8 @@ var strVovies = `[
 	{"title":"射雕英雄传","released":1985,"color":true,"Actors":["翁美玲","黄日华","三哥"]}
 	]`
 
-func JsonUnmarshal(){
-	var movies []Movie;
+func JsonUnmarshal() {
+	var movies []Movie
 	err := json.Unmarshal([]byte(strVovies), &movies)
 	if err != nil {
 		fmt.Println("json unmarshling failed:", err)

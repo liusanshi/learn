@@ -4,39 +4,40 @@ import (
 	"os"
 	// "os"
 	// "io"
-	"fmt"
-	"time"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
 	"text/template"
+	"time"
 )
 
 const IssuesURL = "https://api.github.com/search/issues"
+
 //`https://developer.github.com/v3/`
 
 type IssuesSearchResult struct {
 	TotalCount int `json:"total_count"`
-	Items []*Issues
+	Items      []*Issues
 }
 
 type Issues struct {
-	Number int
-	HTMLURL string `json:"html_url"`
-	Title string
-	State string
-	User *User
+	Number   int
+	HTMLURL  string `json:"html_url"`
+	Title    string
+	State    string
+	User     *User
 	CreateAt time.Time `json:"created_at"`
-	Body string
+	Body     string
 }
 
 type User struct {
-	Login string
+	Login   string
 	HTMLURL string `json:"html_url"`
 }
 
-func getTempl() (*template.Template){
+func getTempl() *template.Template {
 	const strTempl = `{{.TotalCount}} issues:
 {{range .Items}}--------------------------------------
 Numner: {{.Number}}
@@ -46,8 +47,8 @@ Age: {{.CreateAt | daysAgo}} days
 {{end}}`
 
 	repo, err := template.New("issuesList").
-	Funcs(template.FuncMap{"daysAgo": daysAgo}).
-	Parse(strTempl)
+		Funcs(template.FuncMap{"daysAgo": daysAgo}).
+		Parse(strTempl)
 	if err != nil {
 		fmt.Printf("create template fail : %s\n", err)
 		return nil
@@ -59,7 +60,7 @@ func daysAgo(t time.Time) int {
 	return int(time.Since(t).Hours() / 24)
 }
 
-func PrintSearchIssues(terms []string){
+func PrintSearchIssues(terms []string) {
 	result, err := SearchIssues(terms)
 	if err != nil {
 		fmt.Println(err)
@@ -78,7 +79,7 @@ func PrintSearchIssues(terms []string){
 	}
 }
 
-func SearchIssues(terms []string) (*IssuesSearchResult, error){
+func SearchIssues(terms []string) (*IssuesSearchResult, error) {
 	q := url.QueryEscape(strings.Join(terms, " "))
 	resp, err := http.Get(IssuesURL + "?q=" + q)
 	if err != nil {

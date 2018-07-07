@@ -1,11 +1,10 @@
 package test
 
 import (
-	"sync"
-	"time"
 	"fmt"
 	"math"
-
+	"sync"
+	"time"
 )
 
 type Point struct {
@@ -15,14 +14,14 @@ type Point struct {
 type Path []Point
 
 func Distance(p, q Point) float64 {
-	return math.Hypot(q.X - p.X, q.Y - p.Y)
+	return math.Hypot(q.X-p.X, q.Y-p.Y)
 }
 
 func (this Point) Distance(q Point) float64 {
-	return math.Hypot(q.X - this.X, q.Y - this.Y)
+	return math.Hypot(q.X-this.X, q.Y-this.Y)
 }
 
-func (this *Point)  ScaleBy(factor float64){
+func (this *Point) ScaleBy(factor float64) {
 	this.X *= factor
 	this.Y *= factor
 }
@@ -31,7 +30,7 @@ func (this Path) Distance() float64 {
 	sum := 0.0
 	for i := range this {
 		if i > 0 {
-			sum += this[i - 1].Distance(this[i])
+			sum += this[i-1].Distance(this[i])
 		}
 	}
 	return sum
@@ -39,7 +38,7 @@ func (this Path) Distance() float64 {
 
 type Values map[string][]string
 
-func (this Values)Get(key string) string {
+func (this Values) Get(key string) string {
 	if val := this[key]; len(val) > 0 {
 		return val[0]
 	}
@@ -50,21 +49,21 @@ func (this Values) Add(key, val string) {
 	this[key] = append(this[key], val)
 }
 
-var cache = struct{
+var cache = struct {
 	sync.RWMutex
 	mapping map[string]string
 }{
 	mapping: make(map[string]string),
 }
 
-func Lookup(key string) string{
+func Lookup(key string) string {
 	cache.RLock()
 	v := cache.mapping[key]
 	cache.RUnlock()
 	return v
 }
 
-func MethodTest(){
+func MethodTest() {
 	p := Point{1, 2}
 	q := Point{4, 6}
 
@@ -79,7 +78,7 @@ func MethodTest(){
 	fmt.Println(day.Seconds())
 	fmt.Println(day)
 
-	path := Path{p, q, {4,5}}
+	path := Path{p, q, {4, 5}}
 
 	fmt.Println(path.Distance())
 
@@ -93,7 +92,7 @@ func MethodTest(){
 	fmt.Println(strMap["item2"])
 
 	fmt.Println("======nil========")
-	strMap = nil;
+	strMap = nil
 	fmt.Println(strMap.Get("item"))
 	fmt.Println(strMap["item"])
 	strMap.Add("item", "2")

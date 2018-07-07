@@ -1,77 +1,77 @@
 package test
 
 import (
-	"strconv"
-	"sync"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
-	"html/template"
+	"strconv"
+	"sync"
 )
 
 var (
 	count int
-	mu sync.RWMutex
+	mu    sync.RWMutex
 )
 
-func WebServer(){
-	http.HandleFunc("/test", func(resp http.ResponseWriter, req *http.Request){
+func WebServer() {
+	http.HandleFunc("/test", func(resp http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(resp, "hello world\n")
 	})
-	http.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request){
+	http.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request) {
 		mu.Lock()
 		count++
 		mu.Unlock()
 		fmt.Fprintf(resp, "URL.path=%q\n", req.URL.Path)
-	});
-	http.HandleFunc("/count", func(resp http.ResponseWriter, req *http.Request){
+	})
+	http.HandleFunc("/count", func(resp http.ResponseWriter, req *http.Request) {
 		mu.RLock()
 		fmt.Fprintf(resp, "count=%d\n", count)
 		mu.RUnlock()
-	});
+	})
 	http.HandleFunc("/info", info)
 	http.HandleFunc("/issues", IssuesInfo)
 	http.HandleFunc("/escape", HTMLEscape)
-	http.HandleFunc("/img", func(resp http.ResponseWriter, req *http.Request){
-		if err := req.ParseForm(); err != nil{
-			log.Print(err);
+	http.HandleFunc("/img", func(resp http.ResponseWriter, req *http.Request) {
+		if err := req.ParseForm(); err != nil {
+			log.Print(err)
 		}
 		// cycle,err := strconv.Atoi(req.Form.Get("cycle"))
 		strcycle := req.Form.Get("cycle")
 		if strcycle == "" {
 			strcycle = "5"
 		}
-		cycle,err := strconv.ParseFloat(strcycle, 64)
+		cycle, err := strconv.ParseFloat(strcycle, 64)
 		if err != nil {
 			fmt.Fprintf(resp, "cycle type err")
 			return
 		}
 		Lissajous(resp, cycle)
 	})
-	http.HandleFunc("/surface", func(resp http.ResponseWriter, req *http.Request){
-		resp.Header().Add("Content-Type", "text/html; charset=UTF-8"); //指示输出为html格式不是文本
+	http.HandleFunc("/surface", func(resp http.ResponseWriter, req *http.Request) {
+		resp.Header().Add("Content-Type", "text/html; charset=UTF-8") //指示输出为html格式不是文本
 		Surface(resp)
 	})
 	log.Fatal(http.ListenAndServe("127.0.0.1:8888", nil))
 }
 
-func info(resp http.ResponseWriter, req *http.Request){
+func info(resp http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(resp, "Method:%s,url:%s,proto:%s\n", req.Method, req.URL, req.Proto)
-	for k,v := range req.Header {
+	for k, v := range req.Header {
 		fmt.Fprintf(resp, "header:[%q] = %q\n", k, v)
 	}
 
 	fmt.Fprintf(resp, "Host=%q\n", req.Host)
 	fmt.Fprintf(resp, "RemoteAddr=%q\n", req.RemoteAddr)
-	if err := req.ParseForm(); err != nil{
-		log.Print(err);
+	if err := req.ParseForm(); err != nil {
+		log.Print(err)
 	}
-	for k ,v := range req.Form{
+	for k, v := range req.Form {
 		fmt.Fprintf(resp, "Form:[%q] = %q\n", k, v)
 	}
 }
 
-func IssuesInfo(resp http.ResponseWriter, req *http.Request){
+func IssuesInfo(resp http.ResponseWriter, req *http.Request) {
 	issuessList := template.Must(template.New("issues").Parse(`
 		<h1>{{.TotalCount}}</h1>
 		<table>
@@ -92,15 +92,15 @@ func IssuesInfo(resp http.ResponseWriter, req *http.Request){
 		<table>
 		`))
 
-		result, err := SearchIssues([]string{"repo:golang/go", "is:open", "json", "decoder"})
-		if err != nil {
-			fmt.Fprintf(resp, "search issues fail: %s\n", err)
-			return
-		}
-		issuessList.Execute(resp, result)
+	result, err := SearchIssues([]string{"repo:golang/go", "is:open", "json", "decoder"})
+	if err != nil {
+		fmt.Fprintf(resp, "search issues fail: %s\n", err)
+		return
+	}
+	issuessList.Execute(resp, result)
 }
 
-func HTMLEscape(resp http.ResponseWriter, req *http.Request){
+func HTMLEscape(resp http.ResponseWriter, req *http.Request) {
 	var data struct {
 		A string
 		B template.HTML

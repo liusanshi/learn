@@ -1,15 +1,15 @@
 package test
 
-
 import (
-	"strings"
 	"net/http"
+	"strings"
 	// "text/template"
 	"fmt"
+
 	"golang.org/x/net/html"
 )
 
-func TestHtML(url string){
+func TestHtML(url string) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("get url:%s fail: %s\n", url, err)
@@ -46,7 +46,7 @@ func visit(links []string, n *html.Node) []string {
 	return links
 }
 
-func CountWordAndImage(url string)(words, images int, err error){
+func CountWordAndImage(url string) (words, images int, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("get url:%s fail: %s\n", url, err)
@@ -68,7 +68,7 @@ func CountWordAndImage(url string)(words, images int, err error){
 	return
 }
 
-func countWordAndImage(node *html.Node)(words, images int){
+func countWordAndImage(node *html.Node) (words, images int) {
 	if node != nil {
 		if node.Type == html.ElementNode {
 			if node.Data == "img" {

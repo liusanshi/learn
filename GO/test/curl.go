@@ -1,16 +1,16 @@
 package test
 
 import (
-	"time"
-	"strings"
-	"io"
-	"net/http"
-	"io/ioutil"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"strings"
+	"time"
 )
 
-func Curl(){
+func Curl() {
 	for _, url := range os.Args[1:] {
 		if !strings.HasPrefix(url, "http://") {
 			url = "http://" + url
@@ -34,34 +34,34 @@ func Curl(){
 	}
 }
 
-func FetchAllSeq(urls []string){
+func FetchAllSeq(urls []string) {
 	start := time.Now()
 	chList := make([]chan string, len(urls))
 	for i, url := range urls {
 		chList[i] = make(chan string)
 		go fetch(url, chList[i])
 	}
-	for i,_ := range urls {
+	for i, _ := range urls {
 		fmt.Println(<-chList[i])
 	}
 	fmt.Printf("FetchAllSeq: 总耗时：%.7fs\n", time.Since(start).Seconds())
 }
 
-func FetchAll(urls []string){
+func FetchAll(urls []string) {
 	start := time.Now()
 	ch := make(chan string)
 	for _, url := range urls {
 		go fetch(url, ch)
 	}
-	for range urls{
+	for range urls {
 		fmt.Println(<-ch)
 	}
 	fmt.Printf("FetchAll: 总耗时：%.7fs\n", time.Since(start).Seconds())
 }
 
-func fetch(url string, res chan <- string){
+func fetch(url string, res chan<- string) {
 	start := time.Now()
-	if !strings.HasPrefix(url, "http://"){
+	if !strings.HasPrefix(url, "http://") {
 		url = "http://" + url
 	}
 	resp, err := http.Get(url)
