@@ -12,7 +12,7 @@ import (
 )
 
 func StartFtpClient(addr string) {
-	conn, err := net.DialTimeout("tcp", addr, 2* time.Second)
+	conn, err := net.DialTimeout("tcp", addr, 2*time.Second)
 	if err != nil {
 		log.Println(err)
 		return

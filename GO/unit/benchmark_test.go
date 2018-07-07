@@ -2,8 +2,9 @@ package unit
 
 import (
 	"reflect"
-	"unsafe"
 	"testing"
+	"unsafe"
+
 	"../test"
 )
 
@@ -18,7 +19,7 @@ import (
 func BytesToString(b []byte) string {
 	bh := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	sh := reflect.StringHeader{bh.Data, bh.Len}
-	return  *(*string)(unsafe.Pointer(&sh))
+	return *(*string)(unsafe.Pointer(&sh))
 }
 
 //将string转换为byte切片
@@ -28,15 +29,14 @@ func StringToBytes(str string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&bh))
 }
 
-
-func BenchmarkBytesToStringReflect(b *testing.B){
+func BenchmarkBytesToStringReflect(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		bt := []byte("nihao")
 		_ = BytesToString(bt)
 	}
 }
 
-func BenchmarkBytesToStringNomal(b *testing.B){
+func BenchmarkBytesToStringNomal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		bt := []byte("nihao")
 		_ = string(bt)
@@ -47,21 +47,21 @@ func TestMyFristTesting(t *testing.T) {
 	t.Log("hi~")
 }
 
-func Benchmark_FiltName(b *testing.B){
+func Benchmark_FiltName(b *testing.B) {
 	user := &test.LocalUser{"", "ll", 34}
 	for i := 0; i < b.N; i++ {
 		test.FiltName(user, "哈哈1")
 	}
 }
 
-func Benchmark_FiltNameWithOffset(b *testing.B){
+func Benchmark_FiltNameWithOffset(b *testing.B) {
 	user := &test.LocalUser{"", "ll", 34}
 	for i := 0; i < b.N; i++ {
 		test.FiltNameWithOffset(user, "哈哈2")
 	}
 }
 
-func Benchmark_FiltNameWithCache(b *testing.B){
+func Benchmark_FiltNameWithCache(b *testing.B) {
 	user := &test.LocalUser{"", "ll", 34}
 	for i := 0; i < b.N; i++ {
 		test.FiltNameWithCache(user, "哈哈3")
