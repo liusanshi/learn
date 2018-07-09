@@ -13,7 +13,7 @@ type Map map[string]List
 
 // Init 根据数据初始化
 func (m *Map) Init(data map[string]interface{}) error {
-	*m = make(map[string]List)
+	*m = NewMap()
 	for i, item := range data {
 		if task, ok := item.([]interface{}); ok {
 			nt := List{}
@@ -60,4 +60,9 @@ func (m *Map) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON 反序列化
 func (m *Map) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, m)
+}
+
+// NewMap 创建一个Map
+func NewMap() Map {
+	return Map(make(map[string]List))
 }

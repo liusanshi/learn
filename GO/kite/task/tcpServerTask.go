@@ -14,7 +14,7 @@ import (
 //TCPServerTask tcp服务的任务
 type TCPServerTask struct {
 	Port     string
-	TaskDict map[string]List
+	TaskDict Map
 }
 
 //Init 数据的初始化
@@ -23,22 +23,9 @@ func (t *TCPServerTask) Init(data map[string]interface{}) error {
 	if t.Port, ok = data["Port"].(string); !ok {
 		return fmt.Errorf("TCPServerTask Port type error")
 	}
-	t.TaskDict = make(map[string]List)
+	t.TaskDict = NewMap()
 	if dict, ok := data["TaskDict"].(map[string]interface{}); ok {
-		for key, val := range dict {
-			if list, ok := val.([]interface{}); ok {
-				taskListItem := List{}
-				err := taskListItem.Init(list)
-				if err != nil {
-					log.Printf("TCPServerTask - List; err:%v\n", err)
-					return err
-				}
-				t.TaskDict[key] = taskListItem
-			} else {
-				return fmt.Errorf("TCPServerTask TaskDict type error")
-			}
-		}
-		return nil
+		return t.TaskDict.Init(dict)
 	}
 	return fmt.Errorf("TCPServerTask Port type error")
 }
@@ -47,11 +34,7 @@ func (t *TCPServerTask) Init(data map[string]interface{}) error {
 func (t *TCPServerTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
 	data["Port"] = t.Port
-	dict := make(map[string][]interface{})
-	for key, val := range t.TaskDict {
-		dict[key] = val.ToArray()
-	}
-	data["TaskDict"] = dict
+	data["TaskDict"] = t.TaskDict.ToMap()
 	return data
 }
 
