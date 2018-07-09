@@ -68,15 +68,16 @@ func (t *TCPClientTask) Run(ctx context.Context, w io.Writer) error {
 		return err
 	}
 	reader := bufio.NewReader(conn)
-	if isEnd(ctx) {
-		return ErrCANCEL
+	for {
+		if isEnd(ctx) {
+			return ErrCANCEL
+		}
+		data, err := reader.ReadBytes('\n')
+		if err != nil {
+			return err
+		}
+		w.Write(data)
 	}
-	data, err := reader.ReadBytes('\n')
-	if err != nil {
-		return err
-	}
-	w.Write(data)
-	return nil
 }
 
 func init() {

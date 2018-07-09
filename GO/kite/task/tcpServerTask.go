@@ -61,23 +61,24 @@ func (t *TCPServerTask) Run(ctx context.Context, w io.Writer) error {
 //handleConn 处理请求
 func (t *TCPServerTask) handleConn(ctx context.Context, conn net.Conn) {
 	reader := bufio.NewReader(conn)
-	cmd, err := reader.ReadString('\n')
-	writer := bufio.NewWriter(conn)
+	cmd, err := reader.ReadBytes('\n')
+	cmd = cmd[:len(cmd)-1]
 	defer conn.Close()
 	if err != nil && err != io.EOF {
 		log.Print(err)
 		return
 	}
-	if task, ok := t.TaskDict[cmd]; ok {
-		err := task.Run(ctx, writer)
+	if task, ok := t.TaskDict[string(cmd)]; ok {
+		err := task.Run(ctx, conn)
 		if err != nil {
 			log.Print(err)
+			fmt.Fprintf(conn, "method：%s; execute fail:%v\n", cmd, err)
 			return
 		}
 		//执行成功
-		writer.Write([]byte(fmt.Sprintf("method：%s execute success\n", cmd)))
+		fmt.Fprintf(conn, "method：%s; execute success\n", cmd)
 	} else {
-		writer.Write([]byte(fmt.Sprintf("method：%s not fount\n", cmd)))
+		fmt.Fprintf(conn, "method：%s; not fount\n", cmd)
 	}
 }
 

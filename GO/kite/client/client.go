@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 
 	"../task"
@@ -31,7 +32,7 @@ func Client(path, cmd string) {
 	}
 
 	err = taskList.Run(context.Background(), os.Stdout)
-	if err != nil {
+	if err != nil && err != io.EOF {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return
 	}
