@@ -11,52 +11,50 @@ import (
 
 //测试任务的序列化
 func TestSaveTask(t *testing.T) {
-	taskQueue := task.TaskQueue{
-		List: []task.Task{
-			task.Task{
-				Type: "CurlTask",
-				Task: &task.CurlTask{
-					URL:    "http://www.qq.com",
-					Method: task.POST,
-					Head:   map[string]string{"content-type": "html/text", "a": "1"},
-				},
+	taskQueue := task.List{
+		task.Task{
+			Type: "CurlTask",
+			Task: &task.CurlTask{
+				URL:    "http://www.qq.com",
+				Method: task.POST,
+				Head:   map[string]string{"content-type": "html/text", "a": "1"},
 			},
-			task.Task{
-				Type: "ShellTask",
-				Task: &task.ShellTask{
-					Cmd:  "/usr/bin/bash",
-					Args: []string{"echo hi", "echo hi-1"},
-				},
+		},
+		task.Task{
+			Type: "ShellTask",
+			Task: &task.ShellTask{
+				Cmd:  "/usr/bin/bash",
+				Args: []string{"echo hi", "echo hi-1"},
 			},
-			task.Task{
-				Type: "TCPServerTask",
-				Task: &task.TCPServerTask{
-					Port: "80",
-					TaskDict: map[string]task.List{
-						"list": {
-							task.Task{
-								Type: "CurlTask",
-								Task: &task.CurlTask{
-									URL:    "http://www.qq.com",
-									Method: task.POST,
-									Head:   map[string]string{"content-type": "html/text", "a": "1"},
-								},
-							},
-							task.Task{
-								Type: "ShellTask",
-								Task: &task.ShellTask{
-									Cmd:  "/usr/bin/bash",
-									Args: []string{"echo hi", "echo hi-1"},
-								},
+		},
+		task.Task{
+			Type: "TCPServerTask",
+			Task: &task.TCPServerTask{
+				Port: "80",
+				TaskDict: map[string]task.List{
+					"list": {
+						task.Task{
+							Type: "CurlTask",
+							Task: &task.CurlTask{
+								URL:    "http://www.qq.com",
+								Method: task.POST,
+								Head:   map[string]string{"content-type": "html/text", "a": "1"},
 							},
 						},
-						"modify": {
-							task.Task{
-								Type: "ShellTask",
-								Task: &task.ShellTask{
-									Cmd:  "/usr/bin/bash",
-									Args: []string{"echo hi", "echo hi-1"},
-								},
+						task.Task{
+							Type: "ShellTask",
+							Task: &task.ShellTask{
+								Cmd:  "/usr/bin/bash",
+								Args: []string{"echo hi", "echo hi-1"},
+							},
+						},
+					},
+					"modify": {
+						task.Task{
+							Type: "ShellTask",
+							Task: &task.ShellTask{
+								Cmd:  "/usr/bin/bash",
+								Args: []string{"echo hi", "echo hi-1"},
 							},
 						},
 					},
@@ -72,7 +70,7 @@ func TestSaveTask(t *testing.T) {
 			return
 		}
 	}
-	err := taskQueue.Save("E:\\git\\learn\\GO\\kite\\task.json")
+	err := task.Save("E:\\git\\learn\\GO\\kite\\task.json", &taskQueue)
 	if err != nil {
 		t.Log(err)
 	}
@@ -88,8 +86,8 @@ func TestLoadTask(t *testing.T) {
 	// 		return
 	// 	}
 	// }
-	taskQueue := task.TaskQueue{}
-	err := taskQueue.Load("E:\\git\\learn\\GO\\kite\\task.json")
+	taskQueue := task.NewList()
+	err := task.Load("E:\\git\\learn\\GO\\kite\\task.json", &taskQueue)
 	if err != nil {
 		t.Log(err)
 	}
@@ -99,8 +97,8 @@ func TestLoadTask(t *testing.T) {
 }
 
 func TestLoadClientTask(t *testing.T) {
-	taskQueue := task.TaskQueue{}
-	err := taskQueue.Load("E:\\git\\learn\\GO\\kite\\task_client.json")
+	taskQueue := task.NewMap()
+	err := task.Load("E:\\git\\learn\\GO\\kite\\task_client.json", &taskQueue)
 	if err != nil {
 		t.Log(err)
 	}

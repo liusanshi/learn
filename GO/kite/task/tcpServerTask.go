@@ -69,8 +69,7 @@ func (t *TCPServerTask) handleConn(ctx context.Context, conn net.Conn) {
 		return
 	}
 	if task, ok := t.TaskDict[cmd]; ok {
-		taskQueue := TaskQueue{List: task, ctx: ctx}
-		err := taskQueue.Start(ctx, writer)
+		err := task.Run(ctx, writer)
 		if err != nil {
 			log.Print(err)
 			return

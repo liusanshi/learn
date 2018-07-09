@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -40,6 +41,22 @@ func (m *Map) ToMap() map[string]interface{} {
 		data[key] = val.ToArray()
 	}
 	return data
+}
+
+//MarshalJSON 序列化
+func (m *Map) MarshalJSON() ([]byte, error) {
+	data := m.ToMap()
+	return json.Marshal(data)
+}
+
+//UnmarshalJSON 反序列化
+func (m *Map) UnmarshalJSON(data []byte) error {
+	dict := make(map[string]interface{})
+	err := json.Unmarshal(data, &dict)
+	if err != nil {
+		return err
+	}
+	return m.Init(dict)
 }
 
 //Run 任务运行

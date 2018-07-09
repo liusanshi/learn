@@ -3,11 +3,19 @@ package task
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
+	"os"
 
 	"../util"
+)
+
+var (
+	// ErrCANCEL 取消操作的常量
+	ErrCANCEL = errors.New("cancel task")
 )
 
 //ITask 任务执行器
@@ -115,4 +123,29 @@ func isEnd(ctx context.Context) bool {
 	default:
 		return false
 	}
+}
+
+//Load 加载数据
+func Load(filePath string, unser json.Unmarshaler) error {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		log.Fatalf("load fail; path:%s; err:%v", filePath, err)
+		return err
+	}
+	err = (unser).UnmarshalJSON(content)
+	if err != nil {
+		log.Fatalf("resolve fail; err:%v; orign:%s", err, content)
+		return err
+	}
+	return nil
+}
+
+//Save 保存任务
+func Save(filePath string, ser json.Marshaler) error {
+	data, err := (ser).MarshalJSON()
+	if err != nil {
+		log.Fatalf("MarshalJSON fail; err:%v", err)
+		return err
+	}
+	return ioutil.WriteFile(filePath, data, os.ModePerm)
 }

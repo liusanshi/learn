@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -49,4 +50,25 @@ func (l *List) ToArray() []interface{} {
 		data = append(data, item.ToMap())
 	}
 	return data
+}
+
+//MarshalJSON 序列化
+func (l *List) MarshalJSON() ([]byte, error) {
+	data := l.ToArray()
+	return json.Marshal(data)
+}
+
+//UnmarshalJSON 反序列化
+func (l *List) UnmarshalJSON(data []byte) error {
+	array := []interface{}{}
+	err := json.Unmarshal(data, &array)
+	if err != nil {
+		return err
+	}
+	return l.Init(array)
+}
+
+//NewList 创建一个list任务
+func NewList() List {
+	return []Task{}
 }

@@ -20,8 +20,8 @@ func Sev(path string) {
 		fmt.Printf("配置文件:%s 不存在\n", path)
 		return
 	}
-	taskQueue := task.TaskQueue{}
-	err := taskQueue.Load(path)
+	taskList = task.NewList()
+	err := task.Load(path, &taskList)
 	if err != nil {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
@@ -37,7 +37,7 @@ func Sev(path string) {
 			os.Exit(0)
 		}
 	}()
-	err = taskQueue.Start(ctx, os.Stdout)
+	err = taskList.Run(ctx, os.Stdout)
 	if err != nil {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return
