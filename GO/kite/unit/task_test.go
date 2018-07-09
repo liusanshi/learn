@@ -1,6 +1,7 @@
 package unit
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -11,7 +12,7 @@ import (
 //测试任务的序列化
 func TestSaveTask(t *testing.T) {
 	taskQueue := task.TaskQueue{
-		TaskList: []task.Task{
+		List: []task.Task{
 			task.Task{
 				Type: "CurlTask",
 				Task: &task.CurlTask{
@@ -31,7 +32,7 @@ func TestSaveTask(t *testing.T) {
 				Type: "TCPServerTask",
 				Task: &task.TCPServerTask{
 					Port: "80",
-					TaskDict: map[string]task.TaskList{
+					TaskDict: map[string]task.List{
 						"list": {
 							task.Task{
 								Type: "CurlTask",
@@ -93,5 +94,6 @@ func TestLoadTask(t *testing.T) {
 		t.Log(err)
 	}
 	temp, _ := taskQueue.MarshalJSON()
+	fmt.Printf("%s\n", temp)
 	t.Logf("%s\n", temp)
 }
