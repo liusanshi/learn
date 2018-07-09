@@ -47,7 +47,7 @@ func (t *TCPServerTask) Run(ctx context.Context, w io.Writer) error {
 	}
 	for {
 		if isEnd(ctx) {
-			return CANCEL
+			return ErrCANCEL
 		}
 		conn, err := listen.Accept()
 		if err != nil {

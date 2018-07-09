@@ -13,8 +13,8 @@ import (
 
 //TCPClientTask tcp客户端
 type TCPClientTask struct {
-	//Ip ip
-	Ip string
+	//IP ip
+	IP string
 	//Port 端口
 	Port string
 	//Timeout 超时时间
@@ -26,7 +26,7 @@ type TCPClientTask struct {
 //Init 数据初始化
 func (t *TCPClientTask) Init(data map[string]interface{}) error {
 	var ok bool
-	if t.Ip, ok = data["Ip"].(string); !ok {
+	if t.IP, ok = data["Ip"].(string); !ok {
 		return fmt.Errorf("TCPClientTask Ip type error")
 	}
 	if t.Port, ok = data["Port"].(string); !ok {
@@ -46,7 +46,7 @@ func (t *TCPClientTask) Init(data map[string]interface{}) error {
 //ToMap 转换为map
 func (t *TCPClientTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
-	data["Ip"] = t.Ip
+	data["Ip"] = t.IP
 	data["Port"] = t.Port
 	data["Content"] = t.Content
 	data["Timeout"] = t.Timeout
@@ -55,13 +55,13 @@ func (t *TCPClientTask) ToMap() map[string]interface{} {
 
 //Run 执行任务
 func (t *TCPClientTask) Run(ctx context.Context, w io.Writer) error {
-	conn, err := net.DialTimeout("tcp", t.Ip+":"+t.Port, time.Millisecond*time.Duration(t.Timeout))
+	conn, err := net.DialTimeout("tcp", t.IP+":"+t.Port, time.Millisecond*time.Duration(t.Timeout))
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
 	if isEnd(ctx) {
-		return CANCEL
+		return ErrCANCEL
 	}
 	_, err = conn.Write([]byte(t.Content + "\n"))
 	if err != nil {
@@ -69,7 +69,7 @@ func (t *TCPClientTask) Run(ctx context.Context, w io.Writer) error {
 	}
 	reader := bufio.NewReader(conn)
 	if isEnd(ctx) {
-		return CANCEL
+		return ErrCANCEL
 	}
 	data, err := reader.ReadBytes('\n')
 	if err != nil {

@@ -2,7 +2,6 @@ package task
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -34,7 +33,7 @@ func (l *List) Init(data []interface{}) error {
 func (l *List) Run(ctx context.Context, write io.Writer) error {
 	for _, item := range *l {
 		if isEnd(ctx) {
-			return CANCEL
+			return ErrCANCEL
 		}
 		if err := item.Run(ctx, write); err != nil {
 			return err
@@ -50,14 +49,4 @@ func (l *List) ToArray() []interface{} {
 		data = append(data, item.ToMap())
 	}
 	return data
-}
-
-// MarshalJSON 序列化接口
-func (l *List) MarshalJSON() ([]byte, error) {
-	return json.Marshal(*l)
-}
-
-// UnmarshalJSON 反序列化
-func (l *List) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, l)
 }

@@ -48,7 +48,7 @@ func (s *ShellTask) Run(ctx context.Context, w io.Writer) error {
 	copy(args[1:], s.Args)
 	cmd := exec.Command(s.Cmd, args...)
 	if isEnd(ctx) {
-		return CANCEL
+		return ErrCANCEL
 	}
 	var out bytes.Buffer
 	cmd.Stdout = &out

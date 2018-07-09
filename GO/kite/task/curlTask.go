@@ -24,8 +24,8 @@ const (
 
 //CurlTask curl任务
 type CurlTask struct {
-	//Url 请求的地址
-	Url string
+	//URL 请求的地址
+	URL string
 	//Param 请求的参数
 	Param string
 	//Method 请求的方法
@@ -37,7 +37,7 @@ type CurlTask struct {
 //Init 数据初始化
 func (c *CurlTask) Init(data map[string]interface{}) error {
 	var ok bool
-	c.Url, ok = data["Url"].(string)
+	c.URL, ok = data["Url"].(string)
 	if !ok {
 		return fmt.Errorf("CurlTask Url type error")
 	}
@@ -66,7 +66,7 @@ func (c *CurlTask) Init(data map[string]interface{}) error {
 //ToMap 数据转换为map
 func (c *CurlTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
-	data["Url"] = c.Url
+	data["Url"] = c.URL
 	data["Param"] = c.Param
 	data["Method"] = c.Method
 	data["Head"] = c.Head
@@ -76,7 +76,7 @@ func (c *CurlTask) ToMap() map[string]interface{} {
 //Run 执行任务
 func (c *CurlTask) Run(ctx context.Context, write io.Writer) error {
 	var method = "GET"
-	var url = c.Url
+	var url = c.URL
 	var body = c.Param
 	if c.Method == POST {
 		method = "POST"
@@ -99,7 +99,7 @@ func (c *CurlTask) Run(ctx context.Context, write io.Writer) error {
 		}
 	}
 	if isEnd(ctx) {
-		return CANCEL
+		return ErrCANCEL
 	}
 	request = request.WithContext(ctx)
 	resp, err := http.DefaultClient.Do(request)

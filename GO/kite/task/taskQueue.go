@@ -20,8 +20,8 @@ type TaskQueue struct {
 }
 
 var (
-	// CANCEL 取消操作的常量
-	CANCEL = errors.New("cancel task")
+	// ErrCANCEL 取消操作的常量
+	ErrCANCEL = errors.New("cancel task")
 )
 
 //Run 执行任务

@@ -2,7 +2,6 @@ package task
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -43,23 +42,13 @@ func (m *Map) ToMap() map[string]interface{} {
 func (m *Map) Run(ctx context.Context, write io.Writer) error {
 	for _, val := range *m {
 		if isEnd(ctx) {
-			return CANCEL
+			return ErrCANCEL
 		}
 		if err := val.Run(ctx, write); err != nil {
 			return err
 		}
 	}
 	return nil
-}
-
-// MarshalJSON 序列化接口
-func (m *Map) MarshalJSON() ([]byte, error) {
-	return json.Marshal(*m)
-}
-
-// UnmarshalJSON 反序列化
-func (m *Map) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, m)
 }
 
 // NewMap 创建一个Map
