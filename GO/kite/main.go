@@ -18,13 +18,13 @@ func main() {
 
 	switch *method {
 	case "config-list":
-		config.List(*args)
+		config.List(*args, "")
 	case "config-set":
 		params := strings.Split(*args, " ")
 		if len(params) < 2 {
 			log.Fatalf("参数格式错误")
 		}
-		config.Set(params[0], params[1])
+		config.Set(params[0], params[1], "")
 	case "client":
 		params := strings.Split(*args, " ")
 		if len(params) < 2 {

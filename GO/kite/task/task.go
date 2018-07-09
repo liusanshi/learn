@@ -18,6 +18,13 @@ var (
 	ErrCANCEL = errors.New("cancel task")
 )
 
+const (
+	// TaskCONTEXTKEY 任务上下文的key
+	TaskCONTEXTKEY = "_ctx_"
+	// BranchCtxKey 分支名称的key
+	BranchCtxKey = "branch"
+)
+
 //ITask 任务执行器
 type ITask interface {
 	Run(ctx context.Context, writer io.Writer) error

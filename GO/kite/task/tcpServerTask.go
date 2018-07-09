@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"strings"
 
 	"../util"
 )
@@ -61,24 +62,34 @@ func (t *TCPServerTask) Run(ctx context.Context, w io.Writer) error {
 //handleConn 处理请求
 func (t *TCPServerTask) handleConn(ctx context.Context, conn net.Conn) {
 	reader := bufio.NewReader(conn)
-	cmd, err := reader.ReadBytes('\n')
-	cmd = cmd[:len(cmd)-1]
+	args, err := reader.ReadBytes('\n')
 	defer conn.Close()
 	if err != nil && err != io.EOF {
 		log.Print(err)
 		return
 	}
-	if task, ok := t.TaskDict[string(cmd)]; ok {
+	if len(args) <= 2 {
+		fmt.Fprintf(conn, "param is empty\n")
+		return
+	}
+	args = args[:len(args)-1]
+	params := strings.Split(string(args), " ")
+	if task, ok := t.TaskDict[params[0]]; ok {
+		tctx := ctx.Value(TaskCONTEXTKEY).(*Context)
+		tctx.SetVal("cmd", params[0])
+		if len(params) > 1 {
+			tctx.SetVal(BranchCtxKey, params[1])
+		}
 		err := task.Run(ctx, conn)
 		if err != nil {
 			log.Print(err)
-			fmt.Fprintf(conn, "method：%s; execute fail:%v\n", cmd, err)
+			fmt.Fprintf(conn, "method：%s; execute fail:%v\n", args, err)
 			return
 		}
 		//执行成功
-		fmt.Fprintf(conn, "method：%s; execute success\n", cmd)
+		fmt.Fprintf(conn, "method：%s; execute success\n", params[0])
 	} else {
-		fmt.Fprintf(conn, "method：%s; not fount\n", cmd)
+		fmt.Fprintf(conn, "method：%s; not fount\n", params[0])
 	}
 }
 

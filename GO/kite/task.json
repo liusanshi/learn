@@ -2,18 +2,7 @@
     "Port": "8888",
     "TaskDict": {
         "list": [{
-            "Head": {
-                "a": "1",
-                "content-type": "html/text"
-            },
-            "Method": 1,
-            "Param": "",
-            "Url": "http://www.qq.com",
-            "__type__": "CurlTask"
-        }, {
-            "Args": ["echo hi", "echo hi-1"],
-            "Cmd": "/usr/bin/bash",
-            "__type__": "ShellTask"
+            "__type__": "ListTask"
         }],
         "modify": [{
             "Args": ["echo hi", "echo hi-1"],
