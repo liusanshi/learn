@@ -20,7 +20,7 @@ func Sev(path string) {
 		fmt.Printf("配置文件:%s 不存在\n", path)
 		return
 	}
-	taskList = task.NewList()
+	taskList := task.NewList()
 	err := task.Load(path, &taskList)
 	if err != nil {
 		fmt.Printf("任务加载失败: %v\n", err)

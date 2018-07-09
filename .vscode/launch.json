@@ -2,7 +2,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "deployment调试",
+			"name": "kite调试-server",
 			"type": "go",
 			"request": "launch",
 			"mode": "debug",
@@ -10,6 +10,17 @@
 			"args": [
 				"--func=server",
 				"--args=E:\\git\\learn\\GO\\kite\\task.json"
+			]
+		},
+		{
+			"name": "kite调试-client",
+			"type": "go",
+			"request": "launch",
+			"mode": "debug",
+			"program": "${workspaceRoot}/GO/kite/main.go",
+			"args": [
+				"--func=client",
+				"--args=E:\\git\\learn\\GO\\kite\\task_client.json list"
 			]
 		},
 		{

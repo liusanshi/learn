@@ -10,7 +10,7 @@ import (
 )
 
 //Client 执行命令
-func Client(path string) {
+func Client(path, cmd string) {
 	if len(path) == 0 {
 		path = util.GetCurrentPath() + "/task.json"
 	}
@@ -24,7 +24,13 @@ func Client(path string) {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	err = taskMap.Run(context.Background(), os.Stdout)
+	taskList, ok := taskMap[cmd]
+	if !ok {
+		fmt.Printf("任务:%v不存在\n", cmd)
+		return
+	}
+
+	err = taskList.Run(context.Background(), os.Stdout)
 	if err != nil {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return
