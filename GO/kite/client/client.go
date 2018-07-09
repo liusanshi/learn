@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"../task"
 	"../util"
@@ -23,7 +24,7 @@ func Client(path string) {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	err = taskQueue.Start(context.Background(), nil)
+	err = taskQueue.Start(context.Background(), os.Stdout)
 	if err != nil {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return

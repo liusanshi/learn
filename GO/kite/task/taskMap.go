@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"log"
+
+	"../util"
 )
 
 //Map 任务字典
@@ -22,6 +24,8 @@ func (m *Map) Init(data map[string]interface{}) error {
 				return err
 			}
 			(*m)[i] = nt
+		} else if _, ok := item.(string); ok { //__type__的情况忽略
+			continue
 		} else {
 			return fmt.Errorf("Map List subTask type error")
 		}
@@ -54,4 +58,8 @@ func (m *Map) Run(ctx context.Context, write io.Writer) error {
 // NewMap 创建一个Map
 func NewMap() Map {
 	return Map(make(map[string]List))
+}
+
+func init() {
+	util.RegisterType((*Map)(nil))
 }

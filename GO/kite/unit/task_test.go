@@ -16,7 +16,7 @@ func TestSaveTask(t *testing.T) {
 			task.Task{
 				Type: "CurlTask",
 				Task: &task.CurlTask{
-					Url:    "http://www.qq.com",
+					URL:    "http://www.qq.com",
 					Method: task.POST,
 					Head:   map[string]string{"content-type": "html/text", "a": "1"},
 				},
@@ -37,7 +37,7 @@ func TestSaveTask(t *testing.T) {
 							task.Task{
 								Type: "CurlTask",
 								Task: &task.CurlTask{
-									Url:    "http://www.qq.com",
+									URL:    "http://www.qq.com",
 									Method: task.POST,
 									Head:   map[string]string{"content-type": "html/text", "a": "1"},
 								},
@@ -90,6 +90,17 @@ func TestLoadTask(t *testing.T) {
 	// }
 	taskQueue := task.TaskQueue{}
 	err := taskQueue.Load("E:\\git\\learn\\GO\\kite\\task.json")
+	if err != nil {
+		t.Log(err)
+	}
+	temp, _ := taskQueue.MarshalJSON()
+	fmt.Printf("%s\n", temp)
+	t.Logf("%s\n", temp)
+}
+
+func TestLoadClientTask(t *testing.T) {
+	taskQueue := task.TaskQueue{}
+	err := taskQueue.Load("E:\\git\\learn\\GO\\kite\\task_client.json")
 	if err != nil {
 		t.Log(err)
 	}

@@ -37,7 +37,7 @@ func Sev(path string) {
 			os.Exit(0)
 		}
 	}()
-	err = taskQueue.Start(ctx, nil)
+	err = taskQueue.Start(ctx, os.Stdout)
 	if err != nil {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return

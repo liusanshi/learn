@@ -1,0 +1,39 @@
+[{
+    "__type__": "Map",
+    "list": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
+            "Content": "list",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        }
+    ],
+    "update": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
+            "Content": "update",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        }
+    ],
+    "delete": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
+            "Content": "delete",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        }
+    ],
+    "init": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
+            "Content": "init",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        }
+    ]
+}]
