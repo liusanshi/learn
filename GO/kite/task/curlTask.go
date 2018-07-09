@@ -3,6 +3,7 @@ package task
 import (
 	"context"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -73,7 +74,7 @@ func (c *CurlTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (c *CurlTask) Run(ctx context.Context) (string, error) {
+func (c *CurlTask) Run(ctx context.Context, write io.Writer) error {
 	var method = "GET"
 	var url = c.Url
 	var body = c.Param
@@ -90,7 +91,7 @@ func (c *CurlTask) Run(ctx context.Context) (string, error) {
 	request, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {
 		log.Printf("Curl NewRequest fail:%v\n", err)
-		return "", err
+		return err
 	}
 	if len(c.Head) > 0 {
 		for k, v := range c.Head {
@@ -98,25 +99,26 @@ func (c *CurlTask) Run(ctx context.Context) (string, error) {
 		}
 	}
 	if isEnd(ctx) {
-		return CANCEL, nil
+		return CANCEL
 	}
 	request = request.WithContext(ctx)
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Printf("Curl request fail:%v\n", err)
-		return "", err
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		log.Printf("get url err code: %d\n", resp.StatusCode)
-		return "", fmt.Errorf("get url err code: %d", resp.StatusCode)
+		return fmt.Errorf("get url err code: %d", resp.StatusCode)
 	}
 	result, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Printf("Curl result resolve fail:%v\n", err)
-		return "", err
+		return err
 	}
-	return string(result), nil
+	write.Write(result)
+	return nil
 }
 
 func init() {

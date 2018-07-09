@@ -3,6 +3,7 @@ package task
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -10,85 +11,29 @@ import (
 	"os"
 )
 
-// TaskList 是一个Task任务的列表
-type TaskList []Task
-
-// Init 根据数据初始化
-func (l *TaskList) Init(data []interface{}) error {
-	*l = make([]Task, len(data))
-	for i, item := range data {
-		if task, ok := item.(map[string]interface{}); ok {
-			nt := Task{}
-			err := nt.Init(task)
-			if err != nil {
-				log.Printf("TaskList - subTask; err:%v\n", err)
-				return err
-			}
-			(*l)[i] = nt
-		} else {
-			return fmt.Errorf("TaskList TaskList subTask type error")
-		}
-	}
-	return nil
-}
-
-//ToArray 将列表数据序列化为[]interface{}
-func (l *TaskList) ToArray() []interface{} {
-	data := make([]interface{}, 0, len(*l))
-	for _, item := range *l {
-		data = append(data, item.ToMap())
-	}
-	return data
-}
-
-// MarshalJSON 序列化接口
-func (l *TaskList) MarshalJSON() ([]byte, error) {
-	return json.Marshal(*l)
-}
-
-// UnmarshalJSON 反序列化
-func (l *TaskList) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, l)
-}
-
 //TaskQueue 任务队列
 type TaskQueue struct {
-	TaskList
+	List
 	ctx        context.Context
 	cancel     bool
 	cancelFunc context.CancelFunc
-	writer     io.Writer
 }
 
-const (
+var (
 	// CANCEL 取消操作的常量
-	CANCEL = "cancel"
+	CANCEL = errors.New("cancel task")
 )
 
 //Run 执行任务
-func (q *TaskQueue) Run(ctx context.Context) (string, error) {
-	for _, task := range q.TaskList {
-		if q.cancel {
-			return CANCEL, nil
-		}
-		res, err := task.Run(ctx)
-		if err != nil {
-			errMsg := fmt.Sprintf("Task:%s Run fail err:%v;\n", task.Type, err)
-			log.Printf(errMsg)
-			q.writer.Write([]byte(errMsg)) //将数据输出到客户端
-			return res, err
-		}
-		fmt.Println(res)
-		q.writer.Write([]byte(res + "\n")) //将数据输出到客户端
-	}
-	return "", nil
+func (q *TaskQueue) Run(ctx context.Context, w io.Writer) error {
+	return q.List.Run(ctx, w)
 }
 
 //MarshalJSON 序列化
 func (q *TaskQueue) MarshalJSON() ([]byte, error) {
 	data := q.ToArray()
 	return json.Marshal(data)
-	// return json.Marshal(q.TaskList)
+	// return json.Marshal(q.List)
 }
 
 //UnmarshalJSON 反序列化
@@ -99,7 +44,7 @@ func (q *TaskQueue) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return q.Init(array)
-	// return json.Unmarshal(data, &q.TaskList)
+	// return json.Unmarshal(data, &q.List)
 }
 
 //Load 获取任务
@@ -136,16 +81,21 @@ func (q *TaskQueue) Canel() {
 }
 
 // Start 执行任务
-func (q *TaskQueue) Start(writer io.Writer) error {
+func (q *TaskQueue) Start(ctx context.Context, writer io.Writer) error {
 	if q.ctx == nil {
-		q.ctx, q.cancelFunc = context.WithCancel(context.Background())
+		if ctx == nil {
+			q.ctx, q.cancelFunc = context.WithCancel(context.Background())
+		} else {
+			q.ctx, q.cancelFunc = context.WithCancel(ctx)
+		}
 	}
-	q.writer = writer
-	if q.writer == nil {
-		q.writer = ioutil.Discard
+
+	if writer == nil {
+		writer = os.Stdout //输出到控制台
 	}
-	result, err := q.Run(q.ctx)
+	err := q.Run(q.ctx, writer)
 	if err != nil {
+		fmt.Fprintf(writer, "err:%v\n", err)
 		return err
 	}
 	return nil

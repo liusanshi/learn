@@ -9,7 +9,7 @@
 			"program": "${workspaceRoot}/GO/kite/main.go",
 			"args": [
 				"--func=server",
-				"--args=a"
+				"--args=E:\\git\\learn\\GO\\kite\\task.json"
 			]
 		},
 		{

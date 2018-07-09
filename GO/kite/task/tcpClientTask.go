@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"time"
 
@@ -53,24 +54,29 @@ func (t *TCPClientTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (t *TCPClientTask) Run(ctx context.Context) (string, error) {
+func (t *TCPClientTask) Run(ctx context.Context, w io.Writer) error {
 	conn, err := net.DialTimeout("tcp", t.Ip+":"+t.Port, time.Millisecond*time.Duration(t.Timeout))
 	if err != nil {
-		return "", err
+		return err
 	}
 	defer conn.Close()
 	if isEnd(ctx) {
-		return CANCEL, nil
+		return CANCEL
 	}
 	_, err = conn.Write([]byte(t.Content + "\n"))
 	if err != nil {
-		return "", err
+		return err
 	}
 	reader := bufio.NewReader(conn)
 	if isEnd(ctx) {
-		return CANCEL, nil
+		return CANCEL
 	}
-	return reader.ReadString('\n')
+	data, err := reader.ReadBytes('\n')
+	if err != nil {
+		return err
+	}
+	w.Write(data)
+	return nil
 }
 
 func init() {

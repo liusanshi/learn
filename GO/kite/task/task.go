@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 
 	"../util"
@@ -11,7 +12,7 @@ import (
 
 //ITask 任务执行器
 type ITask interface {
-	Run(ctx context.Context) (string, error)
+	Run(ctx context.Context, writer io.Writer) error
 	IConertToObject
 	// IConertToArray
 	IInit
@@ -102,8 +103,8 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 }
 
 //Run 任务运行
-func (t *Task) Run(ctx context.Context) (string, error) {
-	return t.Task.Run(ctx)
+func (t *Task) Run(ctx context.Context, write io.Writer) error {
+	return t.Task.Run(ctx, write)
 }
 
 //isEnd 判断是否结束

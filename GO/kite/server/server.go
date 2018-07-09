@@ -1,7 +1,11 @@
 package server
 
 import (
+	"context"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"../task"
 	"../util"
@@ -22,9 +26,27 @@ func Sev(path string) {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	err = taskQueue.Start(nil)
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	//监听取消信号
+	go func() {
+		sign := listenSysSign()
+		select {
+		case <-sign:
+			cancelFunc()
+			fmt.Println("监听到取消信号")
+			os.Exit(0)
+		}
+	}()
+	err = taskQueue.Start(ctx, nil)
 	if err != nil {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return
 	}
+}
+
+// listenSysSign 监听系统退出命令
+func listenSysSign() chan os.Signal {
+	c := make(chan os.Signal)
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	return c
 }
