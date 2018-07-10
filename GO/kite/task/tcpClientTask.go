@@ -2,7 +2,9 @@ package task
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"net"
 	"time"
 
@@ -72,10 +74,29 @@ func (t *TCPClientTask) Run(session *Session) error {
 		}
 		data, err := reader.ReadBytes('\n')
 		if err != nil {
+			if err == io.EOF { //请求结束
+				return nil
+			}
 			return err
 		}
+		data, suc := analysis(data)
 		session.Write(data)
+		if !suc {
+			return fmt.Errorf("%s", data)
+		}
 	}
+}
+
+//解析返回数据的成功与失败
+func analysis(msg []byte) ([]byte, bool) {
+	index := bytes.Index(msg, []byte("|"))
+	if index <= 0 {
+		return msg, false
+	}
+	if bytes.Compare(msg[:index], []byte("0")) == 0 {
+		return msg[index+1:], true
+	}
+	return msg[index+1:], false
 }
 
 func init() {

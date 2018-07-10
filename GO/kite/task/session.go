@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"fmt"
 	"io"
 )
 
@@ -96,7 +97,7 @@ func (c *Session) IsCancel() bool {
 }
 
 //Copy 复制一个子会话
-func (c *Session) Copy(w io.Writer) *Session {
+func (c *Session) Copy(w io.Writer, keys ...string) *Session {
 	s := &Session{
 		ID:    c.ID + "/id",
 		data:  make(map[string]interface{}),
@@ -104,12 +105,25 @@ func (c *Session) Copy(w io.Writer) *Session {
 		BMan:  c.BMan,
 		write: w,
 	}
+	for _, k := range keys {
+		if val, ok := c.GetVal(k); ok {
+			s.SetVal(k, val)
+		}
+	}
 	return s
 }
 
 //Write 实现io.Writer接口
 func (c *Session) Write(p []byte) (n int, err error) {
 	return c.write.Write(p)
+}
+
+//Printf 格式化输出
+func (c *Session) Printf(suc bool, format string, a ...interface{}) (n int, err error) {
+	if suc {
+		return fmt.Fprintf(c.write, "0|"+format, a...)
+	}
+	return fmt.Fprintf(c.write, "1|"+format, a...)
 }
 
 //NewSession 创建一个会话

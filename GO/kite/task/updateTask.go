@@ -26,12 +26,12 @@ func (c *UpdateTask) ToMap() map[string]interface{} {
 
 //Run 更新分支
 func (c *UpdateTask) Run(session *Session) error {
+	defer session.BMan.Unlock() //解锁
 	b, ok := session.GetCurBranchEntity()
 	if !ok {
 		return fmt.Errorf("branch not exists")
 	}
 	b.Version++
 	b.Time = time.Now().Format("2006-01-02 15:04:05")
-	defer session.BMan.Unlock() //解锁
 	return session.BMan.Save()
 }

@@ -1,8 +1,6 @@
 package task
 
 import (
-	"fmt"
-
 	"../util"
 )
 
@@ -22,7 +20,8 @@ func (c *ListTask) ToMap() map[string]interface{} {
 //Run 执行任务
 func (c *ListTask) Run(session *Session) error {
 	session.BMan.Foreach(func(b *Branch, i int) bool {
-		fmt.Fprintf(session, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
+		session.Printf(true, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
+		// fmt.Fprintf(session, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
 		return true
 	})
 	return nil

@@ -17,6 +17,11 @@
             "__type__": "TCPClientTask"
         },
         {
+            "Args": ["echo hi", "echo hi-1"],
+            "Cmd": "/usr/bin/bash",
+            "__type__": "ShellTask"
+        },
+        {
             "Ip": "127.0.0.1",
             "Port": "8888",
             "Content": "update",
@@ -28,12 +33,31 @@
         {
             "Ip": "127.0.0.1",
             "Port": "8888",
+            "Content": "lock",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        },
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
             "Content": "delete",
             "Timeout": 3000,
             "__type__": "TCPClientTask"
         }
     ],
     "init": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
+            "Content": "lock",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        },
+        {
+            "Args": ["echo hi", "echo hi-1"],
+            "Cmd": "/usr/bin/bash",
+            "__type__": "ShellTask"
+        },
         {
             "Ip": "127.0.0.1",
             "Port": "8888",
