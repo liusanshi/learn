@@ -4,10 +4,24 @@
         "list": [{
             "__type__": "ListTask"
         }],
-        "modify": [{
+        "update": [{
+            "__type__": "UpdateTask"
+        }],
+        "delete": [{
             "Args": ["echo hi", "echo hi-1"],
             "Cmd": "/usr/bin/bash",
             "__type__": "ShellTask"
+        }],
+        "init": [{
+            "Args": ["echo hi", "echo hi-1"],
+            "Cmd": "/usr/bin/bash",
+            "__type__": "ShellTask"
+        }],
+        "lock": [{
+            "__type__": "LockTask"
+        }],
+        "unlock": [{
+            "__type__": "UnlockTask"
         }]
     },
     "__type__": "TCPServerTask"

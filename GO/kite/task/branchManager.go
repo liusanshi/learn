@@ -5,8 +5,9 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"sync"
 	"time"
+
+	"../util"
 )
 
 // Branch 分支信息
@@ -27,8 +28,8 @@ type BranchManager struct {
 	list []*Branch
 	// Path 保存路径
 	Path string
-	// 读写锁
-	sync.RWMutex
+	// 自旋锁
+	util.SpinLock
 }
 
 // Save 保存配置

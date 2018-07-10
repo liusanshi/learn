@@ -84,9 +84,11 @@ func (t *TCPServerTask) handleConn(session *Session, conn net.Conn) {
 			fmt.Fprintf(conn, "method：%s; execute fail:%v\n", args, err)
 			return
 		}
+		log.Printf("method：%s; execute success\n", params[0])
 		//执行成功
 		fmt.Fprintf(conn, "method：%s; execute success\n", params[0])
 	} else {
+		log.Printf("method：%s; not fount\n", params[0])
 		fmt.Fprintf(conn, "method：%s; not fount\n", params[0])
 	}
 }

@@ -1,6 +1,8 @@
 package task
 
 import (
+	"fmt"
+
 	"../util"
 )
 
@@ -23,6 +25,8 @@ func (c *LockTask) ToMap() map[string]interface{} {
 
 //Run 获得锁
 func (c *LockTask) Run(session *Session) error {
-	session.BMan.Lock()
+	if !session.BMan.TryLock() {
+		return fmt.Errorf("获取锁失败，请稍后重试~")
+	}
 	return nil
 }

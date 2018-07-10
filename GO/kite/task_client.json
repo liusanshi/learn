@@ -12,6 +12,13 @@
         {
             "Ip": "127.0.0.1",
             "Port": "8888",
+            "Content": "lock",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        },
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
             "Content": "update",
             "Timeout": 3000,
             "__type__": "TCPClientTask"
@@ -31,6 +38,15 @@
             "Ip": "127.0.0.1",
             "Port": "8888",
             "Content": "init",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        }
+    ],
+    "unlock": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8888",
+            "Content": "unlock",
             "Timeout": 3000,
             "__type__": "TCPClientTask"
         }
