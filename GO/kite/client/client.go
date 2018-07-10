@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"../task"
 	"../util"
@@ -26,12 +27,16 @@ func Client(path, cmd string) {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	taskList, ok := taskMap[cmd]
+	params := strings.Split(cmd, " ")
+	taskList, ok := taskMap[params[0]]
 	if !ok {
-		fmt.Printf("任务:%v不存在\n", cmd)
+		fmt.Printf("任务:%v不存在\n", params[0])
 		return
 	}
 	session := task.NewSession(context.Background(), "root", os.Stdout, nil)
+	if len(params) > 1 {
+		session.SetCurrentBranch(params[1])
+	}
 	err = taskList.Run(session)
 	if err != nil && err != io.EOF {
 		fmt.Printf("任务执行失败: %v\n", err)
