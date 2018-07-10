@@ -1,9 +1,7 @@
 package task
 
 import (
-	"context"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -74,7 +72,7 @@ func (c *CurlTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (c *CurlTask) Run(ctx context.Context, write io.Writer) error {
+func (c *CurlTask) Run(session *Session) error {
 	var method = "GET"
 	var url = c.URL
 	var body = c.Param
@@ -98,10 +96,10 @@ func (c *CurlTask) Run(ctx context.Context, write io.Writer) error {
 			request.Header.Add(k, v)
 		}
 	}
-	if isEnd(ctx) {
+	if session.IsCancel() {
 		return ErrCANCEL
 	}
-	request = request.WithContext(ctx)
+	request = request.WithContext(session.Ctx)
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		log.Printf("Curl request fail:%v\n", err)
@@ -117,7 +115,7 @@ func (c *CurlTask) Run(ctx context.Context, write io.Writer) error {
 		log.Printf("Curl result resolve fail:%v\n", err)
 		return err
 	}
-	write.Write(result)
+	session.Write(result)
 	return nil
 }
 

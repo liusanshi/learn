@@ -9,7 +9,8 @@
 			"program": "${workspaceRoot}/GO/kite/main.go",
 			"args": [
 				"--func=server",
-				"--args=E:\\git\\learn\\GO\\kite\\task.json"
+				"--path=E:\\git\\learn\\GO\\kite",
+				"--workspace=/1/2"
 			]
 		},
 		{
@@ -20,7 +21,8 @@
 			"program": "${workspaceRoot}/GO/kite/main.go",
 			"args": [
 				"--func=client",
-				"--args=E:\\git\\learn\\GO\\kite\\task_client.json list"
+				"--path=E:\\git\\learn\\GO\\kite",
+				"--cmd=list"
 			]
 		},
 		{

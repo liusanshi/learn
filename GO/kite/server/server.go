@@ -22,26 +22,28 @@ func getCurrentPath() string {
 }
 
 // Sev 服务入口
-func Sev(path string) {
+func Sev(path, work string) {
 	if len(path) == 0 {
-		path = getCurrentPath() + "/task.json"
+		path = getCurrentPath()
 	}
-	if !util.FileExists(path) {
-		fmt.Printf("配置文件:%s 不存在\n", path)
+	cfgPath := path + "/task.json"
+	if !util.FileExists(cfgPath) {
+		fmt.Printf("配置文件:%s 不存在\n", cfgPath)
 		return
 	}
 	taskList := task.NewList()
-	err := task.Load(path, &taskList)
+	err := task.Load(cfgPath, &taskList)
 	if err != nil {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	dataCtx := task.NewContext(getCurrentPath() + "/config.json")
-	if dataCtx == nil {
+	branchMan := task.NewBranchManager(path + "/config.json")
+	if branchMan == nil {
 		return
 	}
-	ctx := context.WithValue(context.Background(), task.TaskCONTEXTKEY, dataCtx)
-	ctx, cancelFunc := context.WithCancel(ctx)
+	ctx, cancelFunc := context.WithCancel(context.Background())
+	session := task.NewSession(ctx, "root", os.Stdout, branchMan)
+	session.SetWorkSpace(work)
 	//监听取消信号
 	go func() {
 		sign := listenSysSign()
@@ -52,7 +54,7 @@ func Sev(path string) {
 			os.Exit(0)
 		}
 	}()
-	err = taskList.Run(ctx, os.Stdout)
+	err = taskList.Run(session)
 	if err != nil {
 		fmt.Printf("任务执行失败: %v\n", err)
 		return

@@ -1,10 +1,6 @@
 package task
 
 import (
-	"context"
-	"io"
-	"time"
-
 	"../util"
 )
 
@@ -26,15 +22,8 @@ func (c *InitTask) ToMap() map[string]interface{} {
 }
 
 //Run 创建分支
-func (c *InitTask) Run(ctx context.Context, write io.Writer) error {
-	tctx := ctx.Value(TaskCONTEXTKEY).(*Context)
-	branch, _ := tctx.GetVal(BranchCtxKey)
-	strBranch := branch.(string)
-	tctx.List = append(tctx.List, &Branch{
-		Name:    strBranch,
-		Version: 1,
-		Time:    time.Now().Format("2006-01-02 15:04:05"),
-		Path:    "",
-	})
-	return tctx.Save()
+func (c *InitTask) Run(session *Session) error {
+	session.BMan.AddBranch(session.GetCurrentBranch(), "")
+	defer session.BMan.Unlock() //解锁
+	return session.BMan.Save()
 }

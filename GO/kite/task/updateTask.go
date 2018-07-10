@@ -1,9 +1,7 @@
 package task
 
 import (
-	"context"
 	"fmt"
-	"io"
 	"time"
 
 	"../util"
@@ -27,15 +25,13 @@ func (c *UpdateTask) ToMap() map[string]interface{} {
 }
 
 //Run 更新分支
-func (c *UpdateTask) Run(ctx context.Context, write io.Writer) error {
-	tctx := ctx.Value(TaskCONTEXTKEY).(*Context)
-	branch, _ := tctx.GetVal(BranchCtxKey)
-	strBranch := branch.(string)
-	b, ok := tctx.GetBranch(strBranch)
+func (c *UpdateTask) Run(session *Session) error {
+	b, ok := session.GetCurBranchEntity()
 	if !ok {
 		return fmt.Errorf("branch not exists")
 	}
 	b.Version++
 	b.Time = time.Now().Format("2006-01-02 15:04:05")
-	return tctx.Save()
+	defer session.BMan.Unlock() //解锁
+	return session.BMan.Save()
 }

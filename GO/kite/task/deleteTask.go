@@ -1,9 +1,6 @@
 package task
 
 import (
-	"context"
-	"io"
-
 	"../util"
 )
 
@@ -25,10 +22,8 @@ func (c *DeleteTask) ToMap() map[string]interface{} {
 }
 
 //Run 删除分支
-func (c *DeleteTask) Run(ctx context.Context, write io.Writer) error {
-	tctx := ctx.Value(TaskCONTEXTKEY).(*Context)
-	branch, _ := tctx.GetVal(BranchCtxKey)
-	strBranch := branch.(string)
-	tctx.DelBranch(strBranch)
-	return tctx.Save()
+func (c *DeleteTask) Run(session *Session) error {
+	session.BMan.DelBranch(session.GetCurrentBranch())
+	defer session.BMan.Unlock() //释放锁
+	return session.BMan.Save()
 }

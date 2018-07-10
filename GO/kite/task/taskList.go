@@ -1,10 +1,8 @@
 package task
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 )
 
@@ -31,12 +29,12 @@ func (l *List) Init(data []interface{}) error {
 }
 
 //Run 任务运行
-func (l *List) Run(ctx context.Context, write io.Writer) error {
+func (l *List) Run(session *Session) error {
 	for _, item := range *l {
-		if isEnd(ctx) {
+		if session.IsCancel() {
 			return ErrCANCEL
 		}
-		if err := item.Run(ctx, write); err != nil {
+		if err := item.Run(session); err != nil {
 			return err
 		}
 	}

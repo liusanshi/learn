@@ -1,9 +1,7 @@
 package task
 
 import (
-	"context"
 	"fmt"
-	"io"
 
 	"../util"
 )
@@ -22,14 +20,11 @@ func (c *ListTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (c *ListTask) Run(ctx context.Context, write io.Writer) error {
-	tctx, ok := ctx.Value(TaskCONTEXTKEY).(*Context)
-	if !ok {
-		return fmt.Errorf("ListTask type err")
-	}
-	for _, b := range tctx.List {
-		fmt.Fprintf(write, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
-	}
+func (c *ListTask) Run(session *Session) error {
+	session.BMan.Foreach(func(b *Branch, i int) bool {
+		fmt.Fprintf(session, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
+		return true
+	})
 	return nil
 }
 

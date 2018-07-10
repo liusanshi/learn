@@ -2,9 +2,7 @@ package task
 
 import (
 	"bufio"
-	"context"
 	"fmt"
-	"io"
 	"net"
 	"time"
 
@@ -54,13 +52,13 @@ func (t *TCPClientTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (t *TCPClientTask) Run(ctx context.Context, w io.Writer) error {
+func (t *TCPClientTask) Run(session *Session) error {
 	conn, err := net.DialTimeout("tcp", t.IP+":"+t.Port, time.Millisecond*time.Duration(t.Timeout))
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
-	if isEnd(ctx) {
+	if session.IsCancel() {
 		return ErrCANCEL
 	}
 	_, err = conn.Write([]byte(t.Content + "\n"))
@@ -69,14 +67,14 @@ func (t *TCPClientTask) Run(ctx context.Context, w io.Writer) error {
 	}
 	reader := bufio.NewReader(conn)
 	for {
-		if isEnd(ctx) {
+		if session.IsCancel() {
 			return ErrCANCEL
 		}
 		data, err := reader.ReadBytes('\n')
 		if err != nil {
 			return err
 		}
-		w.Write(data)
+		session.Write(data)
 	}
 }
 

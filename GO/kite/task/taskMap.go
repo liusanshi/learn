@@ -1,10 +1,8 @@
 package task
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 
 	"../util"
@@ -60,12 +58,12 @@ func (m *Map) UnmarshalJSON(data []byte) error {
 }
 
 //Run 任务运行
-func (m *Map) Run(ctx context.Context, write io.Writer) error {
+func (m *Map) Run(session *Session) error {
 	for _, val := range *m {
-		if isEnd(ctx) {
+		if session.IsCancel() {
 			return ErrCANCEL
 		}
-		if err := val.Run(ctx, write); err != nil {
+		if err := val.Run(session); err != nil {
 			return err
 		}
 	}

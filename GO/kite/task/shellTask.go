@@ -2,9 +2,7 @@ package task
 
 import (
 	"bytes"
-	"context"
 	"fmt"
-	"io"
 	"os/exec"
 
 	"../util"
@@ -42,12 +40,12 @@ func (s *ShellTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (s *ShellTask) Run(ctx context.Context, w io.Writer) error {
+func (s *ShellTask) Run(session *Session) error {
 	args := make([]string, len(s.Args)+1)
 	args[0] = "-c"
 	copy(args[1:], s.Args)
 	cmd := exec.Command(s.Cmd, args...)
-	if isEnd(ctx) {
+	if session.IsCancel() {
 		return ErrCANCEL
 	}
 	var out bytes.Buffer
@@ -56,7 +54,7 @@ func (s *ShellTask) Run(ctx context.Context, w io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("err:%v; info:%s", err, out.Bytes())
 	}
-	w.Write(out.Bytes())
+	session.Write(out.Bytes())
 	return nil
 }
 

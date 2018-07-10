@@ -2,7 +2,6 @@ package task
 
 import (
 	"bufio"
-	"context"
 	"fmt"
 	"io"
 	"log"
@@ -40,14 +39,14 @@ func (t *TCPServerTask) ToMap() map[string]interface{} {
 }
 
 //Run 监听端口号，接收请求，然后根据指令执行任务；将任务的结果输出给客户端
-func (t *TCPServerTask) Run(ctx context.Context, w io.Writer) error {
+func (t *TCPServerTask) Run(session *Session) error {
 	listen, err := net.Listen("tcp", "127.0.0.1:"+t.Port)
 	if err != nil {
 		log.Print(err)
 		return err
 	}
 	for {
-		if isEnd(ctx) {
+		if session.IsCancel() {
 			return ErrCANCEL
 		}
 		conn, err := listen.Accept()
@@ -55,12 +54,12 @@ func (t *TCPServerTask) Run(ctx context.Context, w io.Writer) error {
 			log.Print(err)
 			continue
 		}
-		go t.handleConn(ctx, conn)
+		go t.handleConn(session.Copy(conn) /* 复制一个新的会话 */, conn)
 	}
 }
 
 //handleConn 处理请求
-func (t *TCPServerTask) handleConn(ctx context.Context, conn net.Conn) {
+func (t *TCPServerTask) handleConn(session *Session, conn net.Conn) {
 	reader := bufio.NewReader(conn)
 	args, err := reader.ReadBytes('\n')
 	defer conn.Close()
@@ -75,12 +74,11 @@ func (t *TCPServerTask) handleConn(ctx context.Context, conn net.Conn) {
 	args = args[:len(args)-1]
 	params := strings.Split(string(args), " ")
 	if task, ok := t.TaskDict[params[0]]; ok {
-		tctx := ctx.Value(TaskCONTEXTKEY).(*Context)
-		tctx.SetVal("cmd", params[0])
+		session.SetCMD(params[0])
 		if len(params) > 1 {
-			tctx.SetVal(BranchCtxKey, params[1])
+			session.SetCurrentBranch(params[1])
 		}
-		err := task.Run(ctx, conn)
+		err := task.Run(session)
 		if err != nil {
 			log.Print(err)
 			fmt.Fprintf(conn, "method：%s; execute fail:%v\n", args, err)
