@@ -23,9 +23,8 @@ func getCurrentPath() string {
 func GetCurrentPath() string {
 	if isDev {
 		return "E:\\git\\learn\\GO\\kite"
-	} else {
-		return getCurrentPath()
 	}
+	return getCurrentPath()
 }
 
 //FileExists 判断文件路径是否存在
