@@ -26,14 +26,20 @@
 			]
 		},
 		{
-			"name": "hello调试",
+			"name": "远程调试",
 			"type": "go",
 			"request": "launch",
-			"mode": "debug",
+			"mode": "remote",
+			"remotePath": "${workspaceRoot}",
+			"port": 2345,
+            "host": "10.125.42.41",
 			"program": "${workspaceRoot}/GO/src/main.go",
 			"args": [
-				"--func=crawler2"
-			]
+				"--func=client",
+				"--path=E:\\git\\learn\\GO\\kite",
+				"--cmd=update"
+			],
+			"showLog": true
 		},
 		{
 			"name": "Launch index.html with sourcemaps",

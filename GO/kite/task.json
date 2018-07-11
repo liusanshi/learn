@@ -9,12 +9,12 @@
         }],
         "delete": [{
             "Args": ["echo hi", "echo hi-1"],
-            "Cmd": "/usr/bin/bash",
+            "Cmd": "/bin/bash",
             "__type__": "ShellTask"
         }],
         "init": [{
             "Args": ["echo hi", "echo hi-1"],
-            "Cmd": "/usr/bin/bash",
+            "Cmd": "/bin/bash",
             "__type__": "ShellTask"
         }],
         "lock": [{
