@@ -1,10 +1,15 @@
 {
 	// See http://go.microsoft.com/fwlink/?LinkId=733558
 	// for the documentation about the tasks.json format
-	"version": "0.1.0",
-	"command": "tsc",
-	"isShellCommand": true,
-	"args": ["-p", "."],
-	"showOutput": "silent",
-	"problemMatcher": "$tsc"
+	"version": "1.1.0",
+	"tasks": [
+		{
+			"taskName": "rsync",
+			"command": "c:/rsync/bin/rsync.exe",
+			"isShellCommand": true,
+			"args": ["-avz", "--exclude-from=\"c:/rsync/exclude.list\"", "--port=8730", "./GO/kite/", "user_00@10.125.42.41::kite_payne/"],
+			"showOutput": "silent",
+			"problemMatcher": "$tsc"
+		}
+	],	
 }
