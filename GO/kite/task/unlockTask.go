@@ -2,6 +2,7 @@ package task
 
 import (
 	"../util"
+	"./core"
 )
 
 //UnlockTask 删除分支的任务
@@ -22,7 +23,7 @@ func (c *UnlockTask) ToMap() map[string]interface{} {
 }
 
 //Run 释放锁
-func (c *UnlockTask) Run(session *Session) error {
+func (c *UnlockTask) Run(session *core.Session) error {
 	session.BMan.Unlock()
 	return nil
 }

@@ -2,6 +2,7 @@ package task
 
 import (
 	"../util"
+	"./core"
 )
 
 //InitTask 创建分支的任务
@@ -22,7 +23,7 @@ func (c *InitTask) ToMap() map[string]interface{} {
 }
 
 //Run 创建分支
-func (c *InitTask) Run(session *Session) error {
+func (c *InitTask) Run(session *core.Session) error {
 	session.BMan.AddBranch(session.GetCurrentBranch(), "")
 	defer session.BMan.Unlock() //解锁
 	return session.BMan.Save()

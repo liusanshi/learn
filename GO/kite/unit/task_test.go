@@ -6,13 +6,14 @@ import (
 	"testing"
 
 	"../task"
+	"../task/core"
 	"../util"
 )
 
 //测试任务的序列化
 func TestSaveTask(t *testing.T) {
-	taskQueue := task.List{
-		task.Task{
+	taskQueue := core.List{
+		core.Task{
 			Type: "CurlTask",
 			Task: &task.CurlTask{
 				URL:    "http://www.qq.com",
@@ -20,20 +21,20 @@ func TestSaveTask(t *testing.T) {
 				Head:   map[string]string{"content-type": "html/text", "a": "1"},
 			},
 		},
-		task.Task{
+		core.Task{
 			Type: "ShellTask",
 			Task: &task.ShellTask{
 				Cmd:  "/usr/bin/bash",
 				Args: []string{"echo hi", "echo hi-1"},
 			},
 		},
-		task.Task{
+		core.Task{
 			Type: "TCPServerTask",
 			Task: &task.TCPServerTask{
 				Port: "80",
-				TaskDict: map[string]task.List{
+				TaskDict: map[string]core.List{
 					"list": {
-						task.Task{
+						core.Task{
 							Type: "CurlTask",
 							Task: &task.CurlTask{
 								URL:    "http://www.qq.com",
@@ -41,7 +42,7 @@ func TestSaveTask(t *testing.T) {
 								Head:   map[string]string{"content-type": "html/text", "a": "1"},
 							},
 						},
-						task.Task{
+						core.Task{
 							Type: "ShellTask",
 							Task: &task.ShellTask{
 								Cmd:  "/usr/bin/bash",
@@ -50,7 +51,7 @@ func TestSaveTask(t *testing.T) {
 						},
 					},
 					"modify": {
-						task.Task{
+						core.Task{
 							Type: "ShellTask",
 							Task: &task.ShellTask{
 								Cmd:  "/usr/bin/bash",
@@ -70,7 +71,7 @@ func TestSaveTask(t *testing.T) {
 			return
 		}
 	}
-	err := task.Save("E:\\git\\learn\\GO\\kite\\task.json", &taskQueue)
+	err := core.Save("E:\\git\\learn\\GO\\kite\\task.json", &taskQueue)
 	if err != nil {
 		t.Log(err)
 	}
@@ -86,8 +87,8 @@ func TestLoadTask(t *testing.T) {
 	// 		return
 	// 	}
 	// }
-	taskQueue := task.NewList()
-	err := task.Load("E:\\git\\learn\\GO\\kite\\task.json", &taskQueue)
+	taskQueue := core.NewList()
+	err := core.Load("E:\\git\\learn\\GO\\kite\\task.json", &taskQueue)
 	if err != nil {
 		t.Log(err)
 	}
@@ -97,8 +98,8 @@ func TestLoadTask(t *testing.T) {
 }
 
 func TestLoadClientTask(t *testing.T) {
-	taskQueue := task.NewMap()
-	err := task.Load("E:\\git\\learn\\GO\\kite\\task_client.json", &taskQueue)
+	taskQueue := core.NewMap()
+	err := core.Load("E:\\git\\learn\\GO\\kite\\task_client.json", &taskQueue)
 	if err != nil {
 		t.Log(err)
 	}

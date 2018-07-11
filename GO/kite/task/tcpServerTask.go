@@ -9,12 +9,13 @@ import (
 	"strings"
 
 	"../util"
+	"./core"
 )
 
 //TCPServerTask tcp服务的任务
 type TCPServerTask struct {
 	Port     string
-	TaskDict Map
+	TaskDict core.Map
 }
 
 //Init 数据的初始化
@@ -23,7 +24,7 @@ func (t *TCPServerTask) Init(data map[string]interface{}) error {
 	if t.Port, ok = data["Port"].(string); !ok {
 		return fmt.Errorf("TCPServerTask Port type error")
 	}
-	t.TaskDict = NewMap()
+	t.TaskDict = core.NewMap()
 	if dict, ok := data["TaskDict"].(map[string]interface{}); ok {
 		return t.TaskDict.Init(dict)
 	}
@@ -39,7 +40,7 @@ func (t *TCPServerTask) ToMap() map[string]interface{} {
 }
 
 //Run 监听端口号，接收请求，然后根据指令执行任务；将任务的结果输出给客户端
-func (t *TCPServerTask) Run(session *Session) error {
+func (t *TCPServerTask) Run(session *core.Session) error {
 	listen, err := net.Listen("tcp", "127.0.0.1:"+t.Port)
 	if err != nil {
 		log.Print(err)
@@ -47,19 +48,19 @@ func (t *TCPServerTask) Run(session *Session) error {
 	}
 	for {
 		if session.IsCancel() {
-			return ErrCANCEL
+			return core.ErrCANCEL
 		}
 		conn, err := listen.Accept()
 		if err != nil {
 			log.Print(err)
 			continue
 		}
-		go t.handleConn(session.Copy(conn, WorkSpace) /* 复制一个新的会话 */, conn)
+		go t.handleConn(session.Copy(conn, core.WorkSpace) /* 复制一个新的会话 */, conn)
 	}
 }
 
 //handleConn 处理请求
-func (t *TCPServerTask) handleConn(session *Session, conn net.Conn) {
+func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
 	reader := bufio.NewReader(conn)
 	args, err := reader.ReadBytes('\n')
 	defer conn.Close()

@@ -7,7 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"../task"
+	_ "../task" //只加载不执行
+	"../task/core"
 	"../util"
 )
 
@@ -31,18 +32,18 @@ func Sev(path, work string) {
 		fmt.Printf("配置文件:%s 不存在\n", cfgPath)
 		return
 	}
-	taskList := task.NewList()
-	err := task.Load(cfgPath, &taskList)
+	taskList := core.NewList()
+	err := core.Load(cfgPath, &taskList)
 	if err != nil {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	branchMan := task.NewBranchManager(path + "/config.json")
+	branchMan := core.NewBranchManager(path + "/config.json")
 	if branchMan == nil {
 		return
 	}
 	ctx, cancelFunc := context.WithCancel(context.Background())
-	session := task.NewSession(ctx, "root", os.Stdout, branchMan)
+	session := core.NewSession(ctx, "root", os.Stdout, branchMan)
 	session.SetWorkSpace(work)
 	//监听取消信号
 	go func() {

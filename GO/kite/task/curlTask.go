@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"../util"
+	"./core"
 )
 
 // CurlMethod curl的类型
@@ -72,7 +73,7 @@ func (c *CurlTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (c *CurlTask) Run(session *Session) error {
+func (c *CurlTask) Run(session *core.Session) error {
 	var method = "GET"
 	var url = c.URL
 	var body = c.Param
@@ -97,7 +98,7 @@ func (c *CurlTask) Run(session *Session) error {
 		}
 	}
 	if session.IsCancel() {
-		return ErrCANCEL
+		return core.ErrCANCEL
 	}
 	request = request.WithContext(session.Ctx)
 	resp, err := http.DefaultClient.Do(request)

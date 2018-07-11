@@ -1,4 +1,4 @@
-package task
+package core
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"../util"
+	"../../util"
 )
 
 var (

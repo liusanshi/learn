@@ -6,6 +6,7 @@ import (
 	"os/exec"
 
 	"../util"
+	"./core"
 )
 
 //ShellTask shell任务
@@ -40,13 +41,13 @@ func (s *ShellTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (s *ShellTask) Run(session *Session) error {
+func (s *ShellTask) Run(session *core.Session) error {
 	args := make([]string, len(s.Args)+1)
 	args[0] = "-c"
 	copy(args[1:], s.Args)
 	cmd := exec.Command(s.Cmd, args...)
 	if session.IsCancel() {
-		return ErrCANCEL
+		return core.ErrCANCEL
 	}
 	var out bytes.Buffer
 	cmd.Stdout = &out

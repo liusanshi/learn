@@ -1,4 +1,4 @@
-package task
+package core
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"../util"
+	"../../util"
 )
 
 // Branch 分支信息

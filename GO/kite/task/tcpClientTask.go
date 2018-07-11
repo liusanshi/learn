@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"../util"
+	"./core"
 )
 
 //TCPClientTask tcp客户端
@@ -54,14 +55,14 @@ func (t *TCPClientTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (t *TCPClientTask) Run(session *Session) error {
+func (t *TCPClientTask) Run(session *core.Session) error {
 	conn, err := net.DialTimeout("tcp", t.IP+":"+t.Port, time.Millisecond*time.Duration(t.Timeout))
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
 	if session.IsCancel() {
-		return ErrCANCEL
+		return core.ErrCANCEL
 	}
 	_, err = conn.Write([]byte(t.Content + "\n"))
 	if err != nil {
@@ -70,7 +71,7 @@ func (t *TCPClientTask) Run(session *Session) error {
 	reader := bufio.NewReader(conn)
 	for {
 		if session.IsCancel() {
-			return ErrCANCEL
+			return core.ErrCANCEL
 		}
 		data, err := reader.ReadBytes('\n')
 		if err != nil {

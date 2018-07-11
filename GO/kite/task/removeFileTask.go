@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"../util"
+	"./core"
 )
 
 //RemoveFileTask 删除文件任务
@@ -33,6 +34,6 @@ func (r *RemoveFileTask) ToMap() map[string]interface{} {
 }
 
 //Run 删除文件
-func (r *RemoveFileTask) Run(session *Session) error {
+func (r *RemoveFileTask) Run(session *core.Session) error {
 	return os.RemoveAll(r.Path)
 }

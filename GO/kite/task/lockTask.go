@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"../util"
+	"./core"
 )
 
 //LockTask 删除分支的任务
@@ -24,7 +25,7 @@ func (c *LockTask) ToMap() map[string]interface{} {
 }
 
 //Run 获得锁
-func (c *LockTask) Run(session *Session) error {
+func (c *LockTask) Run(session *core.Session) error {
 	if !session.BMan.TryLock() {
 		return fmt.Errorf("获取锁失败，请稍后重试~")
 	}

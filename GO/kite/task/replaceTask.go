@@ -7,6 +7,7 @@ import (
 	"regexp"
 
 	"../util"
+	"./core"
 )
 
 //替换器
@@ -86,7 +87,7 @@ func (r *ReplaceTask) ToMap() map[string]interface{} {
 }
 
 //Run 修改文件
-func (r *ReplaceTask) Run(session *Session) error {
+func (r *ReplaceTask) Run(session *core.Session) error {
 	if len(r.Replacer) <= 0 {
 		return nil
 	}

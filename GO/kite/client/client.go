@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"../task"
+	_ "../task" //只加载不执行
+	"../task/core"
 	"../util"
 )
 
@@ -21,8 +22,8 @@ func Client(path, cmd string) {
 		fmt.Printf("配置文件:%s 不存在\n", cfgPath)
 		return
 	}
-	taskMap := task.NewMap()
-	err := task.Load(cfgPath, &taskMap)
+	taskMap := core.NewMap()
+	err := core.Load(cfgPath, &taskMap)
 	if err != nil {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
@@ -33,7 +34,7 @@ func Client(path, cmd string) {
 		fmt.Printf("任务:%v不存在\n", params[0])
 		return
 	}
-	session := task.NewSession(context.Background(), "root", os.Stdout, nil)
+	session := core.NewSession(context.Background(), "root", os.Stdout, nil)
 	if len(params) > 1 {
 		session.SetCurrentBranch(params[1])
 	}

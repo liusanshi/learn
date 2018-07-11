@@ -1,11 +1,11 @@
-package task
+package core
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 
-	"../util"
+	"../../util"
 )
 
 //Map 任务字典

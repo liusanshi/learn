@@ -2,6 +2,7 @@ package task
 
 import (
 	"../util"
+	"./core"
 )
 
 //ListTask 显示所有分支的list
@@ -18,9 +19,9 @@ func (c *ListTask) ToMap() map[string]interface{} {
 }
 
 //Run 执行任务
-func (c *ListTask) Run(session *Session) error {
+func (c *ListTask) Run(session *core.Session) error {
 	session.Printf(true, "%s\t%s\t%s\n", "名称", "版本", "时间")
-	session.BMan.Foreach(func(b *Branch, i int) bool {
+	session.BMan.Foreach(func(b *core.Branch, i int) bool {
 		session.Printf(true, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
 		// fmt.Fprintf(session, "%s\t%d\t%s\n", b.Name, b.Version, b.Time)
 		return true

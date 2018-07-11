@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"../util"
+	"./core"
 )
 
 //UpdateTask 更新分支的任务
@@ -25,7 +26,7 @@ func (c *UpdateTask) ToMap() map[string]interface{} {
 }
 
 //Run 更新分支
-func (c *UpdateTask) Run(session *Session) error {
+func (c *UpdateTask) Run(session *core.Session) error {
 	defer session.BMan.Unlock() //解锁
 	b, ok := session.GetCurBranchEntity()
 	if !ok {
