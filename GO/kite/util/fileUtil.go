@@ -7,14 +7,25 @@ import (
 	"strings"
 )
 
-//GetCurrentPath 获取当前运行的路径
-func GetCurrentPath() string {
+const isDev = false
+
+//getCurrentPath 获取当前运行的路径
+func getCurrentPath() string {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		log.Fatal(err)
 		return ""
 	}
 	return strings.Replace(dir, "\\", "/", -1)
+}
+
+// GetCurrentPath 获取当前运行的路径
+func GetCurrentPath() string {
+	if isDev {
+		return "E:\\git\\learn\\GO\\kite"
+	} else {
+		return getCurrentPath()
+	}
 }
 
 //FileExists 判断文件路径是否存在

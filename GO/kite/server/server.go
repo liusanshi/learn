@@ -12,20 +12,10 @@ import (
 	"../util"
 )
 
-const isDev = false
-
-func getCurrentPath() string {
-	if isDev {
-		return "E:\\git\\learn\\GO\\kite"
-	} else {
-		return util.GetCurrentPath()
-	}
-}
-
 // Sev 服务入口
 func Sev(path, work string) {
 	if len(path) == 0 {
-		path = getCurrentPath()
+		path = util.GetCurrentPath()
 	}
 	cfgPath := path + "/task.json"
 	if !util.FileExists(cfgPath) {
