@@ -11,7 +11,7 @@ import (
 	"../util"
 )
 
-const isDev = true
+const isDev = false
 
 func getCurrentPath() string {
 	if isDev {
