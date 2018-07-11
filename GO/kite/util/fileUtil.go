@@ -19,7 +19,7 @@ func getCurrentPath() string {
 	return strings.Replace(dir, "\\", "/", -1)
 }
 
-// GetCurrentPath 获取当前运行的路径
+//GetCurrentPath 获取当前运行的路径
 func GetCurrentPath() string {
 	if isDev {
 		return "E:\\git\\learn\\GO\\kite"
