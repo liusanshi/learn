@@ -2,7 +2,6 @@ package task
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
 	"io"
 	"net"
@@ -10,6 +9,7 @@ import (
 
 	"../util"
 	"./core"
+	"./message"
 )
 
 //TCPClientTask tcp客户端
@@ -75,29 +75,24 @@ func (t *TCPClientTask) Run(session *core.Session) error {
 		}
 		data, err := reader.ReadBytes('\n')
 		if err != nil {
-			if err == io.EOF { //请求结束
+			if err != io.EOF { //请求出错，且没有结束，直接返回错误
+				return err
+			}
+			if len(data) == 0 { //读取结束，且没有数据直接返回
 				return nil
 			}
-			return err
 		}
-		data, suc := analysis(data)
-		session.Write(data)
-		if !suc {
-			return fmt.Errorf("%s", data)
+		Msg := message.AnalysisMessage(data)
+		if !Msg.Success {
+			return fmt.Errorf("%s", Msg.Content)
+		}
+		if Msg.Type == message.BusinessMessage {
+			session.Write([]byte(Msg.Content))
+		} else {
+			//todo 系统消息怎么处理? 系统消息暂时不显示
+			// log.Println(data)
 		}
 	}
-}
-
-//解析返回数据的成功与失败
-func analysis(msg []byte) ([]byte, bool) {
-	index := bytes.Index(msg, []byte("|"))
-	if index <= 0 {
-		return msg, false
-	}
-	if bytes.Compare(msg[:index], []byte("0")) == 0 {
-		return msg[index+1:], true
-	}
-	return msg[index+1:], false
 }
 
 func init() {

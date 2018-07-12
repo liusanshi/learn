@@ -10,6 +10,7 @@ import (
 
 	"../util"
 	"./core"
+	"./message"
 )
 
 //TCPServerTask tcp服务的任务
@@ -69,7 +70,7 @@ func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
 		return
 	}
 	if len(args) <= 2 {
-		session.Printf(false, "param is empty\n")
+		session.Printf(false, message.SystemMessage, "param is empty\n")
 		return
 	}
 	args = args[:len(args)-1]
@@ -82,15 +83,15 @@ func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
 		err := task.Run(session)
 		if err != nil {
 			log.Print(err)
-			session.Printf(false, "method：%s; execute fail:%v\n", args, err)
+			session.Printf(false, message.SystemMessage, "method：%s; execute fail:%v\n", args, err)
 			return
 		}
 		log.Printf("method：%s; execute success\n", params[0])
 		//执行成功
-		session.Printf(true, "method：%s; execute success\n", params[0])
+		session.Printf(true, message.SystemMessage, "method：%s; execute success\n", params[0])
 	} else {
 		log.Printf("method：%s; not fount\n", params[0])
-		session.Printf(false, "method：%s; not fount\n", params[0])
+		session.Printf(false, message.SystemMessage, "method：%s; not fount\n", params[0])
 	}
 }
 

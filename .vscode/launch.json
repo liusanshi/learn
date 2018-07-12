@@ -22,7 +22,7 @@
 			"args": [
 				"--func=client",
 				"--path=E:\\git\\learn\\GO\\kite",
-				"--cmd=update"
+				"--cmd=list"
 			]
 		},
 		{

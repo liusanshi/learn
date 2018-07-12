@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+
+	"../message"
 )
 
 // Session 会话
@@ -119,11 +121,9 @@ func (c *Session) Write(p []byte) (n int, err error) {
 }
 
 //Printf 格式化输出
-func (c *Session) Printf(suc bool, format string, a ...interface{}) (n int, err error) {
-	if suc {
-		return fmt.Fprintf(c.write, "0|"+format, a...)
-	}
-	return fmt.Fprintf(c.write, "1|"+format, a...)
+func (c *Session) Printf(suc bool, typ message.MessageType, format string, a ...interface{}) (n int, err error) {
+	msg := message.NewMessage(suc, typ, fmt.Sprintf(format, a...))
+	return c.Write(msg.Bytes())
 }
 
 //NewSession 创建一个会话
