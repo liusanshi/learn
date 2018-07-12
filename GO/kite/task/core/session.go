@@ -121,7 +121,7 @@ func (c *Session) Write(p []byte) (n int, err error) {
 }
 
 //Printf 格式化输出
-func (c *Session) Printf(suc bool, typ message.MessageType, format string, a ...interface{}) (n int, err error) {
+func (c *Session) Printf(suc bool, typ message.Type, format string, a ...interface{}) (n int, err error) {
 	msg := message.NewMessage(suc, typ, fmt.Sprintf(format, a...))
 	return c.Write(msg.Bytes())
 }

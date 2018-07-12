@@ -8,14 +8,14 @@ import (
 	"strconv"
 )
 
-//MessageType 消息类型
-type MessageType int
+//Type 消息类型
+type Type int
 
 const (
 	// SystemMessage 系统消息
-	SystemMessage = MessageType(0)
+	SystemMessage = Type(0)
 	// BusinessMessage 业务消息
-	BusinessMessage = MessageType(1)
+	BusinessMessage = Type(1)
 )
 
 //curMsgID 当前的消息id
@@ -25,7 +25,7 @@ var curMsgID = 0
 type Message struct {
 	ID      int
 	Success bool
-	Type    MessageType
+	Type    Type
 	Content string
 }
 
@@ -70,7 +70,7 @@ func (m *Message) Init(msg []byte) error {
 
 //ReadFrom 读取数据
 func (m *Message) ReadFrom(r io.Reader) (int64, error) {
-	nr := bufio.NewReaderSize(r, 1024)
+	nr := bufio.NewReader(r)
 	str, err := nr.ReadBytes('\n')
 	if err != nil {
 		return 0, err
@@ -86,7 +86,7 @@ func (m *Message) WriteTo(w io.Writer) (int64, error) {
 }
 
 //NewMessage 初始化一个消息
-func NewMessage(suc bool, typ MessageType, msg string) *Message {
+func NewMessage(suc bool, typ Type, msg string) *Message {
 	curMsgID++
 	return &Message{
 		ID:      curMsgID,
