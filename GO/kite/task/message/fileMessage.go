@@ -1,10 +1,9 @@
 package message
 
 import (
-	"bufio"
-	"bytes"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -16,16 +15,16 @@ import (
 type FileMessage struct {
 	Length int64
 	Path   string
+	Branch string
 	file   io.ReadWriteCloser
-	innerData
 }
 
 //String 将数据转换为字符串
 func (f *FileMessage) String() string {
-	return fmt.Sprintf("%s:%d", f.Path, f.Length)
+	return fmt.Sprintf("%s:%s:%d", f.Branch, f.Path, f.Length)
 }
 
-//Close 关闭
+//Close 关闭资源
 func (f *FileMessage) Close() error {
 	if f.file != nil {
 		return f.file.Close()
@@ -33,32 +32,34 @@ func (f *FileMessage) Close() error {
 	return nil
 }
 
-//ReadFrom 读取数据
-func (f *FileMessage) ReadFrom(r io.Reader) (int64, error) {
-	nr := bufio.NewReader(r)
-	head, err := nr.ReadBytes('\n')
+//Parse 读取数据
+func (f *FileMessage) Parse(req *Request) error {
+	var err error
+	f.Length, err = strconv.ParseInt(req.Get("length"), 10, -1)
 	if err != nil {
-		return 0, err
+		return err
 	}
-	head = bytes.TrimSpace(head)
-	index := bytes.IndexByte(head, '/')
-	length, err := strconv.ParseInt(string(head[0:index]), 10, 0)
+	f.Path, err = url.PathUnescape(req.Get("path"))
 	if err != nil {
-		return 0, err
+		return err
 	}
-	f.Length = length
-	f.Path = string(head[index+1:])
-	return io.Copy(f.file, nr)
+	f.Branch, err = url.PathUnescape(req.Get("branch"))
+	if err != nil {
+		return err
+	}
+	f.file = req.file
+	return nil
 }
 
 //WriteTo 写入数据
 func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
-	nw := bufio.NewWriter(w)
-	_, err := nw.WriteString(fmt.Sprintf("%d/%s\n", f.Length, f.Path))
+	// cmd?length=xx&path=xx
+	// _, err := io.WriteString(w, fmt.Sprintf("%d/%s\n", f.Length, f.Path))
+	_, err := io.WriteString(w, fmt.Sprintf("/upload?length=%d&path=%s&branch=%s\n", f.Length, url.PathEscape(f.Path), url.PathEscape(f.Branch)))
 	if err != nil {
 		return 0, err
 	}
-	return io.Copy(nw, f.file)
+	return io.Copy(w, f.file)
 }
 
 // Save 保存消息
@@ -73,14 +74,14 @@ func (f *FileMessage) Save(path string) error {
 	}
 	file, err := os.OpenFile(path, os.O_CREATE, os.ModePerm)
 	if err != nil {
-		return nil
+		return err
 	}
 	_, err = io.Copy(file, f.file)
 	return err
 }
 
 //NewFileMessage 文件消息
-func NewFileMessage(path, dstPath string) (*FileMessage, error) {
+func NewFileMessage(path, dstPath, branch string) (*FileMessage, error) {
 	if !util.FileExists(path) {
 		return nil, os.ErrNotExist
 	}
@@ -95,6 +96,23 @@ func NewFileMessage(path, dstPath string) (*FileMessage, error) {
 	return &FileMessage{
 		Length: info.Size(),
 		Path:   dstPath,
+		Branch: branch,
 		file:   file,
 	}, nil
+}
+
+//readOnly 只读的流
+type readOnly struct {
+	read io.Reader
+}
+
+func (r *readOnly) Read(p []byte) (n int, err error) {
+	return r.read.Read(p)
+}
+
+func (r *readOnly) Write(p []byte) (n int, err error) {
+	return
+}
+func (r *readOnly) Close() error {
+	return nil
 }

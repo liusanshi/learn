@@ -17,9 +17,11 @@
             "__type__": "TCPClientTask"
         },
         {
-            "Args": ["echo hi", "echo hi-1"],
-            "Cmd": "/bin/bash",
-            "__type__": "ShellTask"
+            "Path": "E:\\git\\learn\\GO\\kite",
+            "DstPath": "/",
+            "IP": "127.0.0.1",
+            "Port": "8880",
+            "__type__": "SendFileTask"
         },
         {
             "Ip": "127.0.0.1",

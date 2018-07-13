@@ -51,3 +51,13 @@ func IsDir(path string) bool {
 func IsFile(path string) bool {
 	return !IsDir(path)
 }
+
+//IndexOf 查询字符串在字符串数组的位置
+func IndexOf(list []string, sub string) int {
+	for i, s := range list {
+		if s == sub {
+			return i
+		}
+	}
+	return -1
+}

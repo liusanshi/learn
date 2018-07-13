@@ -10,7 +10,7 @@
 			"args": [
 				"--func=server",
 				"--path=E:\\git\\learn\\GO\\kite",
-				"--workspace=/1/2"
+				"--workspace=D:\\log"
 			]
 		},
 		{

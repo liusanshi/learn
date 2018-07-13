@@ -6,13 +6,12 @@ import (
 
 	"../util"
 	"./core"
-	"./message"
 )
 
 //ReceiveFileTask 接收文件的任务
 type ReceiveFileTask struct {
 	//Path 本地路径
-	Path string
+	// Path string
 	//Port 端口
 	// Port string
 	//IPLists ip白名单
@@ -26,9 +25,9 @@ func init() {
 //Init 数据初始化
 func (s *ReceiveFileTask) Init(data map[string]interface{}) error {
 	var ok bool
-	if s.Path, ok = data["Path"].(string); !ok {
-		return fmt.Errorf("ReceiveFileTask Path type error")
-	}
+	// if s.Path, ok = data["Path"].(string); !ok {
+	// 	return fmt.Errorf("ReceiveFileTask Path type error")
+	// }
 	// if s.Port, ok = data["Port"].(string); !ok {
 	// 	return fmt.Errorf("ReceiveFileTask Port type error")
 	// }
@@ -44,13 +43,20 @@ func (s *ReceiveFileTask) Init(data map[string]interface{}) error {
 func (s *ReceiveFileTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
 	// data["Port"] = s.Port
-	data["Path"] = s.Path
-	data["DstPath"] = strings.Join(s.IPLists, " ")
+	// data["Path"] = s.Path
+	data["IPLists"] = strings.Join(s.IPLists, " ")
 	return data
 }
 
 //Run 保存上传的文件
 func (s *ReceiveFileTask) Run(session *core.Session) error {
-	msg := message.FileMessage{}
+	ip := session.Request().RemoteAddr()
+	if util.IndexOf(s.IPLists, ip) == -1 {
+		return fmt.Errorf("ip:%s not in the white list", ip)
+	}
+	msg, err := session.Request().ParseFormFile()
+	if err != nil {
+		return err
+	}
 	return msg.Save(session.WorkSpace)
 }

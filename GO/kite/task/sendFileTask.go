@@ -15,7 +15,7 @@ import (
 
 const (
 	//maxUpload 最大上传线程
-	maxUpload = 4
+	maxUpload = 1
 )
 
 //SendFileTask 发送文件的任务
@@ -101,7 +101,7 @@ func (s *SendFileTask) newUploader(session *core.Session, wait *sync.WaitGroup) 
 				if isEnd(ctx) {
 					return
 				}
-				msg, err := message.NewFileMessage(file, s.DstPath)
+				msg, err := message.NewFileMessage(file, s.DstPath, session.Branch)
 				if err != nil {
 					cancel()
 					return

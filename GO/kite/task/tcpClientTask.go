@@ -6,7 +6,6 @@ import (
 	"io"
 	"net"
 	"os"
-	"strings"
 	"time"
 
 	"../util"
@@ -56,12 +55,6 @@ func (t *TCPClientTask) ToMap() map[string]interface{} {
 	return data
 }
 
-//buildCmd 组装cmd命令
-func buildCmd(cmd string, session *core.Session) io.Reader {
-	cmd = strings.Replace(cmd, "${branch}", session.Branch, -1) //替换分支的占位符
-	return strings.NewReader(cmd)
-}
-
 //Run 执行任务
 func (t *TCPClientTask) Run(session *core.Session) error {
 	conn, err := net.DialTimeout("tcp", t.IP+":"+t.Port, time.Millisecond*time.Duration(t.Timeout))
@@ -72,11 +65,8 @@ func (t *TCPClientTask) Run(session *core.Session) error {
 	if session.IsCancel() {
 		return core.ErrCANCEL
 	}
-	_, err = session.Request().ParseFormCmd(buildCmd(t.Content, session))
-	if err != nil {
-		return err
-	}
-	_, err = session.Request().Send(conn)
+	msg := message.NewCmdMessage(t.Content, session.Branch) //创建消息
+	_, err = session.Request().Send(conn, msg)
 	if err != nil {
 		return err
 	}
@@ -85,16 +75,15 @@ func (t *TCPClientTask) Run(session *core.Session) error {
 		if session.IsCancel() {
 			return core.ErrCANCEL
 		}
-		n, err := session.Response().ParseForm(reader)
+		Msg, err := session.Response().ParseForm(reader)
 		if err != nil {
 			if err != io.EOF { //请求出错，且没有结束，直接返回错误
 				return err
 			}
-			if n == 0 { //读取结束，且没有数据直接返回
+			if Msg == nil || len(Msg.Content) == 0 { //读取结束，且没有数据直接返回
 				return nil
 			}
 		}
-		Msg := session.Response().Message().(*message.Message)
 		if !Msg.Success {
 			return fmt.Errorf("%s", Msg.Content)
 		}

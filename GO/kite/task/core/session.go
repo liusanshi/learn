@@ -31,7 +31,7 @@ type Session struct {
 //Request 获取请求对象
 func (c *Session) Request() *message.Request {
 	if c.request == nil {
-		c.request = &message.Request{}
+		c.request = message.NewRequest()
 	}
 	return c.request
 }
@@ -39,7 +39,7 @@ func (c *Session) Request() *message.Request {
 //Response 获取响应对象
 func (c *Session) Response() *message.Response {
 	if c.response == nil {
-		c.response = &message.Response{}
+		c.response = message.NewResponse()
 	}
 	return c.response
 }
@@ -82,8 +82,7 @@ func (c *Session) Write(p []byte) (n int, err error) {
 
 //Printf 格式化输出
 func (c *Session) Printf(suc bool, typ message.Type, format string, a ...interface{}) (n int, err error) {
-	c.Response().SetMessage(message.NewMessage(suc, typ, fmt.Sprintf(format, a...)))
-	return c.Response().Write(c.write)
+	return c.Response().Write(c.write, message.NewMessage(suc, typ, fmt.Sprintf(format, a...)))
 }
 
 //NewSession 创建一个会话

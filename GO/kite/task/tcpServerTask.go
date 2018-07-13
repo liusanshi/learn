@@ -71,9 +71,10 @@ func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
 		session.Printf(false, message.SystemMessage, "param is empty\n")
 		return
 	}
+	session.Request().SetAddr(conn.RemoteAddr())
 	cmd := session.Request().Cmd()
+	session.Branch = session.Request().Branch()
 	if task, ok := t.TaskDict[cmd]; ok {
-		session.Branch = session.Request().Arg()
 		err := task.Run(session)
 		if err != nil {
 			log.Print(err)

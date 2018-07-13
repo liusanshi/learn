@@ -4,64 +4,75 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"net"
+	"net/url"
+	"strings"
 )
 
 //Request 请求体
 type Request struct {
-	IMessage
-	cmd string
-	arg string
+	cmd    string
+	values url.Values
+	addr   net.Addr           //客户端地址
+	file   io.ReadWriteCloser //上传的文件
 }
 
-//SetMessage 设置body
-func (r *Request) SetMessage(msg IMessage) {
-	r.IMessage = msg
-}
-
-//Send 写入数据
-func (r *Request) Send(w io.Writer) (int, error) {
-	i, err := r.WriteTo(w)
+//Send 发送消息
+func (r *Request) Send(w io.Writer, writeTo io.WriterTo) (int, error) {
+	i, err := writeTo.WriteTo(w)
 	return int(i), err
 }
 
-//Message 获取响应body
-func (r *Request) Message() IMessage {
-	return r.IMessage
+//SendCmd 写入数据
+func (r *Request) SendCmd(w io.Writer, cmd *CmdMessage) (int, error) {
+	i, err := cmd.WriteTo(w)
+	return int(i), err
+}
+
+//SendFile 发送文件
+func (r *Request) SendFile(w io.Writer, file *FileMessage) (int, error) {
+	i, err := file.WriteTo(w)
+	return int(i), err
+}
+
+//Close 关闭
+func (r *Request) Close() error {
+	if r.file != nil {
+		return r.file.Close()
+	}
+	return nil
 }
 
 //ParseFormCmd 设置body
-func (r *Request) ParseFormCmd(read io.Reader) (int64, error) {
+func (r *Request) ParseFormCmd() (*CmdMessage, error) {
 	cmd := &CmdMessage{}
-	n, err := cmd.ReadFrom(read)
-	r.cmd = cmd.Cmd
-	r.arg = cmd.Arg
-	r.IMessage = cmd
-	return n, err
+	err := cmd.Parse(r)
+	return cmd, err
 }
 
 //ParseFormFile 设置body
-func (r *Request) ParseFormFile(read io.Reader) (int64, error) {
-	r.IMessage = &FileMessage{}
-	n, err := r.IMessage.ReadFrom(read)
-	r.cmd = "ReceiveFile" //接收文件
-	return n, err
+func (r *Request) ParseFormFile() (*FileMessage, error) {
+	file := &FileMessage{}
+	err := file.Parse(r)
+	return file, err
 }
 
 //ParseForm 设置body
 func (r *Request) ParseForm(read io.Reader) (int64, error) {
 	nr := bufio.NewReader(read)
-	b, err := nr.ReadByte()
+	head, err := nr.ReadBytes('\n')
 	if err != nil {
 		return 0, err
 	}
-	if b == '\n' {
-		return 0, io.EOF
+	head = bytes.TrimSpace(head)
+	u, err := url.ParseRequestURI(string(head))
+	if err != nil {
+		return 0, err
 	}
-	nnr := io.MultiReader(bytes.NewReader([]byte{b}), nr)
-	if b >= '0' && b <= '9' { //上传的开始是数字
-		return r.ParseFormFile(nnr)
-	}
-	return r.ParseFormCmd(nnr)
+	r.cmd = strings.TrimLeft(u.Path, "/")
+	r.values = u.Query()
+	r.file = &readOnly{read}
+	return int64(len(head)), nil
 }
 
 //Cmd 获取指令
@@ -69,7 +80,42 @@ func (r *Request) Cmd() string {
 	return r.cmd
 }
 
-//Arg 获取参数
-func (r *Request) Arg() string {
-	return r.arg
+//Branch 获取分支
+func (r *Request) Branch() string {
+	return r.values.Get("branch")
+}
+
+//Query 获取查询数据
+func (r *Request) Query() url.Values {
+	return r.values
+}
+
+//Get 获取参数
+func (r *Request) Get(key string) string {
+	return r.values.Get(key)
+}
+
+//Files 获取上传的文件
+func (r *Request) Files() io.Reader {
+	return r.file
+}
+
+//RemoteAddr 获取远程ip
+func (r *Request) RemoteAddr() string {
+	return strings.Split(r.addr.String(), ":")[0]
+}
+
+//Addr 获取客户端地址
+func (r *Request) Addr() net.Addr {
+	return r.addr
+}
+
+//SetAddr 设置远程地址
+func (r *Request) SetAddr(addr net.Addr) {
+	r.addr = addr
+}
+
+//NewRequest 创建一个新的请求
+func NewRequest() *Request {
+	return &Request{}
 }
