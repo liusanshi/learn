@@ -21,12 +21,12 @@
             }],
             "__type__": "ReplaceTask"
         },{
-            "Args": ["chmod -R +777 ${branchPath}/bootstrap/cache"],
+            "Args": ["chmod -R 0777 ${branchPath}/bootstrap/cache"],
             "Cmd": "/bin/bash",
             "Ignore": "0",
             "__type__": "ShellTask"
         },{
-            "Args": ["chmod -R +777 ${branchPath}/storage"],
+            "Args": ["chmod -R 0777 ${branchPath}/storage"],
             "Cmd": "/bin/bash",
             "Ignore": "0",
             "__type__": "ShellTask"
