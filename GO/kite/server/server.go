@@ -34,7 +34,7 @@ func Sev(path, work string) {
 	}
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	session := core.NewSession(ctx, "root", os.Stdout, branchMan)
-	session.SetWorkSpace(work)
+	session.WorkSpace = work
 	//监听取消信号
 	go func() {
 		sign := listenSysSign()

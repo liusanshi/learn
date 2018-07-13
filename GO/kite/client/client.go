@@ -35,8 +35,9 @@ func Client(path, cmd string) {
 		return
 	}
 	session := core.NewSession(context.Background(), "root", os.Stdout, nil)
+	session.TaskName = params[0]
 	if len(params) > 1 {
-		session.SetCurrentBranch(params[1])
+		session.Args = params[1:]
 	}
 	err = taskList.Run(session)
 	if err != nil && err != io.EOF {

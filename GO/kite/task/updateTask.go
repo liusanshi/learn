@@ -30,7 +30,7 @@ func (c *UpdateTask) Run(session *core.Session) error {
 	defer session.BMan.Unlock() //解锁
 	b, ok := session.GetCurBranchEntity()
 	if !ok {
-		return fmt.Errorf("branch:%s not exist", session.GetCurrentBranch())
+		return fmt.Errorf("branch:%s not exist", session.Branch)
 	}
 	b.Version++
 	b.Time = time.Now().Format("2006-01-02 15:04:05")

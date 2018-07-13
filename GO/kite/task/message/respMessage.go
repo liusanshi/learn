@@ -8,6 +8,44 @@ import (
 	"strconv"
 )
 
+//IMessage 消息结构体
+type IMessage interface {
+	io.Closer
+	io.WriterTo
+	io.ReaderFrom
+	GetVal(string) (interface{}, bool)
+	SetVal(string, interface{})
+	GetStrVal(key string) string
+}
+
+//内部数据结构
+type innerData struct {
+	data map[string]interface{}
+}
+
+// GetVal 获取数据
+func (c *innerData) GetVal(key string) (interface{}, bool) {
+	data, ok := c.data[key]
+	return data, ok
+}
+
+// SetVal 设置值
+func (c *innerData) SetVal(key string, val interface{}) {
+	c.data[key] = val
+}
+
+// GetStrVal 获取string值
+func (c *innerData) GetStrVal(key string) string {
+	data, ok := c.data[key]
+	if !ok {
+		return ""
+	}
+	if cmd, ok := data.(string); ok {
+		return cmd
+	}
+	return ""
+}
+
 //Type 消息类型
 type Type int
 
@@ -27,6 +65,7 @@ type Message struct {
 	Success bool
 	Type    Type
 	Content string
+	innerData
 }
 
 //String 将数据转换为字符串
@@ -41,6 +80,11 @@ func (m *Message) String() string {
 //Bytes 转换为字节数组
 func (m *Message) Bytes() []byte {
 	return []byte(m.String())
+}
+
+//Close 关闭
+func (m *Message) Close() error {
+	return nil
 }
 
 // Init 将json数据转换为Message
@@ -75,30 +119,22 @@ func (m *Message) ReadFrom(r io.Reader) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return int64(len(str)), m.Init(str)
+	return int64(len(str)), m.Init(bytes.TrimSpace(str))
 }
 
 //WriteTo 写入数据
 func (m *Message) WriteTo(w io.Writer) (int64, error) {
-	nw := bufio.NewWriter(w)
-	n, err := nw.Write(m.Bytes())
+	n, err := w.Write(m.Bytes())
 	return int64(n), err
 }
 
-//NewMessage 初始化一个消息
+//NewMessage 创建一个消息
 func NewMessage(suc bool, typ Type, msg string) *Message {
 	curMsgID++
 	return &Message{
-		ID:      curMsgID,
 		Success: suc,
 		Type:    typ,
+		ID:      curMsgID,
 		Content: msg,
 	}
-}
-
-//AnalysisMessage 解析一个消息
-func AnalysisMessage(msg []byte) *Message {
-	message := &Message{}
-	message.Init(msg)
-	return message
 }

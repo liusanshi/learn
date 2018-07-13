@@ -24,7 +24,7 @@ func (c *InitTask) ToMap() map[string]interface{} {
 
 //Run 创建分支
 func (c *InitTask) Run(session *core.Session) error {
-	session.BMan.AddBranch(session.GetCurrentBranch(), "")
-	defer session.BMan.Unlock() //解锁
+	session.BMan.AddBranch(session.Branch, "") //todo分支地址
+	defer session.BMan.Unlock()                //解锁
 	return session.BMan.Save()
 }

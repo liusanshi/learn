@@ -24,7 +24,7 @@
         {
             "Ip": "127.0.0.1",
             "Port": "8880",
-            "Content": "update",
+            "Content": "update ${branch}",
             "Timeout": 3000,
             "__type__": "TCPClientTask"
         }

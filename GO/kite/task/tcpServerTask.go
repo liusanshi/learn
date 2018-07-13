@@ -1,12 +1,10 @@
 package task
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"log"
 	"net"
-	"strings"
 
 	"../util"
 	"./core"
@@ -56,42 +54,38 @@ func (t *TCPServerTask) Run(session *core.Session) error {
 			log.Print(err)
 			continue
 		}
-		go t.handleConn(session.Copy(conn, core.WorkSpace) /* 复制一个新的会话 */, conn)
+		go t.handleConn(session.Copy(conn) /* 复制一个新的会话 */, conn)
 	}
 }
 
 //handleConn 处理请求
 func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
-	reader := bufio.NewReader(conn)
-	args, err := reader.ReadBytes('\n')
+	n, err := session.Request().ParseForm(conn)
 	defer conn.Close()
 	if err != nil && err != io.EOF {
 		log.Print(err)
+		session.Printf(false, message.SystemMessage, "analysis fail:%v\n", err)
 		return
 	}
-	if len(args) <= 2 {
+	if n <= 2 {
 		session.Printf(false, message.SystemMessage, "param is empty\n")
 		return
 	}
-	args = args[:len(args)-1]
-	params := strings.Split(string(args), " ")
-	if task, ok := t.TaskDict[params[0]]; ok {
-		session.SetCMD(params[0])
-		if len(params) > 1 {
-			session.SetCurrentBranch(params[1])
-		}
+	cmd := session.Request().Cmd()
+	if task, ok := t.TaskDict[cmd]; ok {
+		session.Branch = session.Request().Arg()
 		err := task.Run(session)
 		if err != nil {
 			log.Print(err)
-			session.Printf(false, message.SystemMessage, "method：%s; execute fail:%v\n", args, err)
+			session.Printf(false, message.SystemMessage, "method：%s; execute fail:%v\n", cmd, err)
 			return
 		}
-		log.Printf("method：%s; execute success\n", params[0])
+		log.Printf("method：%s; execute success\n", cmd)
 		//执行成功
-		session.Printf(true, message.SystemMessage, "method：%s; execute success\n", params[0])
+		session.Printf(true, message.SystemMessage, "method：%s; execute success\n", cmd)
 	} else {
-		log.Printf("method：%s; not fount\n", params[0])
-		session.Printf(false, message.SystemMessage, "method：%s; not fount\n", params[0])
+		log.Printf("method：%s; not fount\n", cmd)
+		session.Printf(false, message.SystemMessage, "method：%s; not fount\n", cmd)
 	}
 }
 

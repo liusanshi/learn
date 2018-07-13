@@ -17,6 +17,7 @@ type FileMessage struct {
 	Length int64
 	Path   string
 	file   io.ReadWriteCloser
+	innerData
 }
 
 //String 将数据转换为字符串
@@ -39,7 +40,7 @@ func (f *FileMessage) ReadFrom(r io.Reader) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	head = head[:len(head)-1] //去掉最后的换行符
+	head = bytes.TrimSpace(head)
 	index := bytes.IndexByte(head, '/')
 	length, err := strconv.ParseInt(string(head[0:index]), 10, 0)
 	if err != nil {
@@ -76,4 +77,24 @@ func (f *FileMessage) Save(path string) error {
 	}
 	_, err = io.Copy(file, f.file)
 	return err
+}
+
+//NewFileMessage 文件消息
+func NewFileMessage(path, dstPath string) (*FileMessage, error) {
+	if !util.FileExists(path) {
+		return nil, os.ErrNotExist
+	}
+	file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
+	if err != nil {
+		return nil, err
+	}
+	info, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	return &FileMessage{
+		Length: info.Size(),
+		Path:   dstPath,
+		file:   file,
+	}, nil
 }
