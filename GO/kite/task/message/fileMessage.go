@@ -35,7 +35,7 @@ func (f *FileMessage) Close() error {
 //Parse 读取数据
 func (f *FileMessage) Parse(req *Request) error {
 	var err error
-	f.Length, err = strconv.ParseInt(req.Get("length"), 10, -1)
+	f.Length, err = strconv.ParseInt(req.Get("length"), 10, 0)
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (f *FileMessage) Parse(req *Request) error {
 func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
 	// cmd?length=xx&path=xx
 	// _, err := io.WriteString(w, fmt.Sprintf("%d/%s\n", f.Length, f.Path))
-	_, err := io.WriteString(w, fmt.Sprintf("/upload?length=%d&path=%s&branch=%s\n", f.Length, url.PathEscape(f.Path), url.PathEscape(f.Branch)))
+	_, err := io.WriteString(w, fmt.Sprintf("/upload?length=%d&path=%s&branch=%s\n", f.Length, url.PathEscape(filepath.Join(f.Branch, f.Path)), url.PathEscape(f.Branch)))
 	if err != nil {
 		return 0, err
 	}
@@ -64,8 +64,8 @@ func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
 
 // Save 保存消息
 func (f *FileMessage) Save(path string) error {
-	path += f.Path
-	basename := filepath.Base(path)
+	path = filepath.Join(path, f.Path)
+	basename, _ := filepath.Split(path)
 	//判断文件夹路径是否存在
 	if !util.FileExists(basename) {
 		if err := os.MkdirAll(basename, os.ModePerm); err != nil { //不存在则创建路径
@@ -76,16 +76,20 @@ func (f *FileMessage) Save(path string) error {
 	if err != nil {
 		return err
 	}
-	_, err = io.Copy(file, f.file)
+	defer file.Close()
+	_, err = io.Copy(file, io.LimitReader(f.file, f.Length))
+	if err == io.EOF {
+		return nil
+	}
 	return err
 }
 
 //NewFileMessage 文件消息
-func NewFileMessage(path, dstPath, branch string) (*FileMessage, error) {
-	if !util.FileExists(path) {
+func NewFileMessage(fpath, localpath, dstPath, branch string) (*FileMessage, error) {
+	if !util.FileExists(fpath) {
 		return nil, os.ErrNotExist
 	}
-	file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
+	file, err := os.OpenFile(fpath, os.O_RDONLY, os.ModePerm)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +99,7 @@ func NewFileMessage(path, dstPath, branch string) (*FileMessage, error) {
 	}
 	return &FileMessage{
 		Length: info.Size(),
-		Path:   dstPath,
+		Path:   filepath.Join(dstPath, util.Splite(fpath, localpath)),
 		Branch: branch,
 		file:   file,
 	}, nil

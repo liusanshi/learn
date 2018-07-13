@@ -23,7 +23,7 @@
         "unlock": [{
             "__type__": "UnlockTask"
         }],
-        "ReceiveFile": [{
+        "upload": [{
             "IPLists": "127.0.0.1",
             "Path": "D:\\log",
             "__type__": "ReceiveFileTask"

@@ -76,6 +76,7 @@ func (s *SendFileTask) Run(session *core.Session) error {
 		filepipe <- path
 		return nil
 	})
+	close(filepipe)
 	wait.Wait() //等待上传完成
 	return err
 }
@@ -87,27 +88,28 @@ func (s *SendFileTask) newUploader(session *core.Session, wait *sync.WaitGroup) 
 	ctx, cancel := context.WithCancel(session.Ctx)
 	for i := 0; i < maxUpload; i++ {
 		go func() {
-			conn, err := net.Dial("tcp", s.IP+":"+s.Port)
-			if err != nil {
-				cancel()
-				return
-			}
 			defer wait.Done()
-			defer conn.Close()
-			if isEnd(ctx) {
-				return
-			}
 			for file := range filepipe {
-				if isEnd(ctx) {
-					return
-				}
-				msg, err := message.NewFileMessage(file, s.DstPath, session.Branch)
+				conn, err := net.Dial("tcp", s.IP+":"+s.Port)
 				if err != nil {
 					cancel()
+					conn.Close()
+					return
+				}
+				if isEnd(ctx) {
+					conn.Close()
+					return
+				}
+				msg, err := message.NewFileMessage(file, s.Path, s.DstPath, session.Branch)
+				if err != nil {
+					cancel()
+					msg.Close()
+					conn.Close()
 					return
 				}
 				_, err = msg.WriteTo(conn)
 				msg.Close()
+				conn.Close()
 				if err != nil {
 					cancel()
 					return

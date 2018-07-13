@@ -52,6 +52,26 @@ func IsFile(path string) bool {
 	return !IsDir(path)
 }
 
+//Splite 根据相对路径切分绝对路径
+func Splite(fullPath, relativePath string) string {
+	relative, _ := os.Stat(relativePath)
+	full, err := os.Stat(fullPath)
+	rela := []string{}
+	path := fullPath
+	for err == nil && !os.SameFile(relative, full) {
+		rela = append(rela, full.Name())
+		path = filepath.Dir(path)
+		full, err = os.Stat(path)
+	}
+	//逆序
+	count := len(rela) - 1
+	reso := make([]string, count+1)
+	for i := count; i >= 0; i-- {
+		reso[count-i] = rela[i]
+	}
+	return filepath.Join(reso...)
+}
+
 //IndexOf 查询字符串在字符串数组的位置
 func IndexOf(list []string, sub string) int {
 	for i, s := range list {
