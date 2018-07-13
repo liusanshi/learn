@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
 	"strings"
 	"time"
 
@@ -98,10 +99,10 @@ func (t *TCPClientTask) Run(session *core.Session) error {
 			return fmt.Errorf("%s", Msg.Content)
 		}
 		if Msg.Type == message.BusinessMessage {
-			session.Write([]byte(Msg.Content + "\n"))
+			fmt.Fprintf(session, "%s\n", Msg.Content)
 		} else {
 			//todo 系统消息怎么处理? 系统消息暂时不显示
-			// log.Println(data)
+			fmt.Fprintf(os.Stderr, "%s\n", Msg.Content)
 		}
 	}
 }
