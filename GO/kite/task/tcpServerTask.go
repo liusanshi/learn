@@ -40,7 +40,7 @@ func (t *TCPServerTask) ToMap() map[string]interface{} {
 
 //Run 监听端口号，接收请求，然后根据指令执行任务；将任务的结果输出给客户端
 func (t *TCPServerTask) Run(session *core.Session) error {
-	listen, err := net.Listen("tcp", "127.0.0.1:"+t.Port)
+	listen, err := net.Listen("tcp", ":"+t.Port)
 	if err != nil {
 		log.Print(err)
 		return err
@@ -64,11 +64,11 @@ func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
 	defer conn.Close()
 	if err != nil && err != io.EOF {
 		log.Print(err)
-		session.Printf(false, message.SystemMessage, "analysis fail:%v\n", err)
+		session.Printf(false, message.SystemMessage, "analysis fail:%v", err)
 		return
 	}
 	if n <= 2 {
-		session.Printf(false, message.SystemMessage, "param is empty\n")
+		session.Printf(false, message.SystemMessage, "param is empty")
 		return
 	}
 	session.Request().SetAddr(conn.RemoteAddr())
@@ -78,15 +78,15 @@ func (t *TCPServerTask) handleConn(session *core.Session, conn net.Conn) {
 		err := task.Run(session)
 		if err != nil {
 			log.Print(err)
-			session.Printf(false, message.SystemMessage, "method：%s; execute fail:%v\n", cmd, err)
+			session.Printf(false, message.SystemMessage, "method：%s; execute fail:%v", cmd, err)
 			return
 		}
 		log.Printf("method：%s; execute success\n", cmd)
 		//执行成功
-		session.Printf(true, message.SystemMessage, "method：%s; execute success\n", cmd)
+		session.Printf(true, message.SystemMessage, "method：%s; execute success", cmd)
 	} else {
 		log.Printf("method：%s; not fount\n", cmd)
-		session.Printf(false, message.SystemMessage, "method：%s; not fount\n", cmd)
+		session.Printf(false, message.SystemMessage, "method：%s; not fount", cmd)
 	}
 }
 

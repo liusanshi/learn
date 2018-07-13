@@ -16,12 +16,13 @@ type FileMessage struct {
 	Length int64
 	Path   string
 	Branch string
+	md5    string
 	file   io.ReadWriteCloser
 }
 
 //String 将数据转换为字符串
 func (f *FileMessage) String() string {
-	return fmt.Sprintf("%s:%s:%d", f.Branch, f.Path, f.Length)
+	return fmt.Sprintf("%s:%s:%d:%s", f.Branch, f.Path, f.Length, f.md5)
 }
 
 //Close 关闭资源
@@ -47,6 +48,7 @@ func (f *FileMessage) Parse(req *Request) error {
 	if err != nil {
 		return err
 	}
+	f.md5 = req.Get("md5")
 	f.file = req.file
 	return nil
 }
@@ -55,7 +57,12 @@ func (f *FileMessage) Parse(req *Request) error {
 func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
 	// cmd?length=xx&path=xx
 	// _, err := io.WriteString(w, fmt.Sprintf("%d/%s\n", f.Length, f.Path))
-	_, err := io.WriteString(w, fmt.Sprintf("/upload?length=%d&path=%s&branch=%s\n", f.Length, url.PathEscape(filepath.Join(f.Branch, f.Path)), url.PathEscape(f.Branch)))
+	_, err := io.WriteString(w,
+		fmt.Sprintf("/upload?length=%d&path=%s&branch=%s&md5=%s\n",
+			f.Length,
+			url.PathEscape(filepath.Join(f.Branch, f.Path)),
+			url.PathEscape(f.Branch),
+			f.md5))
 	if err != nil {
 		return 0, err
 	}
@@ -71,6 +78,8 @@ func (f *FileMessage) Save(path string) error {
 		if err := os.MkdirAll(basename, os.ModePerm); err != nil { //不存在则创建路径
 			return err
 		}
+	} else if util.FileExists(path) && util.Md5(path) == f.md5 { //md5相同不需要上传
+		return nil
 	}
 	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
@@ -98,11 +107,13 @@ func NewFileMessage(fpath, localpath, dstPath, branch string) (*FileMessage, err
 	if err != nil {
 		return nil, err
 	}
+	md5 := util.Md5(fpath)
 	return &FileMessage{
 		Length: info.Size(),
 		Path:   filepath.Join(dstPath, util.Splite(fpath, localpath)),
 		Branch: branch,
 		file:   file,
+		md5:    md5,
 	}, nil
 }
 

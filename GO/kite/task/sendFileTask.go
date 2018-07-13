@@ -77,14 +77,11 @@ func (s *SendFileTask) Run(session *core.Session) error {
 		if f == nil {
 			return err
 		}
-		if f.IsDir() {
-			if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
-				return filepath.SkipDir
-			}
-			return nil
-		}
 		if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
 			return filepath.SkipDir
+		}
+		if f.IsDir() {
+			return nil
 		}
 		//排除不需要的文件
 		for _, ex := range s.Exclude {

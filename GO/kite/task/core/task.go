@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"../../util"
+	"../message"
 )
 
 var (
@@ -117,6 +118,7 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 
 //Run 任务运行
 func (t *Task) Run(session *Session) error {
+	session.Printf(true, message.SystemMessage, "begin execute task:%s", t.Type)
 	return t.Task.Run(session)
 }
 

@@ -1,6 +1,9 @@
 package util
 
 import (
+	"crypto/md5"
+	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -70,6 +73,23 @@ func Splite(fullPath, relativePath string) string {
 		reso[count-i] = rela[i]
 	}
 	return filepath.Join(reso...)
+}
+
+//Md5 获取文件的Md5
+func Md5(filePath string) string {
+	if !FileExists(filePath) {
+		panic("file not exists")
+	}
+	file, err := os.Open(filePath)
+	if err != nil {
+		panic(err)
+	}
+	h := md5.New()
+	_, err = io.Copy(h, file)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
 //IndexOf 查询字符串在字符串数组的位置
