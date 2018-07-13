@@ -13,7 +13,7 @@
             "__type__": "DeleteTask"
         }],
         "init": [{
-            "FilePath": "/data/home/payneliu/services/apache-2.4/bin/httpd",
+            "FilePath": "/data/home/payneliu/services/apache-2.4/conf/httpd.conf",
             "Encoding": "utf8",
             "Replacer": [{
                 "Partten": "###VirtualHostPlaceholder###",

@@ -58,6 +58,7 @@
         {
             "Path": "/data/home/payneliu/git/crayfish",
             "DstPath": "/",
+            "Exclude": "/vendor/ ",
             "IP": "127.0.0.1",
             "Port": "8880",
             "__type__": "SendFileTask"

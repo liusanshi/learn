@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"../util"
@@ -29,6 +30,8 @@ type SendFileTask struct {
 	IP string
 	//Port 端口
 	Port string
+	//排除文件
+	Exclude []string
 }
 
 func init() {
@@ -50,6 +53,8 @@ func (s *SendFileTask) Init(data map[string]interface{}) error {
 	if s.Port, ok = data["Port"].(string); !ok {
 		return fmt.Errorf("SendFileTask Port type error")
 	}
+	exclude, _ := data["Exclude"].(string)
+	s.Exclude = strings.Split(exclude, " ")
 	return nil
 }
 
@@ -60,6 +65,7 @@ func (s *SendFileTask) ToMap() map[string]interface{} {
 	data["Port"] = s.Port
 	data["Path"] = s.Path
 	data["DstPath"] = s.DstPath
+	data["Exclude"] = strings.Join(s.Exclude, " ")
 	return data
 }
 
@@ -79,6 +85,12 @@ func (s *SendFileTask) Run(session *core.Session) error {
 		}
 		if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
 			return filepath.SkipDir
+		}
+		//排除不需要的文件
+		for _, ex := range s.Exclude {
+			if strings.Index(path, ex) > -1 {
+				return filepath.SkipDir
+			}
 		}
 		filepipe <- path
 		return nil
