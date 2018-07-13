@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
 	_ "../task" //只加载不执行
 	"../task/core"
@@ -13,7 +12,7 @@ import (
 )
 
 //Client 执行命令
-func Client(path, cmd string) {
+func Client(path, cmd, branch string) {
 	if len(path) == 0 {
 		path = util.GetCurrentPath()
 	}
@@ -28,17 +27,14 @@ func Client(path, cmd string) {
 		fmt.Printf("任务加载失败: %v\n", err)
 		return
 	}
-	params := strings.Split(cmd, " ")
-	taskList, ok := taskMap[params[0]]
+	taskList, ok := taskMap[cmd]
 	if !ok {
-		fmt.Printf("任务:%v不存在\n", params[0])
+		fmt.Printf("任务:%v不存在\n", cmd)
 		return
 	}
 	session := core.NewSession(context.Background(), "root", os.Stdout, nil)
-	session.TaskName = params[0]
-	if len(params) > 1 {
-		session.Args = params[1:]
-	}
+	session.TaskName = cmd
+	session.Branch = branch
 	err = taskList.Run(session)
 	if err != nil && err != io.EOF {
 		fmt.Printf("任务执行失败: %v\n", err)
