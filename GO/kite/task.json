@@ -31,8 +31,8 @@
             "Ignore": "0",
             "__type__": "ShellTask"
         },{
-            "Args": ["-k restart -f /data/home/payneliu/services/apache-2.4/conf/httpd.conf"],
-            "Cmd": "/data/home/payneliu/services/apache-2.4/bin/httpd",
+            "Args": ["/data/home/payneliu/services/apache-2.4/bin/httpd -k restart -f /data/home/payneliu/services/apache-2.4/conf/httpd.conf"],
+            "Cmd": "/bin/bash",
             "Ignore": "0",
             "__type__": "ShellTask"
         },{
