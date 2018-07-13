@@ -101,7 +101,7 @@ func (r *ReplaceTask) Run(session *core.Session) error {
 		if err != nil {
 			return err
 		}
-		strContent = reg.ReplaceAllString(strContent, repler.Repl)
+		strContent = reg.ReplaceAllString(strContent, session.ReplaceEnvVar(repler.Repl))
 	}
 	return ioutil.WriteFile(r.FilePath, []byte(strContent), os.ModePerm)
 }

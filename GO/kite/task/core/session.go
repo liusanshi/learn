@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"path/filepath"
+	"strings"
 
 	"../message"
 )
@@ -83,6 +85,14 @@ func (c *Session) Write(p []byte) (n int, err error) {
 //Printf 格式化输出
 func (c *Session) Printf(suc bool, typ message.Type, format string, a ...interface{}) (n int, err error) {
 	return c.Response().Write(c.write, message.NewMessage(suc, typ, fmt.Sprintf(format, a...)))
+}
+
+//替换环境变量
+func (c *Session) ReplaceEnvVar(repl string) string {
+	branch := c.Branch
+	branchPath := filepath.Join(c.WorkSpace, c.Branch)
+	repl = strings.Replace(repl, "${branch}", branch, -1)
+	return strings.Replace(repl, "${branchPath}", branchPath, -1)
 }
 
 //NewSession 创建一个会话

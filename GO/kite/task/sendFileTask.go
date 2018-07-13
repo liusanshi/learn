@@ -15,7 +15,7 @@ import (
 
 const (
 	//maxUpload 最大上传线程
-	maxUpload = 1
+	maxUpload = 4
 )
 
 //SendFileTask 发送文件的任务
