@@ -60,14 +60,18 @@ func (s *ShellTask) Run(session *core.Session) error {
 	if session.IsCancel() {
 		return core.ErrCANCEL
 	}
-	var out bytes.Buffer
+	var (
+		out    bytes.Buffer
+		errOut bytes.Buffer
+	)
 	cmd.Stdout = &out
+	cmd.Stderr = &errOut
 	err := cmd.Run()
 	if err != nil && !s.Ignore {
-		return fmt.Errorf("err:%v; info:%s", err, out.Bytes())
+		return fmt.Errorf("err:%v; info:%s", err, errOut.Bytes())
 	} else if err != nil { //需要忽略错误
-		fmt.Printf("err:%v; info:%s\n", err, out.Bytes())
-		session.Printf(true, message.SystemMessage, "ignore err:%v; info:%s", err, out.Bytes())
+		fmt.Printf("err:%v; info:%s\n", err, errOut.Bytes())
+		session.Printf(true, message.SystemMessage, "ignore err:%v; info:%s", err, errOut.Bytes())
 	}
 	session.Write(out.Bytes())
 	return nil
