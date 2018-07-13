@@ -62,7 +62,9 @@ func (r *Request) ParseForm(read io.Reader) (int64, error) {
 	nr := bufio.NewReader(read)
 	head, err := nr.ReadBytes('\n')
 	if err != nil {
-		return 0, err
+		if err != io.EOF || len(head) == 0 {
+			return 0, err
+		}
 	}
 	head = bytes.TrimSpace(head)
 	u, err := url.ParseRequestURI(string(head))

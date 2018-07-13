@@ -8,9 +8,9 @@
             "__type__": "UpdateTask"
         }],
         "delete": [{
-            "Args": ["echo hi", "echo hi-1"],
-            "Cmd": "/bin/bash",
-            "__type__": "ShellTask"
+            "__type__": "RemoveFileTask"
+        },{
+            "__type__": "DeleteTask"
         }],
         "init": [{
             "Args": ["echo hi", "echo hi-1"],

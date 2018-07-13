@@ -26,6 +26,10 @@ func (c *LockTask) ToMap() map[string]interface{} {
 
 //Run 获得锁
 func (c *LockTask) Run(session *core.Session) error {
+	_, ok := session.GetCurBranchEntity()
+	if !ok {
+		return fmt.Errorf("branch:%s not exist", session.Branch)
+	}
 	if !session.BMan.TryLock() {
 		return fmt.Errorf("获取锁失败，请稍后重试~")
 	}

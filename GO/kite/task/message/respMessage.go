@@ -70,7 +70,7 @@ func (m *Message) WriteTo(w io.Writer) (int64, error) {
 	if m.Success {
 		suc = 1
 	}
-	n, err := io.WriteString(w, fmt.Sprintf("/msg?id=%d&suc=%d&type=%d&content=%s", m.ID, suc, m.Type, m.Content))
+	n, err := io.WriteString(w, fmt.Sprintf("/msg?id=%d&suc=%d&type=%d&content=%s\n", m.ID, suc, m.Type, url.PathEscape(m.Content)))
 	return int64(n), err
 }
 

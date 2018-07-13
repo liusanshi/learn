@@ -24,7 +24,7 @@ func (c *DeleteTask) ToMap() map[string]interface{} {
 
 //Run 删除分支
 func (c *DeleteTask) Run(session *core.Session) error {
-	session.BMan.DelBranch(session.Branch)
 	defer session.BMan.Unlock() //释放锁
+	session.BMan.DelBranch(session.Branch)
 	return session.BMan.Save()
 }
