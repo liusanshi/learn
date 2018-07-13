@@ -3,6 +3,7 @@ package task
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"path/filepath"
@@ -71,7 +72,13 @@ func (s *SendFileTask) Run(session *core.Session) error {
 			return err
 		}
 		if f.IsDir() {
+			if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
+				return filepath.SkipDir
+			}
 			return nil
+		}
+		if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
+			return filepath.SkipDir
 		}
 		filepipe <- path
 		return nil
@@ -107,6 +114,7 @@ func (s *SendFileTask) newUploader(session *core.Session, wait *sync.WaitGroup) 
 					conn.Close()
 					return
 				}
+				io.WriteString(session, "begin upload:"+file+"\n")
 				_, err = msg.WriteTo(conn)
 				msg.Close()
 				conn.Close()
