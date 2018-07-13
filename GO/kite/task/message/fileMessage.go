@@ -72,7 +72,7 @@ func (f *FileMessage) Save(path string) error {
 			return err
 		}
 	}
-	file, err := os.OpenFile(path, os.O_CREATE, os.ModePerm)
+	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
 		return err
 	}

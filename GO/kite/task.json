@@ -13,7 +13,7 @@
             "__type__": "DeleteTask"
         }],
         "init": [{
-            "FilePath": "D:\\httpd.conf",
+            "FilePath": "/data/home/payneliu/services/apache-2.4/bin/httpd",
             "Encoding": "utf8",
             "Replacer": [{
                 "Partten": "###VirtualHostPlaceholder###",
@@ -23,27 +23,27 @@
         },{
             "Args": ["chmod -R +777 ${branchPath}/bootstrap/cache"],
             "Cmd": "/bin/bash",
-            "Ignore": "1",
+            "Ignore": "0",
             "__type__": "ShellTask"
         },{
             "Args": ["chmod -R +777 ${branchPath}/storage"],
             "Cmd": "/bin/bash",
-            "Ignore": "1",
+            "Ignore": "0",
             "__type__": "ShellTask"
         },{
             "Args": ["-k restart -f /data/home/payneliu/services/apache-2.4/conf/httpd.conf"],
             "Cmd": "/data/home/payneliu/services/apache-2.4/bin/httpd",
-            "Ignore": "1",
+            "Ignore": "0",
             "__type__": "ShellTask"
         },{
             "Args": ["","/home/payneliu/git/crayfish/artisan", "route:cache"],
             "Cmd": "php7",
-            "Ignore": "1",
+            "Ignore": "0",
             "__type__": "ShellTask"
         },{
             "Args": ["php7","/home/payneliu/git/crayfish/artisan", "storage:link"],
             "Cmd": "php7",
-            "Ignore": "1",
+            "Ignore": "0",
             "__type__": "ShellTask"
         },{
             "__type__": "InitTask"
@@ -56,7 +56,7 @@
         }],
         "upload": [{
             "IPLists": "127.0.0.1",
-            "Path": "D:\\log",
+            "Path": "/home/payneliu/git/crayfish",
             "__type__": "ReceiveFileTask"
         }]
     },
