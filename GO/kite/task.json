@@ -36,13 +36,13 @@
             "Ignore": "0",
             "__type__": "ShellTask"
         },{
-            "Args": ["","/home/payneliu/git/crayfish/artisan", "route:cache"],
-            "Cmd": "php7",
+            "Args": ["php7 /home/payneliu/git/crayfish/artisan route:cache"],
+            "Cmd": "/bin/bash",
             "Ignore": "0",
             "__type__": "ShellTask"
         },{
-            "Args": ["php7","/home/payneliu/git/crayfish/artisan", "storage:link"],
-            "Cmd": "php7",
+            "Args": ["php7 /home/payneliu/git/crayfish/artisan storage:link"],
+            "Cmd": "/bin/bash",
             "Ignore": "0",
             "__type__": "ShellTask"
         },{
