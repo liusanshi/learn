@@ -56,6 +56,9 @@ func (s *ShellTask) Run(session *core.Session) error {
 	args := make([]string, len(s.Args)+1)
 	args[0] = "-c"
 	copy(args[1:], s.Args)
+	for i, a := range args { //替换环境变量
+		args[i] = session.ReplaceEnvVar(a)
+	}
 	cmd := exec.Command(s.Cmd, args...)
 	if session.IsCancel() {
 		return core.ErrCANCEL
