@@ -12,6 +12,13 @@
         {
             "Ip": "127.0.0.1",
             "Port": "8880",
+            "Content": "branchExists",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        },
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8880",
             "Content": "lock",
             "Timeout": 3000,
             "__type__": "TCPClientTask"
@@ -35,6 +42,13 @@
         {
             "Ip": "127.0.0.1",
             "Port": "8880",
+            "Content": "branchExists",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        },
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8880",
             "Content": "lock",
             "Timeout": 3000,
             "__type__": "TCPClientTask"
@@ -48,6 +62,13 @@
         }
     ],
     "init": [
+        {
+            "Ip": "127.0.0.1",
+            "Port": "8880",
+            "Content": "branchNotExists",
+            "Timeout": 3000,
+            "__type__": "TCPClientTask"
+        },
         {
             "Ip": "127.0.0.1",
             "Port": "8880",

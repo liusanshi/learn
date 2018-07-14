@@ -5,6 +5,21 @@
             "__type__": "ListTask"
         }],
         "update": [{
+            "Args": ["chmod -R 0777 ${branchPath}/bootstrap/cache"],
+            "Cmd": "/bin/bash",
+            "Ignore": "0",
+            "__type__": "ShellTask"
+        },{
+            "Args": ["chmod -R 0777 ${branchPath}/storage"],
+            "Cmd": "/bin/bash",
+            "Ignore": "0",
+            "__type__": "ShellTask"
+        },{
+            "Args": ["php7 /home/payneliu/git/crayfish/artisan route:cache"],
+            "Cmd": "/bin/bash",
+            "Ignore": "0",
+            "__type__": "ShellTask"
+        },{
             "__type__": "UpdateTask"
         }],
         "delete": [{
@@ -53,6 +68,12 @@
         }],
         "unlock": [{
             "__type__": "UnlockTask"
+        }],
+        "branchExists": [{
+            "__type__": "CheckBranchExistedTask"
+        }],
+        "branchNotExists": [{
+            "__type__": "CheckBranchNotExistedTask"
         }],
         "upload": [{
             "IPLists": "127.0.0.1",

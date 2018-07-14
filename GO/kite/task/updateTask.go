@@ -2,6 +2,7 @@ package task
 
 import (
 	"fmt"
+	"path/filepath"
 	"time"
 
 	"../util"
@@ -34,5 +35,6 @@ func (c *UpdateTask) Run(session *core.Session) error {
 	}
 	b.Version++
 	b.Time = time.Now().Format("2006-01-02 15:04:05")
+	b.Path = filepath.Join(session.WorkSpace, session.Branch)
 	return session.BMan.Save()
 }

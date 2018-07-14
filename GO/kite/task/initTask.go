@@ -1,7 +1,6 @@
 package task
 
 import (
-	"fmt"
 	"path/filepath"
 
 	"../util"
@@ -27,10 +26,6 @@ func (c *InitTask) ToMap() map[string]interface{} {
 
 //Run 创建分支
 func (c *InitTask) Run(session *core.Session) error {
-	_, ok := session.GetCurBranchEntity()
-	if ok {
-		return fmt.Errorf("branch:%s already exists", session.Branch)
-	}
 	session.BMan.AddBranch(session.Branch, filepath.Join(session.WorkSpace, session.Branch)) //添加分支的地址
 	defer session.BMan.Unlock()                                                              //解锁
 	return session.BMan.Save()
