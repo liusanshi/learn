@@ -86,7 +86,7 @@ func (f *FileMessage) Save(path string) error {
 		return err
 	}
 	defer file.Close()
-	_, err = io.Copy(file, io.LimitReader(f.file, f.Length))
+	_, err = io.Copy(file, f.file)
 	if err == nil || err == io.EOF {
 		fmt.Printf("upload success:%s\n", path)
 		return nil
