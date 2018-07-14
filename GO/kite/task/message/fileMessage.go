@@ -86,9 +86,12 @@ func (f *FileMessage) Save(path string) error {
 		return err
 	}
 	defer file.Close()
-	_, err = io.Copy(file, f.file)
+	length, err := io.Copy(file, f.file)
 	if err == nil || err == io.EOF {
-		fmt.Printf("upload success:%s\n", path)
+		if length != f.Length {
+			fmt.Printf("file:%s; requires length:%d; actual length:%d\n", path, f.Length, length)
+		}
+		// fmt.Printf("upload success:%s\n", path)
 		return nil
 	}
 	return err
