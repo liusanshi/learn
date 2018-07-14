@@ -54,7 +54,7 @@ func (s *SendFileTask) Init(data map[string]interface{}) error {
 		return fmt.Errorf("SendFileTask Port type error")
 	}
 	exclude, _ := data["Exclude"].(string)
-	s.Exclude = strings.Split(exclude, " ")
+	s.Exclude = strings.Split(strings.TrimSpace(exclude), " ")
 	return nil
 }
 
