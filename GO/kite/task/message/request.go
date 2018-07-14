@@ -43,21 +43,28 @@ func (r *Request) Close() error {
 	return nil
 }
 
-//ParseFormCmd 设置body
+//ParseFormCmd 解析指令
 func (r *Request) ParseFormCmd() (*CmdMessage, error) {
 	cmd := &CmdMessage{}
 	err := cmd.Parse(r)
 	return cmd, err
 }
 
-//ParseFormFile 设置body
+//ParseFormMsg 解析消息
+func (r *Request) ParseFormMsg() (*Message, error) {
+	msg := &Message{}
+	err := msg.Parse(r)
+	return msg, err
+}
+
+//ParseFormFile 解析上传文件
 func (r *Request) ParseFormFile() (*FileMessage, error) {
 	file := &FileMessage{}
 	err := file.Parse(r)
 	return file, err
 }
 
-//ParseForm 设置body
+//ParseForm 解析请求
 func (r *Request) ParseForm(read io.Reader) (int64, error) {
 	nr := bufio.NewReader(read)
 	head, err := nr.ReadBytes('\n')

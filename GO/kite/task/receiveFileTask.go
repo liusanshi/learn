@@ -6,6 +6,7 @@ import (
 
 	"../util"
 	"./core"
+	"./message"
 )
 
 //ReceiveFileTask 接收文件的任务
@@ -58,5 +59,12 @@ func (s *ReceiveFileTask) Run(session *core.Session) error {
 	if err != nil {
 		return err
 	}
-	return msg.Save(session.WorkSpace)
+	err = msg.Save(session.WorkSpace)
+	//返回客户端是否成功
+	if err == nil {
+		session.Printf(true, message.SystemMessage, "ok")
+	} else {
+		session.Printf(false, message.SystemMessage, "%v", err)
+	}
+	return err
 }

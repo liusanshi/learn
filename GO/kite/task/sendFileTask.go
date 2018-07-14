@@ -19,6 +19,8 @@ const (
 	maxUpload = 4
 )
 
+var filePathErr = fmt.Errorf("file path err") //文件遍历中断错误
+
 //SendFileTask 发送文件的任务
 type SendFileTask struct {
 	//Path 本地路径
@@ -70,70 +72,116 @@ func (s *SendFileTask) ToMap() map[string]interface{} {
 
 //Run 执行任务
 func (s *SendFileTask) Run(session *core.Session) error {
-	wait := new(sync.WaitGroup)
-	filepipe := s.newUploader(session, wait)
-	err := filepath.Walk(s.Path, func(path string, f os.FileInfo, err error) error {
-		if f == nil {
-			return err
-		}
-		if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
-			return filepath.SkipDir
-		}
-		if f.IsDir() {
-			return nil
-		}
-		//排除不需要的文件
-		for _, ex := range s.Exclude {
-			if strings.Index(path, ex) > -1 {
-				return filepath.SkipDir
-			}
-		}
-		filepipe <- path
-		return nil
-	})
+	var (
+		errP chan error
+		errC chan error
+		done chan struct{}
+		err  error
+	)
+	ctxP, cancelP := context.WithCancel(session.Ctx)
+	ctxC, cancelC := context.WithCancel(session.Ctx)
+	filepipe := s.consumerPath(ctxC, errC, done, session.Branch)
+	s.productPath(ctxP, filepipe, errP)
+
+	select {
+	case err = <-errP:
+		cancelC()
+	case err = <-errC:
+		cancelP()
+	case <-done:
+		break
+	}
 	fmt.Println("upload finish")
-	close(filepipe)
-	wait.Wait() //等待上传完成
 	return err
 }
 
-//创建上传器
-func (s *SendFileTask) newUploader(session *core.Session, wait *sync.WaitGroup) chan<- string {
-	var filepipe = make(chan string, maxUpload)
-	wait.Add(maxUpload)
-	ctx, cancel := context.WithCancel(session.Ctx)
-	for i := 0; i < maxUpload; i++ {
-		go func() {
-			defer wait.Done()
-			for file := range filepipe {
-				conn, err := net.Dial("tcp", s.IP+":"+s.Port)
-				if err != nil {
-					cancel()
-					conn.Close()
-					return
-				}
-				if isEnd(ctx) {
-					conn.Close()
-					return
-				}
-				msg, err := message.NewFileMessage(file, s.Path, s.DstPath, session.Branch)
-				if err != nil {
-					cancel()
-					msg.Close()
-					conn.Close()
-					return
-				}
-				fmt.Printf("begin upload:%s\n", file)
-				_, err = msg.WriteTo(conn)
-				msg.Close()
-				conn.Close()
-				if err != nil {
-					cancel()
-					return
+//路径生产者
+func (s *SendFileTask) productPath(ctx context.Context, filepipe chan<- string, perr chan<- error) {
+	go func() {
+		err := filepath.Walk(s.Path, func(path string, f os.FileInfo, err error) error {
+			if isEnd(ctx) {
+				return filePathErr
+			}
+			if f == nil {
+				return err
+			}
+			if f.Mode()&os.ModeSymlink == os.ModeSymlink { //过滤掉link文件
+				return filepath.SkipDir
+			}
+			if f.IsDir() {
+				return nil
+			}
+			//排除不需要的文件
+			for _, ex := range s.Exclude {
+				if strings.Index(path, ex) > -1 {
+					return filepath.SkipDir
 				}
 			}
-		}()
-	}
+			filepipe <- path
+			return nil
+		})
+		close(filepipe)
+		if err != nil {
+			perr <- err
+		}
+	}()
+}
+
+//路径消费者
+func (s *SendFileTask) consumerPath(ctx context.Context, cerr chan<- error, done chan struct{}, branch string) chan<- string {
+	var filepipe = make(chan string, maxUpload)
+	go func() {
+		var wait sync.WaitGroup
+		wait.Add(maxUpload)
+		for i := 0; i < maxUpload; i++ {
+			go func() {
+				defer wait.Done()
+				for file := range filepipe {
+					if isEnd(ctx) {
+						cerr <- filePathErr
+						return
+					}
+					conn, err := net.Dial("tcp", s.IP+":"+s.Port)
+					if err != nil {
+						conn.Close()
+						cerr <- err
+						return
+					}
+
+					msg, err := message.NewFileMessage(file, s.Path, s.DstPath, branch)
+					if err != nil {
+						msg.Close()
+						conn.Close()
+						cerr <- err
+						return
+					}
+					fmt.Printf("begin upload:%s\n", file)
+					_, err = msg.WriteTo(conn)
+					msg.Close()
+					if err != nil {
+						cerr <- err
+						return
+					}
+					req := message.NewRequest()
+					_, err = req.ParseForm(conn)
+					if err != nil {
+						conn.Close()
+						cerr <- err
+						return
+					}
+					resp, err := req.ParseFormMsg()
+					conn.Close()
+					if err != nil {
+						cerr <- err
+						return
+					}
+					fmt.Println(resp)
+				}
+			}()
+		}
+		wait.Wait()
+		close(done)
+	}()
 	return filepipe
 }
 

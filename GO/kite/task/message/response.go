@@ -21,9 +21,7 @@ func (r *Response) ParseForm(read io.Reader) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
-	msg := &Message{}
-	msg.Parse(req)
-	return msg, nil
+	return req.ParseFormMsg()
 }
 
 //NewResponse 创建一个新的请求
