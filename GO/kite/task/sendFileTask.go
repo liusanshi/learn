@@ -3,7 +3,6 @@ package task
 import (
 	"context"
 	"fmt"
-	"io"
 	"net"
 	"os"
 	"path/filepath"
@@ -92,6 +91,7 @@ func (s *SendFileTask) Run(session *core.Session) error {
 		filepipe <- path
 		return nil
 	})
+	fmt.Println("upload finish")
 	close(filepipe)
 	wait.Wait() //等待上传完成
 	return err
@@ -123,7 +123,7 @@ func (s *SendFileTask) newUploader(session *core.Session, wait *sync.WaitGroup) 
 					conn.Close()
 					return
 				}
-				io.WriteString(session, "begin upload:"+file+"\n")
+				fmt.Printf("begin upload:%s\n", file)
 				_, err = msg.WriteTo(conn)
 				msg.Close()
 				conn.Close()
