@@ -185,7 +185,12 @@ func (s *SendFileTask) upload(file, branch string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(resp)
+	if resp.Success {
+		fmt.Printf("end upload:%s\n", file)
+	} else {
+		fmt.Printf("upload:%s;err:%s\n", file, resp.Content)
+		return fmt.Errorf(resp.Content)
+	}
 	return nil
 }
 
