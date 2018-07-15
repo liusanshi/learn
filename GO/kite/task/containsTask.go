@@ -46,7 +46,8 @@ func (c *ContainsTask) Run(session *core.Session) error {
 	if err != nil {
 		return err
 	}
-	c.result = strings.Contains(string(data), c.SubString)
+	substr := session.ReplaceEnvVar(c.SubString)
+	c.result = strings.Contains(string(data), substr)
 	return nil
 }
 

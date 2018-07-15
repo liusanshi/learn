@@ -66,19 +66,19 @@ func (t *Task) Init(data map[string]interface{}) error {
 		return fmt.Errorf("Task Type type error")
 	}
 	if ignore, ok := data["Ignore"]; ok { //忽略属性
-		if ii, ok := ignore.(int); ok {
-			t.Ignore = ii == 1
+		if ii, ok := ignore.(float64); ok {
+			t.Ignore = ii == float64(1)
 		} else {
-			log.Println("Task Ignore type error")
-			return fmt.Errorf("Task Ignore type error")
+			log.Printf("Task Ignore type error: require:(int);actual:(%T)", ignore)
+			return fmt.Errorf("Task Ignore type error: require:(int);actual:(%T)", ignore)
 		}
 	}
-	if disabled, ok := data["Ignore"]; ok { //禁用属性
-		if ii, ok := disabled.(int); ok {
-			t.Disabile = ii == 1
+	if disabled, ok := data["Disabile"]; ok { //禁用属性
+		if ii, ok := disabled.(float64); ok {
+			t.Disabile = ii == float64(1)
 		} else {
-			log.Println("Task Disabile type error")
-			return fmt.Errorf("Task Disabile type error")
+			log.Printf("Task Disabile type error: require:(int);actual:(%T)", disabled)
+			return fmt.Errorf("Task Disabile type error: require:(int);actual:(%T)", disabled)
 		}
 	}
 	if temp, ok := util.NewStructPtr(t.Type); ok {

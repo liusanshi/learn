@@ -2,6 +2,8 @@ package core
 
 import (
 	"log"
+
+	"../../util"
 )
 
 //条件接口
@@ -15,6 +17,10 @@ type IfElse struct {
 	Cond     IConditions //条件
 	Body     List        //完成之后的执行body
 	ElseTask List        //与之匹配的else
+}
+
+func init() {
+	util.RegisterType((*IfElse)(nil))
 }
 
 //Init 初始化任务
