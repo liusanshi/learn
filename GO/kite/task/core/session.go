@@ -87,7 +87,7 @@ func (c *Session) Printf(suc bool, typ message.Type, format string, a ...interfa
 	return c.Response().Write(c.write, message.NewMessage(suc, typ, fmt.Sprintf(format, a...)))
 }
 
-//替换环境变量
+// ReplaceEnvVar 替换环境变量
 func (c *Session) ReplaceEnvVar(repl string) string {
 	branch := c.Branch
 	branchPath := filepath.Join(c.WorkSpace, c.Branch)

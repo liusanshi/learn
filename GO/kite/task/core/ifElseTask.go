@@ -7,7 +7,7 @@ import (
 	"../../util"
 )
 
-//条件接口
+// IConditions 条件接口
 type IConditions interface {
 	ITask
 	GetResult() int //获取条件执行的结果
