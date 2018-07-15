@@ -26,7 +26,7 @@
             "FilePath": "/data/home/payneliu/services/apache-2.4/conf/httpd.conf",
             "Encoding": "utf8",
             "Replacer": [{
-                "Partten": "(?msU)<VirtualHost .*ServerName ${branch}\\.qgame\\.qq\\.com.*</VirtualHost>",
+                "Partten": "(?msU)###${branch}_begin###.*###${branch}_end###",
                 "Repl": ""
             }],
             "__type__": "ReplaceTask"
@@ -55,7 +55,7 @@
                     "Encoding": "utf8",
                     "Replacer": [{
                         "Partten": "###VirtualHostPlaceholder###",
-                        "Repl": "<VirtualHost *>\nSetEnv APP_ENV dev\nDocumentRoot ${branchPath}/public/\nServerName ${branch}.qgame.qq.com\nErrorLog logs/${branch}.qgame.qq.com-error_log\nCustomLog logs/${branch}.qgame.qq.com-access_log common\n<Directory ${branchPath}/public/>\nOptions FollowSymLinks \nAllowOverride All\n#Order allow,deny \n#Allow from all\n</Directory>\n</VirtualHost>\n\n###VirtualHostPlaceholder###"
+                        "Repl": "###${branch}_begin###\n<VirtualHost *>\nSetEnv APP_ENV dev\nDocumentRoot ${branchPath}/public/\nServerName ${branch}.qgame.qq.com\nErrorLog logs/${branch}.qgame.qq.com-error_log\nCustomLog logs/${branch}.qgame.qq.com-access_log common\n<Directory ${branchPath}/public/>\nOptions FollowSymLinks \nAllowOverride All\n#Order allow,deny \n#Allow from all\n</Directory>\n</VirtualHost>\n###${branch}_end###\n\n###VirtualHostPlaceholder###"
                     }],
                     "__type__": "ReplaceTask"
                 }

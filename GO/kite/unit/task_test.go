@@ -3,6 +3,8 @@ package unit
 import (
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
 	"testing"
 
 	"../task"
@@ -106,4 +108,34 @@ func TestLoadClientTask(t *testing.T) {
 	temp, _ := taskQueue.MarshalJSON()
 	fmt.Printf("%s\n", temp)
 	t.Logf("%s\n", temp)
+}
+
+func TestRegexp(t *testing.T) {
+	reg, err := regexp.Compile("(?msU)###test1_brgin###.*###test1_end###")
+	strContent := `<VirtualHost *>begin</VirtualHost>
+	###test1_brgin###
+	<VirtualHost *>
+	SetEnv APP_ENV dev
+	DocumentRoot /home/payneliu/git/test1/public/
+	ServerName test1.qgame.qq.com
+	ErrorLog logs/test1.qgame.qq.com-error_log
+	CustomLog logs/test1.qgame.qq.com-access_log common
+	<Directory /home/payneliu/git/test1/public/>
+	Options FollowSymLinks
+	AllowOverride All
+	#Order allow,deny 
+	#Allow from all
+	</Directory>
+	</VirtualHost>
+	###test1_end###
+	<VirtualHost *>end</VirtualHost>
+	`
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	t.Log(reg.ReplaceAllString(strContent, ""))
+	if "" != strings.TrimSpace(reg.ReplaceAllString(strContent, "")) {
+		t.Fail()
+	}
 }
