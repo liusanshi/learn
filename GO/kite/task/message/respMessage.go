@@ -26,6 +26,9 @@ const (
 //curMsgID 当前的消息id
 var curMsgID = 0
 
+//检查是否实现IMessage接口
+var _ IMessage = (*Message)(nil)
+
 //Message 消息对象
 type Message struct {
 	ID      int

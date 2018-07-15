@@ -11,6 +11,9 @@ import (
 type CheckBranchExistedTask struct {
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*CheckBranchExistedTask)(nil)
+
 func init() {
 	util.RegisterType((*CheckBranchExistedTask)(nil))
 }

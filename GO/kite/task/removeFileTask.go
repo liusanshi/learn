@@ -13,6 +13,9 @@ type RemoveFileTask struct {
 	// Path string
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*RemoveFileTask)(nil)
+
 func init() {
 	util.RegisterType((*RemoveFileTask)(nil))
 }

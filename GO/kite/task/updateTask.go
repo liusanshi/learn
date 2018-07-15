@@ -12,6 +12,9 @@ import (
 //UpdateTask 更新分支的任务
 type UpdateTask struct{}
 
+//检查是否实现ITask接口
+var _ core.ITask = (*UpdateTask)(nil)
+
 func init() {
 	util.RegisterType((*UpdateTask)(nil))
 }

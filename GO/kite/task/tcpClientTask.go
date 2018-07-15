@@ -25,6 +25,9 @@ type TCPClientTask struct {
 	Content string
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*TCPClientTask)(nil)
+
 //Init 数据初始化
 func (t *TCPClientTask) Init(data map[string]interface{}) error {
 	var ok bool

@@ -9,6 +9,9 @@ import (
 //ListTask 显示所有分支的list
 type ListTask struct{}
 
+//检查是否实现ITask接口
+var _ core.ITask = (*ListTask)(nil)
+
 //Init 数据初始化
 func (c *ListTask) Init(data map[string]interface{}) error {
 	return nil

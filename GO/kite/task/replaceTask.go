@@ -38,6 +38,9 @@ type ReplaceTask struct {
 	Encoding string
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*ReplaceTask)(nil)
+
 func init() {
 	util.RegisterType((*ReplaceTask)(nil))
 }

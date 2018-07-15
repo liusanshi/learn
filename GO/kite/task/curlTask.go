@@ -33,6 +33,9 @@ type CurlTask struct {
 	Head map[string]string
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*CurlTask)(nil)
+
 //Init 数据初始化
 func (c *CurlTask) Init(data map[string]interface{}) error {
 	var ok bool

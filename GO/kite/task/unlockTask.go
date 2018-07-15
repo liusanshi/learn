@@ -8,6 +8,9 @@ import (
 //UnlockTask 删除分支的任务
 type UnlockTask struct{}
 
+//检查是否实现ITask接口
+var _ core.ITask = (*UnlockTask)(nil)
+
 func init() {
 	util.RegisterType((*UnlockTask)(nil))
 }

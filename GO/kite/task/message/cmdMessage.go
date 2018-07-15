@@ -13,6 +13,9 @@ type CmdMessage struct {
 	Branch string
 }
 
+//检查是否实现IMessage接口
+var _ IMessage = (*CmdMessage)(nil)
+
 //String 将数据转换为字符串
 func (cmd *CmdMessage) String() string {
 	return fmt.Sprintf("%s %s", cmd.Cmd, cmd.Branch)

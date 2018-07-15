@@ -16,6 +16,9 @@ type ContainsTask struct {
 	result    bool
 }
 
+//检查是否实现IConditions接口
+var _ core.IConditions = (*ContainsTask)(nil)
+
 func init() {
 	util.RegisterType((*ContainsTask)(nil))
 }
@@ -52,6 +55,9 @@ func (c *ContainsTask) Run(session *core.Session) error {
 }
 
 // GetResult 获取条件的执行结果
-func (c *ContainsTask) GetResult() bool {
-	return c.result
+func (c *ContainsTask) GetResult() int {
+	if c.result {
+		return 1
+	}
+	return 0
 }

@@ -17,6 +17,9 @@ type TCPServerTask struct {
 	TaskDict core.Map
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*TCPServerTask)(nil)
+
 //Init 数据的初始化
 func (t *TCPServerTask) Init(data map[string]interface{}) error {
 	var ok bool

@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"log"
 
 	"../../util"
@@ -9,15 +10,19 @@ import (
 //条件接口
 type IConditions interface {
 	ITask
-	GetResult() bool //获取条件执行的结果
+	GetResult() int //获取条件执行的结果
 }
 
 // IfElse 条件任务  分支任务
 type IfElse struct {
 	Cond     IConditions //条件
+	Result   int         //条件的对比值
 	Body     List        //完成之后的执行body
 	ElseTask List        //与之匹配的else
 }
+
+//检查是否实现ITask接口
+var _ ITask = (*IfElse)(nil)
 
 func init() {
 	util.RegisterType((*IfElse)(nil))
@@ -51,6 +56,14 @@ func (i *IfElse) Init(data map[string]interface{}) error {
 		}
 		i.Body = *nt
 	}
+	if result, ok := data["Result"]; ok { //忽略属性
+		if ii, ok := result.(float64); ok {
+			i.Result = int(ii)
+		} else {
+			log.Printf("Task Result type error: require:(int);actual:(%T)", result)
+			return fmt.Errorf("Task Result type error: require:(int);actual:(%T)", result)
+		}
+	}
 	return nil
 
 }
@@ -61,6 +74,7 @@ func (i *IfElse) ToMap() map[string]interface{} {
 	data["Cond"] = i.Cond.ToMap()
 	data["Body"] = i.Body.ToArray()
 	data["ElseTask"] = i.ElseTask.ToArray()
+	data["Result"] = i.Result
 	return data
 }
 
@@ -70,7 +84,7 @@ func (i *IfElse) Run(session *Session) error {
 	if err != nil {
 		return err
 	}
-	if i.Cond.GetResult() {
+	if i.Cond.GetResult() == i.Result {
 		if i.Body != nil && len(i.Body) > 0 {
 			return i.Body.Run(session)
 		}

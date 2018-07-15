@@ -35,6 +35,9 @@ type SendFileTask struct {
 	Exclude []string
 }
 
+//检查是否实现ITask接口
+var _ core.ITask = (*SendFileTask)(nil)
+
 func init() {
 	util.RegisterType((*SendFileTask)(nil))
 }

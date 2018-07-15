@@ -10,6 +10,9 @@ import (
 //LockTask 删除分支的任务
 type LockTask struct{}
 
+//检查是否实现ITask接口
+var _ core.ITask = (*LockTask)(nil)
+
 func init() {
 	util.RegisterType((*LockTask)(nil))
 }

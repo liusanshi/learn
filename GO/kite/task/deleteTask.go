@@ -8,6 +8,9 @@ import (
 //DeleteTask 删除分支的任务
 type DeleteTask struct{}
 
+//检查是否实现ITask接口
+var _ core.ITask = (*DeleteTask)(nil)
+
 func init() {
 	util.RegisterType((*DeleteTask)(nil))
 }

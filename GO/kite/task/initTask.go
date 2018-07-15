@@ -10,6 +10,9 @@ import (
 //InitTask 创建分支的任务
 type InitTask struct{}
 
+//检查是否实现ITask接口
+var _ core.ITask = (*InitTask)(nil)
+
 func init() {
 	util.RegisterType((*InitTask)(nil))
 }

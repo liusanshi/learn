@@ -20,6 +20,9 @@ type FileMessage struct {
 	file   io.ReadWriteCloser
 }
 
+//检查是否实现IMessage接口
+var _ IMessage = (*FileMessage)(nil)
+
 //String 将数据转换为字符串
 func (f *FileMessage) String() string {
 	return fmt.Sprintf("%s:%s:%d:%s", f.Branch, f.Path, f.Length, f.md5)
