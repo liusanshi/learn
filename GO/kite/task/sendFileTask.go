@@ -141,41 +141,11 @@ func (s *SendFileTask) consumerPath(ctx context.Context, cerr chan<- error, done
 						cerr <- filePathErr
 						return
 					}
-					conn, err := net.Dial("tcp", s.IP+":"+s.Port)
-					if err != nil {
-						conn.Close()
-						cerr <- err
-						return
-					}
-
-					msg, err := message.NewFileMessage(file, s.Path, s.DstPath, branch)
-					if err != nil {
-						msg.Close()
-						conn.Close()
-						cerr <- err
-						return
-					}
-					fmt.Printf("begin upload:%s\n", file)
-					_, err = msg.WriteTo(conn)
-					msg.Close()
+					err := s.upload(file, branch)
 					if err != nil {
 						cerr <- err
 						return
 					}
-					req := message.NewRequest()
-					_, err = req.ParseForm(conn)
-					if err != nil {
-						conn.Close()
-						cerr <- err
-						return
-					}
-					resp, err := req.ParseFormMsg()
-					conn.Close()
-					if err != nil {
-						cerr <- err
-						return
-					}
-					fmt.Println(resp)
 				}
 			}()
 		}
@@ -183,6 +153,36 @@ func (s *SendFileTask) consumerPath(ctx context.Context, cerr chan<- error, done
 		close(done)
 	}()
 	return filepipe
+}
+
+//upload 上传文件
+func (s *SendFileTask) upload(file, branch string) error {
+	conn, err := net.Dial("tcp", s.IP+":"+s.Port)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	msg, err := message.NewFileMessage(file, s.Path, s.DstPath, branch)
+	defer msg.Close()
+	if err != nil {
+		return err
+	}
+	fmt.Printf("begin upload:%s\n", file)
+	_, err = msg.WriteTo(conn)
+	if err != nil {
+		return err
+	}
+	req := message.NewRequest()
+	_, err = req.ParseForm(conn)
+	if err != nil {
+		return err
+	}
+	resp, err := req.ParseFormMsg()
+	if err != nil {
+		return err
+	}
+	fmt.Println(resp)
+	return nil
 }
 
 //isEnd 是否结束
