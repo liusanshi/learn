@@ -29,7 +29,7 @@
         }],
         "init": [{
             "__type__": "IfElse",
-            "Result": 1,
+            "Result": 0,
             "Logic": "==",
             "Cond": {
                 "FilePath": "/data/home/payneliu/services/apache-2.4/conf/httpd.conf",
