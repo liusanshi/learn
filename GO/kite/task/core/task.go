@@ -151,6 +151,7 @@ func (t *Task) Run(session *Session) error {
 	fmt.Printf("begin execute task:%s\n", t.Type)
 	err := t.Task.Run(session)
 	if t.Ignore { //忽略错误
+		fmt.Printf("ignore err:%v\n", err)
 		return nil
 	}
 	return err

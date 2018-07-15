@@ -7,17 +7,17 @@
         "update": [{
             "Args": ["chmod -R 0777 ${branchPath}/bootstrap/cache"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "Args": ["chmod -R 0777 ${branchPath}/storage"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "Args": ["php7 /home/payneliu/git/crayfish/artisan route:cache"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "__type__": "UpdateTask"
@@ -38,27 +38,27 @@
         },{
             "Args": ["chmod -R 0777 ${branchPath}/bootstrap/cache"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "Args": ["chmod -R 0777 ${branchPath}/storage"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "Args": ["/data/home/payneliu/services/apache-2.4/bin/httpd -k restart -f /data/home/payneliu/services/apache-2.4/conf/httpd.conf"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "Args": ["php7 /home/payneliu/git/crayfish/artisan route:cache"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "Args": ["php7 /home/payneliu/git/crayfish/artisan storage:link"],
             "Cmd": "/bin/bash",
-            "Ignore": "0",
+            "Ignore": 0,
             "__type__": "ShellTask"
         },{
             "__type__": "InitTask"

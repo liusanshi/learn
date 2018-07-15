@@ -7,14 +7,12 @@ import (
 
 	"../util"
 	"./core"
-	"./message"
 )
 
 //ShellTask shell任务
 type ShellTask struct {
-	Cmd    string
-	Ignore bool //忽略错误
-	Args   []string
+	Cmd  string
+	Args []string
 }
 
 //Init 数据初始化
@@ -22,11 +20,6 @@ func (s *ShellTask) Init(data map[string]interface{}) error {
 	var ok bool
 	if s.Cmd, ok = data["Cmd"].(string); !ok {
 		return fmt.Errorf("ShellTask Cmd type error")
-	}
-	if ignore, ok := data["Ignore"].(string); ok {
-		if ignore == "1" {
-			s.Ignore = true
-		}
 	}
 	args, ok := data["Args"].([]interface{})
 	if !ok {
@@ -43,11 +36,6 @@ func (s *ShellTask) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
 	data["Cmd"] = s.Cmd
 	data["Args"] = s.Args
-	if s.Ignore {
-		data["Ignore"] = 1
-	} else {
-		data["Ignore"] = 0
-	}
 	return data
 }
 
@@ -70,11 +58,8 @@ func (s *ShellTask) Run(session *core.Session) error {
 	cmd.Stdout = &out
 	cmd.Stderr = &errOut
 	err := cmd.Run()
-	if err != nil && !s.Ignore {
+	if err != nil {
 		return fmt.Errorf("err:%v; info:%s", err, errOut.Bytes())
-	} else if err != nil { //需要忽略错误
-		fmt.Printf("err:%v; info:%s\n", err, errOut.Bytes())
-		session.Printf(true, message.SystemMessage, "ignore err:%v; info:%s", err, errOut.Bytes())
 	}
 	session.Write(out.Bytes())
 	return nil
