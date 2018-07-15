@@ -42,38 +42,38 @@
                     "Encoding": "utf8",
                     "Replacer": [{
                         "Partten": "###VirtualHostPlaceholder###",
-                        "Repl": "<VirtualHost>\nSetEnv APP_ENV dev\nDocumentRoot ${branchPath}/public/\nServerName ${branch}.qgame.qq.com\nErrorLog logs/${branch}.qgame.qq.com-error_log\nCustomLog logs/${branch}.qgame.qq.com-access_log common\n<Directory ${branchPath}/public/>\nOptions FollowSymLinks \nAllowOverride All\n#Order allow,deny \n#Allow from all\n</Directory>\n</VirtualHost>\n\n###VirtualHostPlaceholder###"
+                        "Repl": "<VirtualHost *>\nSetEnv APP_ENV dev\nDocumentRoot ${branchPath}/public/\nServerName ${branch}.qgame.qq.com\nErrorLog logs/${branch}.qgame.qq.com-error_log\nCustomLog logs/${branch}.qgame.qq.com-access_log common\n<Directory ${branchPath}/public/>\nOptions FollowSymLinks \nAllowOverride All\n#Order allow,deny \n#Allow from all\n</Directory>\n</VirtualHost>\n\n###VirtualHostPlaceholder###"
                     }],
                     "__type__": "ReplaceTask"
-                },{
-                    "Args": ["chmod -R 0777 ${branchPath}/bootstrap/cache"],
-                    "Cmd": "/bin/bash",
-                    "Ignore": 0,
-                    "__type__": "ShellTask"
-                },{
-                    "Args": ["chmod -R 0777 ${branchPath}/storage"],
-                    "Cmd": "/bin/bash",
-                    "Ignore": 0,
-                    "__type__": "ShellTask"
-                },{
-                    "Args": ["/data/home/payneliu/services/apache-2.4/bin/httpd -k restart -f /data/home/payneliu/services/apache-2.4/conf/httpd.conf"],
-                    "Cmd": "/bin/bash",
-                    "Ignore": 0,
-                    "__type__": "ShellTask"
-                },{
-                    "Args": ["php7 /home/payneliu/git/crayfish/artisan route:cache"],
-                    "Cmd": "/bin/bash",
-                    "Ignore": 0,
-                    "__type__": "ShellTask"
-                },{
-                    "Args": ["php7 /home/payneliu/git/crayfish/artisan storage:link"],
-                    "Cmd": "/bin/bash",
-                    "Ignore": 0,
-                    "__type__": "ShellTask"
-                },{
-                    "__type__": "InitTask"
                 }
             ]
+        },{
+            "Args": ["chmod -R 0777 ${branchPath}/bootstrap/cache"],
+            "Cmd": "/bin/bash",
+            "Ignore": 0,
+            "__type__": "ShellTask"
+        },{
+            "Args": ["chmod -R 0777 ${branchPath}/storage"],
+            "Cmd": "/bin/bash",
+            "Ignore": 0,
+            "__type__": "ShellTask"
+        },{
+            "Args": ["/data/home/payneliu/services/apache-2.4/bin/httpd -k restart -f /data/home/payneliu/services/apache-2.4/conf/httpd.conf"],
+            "Cmd": "/bin/bash",
+            "Ignore": 0,
+            "__type__": "ShellTask"
+        },{
+            "Args": ["php7 /home/payneliu/git/crayfish/artisan route:cache"],
+            "Cmd": "/bin/bash",
+            "Ignore": 0,
+            "__type__": "ShellTask"
+        },{
+            "Args": ["php7 /home/payneliu/git/crayfish/artisan storage:link"],
+            "Cmd": "/bin/bash",
+            "Ignore": 0,
+            "__type__": "ShellTask"
+        },{
+            "__type__": "InitTask"
         }],
         "lock": [{
             "__type__": "LockTask"
