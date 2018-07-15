@@ -17,6 +17,7 @@ type IConditions interface {
 type IfElse struct {
 	Cond     IConditions //条件
 	Result   int         //条件的对比值
+	Logic    string      //逻辑计算:=; >; <; >=; <=;
 	Body     List        //完成之后的执行body
 	ElseTask List        //与之匹配的else
 }
@@ -64,8 +65,8 @@ func (i *IfElse) Init(data map[string]interface{}) error {
 			return fmt.Errorf("Task Result type error: require:(int);actual:(%T)", result)
 		}
 	}
+	i.Logic, _ = data["Logic"].(string)
 	return nil
-
 }
 
 // ToMap 数据转换为map
@@ -75,6 +76,7 @@ func (i *IfElse) ToMap() map[string]interface{} {
 	data["Body"] = i.Body.ToArray()
 	data["ElseTask"] = i.ElseTask.ToArray()
 	data["Result"] = i.Result
+	data["Logic"] = i.Logic
 	return data
 }
 
@@ -84,7 +86,7 @@ func (i *IfElse) Run(session *Session) error {
 	if err != nil {
 		return err
 	}
-	if i.Cond.GetResult() == i.Result {
+	if i.compu(i.Cond.GetResult()) {
 		if i.Body != nil && len(i.Body) > 0 {
 			return i.Body.Run(session)
 		}
@@ -94,4 +96,21 @@ func (i *IfElse) Run(session *Session) error {
 		return i.ElseTask.Run(session)
 	}
 	return nil
+}
+
+// compu 结算结果 满足条件
+func (i *IfElse) compu(result int) bool {
+	switch i.Logic {
+	case ">":
+		return result > i.Result
+	case "<":
+		return result < i.Result
+	case "==":
+		return result == i.Result
+	case ">=":
+		return result >= i.Result
+	case "<=":
+		return result <= i.Result
+	}
+	panic("logic not in ('>', '<', '==', '>=', '<=')")
 }

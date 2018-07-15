@@ -29,6 +29,8 @@
         }],
         "init": [{
             "__type__": "IfElse",
+            "Result": 1,
+            "Logic": "==",
             "Cond": {
                 "FilePath": "/data/home/payneliu/services/apache-2.4/conf/httpd.conf",
                 "SubString": "ServerName ${branch}.qgame.qq.com",
