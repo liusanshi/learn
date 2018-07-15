@@ -48,8 +48,10 @@ type IInit interface {
 
 //Task 任务
 type Task struct {
-	Type string
-	Task ITask
+	Type     string //任务类型
+	Ignore   bool   //是否忽略错误
+	Disabile bool   //是否禁用任务
+	Task     ITask  //任务的实际对象
 }
 
 const (
@@ -62,6 +64,22 @@ func (t *Task) Init(data map[string]interface{}) error {
 	var ok bool
 	if t.Type, ok = data[TypeKey].(string); !ok {
 		return fmt.Errorf("Task Type type error")
+	}
+	if ignore, ok := data["Ignore"]; ok { //忽略属性
+		if ii, ok := ignore.(int); ok {
+			t.Ignore = ii == 1
+		} else {
+			log.Println("Task Ignore type error")
+			return fmt.Errorf("Task Ignore type error")
+		}
+	}
+	if disabled, ok := data["Ignore"]; ok { //禁用属性
+		if ii, ok := disabled.(int); ok {
+			t.Disabile = ii == 1
+		} else {
+			log.Println("Task Disabile type error")
+			return fmt.Errorf("Task Disabile type error")
+		}
 	}
 	if temp, ok := util.NewStructPtr(t.Type); ok {
 		t.Task, ok = temp.(ITask)
@@ -85,6 +103,16 @@ func (t *Task) Init(data map[string]interface{}) error {
 func (t *Task) ToMap() map[string]interface{} {
 	data := t.Task.ToMap()
 	data[TypeKey] = t.Type
+	if t.Ignore {
+		data["Ignore"] = 1
+	} else {
+		data["Ignore"] = 0
+	}
+	if t.Disabile {
+		data["Disabile"] = 1
+	} else {
+		data["Disabile"] = 0
+	}
 	return data
 }
 
@@ -117,8 +145,15 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 
 //Run 任务运行
 func (t *Task) Run(session *Session) error {
+	if t.Disabile { //禁用任务
+		return nil
+	}
 	fmt.Printf("begin execute task:%s\n", t.Type)
-	return t.Task.Run(session)
+	err := t.Task.Run(session)
+	if t.Ignore { //忽略错误
+		return nil
+	}
+	return err
 }
 
 //Load 加载数据
@@ -144,4 +179,24 @@ func Save(filePath string, ser json.Marshaler) error {
 		return err
 	}
 	return ioutil.WriteFile(filePath, data, os.ModePerm)
+}
+
+// TaskWithMap 根据map转换为task
+func TaskWithMap(data map[string]interface{}) (*Task, error) {
+	nt := &Task{}
+	err := nt.Init(data)
+	if err != nil {
+		return nil, err
+	}
+	return nt, nil
+}
+
+// TaskWithList 根据Array转换为list
+func TaskWithList(data []interface{}) (*List, error) {
+	nt := &List{}
+	err := nt.Init(data)
+	if err != nil {
+		return nil, err
+	}
+	return nt, nil
 }
