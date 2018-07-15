@@ -9,6 +9,7 @@ import (
 
 	"../util"
 	"./core"
+	"./message"
 )
 
 // CurlMethod curl的类型
@@ -119,7 +120,8 @@ func (c *CurlTask) Run(session *core.Session) error {
 		log.Printf("Curl result resolve fail:%v\n", err)
 		return err
 	}
-	session.Write(result)
+	session.Printf(true, message.SystemMessage, "%s", result)
+	// session.Write(result)
 	return nil
 }
 

@@ -7,6 +7,7 @@ import (
 
 	"../util"
 	"./core"
+	"./message"
 )
 
 //ShellTask shell任务
@@ -64,7 +65,8 @@ func (s *ShellTask) Run(session *core.Session) error {
 	if err != nil {
 		return fmt.Errorf("err:%v; info:%s", err, errOut.Bytes())
 	}
-	session.Write(out.Bytes())
+	session.Printf(true, message.SystemMessage, "%s", out.Bytes())
+	// session.Write(out.Bytes())
 	return nil
 }
 
