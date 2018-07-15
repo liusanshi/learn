@@ -214,3 +214,4 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 GO/kite/unit/debug.test
+GO/kite/main.exe
