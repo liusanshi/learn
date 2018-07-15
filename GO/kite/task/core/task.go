@@ -50,7 +50,7 @@ type IInit interface {
 type Task struct {
 	Type     string //任务类型
 	Ignore   bool   //是否忽略错误
-	Disabile bool   //是否禁用任务
+	Disabled bool   //是否禁用任务
 	Task     ITask  //任务的实际对象
 }
 
@@ -73,12 +73,12 @@ func (t *Task) Init(data map[string]interface{}) error {
 			return fmt.Errorf("Task Ignore type error: require:(int);actual:(%T)", ignore)
 		}
 	}
-	if disabled, ok := data["Disabile"]; ok { //禁用属性
+	if disabled, ok := data["Disabled"]; ok { //禁用属性
 		if ii, ok := disabled.(float64); ok {
-			t.Disabile = ii == float64(1)
+			t.Disabled = ii == float64(1)
 		} else {
-			log.Printf("Task Disabile type error: require:(int);actual:(%T)", disabled)
-			return fmt.Errorf("Task Disabile type error: require:(int);actual:(%T)", disabled)
+			log.Printf("Task Disabled type error: require:(int);actual:(%T)", disabled)
+			return fmt.Errorf("Task Disabled type error: require:(int);actual:(%T)", disabled)
 		}
 	}
 	if temp, ok := util.NewStructPtr(t.Type); ok {
@@ -108,10 +108,10 @@ func (t *Task) ToMap() map[string]interface{} {
 	} else {
 		data["Ignore"] = 0
 	}
-	if t.Disabile {
-		data["Disabile"] = 1
+	if t.Disabled {
+		data["Disabled"] = 1
 	} else {
-		data["Disabile"] = 0
+		data["Disabled"] = 0
 	}
 	return data
 }
@@ -145,7 +145,7 @@ func (t *Task) UnmarshalJSON(data []byte) error {
 
 //Run 任务运行
 func (t *Task) Run(session *Session) error {
-	if t.Disabile { //禁用任务
+	if t.Disabled { //禁用任务
 		return nil
 	}
 	fmt.Printf("begin execute task:%s\n", t.Type)
