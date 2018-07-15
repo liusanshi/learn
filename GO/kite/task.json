@@ -23,6 +23,14 @@
             "__type__": "UpdateTask"
         }],
         "delete": [{
+            "FilePath": "/data/home/payneliu/services/apache-2.4/conf/httpd.conf",
+            "Encoding": "utf8",
+            "Replacer": [{
+                "Partten": "(?msU)<VirtualHost .*ServerName ${branch}\\.qgame\\.qq\\.com.*</VirtualHost>",
+                "Repl": ""
+            }],
+            "__type__": "ReplaceTask"
+        },{
             "__type__": "RemoveFileTask"
         },{
             "__type__": "DeleteTask"

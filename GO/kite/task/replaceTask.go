@@ -100,7 +100,7 @@ func (r *ReplaceTask) Run(session *core.Session) error {
 	}
 	strContent := string(content)
 	for _, repler := range r.Replacer {
-		reg, err := regexp.Compile(repler.Partten)
+		reg, err := regexp.Compile(session.ReplaceEnvVar(repler.Partten))
 		if err != nil {
 			return err
 		}
