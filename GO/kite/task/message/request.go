@@ -80,7 +80,7 @@ func (r *Request) ParseForm(read io.Reader) (int64, error) {
 	}
 	r.cmd = strings.TrimLeft(u.Path, "/")
 	r.values = u.Query()
-	r.file = &readOnly{read}
+	r.file = &readOnly{nr}
 	return int64(len(head)), nil
 }
 

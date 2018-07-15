@@ -73,9 +73,9 @@ func (s *SendFileTask) ToMap() map[string]interface{} {
 //Run 执行任务
 func (s *SendFileTask) Run(session *core.Session) error {
 	var (
-		errP chan error
-		errC chan error
-		done chan struct{}
+		errP = make(chan error)
+		errC = make(chan error)
+		done = make(chan struct{})
 		err  error
 	)
 	ctxP, cancelP := context.WithCancel(session.Ctx)
@@ -143,6 +143,10 @@ func (s *SendFileTask) consumerPath(ctx context.Context, cerr chan<- error, done
 					}
 					err := s.upload(file, branch)
 					if err != nil {
+						if operr, ok := err.(*net.OpError); ok {
+							fmt.Printf("客户端上传错误:%v\n", operr)
+							continue
+						}
 						cerr <- err
 						return
 					}
