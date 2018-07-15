@@ -14,7 +14,7 @@ type IConditions interface {
 type IfElse struct {
 	Cond     IConditions //条件
 	Body     List        //完成之后的执行body
-	ElseTask Task        //与之匹配的else
+	ElseTask List        //与之匹配的else
 }
 
 //Init 初始化任务
@@ -29,8 +29,8 @@ func (i *IfElse) Init(data map[string]interface{}) error {
 			log.Printf("IfElse - Cond; type err: cant convert (%T) to (%T)\n", nt.Task, IConditions(nil))
 		}
 	}
-	if val, ok := data["ElseTask"].(map[string]interface{}); ok {
-		nt, err := TaskWithMap(val)
+	if val, ok := data["ElseTask"].([]interface{}); ok {
+		nt, err := TaskWithList(val)
 		if err != nil {
 			log.Printf("IfElse - ElseTask; err:%v\n", err)
 			return err
@@ -54,7 +54,7 @@ func (i *IfElse) ToMap() map[string]interface{} {
 	data := make(map[string]interface{})
 	data["Cond"] = i.Cond.ToMap()
 	data["Body"] = i.Body.ToArray()
-	data["ElseTask"] = i.ElseTask.ToMap()
+	data["ElseTask"] = i.ElseTask.ToArray()
 	return data
 }
 
@@ -65,7 +65,13 @@ func (i *IfElse) Run(session *Session) error {
 		return err
 	}
 	if i.Cond.GetResult() {
-		return i.Body.Run(session)
+		if i.Body != nil && len(i.Body) > 0 {
+			return i.Body.Run(session)
+		}
+		return nil
 	}
-	return i.ElseTask.Run(session)
+	if i.ElseTask != nil && len(i.ElseTask) > 0 {
+		return i.ElseTask.Run(session)
+	}
+	return nil
 }
