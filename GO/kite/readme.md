@@ -125,7 +125,6 @@ workspace: 工作目录
 ```
 {
     "IPLists": "127.0.0.1", //ip白名单 空格分隔
-    "Path": "/home/payneliu/git/crayfish", //服务端接收文件的地址
     "__type__": "ReceiveFileTask"
 }
 ```
