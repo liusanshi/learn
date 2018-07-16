@@ -47,6 +47,7 @@ func (f *FileMessage) Parse(req *Request) error {
 	if err != nil {
 		return err
 	}
+	f.Path = filepath.FromSlash(f.Path) //将"/"转换系统路径
 	f.Branch, err = url.PathUnescape(req.Get("branch"))
 	if err != nil {
 		return err
