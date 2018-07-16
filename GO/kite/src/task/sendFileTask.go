@@ -117,7 +117,7 @@ func (s *SendFileTask) productPath(ctx context.Context, filepipe chan<- string, 
 			//排除不需要的文件
 			for _, ex := range s.Exclude {
 				if strings.Index(path, ex) > -1 {
-					return filepath.SkipDir
+					return nil //这里已经是文件了，需要的是忽略，而不是跳过目录
 				}
 			}
 			filepipe <- path
