@@ -64,7 +64,7 @@ func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
 	_, err := io.WriteString(w,
 		fmt.Sprintf("/upload?length=%d&path=%s&branch=%s&md5=%s\n",
 			f.Length,
-			url.PathEscape(filepath.Join(f.Branch, f.Path)),
+			url.PathEscape(filepath.ToSlash(filepath.Join(f.Branch, f.Path))), //将系统路径转换"/"
 			url.PathEscape(f.Branch),
 			f.md5))
 	if err != nil {

@@ -72,7 +72,7 @@ func Splite(fullPath, relativePath string) string {
 	for i := count; i >= 0; i-- {
 		reso[count-i] = rela[i]
 	}
-	return filepath.ToSlash(filepath.Join(reso...))
+	return filepath.Join(reso...)
 }
 
 //Md5 获取文件的Md5
