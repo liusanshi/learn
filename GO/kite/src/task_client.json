@@ -101,5 +101,15 @@
             "Timeout": 3000,
             "__type__": "TCPClientTask"
         }
+    ],
+    "test": [
+        {
+            "Path": "E:\\git\\learn\\GO\\kite\\src",
+            "DstPath": "/",
+            "Exclude": "/vendor/",
+            "IP": "127.0.0.1",
+            "Port": "8880",
+            "__type__": "SendFileTask"
+        }
     ]
 }
