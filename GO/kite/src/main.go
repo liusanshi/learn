@@ -37,7 +37,7 @@ func main() {
 		}
 		config.Set(params[0], params[1], "")
 	case "client":
-		client.Client(*fpath, *cmd, *branch)
+		client.Client(*fpath, *cmd, *branch, *work)
 	case "server":
 		server.Sev(*fpath, *work)
 	default:

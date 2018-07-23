@@ -86,6 +86,9 @@ func (s *SendFileTask) Run(session *core.Session) error {
 		done = make(chan struct{})
 		err  error
 	)
+	if len(session.WorkSpace) > 0 { //如果有命令行里面携带了path，则优先使用命令行里面的path
+		s.Path = session.WorkSpace
+	}
 	ctxP, cancelP := context.WithCancel(session.Ctx)
 	ctxC, cancelC := context.WithCancel(session.Ctx)
 	filepipe := s.consumerPath(ctxC, errC, done, session.Branch)
