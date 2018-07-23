@@ -81,6 +81,7 @@ func Md5(filePath string) string {
 		panic("file not exists")
 	}
 	file, err := os.Open(filePath)
+	defer file.Close()
 	if err != nil {
 		panic(err)
 	}
