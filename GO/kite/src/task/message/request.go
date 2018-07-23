@@ -128,3 +128,13 @@ func (r *Request) SetAddr(addr net.Addr) {
 func NewRequest() *Request {
 	return &Request{}
 }
+
+// ParseMsg 解析消息
+func ParseMsg(read io.Reader) (*Message, error) {
+	req := NewRequest()
+	_, err := req.ParseForm(read)
+	if err != nil {
+		return nil, err
+	}
+	return req.ParseFormMsg()
+}

@@ -62,6 +62,12 @@ func (s *ReceiveFileTask) Run(session *core.Session) error {
 	if err != nil {
 		return err
 	}
+	if msg.CheckMd5(session.WorkSpace) { //文件md5一致，则退出接受文件
+		session.Printf(true, message.SystemMessage, "ok")
+		return nil
+	} else {
+		session.Printf(true, message.SystemMessage, "ready") //表示服务器已经准备好接受文件
+	}
 	err = msg.Save(session.WorkSpace)
 	//返回客户端是否成功
 	if err == nil {

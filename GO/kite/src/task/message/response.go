@@ -16,12 +16,7 @@ func (r *Response) Write(w io.Writer, msg *Message) (int, error) {
 
 //ParseForm 设置body
 func (r *Response) ParseForm(read io.Reader) (*Message, error) {
-	req := NewRequest()
-	_, err := req.ParseForm(read)
-	if err != nil {
-		return nil, err
-	}
-	return req.ParseFormMsg()
+	return ParseMsg(read)
 }
 
 //NewResponse 创建一个新的请求

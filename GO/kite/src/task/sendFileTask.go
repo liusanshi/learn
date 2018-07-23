@@ -179,22 +179,33 @@ func (s *SendFileTask) upload(file, branch string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("begin upload:%s\n", file)
 	_, err = msg.WriteTo(conn)
 	if err != nil {
 		return err
 	}
-	req := message.NewRequest()
-	_, err = req.ParseForm(conn)
-	if err != nil {
-		return err
-	}
-	resp, err := req.ParseFormMsg()
+	resp, err := message.NewResponse().ParseForm(conn)
 	if err != nil {
 		return err
 	}
 	if resp.Success {
-		fmt.Printf("end upload:%s\n", file)
+		if resp.Content == "ok" {
+			return nil
+		}
+		//需要上传文件
+		_, err = msg.SendFile(conn)
+		if err != nil {
+			return err
+		}
+		resp, err = message.NewResponse().ParseForm(conn)
+		if err != nil {
+			return err
+		}
+		if resp.Success {
+			fmt.Printf("end upload:%s\n", file)
+		} else {
+			fmt.Printf("upload:%s;err:%s\n", file, resp.Content)
+			return fmt.Errorf(resp.Content)
+		}
 	} else {
 		fmt.Printf("upload:%s;err:%s\n", file, resp.Content)
 		return fmt.Errorf(resp.Content)
