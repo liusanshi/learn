@@ -73,6 +73,15 @@ func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
 	return io.Copy(w, f.file)
 }
 
+// CheckMd5 检查文件的md5是否相同
+func (f *FileMessage) CheckMd5(path string) bool {
+	path = filepath.Join(path, f.Path)
+	if util.FileExists(path) && util.Md5(path) == f.md5 {
+		return true
+	}
+	return false
+}
+
 // Save 保存消息
 func (f *FileMessage) Save(path string) error {
 	path = filepath.Join(path, f.Path)
