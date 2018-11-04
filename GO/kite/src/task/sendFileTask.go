@@ -58,7 +58,12 @@ func (s *SendFileTask) Init(data map[string]interface{}) error {
 		return fmt.Errorf("SendFileTask Port type error")
 	}
 	exclude, _ := data["Exclude"].(string)
-	s.Exclude = strings.Split(strings.TrimSpace(exclude), " ")
+	exclude = strings.TrimSpace(exclude)
+	if len(exclude) == 0 {
+		s.Exclude = []string{}
+	} else {
+		s.Exclude = strings.Split(exclude, " ")
+	}
 	return nil
 }
 
@@ -81,6 +86,9 @@ func (s *SendFileTask) Run(session *core.Session) error {
 		done = make(chan struct{})
 		err  error
 	)
+	if len(session.WorkSpace) > 0 { //如果有命令行里面携带了path，则优先使用命令行里面的path
+		s.Path = session.WorkSpace
+	}
 	ctxP, cancelP := context.WithCancel(session.Ctx)
 	ctxC, cancelC := context.WithCancel(session.Ctx)
 	filepipe := s.consumerPath(ctxC, errC, done, session.Branch)
@@ -174,22 +182,33 @@ func (s *SendFileTask) upload(file, branch string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("begin upload:%s\n", file)
 	_, err = msg.WriteTo(conn)
 	if err != nil {
 		return err
 	}
-	req := message.NewRequest()
-	_, err = req.ParseForm(conn)
-	if err != nil {
-		return err
-	}
-	resp, err := req.ParseFormMsg()
+	resp, err := message.NewResponse().ParseForm(conn)
 	if err != nil {
 		return err
 	}
 	if resp.Success {
-		fmt.Printf("end upload:%s\n", file)
+		if resp.Content == "ok" {
+			return nil
+		}
+		//需要上传文件
+		_, err = msg.SendFile(conn)
+		if err != nil {
+			return err
+		}
+		resp, err = message.NewResponse().ParseForm(conn)
+		if err != nil {
+			return err
+		}
+		if resp.Success {
+			fmt.Printf("end upload:%s\n", file)
+		} else {
+			fmt.Printf("upload:%s;err:%s\n", file, resp.Content)
+			return fmt.Errorf(resp.Content)
+		}
 	} else {
 		fmt.Printf("upload:%s;err:%s\n", file, resp.Content)
 		return fmt.Errorf(resp.Content)

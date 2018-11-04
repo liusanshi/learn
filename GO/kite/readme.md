@@ -4,7 +4,7 @@
 1. list 列出所有的测试环境  
 >示例：
 ```
-./main --func=client --path=/home/payneliu/git/kite/ --cmd=list --b=test1
+./kite --func=client --path=/home/payneliu/git/kite/ --cmd=list --b=test1
 其中：
 func: client表示客户端; server表示服务端
 path: 相关配置的存放位置(task_client.json)等地址
@@ -14,27 +14,27 @@ b: 环境的名称(list、unlock命令时选填，其他必填)
 2. init 创建一个测试环境  
 >示例：
 ```
-./main --func=client --path=/home/payneliu/git/kite/ --cmd=init --b=test1
+./kite --func=client --path=/home/payneliu/git/kite/ --cmd=init --b=test1
 ```
 3. update 更新一个测试环境  
 >示例：
 ```
-./main --func=client --path=/home/payneliu/git/kite/ --cmd=update --b=test1
+./kite --func=client --path=/home/payneliu/git/kite/ --cmd=update --b=test1
 ```
 4. delete 删除一个测试环境  
 >示例：
 ```
-./main --func=client --path=/home/payneliu/git/kite/ --cmd=delete --b=test1
+./kite --func=client --path=/home/payneliu/git/kite/ --cmd=delete --b=test1
 ```
 5. unlock 解锁一个测试环境  
 >示例：
 ```
-./main --func=client --path=/home/payneliu/git/kite/ --cmd=unlock --b=test1
+./kite --func=client --path=/home/payneliu/git/kite/ --cmd=unlock --b=test1
 ```
 6. 启动服务器  
 >示例：
 ```
-./main --func=server --path=/home/payneliu/git/kite/ --workspace=/home/payneliu/git/
+./kite --func=server --path=/home/payneliu/git/kite/ --workspace=/home/payneliu/git/
 其中：
 func: client表示客户端; server表示服务端
 path: 相关配置的存放位置(task.json, config.json)等地址

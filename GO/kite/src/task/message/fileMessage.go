@@ -61,25 +61,29 @@ func (f *FileMessage) Parse(req *Request) error {
 func (f *FileMessage) WriteTo(w io.Writer) (int64, error) {
 	// cmd?length=xx&path=xx
 	// _, err := io.WriteString(w, fmt.Sprintf("%d/%s\n", f.Length, f.Path))
-	_, err := io.WriteString(w,
+	num, err := io.WriteString(w,
 		fmt.Sprintf("/upload?length=%d&path=%s&branch=%s&md5=%s\n",
 			f.Length,
 			url.PathEscape(filepath.ToSlash(filepath.Join(f.Branch, f.Path))), //将系统路径转换"/"
 			url.PathEscape(f.Branch),
 			f.md5))
-	if err != nil {
-		return 0, err
-	}
+	return int64(num), err
+	//先只是写入md5，后面md5不一致再写入文件
+	// if err != nil {
+	// 	return 0, err
+	// }
+	// return io.Copy(w, f.file)
+}
+
+// SendFile 发送文件
+func (f *FileMessage) SendFile(w io.Writer) (int64, error) {
 	return io.Copy(w, f.file)
 }
 
-// CheckMd5 检查文件的md5是否相同
+//CheckMd5 检查文件的md5是否一致
 func (f *FileMessage) CheckMd5(path string) bool {
 	path = filepath.Join(path, f.Path)
-	if util.FileExists(path) && util.Md5(path) == f.md5 {
-		return true
-	}
-	return false
+	return util.FileExists(path) && util.Md5(path) == f.md5
 }
 
 // Save 保存消息
@@ -99,6 +103,10 @@ func (f *FileMessage) Save(path string) error {
 		return err
 	}
 	defer file.Close()
+	err = file.Truncate(0) //清空文件
+	if err != nil {
+		return err
+	}
 	_, err = io.Copy(file, io.LimitReader(f.file, f.Length))
 	if err == nil || err == io.EOF {
 		// fmt.Printf("upload success:%s\n", path)
