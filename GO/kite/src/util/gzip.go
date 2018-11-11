@@ -1,27 +1,12 @@
-package test
+package util
 
 import (
 	"bytes"
 	"compress/gzip"
 	"io"
-	"log"
 	"os"
 	"time"
 )
-
-func TestComp() {
-	err := CompressFile("E:\\git\\learn\\GO\\test\\args.go", "E:\\git\\learn\\GO\\test\\args.go.tar")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-
-	err = UnCompressFile("E:\\git\\learn\\GO\\test\\args.go.tar", "E:\\git\\learn\\GO\\test\\args.go.bak")
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-}
 
 type streamExchange func(reader io.Reader, write io.Writer) error
 
