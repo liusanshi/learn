@@ -1,0 +1,125 @@
+使用 物料编码+图号 查询物料？ 或者图纸
+
+
+审核对象表：WFObject
+
+ObjectId： pbom的verid
+
+环境：
+vs2017, sqlserver, iis
+c#, .net 3.5
+数据库sqlserver
+
+
+
+PBOM
+PP_PBOM:主表
+PP_PBOMVer： pbom的版本
+PP_PBOMChild: 关系表
+
+目标：
+1. 查询一个root pbom的整个树结构；
+2. 比较两个pbom树的差异；（差异包含：新增pbom，删除pbom，修改pbom）
+3. 汇总差异数据结构
+
+问题点：
+1. 新增pbom；将什么样子的pbom的结构同步过去
+2. 修改pbom，只有修改数据信息
+3. 同步数据到cloud（数据怎么对应）
+4. 文档的加密方式
+
+
+关键dll：
+D:\Program Files (x86)\kingdee\K3PLM\Web\bin\Kingdee.PLM.ERPIntegration.Common.dll
+D:\Program Files (x86)\kingdee\K3PLM\Web\bin\Kingdee.PLM.ERPIntegration.Interface.dll
+D:\Program Files (x86)\kingdee\K3PLM\Web\bin\Kingdee.PLM.ERPIntegration.dll
+
+配置文件
+D:\Program Files (x86)\kingdee\K3PLM\Web\bin\Kingdee.PLM.ERPIntegration.dll.config
+
+
+数据库连接字符串加密解密工具：
+D:\Program Files (x86)\kingdee\K3PLM\Tools\Config\Encrypt.exe
+
+具体实施：
+查询pbom树，已知 root pbom，值为 root；
+
+select * from PP_PBOMVer where ParentId = root //可以查询所有子节点的pbom
+
+CTE：
+with tree (ParentId, ChildId, Quantity, ObjectId, MaterialVerId, lvl, Seq) as (
+    select ParentId, ChildId, Quantity, ObjectId, MaterialVerId, 0 as lvl, Seq from PP_PBOMChild 
+        where ParentId = '1529DF11-B20F-48F9-A275-C9439AFD7C4D' --值为root
+    union all
+    select b.ParentId, b.ChildId, b.Quantity, b.ObjectId, b.MaterialVerId, lvl + 1 as lvl, b.Seq from tree a
+        join PP_PBOMChild b on a.ChildId = b.ParentId
+)
+select * from tree;
+
+lvl: 层级
+Seq: 序号
+
+CREATE TABLE [dbo].[PP_PBOM] (
+    [PbomId]          CHAR (36)       NOT NULL,
+    [FolderId]        CHAR (36)       NOT NULL,
+    [CategoryId]      VARCHAR (36)    NOT NULL,
+    [ObjectId]        CHAR (36)       NOT NULL, //baseid
+    [FactoryId]       VARCHAR (36)    NOT NULL,
+    [GroupId]         VARCHAR (50)    NOT NULL,
+    [Remark]          NVARCHAR (2000) NOT NULL,
+    [IntegrationMode] INT             NOT NULL,
+    [ERPBOMNumber]    VARCHAR (100)   NOT NULL,
+    [Status]          INT             NOT NULL,
+    [Creator]         VARCHAR (36)    NOT NULL,
+    [CreateDate]      VARCHAR (20)    NOT NULL,
+    [ArchivePerson]   VARCHAR (36)    NOT NULL,
+    [ArchiveDate]     VARCHAR (20)    NOT NULL,
+    [UnArchivePerson] VARCHAR (36)    NOT NULL,
+    [UnArchiveDate]   VARCHAR (20)    NOT NULL,
+    [UpdatePerson]    VARCHAR (36)    NOT NULL,
+    [UpdateDate]      VARCHAR (20)    NOT NULL,
+    [CurrentVer]      INT             NOT NULL,
+    [ChangeVer]       INT             NULL,
+    [MaterialVerId]   CHAR (36)       DEFAULT ('60B2B7BE-94C8-4B26-9DA2-2112E0141381') NOT NULL　//物料版本id
+);
+
+CREATE TABLE [dbo].[PP_PBOMChild] (
+    [RelationId]    CHAR (36)       NOT NULL,
+    [ParentId]      CHAR (36)       NOT NULL, //父pbomverid
+    [ObjectId]      CHAR (36)       NOT NULL, //物料的baseid
+    [ChildId]       VARCHAR (36)    NULL,     //子pbomverid
+    [Seq]           INT             NOT NULL,
+    [Quantity]      NUMERIC (16, 8) NOT NULL, //数量
+    [Creator]       VARCHAR (36)    NOT NULL,
+    [CreateDate]    VARCHAR (20)    NOT NULL,
+    [UpdatePerson]  VARCHAR (36)    NOT NULL,
+    [UpdateDate]    VARCHAR (20)    NOT NULL,
+    [Radix]         NUMERIC (16, 8) NULL,
+    [Waste]         NUMERIC (11, 8) NULL,
+    [Remark]        NVARCHAR (2000) NULL,
+    [AssemblyPlace] VARCHAR (4000)  NULL,
+    [UsedFor]       NVARCHAR (100)  NULL,
+    [isAccessories] BIT             NULL,
+    [MaterialVerId] CHAR (36)       DEFAULT ('1B868B35-CC76-471C-A9A1-5EA768EA16DD') NOT NULL //物料版本id
+);
+
+CREATE TABLE [dbo].[PP_PBOMVer] (
+    [VerId]          CHAR (36)       NOT NULL,
+    [PbomId]         CHAR (36)       NOT NULL,
+    [Ver]            INT             NOT NULL,
+    [Remark]         NVARCHAR (2000) NOT NULL,
+    [Creator]        VARCHAR (36)    NOT NULL,
+    [CreateDate]     VARCHAR (20)    NOT NULL,
+    [UpdatePerson]   VARCHAR (36)    NOT NULL,
+    [UpdateDate]     VARCHAR (20)    NOT NULL,
+    [Status]         INT             NOT NULL,
+    [IsInFlow]       INT             NOT NULL,
+    [ObjectIconPath] VARCHAR (50)    NULL,
+    [StateIconPath]  VARCHAR (50)    NULL,
+    [MajorVer]       INT             NULL,
+    [MinorVer]       INT             NULL,
+    [VerCode]        NVARCHAR (20)   NULL,
+    [MaterialVerId]  CHAR (36)       DEFAULT ('63F953F4-30C7-46C9-B9DB-ED3E89F71B51') NOT NULL,
+    [SourceVerId]    CHAR (36)       DEFAULT ('63F953F4-30C7-46C9-B9DB-ED3E89F71B51') NOT NULL,
+);
+
