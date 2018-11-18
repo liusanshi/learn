@@ -31,18 +31,22 @@
 			"type": "go",
 			"request": "launch",
 			"mode": "debug",
-			"program": "${workspaceRoot}/GO/hello.go",
+			"program": "${workspaceRoot}/GO/src/test/hello.go",
 			"args": [
 			],
 			"showLog": false
 		},
 		{
-			"name": "Launch index.html with sourcemaps",
-			"type": "chrome",
+			"name": "ch8",
+			"type": "go",
 			"request": "launch",
-			"file": "${workspaceRoot}/index.html",
-			"sourceMaps": true,
-			"webRoot": "${workspaceRoot}"
+			"mode": "debug",
+			"program": "${workspaceRoot}/GO/src/ch8/main.go",
+			"args": [
+				"--func=ch8.Spinner",
+				"--args=args"
+			],
+			"showLog": false
 		},
 		{
 			"name": "Launch localhost with sourcemaps",

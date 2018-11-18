@@ -10,13 +10,13 @@ import (
 )
 
 func TestComp() {
-	err := CompressFile("E:\\git\\learn\\GO\\test\\args.go", "E:\\git\\learn\\GO\\test\\args.go.tar")
+	err := CompressFile("E:\\git\\learn\\GO\\src\\test\\test\\args.go", "E:\\git\\learn\\GO\\src\\test\\test\\args.go.tar")
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
 
-	err = UnCompressFile("E:\\git\\learn\\GO\\test\\args.go.tar", "E:\\git\\learn\\GO\\test\\args.go.bak")
+	err = UnCompressFile("E:\\git\\learn\\GO\\src\\test\\test\\args.go.tar", "E:\\git\\learn\\GO\\src\\test\\test\\args.go.bak")
 	if err != nil {
 		log.Fatal(err)
 		return
