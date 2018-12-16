@@ -1,0 +1,46 @@
+@startuml 应用程序执行顺序
+
+actor User
+User -> PLM: 审核流程通过
+PLM -> Application: 执行验证应用程序
+Application -> PLM: 数据检查的结果
+
+alt 数据有效
+
+    PLM -> Application: 执行同步应用程序
+    alt 新增数据
+        Application -> Cloud: PBOM数据
+        Application -> PLM: PBOM单号、图号
+    else 修改数据
+
+        Application -> Application: 与PBOM的最后一个版本进行比较
+        Application -> Cloud: 新增物料
+        note right
+        获取信息： 物料编码、
+        上层物料编码对应的BOM版本（Cloud称呼）、
+        新增的数量、如果是部件需要提供【bom版本号】
+        end note
+
+        Application -> Cloud: 删除物料
+        note right
+        获取信息：物料编码、
+        上层物料编码对应的BOM版本（Cloud称呼）、
+        删除数量、如果是部件需要提供【bom版本号】
+        end note
+
+        Application -> Cloud: 修改物料
+        note right
+        获取信息：物料编码、
+        上层物料编码对应的BOM版本（Cloud称呼）、
+        变更前该物料的数量、变更后该物料的数量
+        如果是部件需要提供【BOM版本号】
+        end note
+
+        Application -> PLM : 执行结果
+    end
+    PLM -> User: 流程执行结果
+else 数据无效
+    PLM -> User: 数据同步失败
+end
+
+@enduml
