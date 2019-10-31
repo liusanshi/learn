@@ -81,6 +81,7 @@ const buildQueueRunner = (queue = []) => {
       if (resumer) {
         status = Running
         resumer()
+        resumer = null
       }
     },
 
